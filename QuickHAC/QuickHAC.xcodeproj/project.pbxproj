@@ -1,0 +1,576 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		DE06157B17874D0C004B2877 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE06157A17874D0C004B2877 /* Foundation.framework */; };
+		DE06157D17874D0C004B2877 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE06157C17874D0C004B2877 /* CoreGraphics.framework */; };
+		DE06157F17874D0C004B2877 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE06157E17874D0C004B2877 /* UIKit.framework */; };
+		DE06158117874D0C004B2877 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE06158017874D0C004B2877 /* CoreData.framework */; };
+		DE06158717874D0D004B2877 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = DE06158517874D0D004B2877 /* InfoPlist.strings */; };
+		DE06158917874D0D004B2877 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DE06158817874D0D004B2877 /* main.m */; };
+		DE06158D17874D0D004B2877 /* SQUAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DE06158C17874D0D004B2877 /* SQUAppDelegate.m */; };
+		DE06159017874D0D004B2877 /* QuickHAC.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DE06158E17874D0D004B2877 /* QuickHAC.xcdatamodeld */; };
+		DE06159217874D0D004B2877 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DE06159117874D0D004B2877 /* Images.xcassets */; };
+		DE06159917874D0F004B2877 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE06159817874D0F004B2877 /* XCTest.framework */; };
+		DE06159A17874D0F004B2877 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE06157A17874D0C004B2877 /* Foundation.framework */; };
+		DE06159B17874D0F004B2877 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE06157E17874D0C004B2877 /* UIKit.framework */; };
+		DE06159C17874D0F004B2877 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE06158017874D0C004B2877 /* CoreData.framework */; };
+		DE0615A417874D0F004B2877 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = DE0615A217874D0F004B2877 /* InfoPlist.strings */; };
+		DE0615A617874D0F004B2877 /* QuickHACTests.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0615A517874D0F004B2877 /* QuickHACTests.m */; };
+		DE0615C717874F17004B2877 /* AFHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0615B517874F17004B2877 /* AFHTTPClient.m */; };
+		DE0615C817874F17004B2877 /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0615B717874F17004B2877 /* AFHTTPRequestOperation.m */; };
+		DE0615C917874F17004B2877 /* AFImageRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0615B917874F17004B2877 /* AFImageRequestOperation.m */; };
+		DE0615CA17874F17004B2877 /* AFJSONRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0615BB17874F17004B2877 /* AFJSONRequestOperation.m */; };
+		DE0615CB17874F17004B2877 /* AFNetworkActivityIndicatorManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0615BD17874F17004B2877 /* AFNetworkActivityIndicatorManager.m */; };
+		DE0615CC17874F17004B2877 /* AFPropertyListRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0615C017874F17004B2877 /* AFPropertyListRequestOperation.m */; };
+		DE0615CD17874F17004B2877 /* AFURLConnectionOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0615C217874F17004B2877 /* AFURLConnectionOperation.m */; };
+		DE0615CE17874F17004B2877 /* AFXMLRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0615C417874F17004B2877 /* AFXMLRequestOperation.m */; };
+		DE0615CF17874F17004B2877 /* UIImageView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0615C617874F17004B2877 /* UIImageView+AFNetworking.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		DE06159D17874D0F004B2877 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DE06156F17874D0C004B2877 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DE06157617874D0C004B2877;
+			remoteInfo = QuickHAC;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		DE06157717874D0C004B2877 /* QuickHAC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QuickHAC.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		DE06157A17874D0C004B2877 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		DE06157C17874D0C004B2877 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		DE06157E17874D0C004B2877 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		DE06158017874D0C004B2877 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		DE06158417874D0D004B2877 /* QuickHAC-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "QuickHAC-Info.plist"; sourceTree = "<group>"; };
+		DE06158617874D0D004B2877 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		DE06158817874D0D004B2877 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		DE06158A17874D0D004B2877 /* QuickHAC-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "QuickHAC-Prefix.pch"; sourceTree = "<group>"; };
+		DE06158B17874D0D004B2877 /* SQUAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SQUAppDelegate.h; sourceTree = "<group>"; };
+		DE06158C17874D0D004B2877 /* SQUAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SQUAppDelegate.m; sourceTree = "<group>"; };
+		DE06158F17874D0D004B2877 /* QuickHAC.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = QuickHAC.xcdatamodel; sourceTree = "<group>"; };
+		DE06159117874D0D004B2877 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		DE06159717874D0F004B2877 /* QuickHACTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QuickHACTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		DE06159817874D0F004B2877 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		DE0615A117874D0F004B2877 /* QuickHACTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "QuickHACTests-Info.plist"; sourceTree = "<group>"; };
+		DE0615A317874D0F004B2877 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		DE0615A517874D0F004B2877 /* QuickHACTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QuickHACTests.m; sourceTree = "<group>"; };
+		DE0615B417874F17004B2877 /* AFHTTPClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPClient.h; sourceTree = "<group>"; };
+		DE0615B517874F17004B2877 /* AFHTTPClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFHTTPClient.m; sourceTree = "<group>"; };
+		DE0615B617874F17004B2877 /* AFHTTPRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPRequestOperation.h; sourceTree = "<group>"; };
+		DE0615B717874F17004B2877 /* AFHTTPRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFHTTPRequestOperation.m; sourceTree = "<group>"; };
+		DE0615B817874F17004B2877 /* AFImageRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFImageRequestOperation.h; sourceTree = "<group>"; };
+		DE0615B917874F17004B2877 /* AFImageRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFImageRequestOperation.m; sourceTree = "<group>"; };
+		DE0615BA17874F17004B2877 /* AFJSONRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFJSONRequestOperation.h; sourceTree = "<group>"; };
+		DE0615BB17874F17004B2877 /* AFJSONRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFJSONRequestOperation.m; sourceTree = "<group>"; };
+		DE0615BC17874F17004B2877 /* AFNetworkActivityIndicatorManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFNetworkActivityIndicatorManager.h; sourceTree = "<group>"; };
+		DE0615BD17874F17004B2877 /* AFNetworkActivityIndicatorManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFNetworkActivityIndicatorManager.m; sourceTree = "<group>"; };
+		DE0615BE17874F17004B2877 /* AFNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFNetworking.h; sourceTree = "<group>"; };
+		DE0615BF17874F17004B2877 /* AFPropertyListRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFPropertyListRequestOperation.h; sourceTree = "<group>"; };
+		DE0615C017874F17004B2877 /* AFPropertyListRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFPropertyListRequestOperation.m; sourceTree = "<group>"; };
+		DE0615C117874F17004B2877 /* AFURLConnectionOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFURLConnectionOperation.h; sourceTree = "<group>"; };
+		DE0615C217874F17004B2877 /* AFURLConnectionOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFURLConnectionOperation.m; sourceTree = "<group>"; };
+		DE0615C317874F17004B2877 /* AFXMLRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFXMLRequestOperation.h; sourceTree = "<group>"; };
+		DE0615C417874F17004B2877 /* AFXMLRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFXMLRequestOperation.m; sourceTree = "<group>"; };
+		DE0615C517874F17004B2877 /* UIImageView+AFNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+AFNetworking.h"; sourceTree = "<group>"; };
+		DE0615C617874F17004B2877 /* UIImageView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+AFNetworking.m"; sourceTree = "<group>"; };
+		DE0615D017874F73004B2877 /* QuickHAC.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = QuickHAC.entitlements; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		DE06157417874D0C004B2877 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DE06157D17874D0C004B2877 /* CoreGraphics.framework in Frameworks */,
+				DE06158117874D0C004B2877 /* CoreData.framework in Frameworks */,
+				DE06157F17874D0C004B2877 /* UIKit.framework in Frameworks */,
+				DE06157B17874D0C004B2877 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DE06159417874D0F004B2877 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DE06159917874D0F004B2877 /* XCTest.framework in Frameworks */,
+				DE06159C17874D0F004B2877 /* CoreData.framework in Frameworks */,
+				DE06159B17874D0F004B2877 /* UIKit.framework in Frameworks */,
+				DE06159A17874D0F004B2877 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		DE06156E17874D0C004B2877 = {
+			isa = PBXGroup;
+			children = (
+				DE06158217874D0C004B2877 /* QuickHAC */,
+				DE06159F17874D0F004B2877 /* QuickHACTests */,
+				DE06157917874D0C004B2877 /* Frameworks */,
+				DE06157817874D0C004B2877 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		DE06157817874D0C004B2877 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				DE06157717874D0C004B2877 /* QuickHAC.app */,
+				DE06159717874D0F004B2877 /* QuickHACTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		DE06157917874D0C004B2877 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				DE06157A17874D0C004B2877 /* Foundation.framework */,
+				DE06157C17874D0C004B2877 /* CoreGraphics.framework */,
+				DE06157E17874D0C004B2877 /* UIKit.framework */,
+				DE06158017874D0C004B2877 /* CoreData.framework */,
+				DE06159817874D0F004B2877 /* XCTest.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		DE06158217874D0C004B2877 /* QuickHAC */ = {
+			isa = PBXGroup;
+			children = (
+				DE0615D017874F73004B2877 /* QuickHAC.entitlements */,
+				DE0615B317874F17004B2877 /* AFNetworking */,
+				DE06158B17874D0D004B2877 /* SQUAppDelegate.h */,
+				DE06158C17874D0D004B2877 /* SQUAppDelegate.m */,
+				DE06159117874D0D004B2877 /* Images.xcassets */,
+				DE06158E17874D0D004B2877 /* QuickHAC.xcdatamodeld */,
+				DE06158317874D0D004B2877 /* Supporting Files */,
+			);
+			path = QuickHAC;
+			sourceTree = "<group>";
+		};
+		DE06158317874D0D004B2877 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				DE06158417874D0D004B2877 /* QuickHAC-Info.plist */,
+				DE06158517874D0D004B2877 /* InfoPlist.strings */,
+				DE06158817874D0D004B2877 /* main.m */,
+				DE06158A17874D0D004B2877 /* QuickHAC-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		DE06159F17874D0F004B2877 /* QuickHACTests */ = {
+			isa = PBXGroup;
+			children = (
+				DE0615A517874D0F004B2877 /* QuickHACTests.m */,
+				DE0615A017874D0F004B2877 /* Supporting Files */,
+			);
+			path = QuickHACTests;
+			sourceTree = "<group>";
+		};
+		DE0615A017874D0F004B2877 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				DE0615A117874D0F004B2877 /* QuickHACTests-Info.plist */,
+				DE0615A217874D0F004B2877 /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		DE0615B317874F17004B2877 /* AFNetworking */ = {
+			isa = PBXGroup;
+			children = (
+				DE0615B417874F17004B2877 /* AFHTTPClient.h */,
+				DE0615B517874F17004B2877 /* AFHTTPClient.m */,
+				DE0615B617874F17004B2877 /* AFHTTPRequestOperation.h */,
+				DE0615B717874F17004B2877 /* AFHTTPRequestOperation.m */,
+				DE0615B817874F17004B2877 /* AFImageRequestOperation.h */,
+				DE0615B917874F17004B2877 /* AFImageRequestOperation.m */,
+				DE0615BA17874F17004B2877 /* AFJSONRequestOperation.h */,
+				DE0615BB17874F17004B2877 /* AFJSONRequestOperation.m */,
+				DE0615BC17874F17004B2877 /* AFNetworkActivityIndicatorManager.h */,
+				DE0615BD17874F17004B2877 /* AFNetworkActivityIndicatorManager.m */,
+				DE0615BE17874F17004B2877 /* AFNetworking.h */,
+				DE0615BF17874F17004B2877 /* AFPropertyListRequestOperation.h */,
+				DE0615C017874F17004B2877 /* AFPropertyListRequestOperation.m */,
+				DE0615C117874F17004B2877 /* AFURLConnectionOperation.h */,
+				DE0615C217874F17004B2877 /* AFURLConnectionOperation.m */,
+				DE0615C317874F17004B2877 /* AFXMLRequestOperation.h */,
+				DE0615C417874F17004B2877 /* AFXMLRequestOperation.m */,
+				DE0615C517874F17004B2877 /* UIImageView+AFNetworking.h */,
+				DE0615C617874F17004B2877 /* UIImageView+AFNetworking.m */,
+			);
+			name = AFNetworking;
+			path = ../../AFNetworking/AFNetworking;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		DE06157617874D0C004B2877 /* QuickHAC */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DE0615A917874D0F004B2877 /* Build configuration list for PBXNativeTarget "QuickHAC" */;
+			buildPhases = (
+				DE06157317874D0C004B2877 /* Sources */,
+				DE06157417874D0C004B2877 /* Frameworks */,
+				DE0615B217874E15004B2877 /* Increase build number */,
+				DE06157517874D0C004B2877 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = QuickHAC;
+			productName = QuickHAC;
+			productReference = DE06157717874D0C004B2877 /* QuickHAC.app */;
+			productType = "com.apple.product-type.application";
+		};
+		DE06159617874D0F004B2877 /* QuickHACTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DE0615AC17874D0F004B2877 /* Build configuration list for PBXNativeTarget "QuickHACTests" */;
+			buildPhases = (
+				DE06159317874D0F004B2877 /* Sources */,
+				DE06159417874D0F004B2877 /* Frameworks */,
+				DE06159517874D0F004B2877 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DE06159E17874D0F004B2877 /* PBXTargetDependency */,
+			);
+			name = QuickHACTests;
+			productName = QuickHACTests;
+			productReference = DE06159717874D0F004B2877 /* QuickHACTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		DE06156F17874D0C004B2877 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				CLASSPREFIX = SQU;
+				LastUpgradeCheck = 0500;
+				ORGANIZATIONNAME = "Squee! Apps";
+				TargetAttributes = {
+					DE06157617874D0C004B2877 = {
+						DevelopmentTeam = 62JL7NTBQJ;
+						SystemCapabilities = {
+							com.apple.DataProtection = {
+								enabled = 1;
+							};
+							com.apple.Keychain = {
+								enabled = 1;
+							};
+						};
+					};
+					DE06159617874D0F004B2877 = {
+						TestTargetID = DE06157617874D0C004B2877;
+					};
+				};
+			};
+			buildConfigurationList = DE06157217874D0C004B2877 /* Build configuration list for PBXProject "QuickHAC" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = DE06156E17874D0C004B2877;
+			productRefGroup = DE06157817874D0C004B2877 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				DE06157617874D0C004B2877 /* QuickHAC */,
+				DE06159617874D0F004B2877 /* QuickHACTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		DE06157517874D0C004B2877 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DE06158717874D0D004B2877 /* InfoPlist.strings in Resources */,
+				DE06159217874D0D004B2877 /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DE06159517874D0F004B2877 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DE0615A417874D0F004B2877 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		DE0615B217874E15004B2877 /* Increase build number */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Increase build number";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#!/bin/bash\nbN=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"$INFOPLIST_FILE\")\nbN=$((0x$bN))\nbN=$(($bN + 1))\nbN=$(printf \"%X\" $bN)\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $bN\" \"$INFOPLIST_FILE\"";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		DE06157317874D0C004B2877 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DE0615C917874F17004B2877 /* AFImageRequestOperation.m in Sources */,
+				DE06158D17874D0D004B2877 /* SQUAppDelegate.m in Sources */,
+				DE0615CC17874F17004B2877 /* AFPropertyListRequestOperation.m in Sources */,
+				DE06158917874D0D004B2877 /* main.m in Sources */,
+				DE0615CD17874F17004B2877 /* AFURLConnectionOperation.m in Sources */,
+				DE0615CE17874F17004B2877 /* AFXMLRequestOperation.m in Sources */,
+				DE0615CA17874F17004B2877 /* AFJSONRequestOperation.m in Sources */,
+				DE0615CF17874F17004B2877 /* UIImageView+AFNetworking.m in Sources */,
+				DE0615CB17874F17004B2877 /* AFNetworkActivityIndicatorManager.m in Sources */,
+				DE0615C817874F17004B2877 /* AFHTTPRequestOperation.m in Sources */,
+				DE06159017874D0D004B2877 /* QuickHAC.xcdatamodeld in Sources */,
+				DE0615C717874F17004B2877 /* AFHTTPClient.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DE06159317874D0F004B2877 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DE0615A617874D0F004B2877 /* QuickHACTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		DE06159E17874D0F004B2877 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DE06157617874D0C004B2877 /* QuickHAC */;
+			targetProxy = DE06159D17874D0F004B2877 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		DE06158517874D0D004B2877 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DE06158617874D0D004B2877 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		DE0615A217874D0F004B2877 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DE0615A317874D0F004B2877 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		DE0615A717874D0F004B2877 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		DE0615A817874D0F004B2877 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		DE0615AA17874D0F004B2877 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = QuickHAC/QuickHAC.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "QuickHAC/QuickHAC-Prefix.pch";
+				INFOPLIST_FILE = "QuickHAC/QuickHAC-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		DE0615AB17874D0F004B2877 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = QuickHAC/QuickHAC.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "QuickHAC/QuickHAC-Prefix.pch";
+				INFOPLIST_FILE = "QuickHAC/QuickHAC-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		DE0615AD17874D0F004B2877 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/QuickHAC.app/QuickHAC";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(SYSTEM_APPS_DIR)/Xcode5-DP.app/Contents/Developer/Library/Frameworks",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "QuickHAC/QuickHAC-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "QuickHACTests/QuickHACTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		DE0615AE17874D0F004B2877 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/QuickHAC.app/QuickHAC";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(SYSTEM_APPS_DIR)/Xcode5-DP.app/Contents/Developer/Library/Frameworks",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "QuickHAC/QuickHAC-Prefix.pch";
+				INFOPLIST_FILE = "QuickHACTests/QuickHACTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		DE06157217874D0C004B2877 /* Build configuration list for PBXProject "QuickHAC" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DE0615A717874D0F004B2877 /* Debug */,
+				DE0615A817874D0F004B2877 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DE0615A917874D0F004B2877 /* Build configuration list for PBXNativeTarget "QuickHAC" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DE0615AA17874D0F004B2877 /* Debug */,
+				DE0615AB17874D0F004B2877 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		DE0615AC17874D0F004B2877 /* Build configuration list for PBXNativeTarget "QuickHACTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DE0615AD17874D0F004B2877 /* Debug */,
+				DE0615AE17874D0F004B2877 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		DE06158E17874D0D004B2877 /* QuickHAC.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				DE06158F17874D0D004B2877 /* QuickHAC.xcdatamodel */,
+			);
+			currentVersion = DE06158F17874D0D004B2877 /* QuickHAC.xcdatamodel */;
+			path = QuickHAC.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = DE06156F17874D0C004B2877 /* Project object */;
+}
