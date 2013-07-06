@@ -20,8 +20,6 @@
 		DE06159A17874D0F004B2877 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE06157A17874D0C004B2877 /* Foundation.framework */; };
 		DE06159B17874D0F004B2877 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE06157E17874D0C004B2877 /* UIKit.framework */; };
 		DE06159C17874D0F004B2877 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE06158017874D0C004B2877 /* CoreData.framework */; };
-		DE0615A417874D0F004B2877 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = DE0615A217874D0F004B2877 /* InfoPlist.strings */; };
-		DE0615A617874D0F004B2877 /* QuickHACTests.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0615A517874D0F004B2877 /* QuickHACTests.m */; };
 		DE0615C717874F17004B2877 /* AFHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0615B517874F17004B2877 /* AFHTTPClient.m */; };
 		DE0615C817874F17004B2877 /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0615B717874F17004B2877 /* AFHTTPRequestOperation.m */; };
 		DE0615C917874F17004B2877 /* AFImageRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0615B917874F17004B2877 /* AFImageRequestOperation.m */; };
@@ -59,9 +57,6 @@
 		DE06159117874D0D004B2877 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		DE06159717874D0F004B2877 /* QuickHACTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QuickHACTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DE06159817874D0F004B2877 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		DE0615A117874D0F004B2877 /* QuickHACTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "QuickHACTests-Info.plist"; sourceTree = "<group>"; };
-		DE0615A317874D0F004B2877 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		DE0615A517874D0F004B2877 /* QuickHACTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QuickHACTests.m; sourceTree = "<group>"; };
 		DE0615B417874F17004B2877 /* AFHTTPClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPClient.h; sourceTree = "<group>"; };
 		DE0615B517874F17004B2877 /* AFHTTPClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFHTTPClient.m; sourceTree = "<group>"; };
 		DE0615B617874F17004B2877 /* AFHTTPRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPRequestOperation.h; sourceTree = "<group>"; };
@@ -114,7 +109,6 @@
 			isa = PBXGroup;
 			children = (
 				DE06158217874D0C004B2877 /* QuickHAC */,
-				DE06159F17874D0F004B2877 /* QuickHACTests */,
 				DE06157917874D0C004B2877 /* Frameworks */,
 				DE06157817874D0C004B2877 /* Products */,
 			);
@@ -162,24 +156,6 @@
 				DE06158517874D0D004B2877 /* InfoPlist.strings */,
 				DE06158817874D0D004B2877 /* main.m */,
 				DE06158A17874D0D004B2877 /* QuickHAC-Prefix.pch */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		DE06159F17874D0F004B2877 /* QuickHACTests */ = {
-			isa = PBXGroup;
-			children = (
-				DE0615A517874D0F004B2877 /* QuickHACTests.m */,
-				DE0615A017874D0F004B2877 /* Supporting Files */,
-			);
-			path = QuickHACTests;
-			sourceTree = "<group>";
-		};
-		DE0615A017874D0F004B2877 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				DE0615A117874D0F004B2877 /* QuickHACTests-Info.plist */,
-				DE0615A217874D0F004B2877 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -308,7 +284,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DE0615A417874D0F004B2877 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -355,7 +330,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DE0615A617874D0F004B2877 /* QuickHACTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -374,14 +348,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				DE06158617874D0D004B2877 /* en */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		DE0615A217874D0F004B2877 /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				DE0615A317874D0F004B2877 /* en */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
