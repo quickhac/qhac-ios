@@ -7,6 +7,7 @@
 //
 
 #import "SQUAppDelegate.h"
+#import "SQULoginViewController.h"
 
 @implementation SQUAppDelegate
 
@@ -16,9 +17,22 @@
 
 - (BOOL) application:(UIApplication *) application didFinishLaunchingWithOptions:(NSDictionary *) launchOptions {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    // Override point for customization after application launch.
+   
+    _rootViewController = [[UIViewController alloc] init];
+    
+    _navController = [[UINavigationController alloc] initWithRootViewController:_rootViewController];
+    
+    
+    // Set up UIWindow
+    self.window.rootViewController = _navController;
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        SQULoginViewController *loginController = [[SQULoginViewController alloc] init];
+        [_navController presentViewController:[[UINavigationController alloc] initWithRootViewController:loginController] animated:NO completion:NULL];
+    });
+    
     return YES;
 }
 

@@ -8,7 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SQUAppDelegate : UIResponder <UIApplicationDelegate>
+@interface SQUAppDelegate : UIResponder <UIApplicationDelegate> {
+    UINavigationController *_navController;
+    UIViewController *_rootViewController;
+}
 
 @property (strong, nonatomic) UIWindow *window;
 

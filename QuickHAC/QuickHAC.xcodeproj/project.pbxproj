@@ -29,6 +29,9 @@
 		DE0615CD17874F17004B2877 /* AFURLConnectionOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0615C217874F17004B2877 /* AFURLConnectionOperation.m */; };
 		DE0615CE17874F17004B2877 /* AFXMLRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0615C417874F17004B2877 /* AFXMLRequestOperation.m */; };
 		DE0615CF17874F17004B2877 /* UIImageView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0615C617874F17004B2877 /* UIImageView+AFNetworking.m */; };
+		DE0615D31787AD3E004B2877 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE0615D21787AD3D004B2877 /* SystemConfiguration.framework */; };
+		DE0615D51787AD50004B2877 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE0615D41787AD50004B2877 /* MobileCoreServices.framework */; };
+		DE0615D81787ADFE004B2877 /* SQULoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0615D71787ADFE004B2877 /* SQULoginViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -77,6 +80,10 @@
 		DE0615C517874F17004B2877 /* UIImageView+AFNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+AFNetworking.h"; sourceTree = "<group>"; };
 		DE0615C617874F17004B2877 /* UIImageView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+AFNetworking.m"; sourceTree = "<group>"; };
 		DE0615D017874F73004B2877 /* QuickHAC.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = QuickHAC.entitlements; sourceTree = "<group>"; };
+		DE0615D21787AD3D004B2877 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		DE0615D41787AD50004B2877 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		DE0615D61787ADFE004B2877 /* SQULoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQULoginViewController.h; sourceTree = "<group>"; };
+		DE0615D71787ADFE004B2877 /* SQULoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQULoginViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,6 +91,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DE0615D51787AD50004B2877 /* MobileCoreServices.framework in Frameworks */,
+				DE0615D31787AD3E004B2877 /* SystemConfiguration.framework in Frameworks */,
 				DE06157D17874D0C004B2877 /* CoreGraphics.framework in Frameworks */,
 				DE06158117874D0C004B2877 /* CoreData.framework in Frameworks */,
 				DE06157F17874D0C004B2877 /* UIKit.framework in Frameworks */,
@@ -126,6 +135,8 @@
 		DE06157917874D0C004B2877 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				DE0615D41787AD50004B2877 /* MobileCoreServices.framework */,
+				DE0615D21787AD3D004B2877 /* SystemConfiguration.framework */,
 				DE06157A17874D0C004B2877 /* Foundation.framework */,
 				DE06157C17874D0C004B2877 /* CoreGraphics.framework */,
 				DE06157E17874D0C004B2877 /* UIKit.framework */,
@@ -139,6 +150,7 @@
 			isa = PBXGroup;
 			children = (
 				DE0615D017874F73004B2877 /* QuickHAC.entitlements */,
+				DE0615D11787ACDA004B2877 /* Login UI */,
 				DE0615B317874F17004B2877 /* AFNetworking */,
 				DE06158B17874D0D004B2877 /* SQUAppDelegate.h */,
 				DE06158C17874D0D004B2877 /* SQUAppDelegate.m */,
@@ -185,6 +197,15 @@
 			);
 			name = AFNetworking;
 			path = ../../AFNetworking/AFNetworking;
+			sourceTree = "<group>";
+		};
+		DE0615D11787ACDA004B2877 /* Login UI */ = {
+			isa = PBXGroup;
+			children = (
+				DE0615D61787ADFE004B2877 /* SQULoginViewController.h */,
+				DE0615D71787ADFE004B2877 /* SQULoginViewController.m */,
+			);
+			name = "Login UI";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -318,6 +339,7 @@
 				DE0615CD17874F17004B2877 /* AFURLConnectionOperation.m in Sources */,
 				DE0615CE17874F17004B2877 /* AFXMLRequestOperation.m in Sources */,
 				DE0615CA17874F17004B2877 /* AFJSONRequestOperation.m in Sources */,
+				DE0615D81787ADFE004B2877 /* SQULoginViewController.m in Sources */,
 				DE0615CF17874F17004B2877 /* UIImageView+AFNetworking.m in Sources */,
 				DE0615CB17874F17004B2877 /* AFNetworkActivityIndicatorManager.m in Sources */,
 				DE0615C817874F17004B2877 /* AFHTTPRequestOperation.m in Sources */,

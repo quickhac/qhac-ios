@@ -11,7 +11,8 @@ This app mirrors the features of the Chrome QuickHAC extension — it checks gra
 ## Copyright ##
 
 Chrome extension created by Yash Aggarwal, Max Ciotti, Tristan Seifert and Xuming Zeng.
-iOS app by Tristan Seifert
+
+iOS app by Tristan Seifert.
 
 ### Source Code License ###
 The source code is released under the [Simplified BSD License](http://opensource.org/licenses/bsd-license.php):
