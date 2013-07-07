@@ -114,37 +114,6 @@ static SQUHACInterface *_sharedInstance = nil;
  * I'm done.
  */
 
-- (NSString *) rot13:(NSString *) theText {
-    NSMutableString *holder = [[NSMutableString alloc] init];
-    unichar theChar;
-    int i;
-    
-    for(i = 0; i < [theText length]; i++) {
-        theChar = [theText characterAtIndex:i];
-        if(theChar <= 122 && theChar >= 97) {
-            if(theChar + 13 > 122)
-                theChar -= 13;
-            else
-                theChar += 13;
-            [holder appendFormat:@"%hhd", (char)theChar];
-            
-            
-        } else if(theChar <= 90 && theChar >= 65) {
-            if((int)theChar + 13 > 90)
-                theChar -= 13;
-            else
-                theChar += 13;
-            
-            [holder appendFormat:@"%C", theChar];
-            
-        } else {
-            [holder appendFormat:@"%C", theChar];
-        }
-    }
-    
-    return [NSString stringWithString:holder];
-}
-
 - (NSString *) base64Encode:(NSString *) data {
     char *base64Chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
@@ -187,12 +156,28 @@ static SQUHACInterface *_sharedInstance = nil;
     return notReallyEncryptedString;
 }
 
-// String.prototype.decrypt = function() {
-//  return this.rot13().b64dec();
-// }
-/* - (NSString *) doTheInverseOfWhateverTheHellThatDoes:(NSString *) string {
-    return [string];
-} */
+//String.prototype.rot13 = function(){
+//	return this.replace(/[a-zA-Z]/g, function(c){
+//		return String.fromCharCode((c <= "Z" ? 90 : 122) >= (c = c.charCodeAt(0) + 13) ? c : c - 26);
+//	});
+//};
+
+- (NSString *) rot13:(NSString *)theText {
+    NSData *data = [theText dataUsingEncoding:NSASCIIStringEncoding];
+    NSMutableData *resultantData = [[NSMutableData alloc] initWithCapacity:data.length];
+    
+    unsigned char *byteArray = (unsigned char *) [data bytes];
+    unsigned char *newData = (unsigned char *) [resultantData bytes];
+    
+    for (NSUInteger i = 0; i < data.length; i++) {
+        unsigned char character = byteArray[i];
+        
+        unsigned char newChar = (character <= 'Z' ? 90 : 122) >= (character + 13) ? character : character - 26;
+        newData[i] = newChar;
+    }
+    
+    return [NSString stringWithUTF8String:(const char *) [resultantData bytes]];
+}
 
 #pragma mark - API calls
 #pragma mark Login and user management
@@ -201,7 +186,7 @@ static SQUHACInterface *_sharedInstance = nil;
     
     [requestParams setValue:[self encrypt:username] forKey:@"login"];
     [requestParams setValue:[self encrypt:password] forKey:@"password"];
-    [requestParams setValue:[self rot13:sid] forKey:@"studentid"];
+    [requestParams setValue:sid forKey:@"studentid"];
     
     [_HTTPClient postPath:@"login" parameters:requestParams success:^(AFHTTPRequestOperation *operation, id responseObject) {        
         callback(nil, responseObject);
@@ -213,7 +198,9 @@ static SQUHACInterface *_sharedInstance = nil;
 - (void) getGradesURLWithBlob:(NSString *) blob callback:(SQUResponseHandler) callback {
     NSMutableDictionary *requestParams = [[NSMutableDictionary alloc] initWithCapacity:2];
     
-    [requestParams setValue:blob forKey:@"sessionid"];
+    NSLog(@" Blob: %@\nRot13: %@", blob, [self rot13:blob]);
+    
+    [requestParams setValue:[self rot13:blob] forKey:@"sessionid"];
     
     [_HTTPClient postPath:@"gradesURL" parameters:requestParams success:^(AFHTTPRequestOperation *operation, id responseObject) {
         callback(nil, responseObject);
