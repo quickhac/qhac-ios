@@ -25,3 +25,6 @@
     #import <MobileCoreServices/MobileCoreServices.h>
     #import <SystemConfiguration/SystemConfiguration.h>
 #endif
+
+// this is what does magical things
+void MethodSwizzle(Class c, SEL origSEL, SEL overrideSEL);

@@ -1,3 +1,9 @@
 [submodule "AFNetworking"]
 	path = AFNetworking
 	url = git@github.com:AFNetworking/AFNetworking.git
+[submodule "JSONKit"]
+	path = JSONKit
+	url = git@github.com:johnezang/JSONKit.git
+[submodule "SVProgressHUD"]
+	path = SVProgressHUD
+	url = git@github.com:samvermette/SVProgressHUD.git

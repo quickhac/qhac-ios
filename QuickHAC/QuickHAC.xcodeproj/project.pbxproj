@@ -32,6 +32,10 @@
 		DE0615D31787AD3E004B2877 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE0615D21787AD3D004B2877 /* SystemConfiguration.framework */; };
 		DE0615D51787AD50004B2877 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE0615D41787AD50004B2877 /* MobileCoreServices.framework */; };
 		DE0615D81787ADFE004B2877 /* SQULoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0615D71787ADFE004B2877 /* SQULoginViewController.m */; };
+		DE0615DC17890851004B2877 /* SQUHACInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0615DB1789084F004B2877 /* SQUHACInterface.m */; };
+		DE0615DF178909B1004B2877 /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0615DE178909B1004B2877 /* JSONKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DE0615E517891E0C004B2877 /* SVProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DE0615E217891E0B004B2877 /* SVProgressHUD.bundle */; };
+		DE0615E617891E0C004B2877 /* SVProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0615E417891E0C004B2877 /* SVProgressHUD.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -84,6 +88,13 @@
 		DE0615D41787AD50004B2877 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		DE0615D61787ADFE004B2877 /* SQULoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQULoginViewController.h; sourceTree = "<group>"; };
 		DE0615D71787ADFE004B2877 /* SQULoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQULoginViewController.m; sourceTree = "<group>"; };
+		DE0615DA1789084E004B2877 /* SQUHACInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUHACInterface.h; sourceTree = "<group>"; };
+		DE0615DB1789084F004B2877 /* SQUHACInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUHACInterface.m; sourceTree = "<group>"; };
+		DE0615DD178909B1004B2877 /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSONKit.h; path = ../../JSONKit/JSONKit.h; sourceTree = "<group>"; };
+		DE0615DE178909B1004B2877 /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSONKit.m; path = ../../JSONKit/JSONKit.m; sourceTree = "<group>"; };
+		DE0615E217891E0B004B2877 /* SVProgressHUD.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = SVProgressHUD.bundle; sourceTree = "<group>"; };
+		DE0615E317891E0C004B2877 /* SVProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVProgressHUD.h; sourceTree = "<group>"; };
+		DE0615E417891E0C004B2877 /* SVProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVProgressHUD.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -150,8 +161,9 @@
 			isa = PBXGroup;
 			children = (
 				DE0615D017874F73004B2877 /* QuickHAC.entitlements */,
+				DE0615D917890813004B2877 /* Server I/F */,
 				DE0615D11787ACDA004B2877 /* Login UI */,
-				DE0615B317874F17004B2877 /* AFNetworking */,
+				DE0615E717891E23004B2877 /* 3rd Party */,
 				DE06158B17874D0D004B2877 /* SQUAppDelegate.h */,
 				DE06158C17874D0D004B2877 /* SQUAppDelegate.m */,
 				DE06159117874D0D004B2877 /* Images.xcassets */,
@@ -206,6 +218,45 @@
 				DE0615D71787ADFE004B2877 /* SQULoginViewController.m */,
 			);
 			name = "Login UI";
+			sourceTree = "<group>";
+		};
+		DE0615D917890813004B2877 /* Server I/F */ = {
+			isa = PBXGroup;
+			children = (
+				DE0615DA1789084E004B2877 /* SQUHACInterface.h */,
+				DE0615DB1789084F004B2877 /* SQUHACInterface.m */,
+			);
+			name = "Server I/F";
+			sourceTree = "<group>";
+		};
+		DE0615E0178909BB004B2877 /* JSONKit */ = {
+			isa = PBXGroup;
+			children = (
+				DE0615DD178909B1004B2877 /* JSONKit.h */,
+				DE0615DE178909B1004B2877 /* JSONKit.m */,
+			);
+			name = JSONKit;
+			sourceTree = "<group>";
+		};
+		DE0615E117891E0B004B2877 /* SVProgressHUD */ = {
+			isa = PBXGroup;
+			children = (
+				DE0615E217891E0B004B2877 /* SVProgressHUD.bundle */,
+				DE0615E317891E0C004B2877 /* SVProgressHUD.h */,
+				DE0615E417891E0C004B2877 /* SVProgressHUD.m */,
+			);
+			name = SVProgressHUD;
+			path = ../../SVProgressHUD/SVProgressHUD;
+			sourceTree = "<group>";
+		};
+		DE0615E717891E23004B2877 /* 3rd Party */ = {
+			isa = PBXGroup;
+			children = (
+				DE0615B317874F17004B2877 /* AFNetworking */,
+				DE0615E0178909BB004B2877 /* JSONKit */,
+				DE0615E117891E0B004B2877 /* SVProgressHUD */,
+			);
+			name = "3rd Party";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -297,6 +348,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DE06158717874D0D004B2877 /* InfoPlist.strings in Resources */,
+				DE0615E517891E0C004B2877 /* SVProgressHUD.bundle in Resources */,
 				DE06159217874D0D004B2877 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -336,15 +388,18 @@
 				DE06158D17874D0D004B2877 /* SQUAppDelegate.m in Sources */,
 				DE0615CC17874F17004B2877 /* AFPropertyListRequestOperation.m in Sources */,
 				DE06158917874D0D004B2877 /* main.m in Sources */,
+				DE0615DC17890851004B2877 /* SQUHACInterface.m in Sources */,
 				DE0615CD17874F17004B2877 /* AFURLConnectionOperation.m in Sources */,
 				DE0615CE17874F17004B2877 /* AFXMLRequestOperation.m in Sources */,
 				DE0615CA17874F17004B2877 /* AFJSONRequestOperation.m in Sources */,
 				DE0615D81787ADFE004B2877 /* SQULoginViewController.m in Sources */,
+				DE0615E617891E0C004B2877 /* SVProgressHUD.m in Sources */,
 				DE0615CF17874F17004B2877 /* UIImageView+AFNetworking.m in Sources */,
 				DE0615CB17874F17004B2877 /* AFNetworkActivityIndicatorManager.m in Sources */,
 				DE0615C817874F17004B2877 /* AFHTTPRequestOperation.m in Sources */,
 				DE06159017874D0D004B2877 /* QuickHAC.xcdatamodeld in Sources */,
 				DE0615C717874F17004B2877 /* AFHTTPClient.m in Sources */,
+				DE0615DF178909B1004B2877 /* JSONKit.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -454,6 +509,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "QuickHAC/QuickHAC-Prefix.pch";
+				GCC_WARN_UNDECLARED_SELECTOR = NO;
 				INFOPLIST_FILE = "QuickHAC/QuickHAC-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -470,6 +526,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "QuickHAC/QuickHAC-Prefix.pch";
+				GCC_WARN_UNDECLARED_SELECTOR = NO;
 				INFOPLIST_FILE = "QuickHAC/QuickHAC-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
