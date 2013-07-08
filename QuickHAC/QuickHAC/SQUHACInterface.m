@@ -113,6 +113,13 @@ static SQUHACInterface *_sharedInstance = nil;
  *
  * I'm done.
  */
+ 
+ /*
+  * i'm to blame for the 'encryption' stuff
+  * the actual HAC doesn't use any of this
+  * rage away mate
+  * - simon
+  */
 
 - (NSString *) base64Encode:(NSString *) data {
     char *base64Chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
