@@ -85,6 +85,45 @@ static SQUHACInterface *_sharedInstance = nil;
 }
 
 #pragma mark - HAC "encryption" crap
+<<<<<<< HEAD
+=======
+/*
+ * I'd like to take this time to point out what an absolute piece of shit the
+ * "Home Access" software is. Whoever wrote that gigantic steaming heap of garbage
+ * clearly had a lack of brain cells, as that atrocious heap of donkey manure
+ * was written entirely in Visual Basic, requires a Windows server, is filled
+ * with security holes left and right, doesn't work half the time, likes to
+ * explode on you any time you try something (like using the back button) and
+ * of course, doesn't work half the time. Oh, it's ugly as hell too.
+ *
+ * Clearly the maggots at eSchoolPlus are gigantic morons who have never even
+ * read so much as a word on encryption, because then they would know that a
+ * rot13-ing of a student ID does NOT qualify as encryption. And of course,
+ * usernames and passwords are "encrypted" by base64ing them, then rot13-ing
+ * that.
+ *
+ * Seriously, how stupid does one need to be to write such a steaming heap of
+ * fecal matter? Either the programmers just wanted to be a bunch of assholes
+ * (that's implying there was more than one dick on the face of the earth that
+ * would voluntarily write VB) and fuck with whoever had to deal with this pile
+ * of shit, or they really believed VB was a good language.
+ *
+ * Ever heard of this god damn thing called SESSIONS? Yeah, wow, amazing. Use
+ * those damn things.
+ *
+ * May all of those little shits that worked on that clusterfuck burn in hell...
+ *
+ * I'm done.
+ */
+ 
+ /*
+  * i'm to blame for the 'encryption' stuff
+  * the actual HAC doesn't use any of this
+  * rage away mate
+  * - simon
+  */
+
+>>>>>>> 33f0d4e7b03bc421e00ad7b9eee91f25443828da
 - (NSString *) base64Encode:(NSString *) data {
     char *base64Chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
