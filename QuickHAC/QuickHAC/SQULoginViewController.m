@@ -4,6 +4,7 @@
 //
 //  Created by Tristan Seifert on 05/07/2013.
 //  Copyright (c) 2013 Squee! Apps. All rights reserved.
+//  See README file for license information.
 //
 
 #import "SQULoginViewController.h"
@@ -238,25 +239,26 @@
             [[SQUHACInterface sharedInstance] getGradesURLWithBlob:sessionID callback:^(NSError *err, id data) {
                 NSString *gradeURL = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
                 
+                // TODO: Eval regex to check for the link: /id=([\w\d%]*)/.
                 if([gradeURL rangeOfString:@"Server Error in '/HomeAccess' Application." options: NSCaseInsensitiveSearch].location == NSNotFound) {
                     NSLog(@"Grades URL: %@", gradeURL);
+                    
+                    // Stick session ID into keychain
+                    NSMutableDictionary *query = [NSMutableDictionary dictionary];
+                    [query setObject:(__bridge id)kSecClassGenericPassword forKey:(__bridge id)kSecClass];
+                    [query setObject:@"session_key" forKey:(__bridge id)kSecAttrAccount];
+                    [query setObject:(__bridge id)kSecAttrAccessibleWhenUnlocked forKey:(__bridge id)kSecAttrAccessible];
+                    [query setObject:[sessionID dataUsingEncoding:NSUTF8StringEncoding] forKey:(__bridge id)kSecValueData];
+                    
+                    OSStatus error = SecItemAdd((__bridge CFDictionaryRef) query, NULL);
+                    
+                    if(error != errSecSuccess) {
+                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Saving Credentials", nil) message:[NSString stringWithFormat:NSLocalizedString(@"The session key could not be saved due to a Keychain Services error. (%i)", nil), error] delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
+                        [alert show];
+                    }
                 } else {
                     NSLog(@"Login apparently failed");
                 }
-                
-                // Stick session ID into keychain
-                /*NSMutableDictionary *query = [NSMutableDictionary dictionary];
-                [query setObject:(__bridge id)kSecClassGenericPassword forKey:(__bridge id)kSecClass];
-                [query setObject:@"session_key" forKey:(__bridge id)kSecAttrAccount];
-                [query setObject:(__bridge id)kSecAttrAccessibleWhenUnlocked forKey:(__bridge id)kSecAttrAccessible];
-                [query setObject:[sessionID dataUsingEncoding:NSUTF8StringEncoding] forKey:(__bridge id)kSecValueData];
-                
-                OSStatus error = SecItemAdd((__bridge CFDictionaryRef) query, NULL);
-                
-                if(error != errSecSuccess) {
-                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Saving Credentials", nil) message:[NSString stringWithFormat:NSLocalizedString(@"The session key could not be saved due to a Keychain Services error. (%i)", nil), error] delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
-                    [alert show];
-                }*/
                 
                 [SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"Logged In", nil)];
             }];

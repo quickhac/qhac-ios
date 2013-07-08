@@ -5,11 +5,9 @@
 //  Handles interfacing with the qHAC servers and generation of URLs, as well
 //  as storage of user metadata.
 //
-//  Just a friendly FYI, Home Access is the shittiest pile of "software" on the
-//  face of the damn Earth.
-//
 //  Created by Tristan Seifert on 06/07/2013.
 //  Copyright (c) 2013 Squee! Apps. All rights reserved.
+//  See README file for license information.
 //
 
 #import "SQUHACInterface.h"
@@ -84,9 +82,7 @@ static SQUHACInterface *_sharedInstance = nil;
     MethodSwizzle([self class], @selector(decrypt:), @selector(doTheInverseOfWhateverTheHellThatDoes:));
 }
 
-#pragma mark - HAC "encryption" crap
-<<<<<<< HEAD
-=======
+#pragma mark - HAC "encryption"
 /*
  * I'd like to take this time to point out what an absolute piece of shit the
  * "Home Access" software is. Whoever wrote that gigantic steaming heap of garbage
@@ -123,7 +119,16 @@ static SQUHACInterface *_sharedInstance = nil;
   * - simon
   */
 
->>>>>>> 33f0d4e7b03bc421e00ad7b9eee91f25443828da
+/*
+ * I'm actually a horrible person that shouldn't be allowed to code at 4 in the
+ * morning... after not having slept for three days.
+ *
+ * Although HAC is still written in Visual Basic and run on a Microsoft server,
+ * so meh. =V
+ *
+ * - Tristan
+ */
+
 - (NSString *) base64Encode:(NSString *) data {
     char *base64Chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
@@ -166,27 +171,66 @@ static SQUHACInterface *_sharedInstance = nil;
     return notReallyEncryptedString;
 }
 
-//String.prototype.rot13 = function(){
-//	return this.replace(/[a-zA-Z]/g, function(c){
-//		return String.fromCharCode((c <= "Z" ? 90 : 122) >= (c = c.charCodeAt(0) + 13) ? c : c - 26);
-//	});
-//};
-
+// This is an objc wrapper around do_rot13(char)
 - (NSString *) rot13:(NSString *)theText {
-    NSData *data = [theText dataUsingEncoding:NSASCIIStringEncoding];
-    NSMutableData *resultantData = [[NSMutableData alloc] initWithCapacity:data.length];
+    char* outData = do_rot13((char *) [theText cStringUsingEncoding:NSASCIIStringEncoding]);
     
-    unsigned char *byteArray = (unsigned char *) [data bytes];
-    unsigned char *newData = (unsigned char *) [resultantData bytes];
-    
-    for (NSUInteger i = 0; i < data.length; i++) {
-        unsigned char character = byteArray[i];
+    return [NSString stringWithUTF8String:(const char *) outData];
+}
+
+/*
+ * ACHTUNG BABY: This code relies on the input chars being plain 8-bit ASCII, and
+ * will output in the same format. Just an FYI in case your cat dies from
+ * using this code on non-ASCII text or something.
+ *
+ * It *may* be possible to modify it for other character encodings by altering
+ * the table, but that was not required in the original design.
+ */
+
+// This maps a regular ASCII character to a rot13'd char
+// The table covers ASCII chars 0x30 to 0x7A
+static unsigned char rot13map[0x80] = "0123456789:;<=>?@NOPQRSTUVWZYZABCDEFGHIJKLM[\\]^_`nopqrstuvwxyzabcdefghijklm";
+static unsigned int rot13map_ASCIIOffset = 0x30;
+
+char* do_rot13(char *inBuffer) {
+	char *tempInPtr = inBuffer;
+	
+	int bytesRequired = 0;
+	// Calculate how many bytes to allocate for output buffer.
+	while(1) {
+		bytesRequired++; // Increase byte counter
         
-        unsigned char newChar = (character <= 'Z' ? 90 : 122) >= (character + 13) ? character : character - 26;
-        newData[i] = newChar;
-    }
+		if(*tempInPtr == 0x00) { // Check if char is 0x00 (0-terminated)
+			break;
+		}
+		
+		tempInPtr++; // Advance read pointer
+	}
     
-    return [NSString stringWithUTF8String:(const char *) [resultantData bytes]];
+	// Allocate output memory (plus a small extra amount)
+	char *outBuffer = malloc(sizeof(char) * bytesRequired + 8);
+	char *tempOutPtr = outBuffer;
+	tempInPtr = inBuffer; // Reset input read pointer
+	
+	// Loop through all chars
+	while(1) {
+		if(*tempInPtr >= rot13map_ASCIIOffset && *tempInPtr <= 0x7A) { // Is char in bounds?
+			// Fetch the appropriate char from the array
+			*tempOutPtr = rot13map[(*tempInPtr) - rot13map_ASCIIOffset];
+		} else if(*tempInPtr == 0x00) { // Is char 0x00?
+			*tempOutPtr = 0x00;
+			break;
+		} else { // Other chars that we can't translate nor are 0x00
+			// If the char is out of bounds, just copy it as-is
+			*tempOutPtr = *tempInPtr;
+		}
+		
+		// Increase pointers
+		tempOutPtr++;
+		tempInPtr++;
+	}
+	
+	return outBuffer;
 }
 
 #pragma mark - API calls
@@ -207,6 +251,8 @@ static SQUHACInterface *_sharedInstance = nil;
 
 - (void) getGradesURLWithBlob:(NSString *) blob callback:(SQUResponseHandler) callback {
     NSMutableDictionary *requestParams = [[NSMutableDictionary alloc] initWithCapacity:2];
+    
+    blob = [blob substringWithRange:NSMakeRange(0, 24)]; // Ensure blob is 24 chars max
     
     NSLog(@" Blob: %@\nRot13: %@", blob, [self rot13:blob]);
     
