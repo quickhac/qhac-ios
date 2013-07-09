@@ -266,4 +266,15 @@ char* do_rot13(char *inBuffer) {
     
 }
 
+#pragma mark - User-interface support
+static NSArray *enumToSchoolArray = nil;
+
++ (NSString *) schoolEnumToName:(SQUSchoolDistrict) district {
+    if(!enumToSchoolArray) {
+        enumToSchoolArray = [[NSArray alloc] initWithObjects:@"Round Rock ISD", @"Austin ISD", nil];   
+    }
+
+    return enumToSchoolArray[district];
+}
+
 @end

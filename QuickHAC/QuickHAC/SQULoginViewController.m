@@ -8,7 +8,6 @@
 //
 
 #import "SQULoginViewController.h"
-#import "SQUHACInterface.h"
 #import "SVProgressHUD.h"
 
 @interface SQULoginViewController ()
@@ -16,6 +15,7 @@
 @end
 
 @implementation SQULoginViewController
+@synthesize district = _district;
 
 - (void) viewDidLoad {
     [super viewDidLoad];
@@ -37,6 +37,29 @@
     
     [self.view.layer addSublayer:_qText];
     
+    // Set up the selected district and changing link
+    _districtSelected = [CATextLayer layer];
+    _districtSelected.fontSize = 14;
+    _districtSelected.contentsScale = [UIScreen mainScreen].scale;
+    _districtSelected.alignmentMode = kCAAlignmentLeft;
+    _districtSelected.frame = CGRectMake(16, 420, (320 - 32), 36);
+    _districtSelected.string = @"Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! ";
+    _districtSelected.foregroundColor = [UIColor grayColor].CGColor;
+    
+    [self.view.layer addSublayer:_districtSelected];
+    
+    NSMutableAttributedString *changeDistrictTitle = [[NSMutableAttributedString alloc] initWithString:NSLocalizedString(@"Change District", nil) attributes:nil];
+  //  [changeDistrictTitle addAttribute:(__bridge NSString *) kCTUnderlineStyleAttributeName value:[NSNumber numberWithInteger:kCTUnderlineStyleSingle] range:NSMakeRange(0, changeDistrictTitle.length)];
+  //  [changeDistrictTitle addAttribute:(__bridge NSString *) kCTFontSizeAttribute value:[NSNumber numberWithInteger:14] range:NSMakeRange(0, changeDistrictTitle.length)];
+    
+    _changeDistrictLink = [UIButton buttonWithType:UIButtonTypeCustom];
+    [_changeDistrictLink.titleLabel setAttributedText:changeDistrictTitle];
+    [_changeDistrictLink setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+    _changeDistrictLink.frame = CGRectMake((160 - 50), _districtSelected.frame.size.height + 40, 100, 18);
+    
+    [self.view addSubview:_changeDistrictLink];
+    
+    
     self.title = NSLocalizedString(@"Log In", nil);
     self.navigationController.navigationBarHidden = YES;
     
@@ -55,7 +78,7 @@
     
     [_authFieldTable registerClass:[UITableViewCell class] forCellReuseIdentifier:@"LoginCell"];
     
-    [self.view addSubview:_authFieldTable];
+ //   [self.view addSubview:_authFieldTable];
     
     _tableMovedAlready = NO;
 }
@@ -299,6 +322,10 @@
                     [SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"Logged In", nil)];
                     
                     [self dismissViewControllerAnimated:YES completion:NO];
+                    
+                    // Set authenticated flag and sync user defaults
+                    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:YES] forKey:@"authenticated"];
+                    [[NSUserDefaults standardUserDefaults] synchronize];
                 } else {
                     NSLog(@"Login apparently failed");
                     [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Wrong Credentials", nil)];

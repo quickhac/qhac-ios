@@ -36,6 +36,7 @@
 		DE0615DF178909B1004B2877 /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0615DE178909B1004B2877 /* JSONKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DE0615E517891E0C004B2877 /* SVProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DE0615E217891E0B004B2877 /* SVProgressHUD.bundle */; };
 		DE0615E617891E0C004B2877 /* SVProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0615E417891E0C004B2877 /* SVProgressHUD.m */; };
+		DE7F51D6178C8B5E00A677CE /* SQULoginSchoolSelector.m in Sources */ = {isa = PBXBuildFile; fileRef = DE7F51D5178C8B5E00A677CE /* SQULoginSchoolSelector.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -95,6 +96,8 @@
 		DE0615E217891E0B004B2877 /* SVProgressHUD.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = SVProgressHUD.bundle; sourceTree = "<group>"; };
 		DE0615E317891E0C004B2877 /* SVProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVProgressHUD.h; sourceTree = "<group>"; };
 		DE0615E417891E0C004B2877 /* SVProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVProgressHUD.m; sourceTree = "<group>"; };
+		DE7F51D4178C8B5E00A677CE /* SQULoginSchoolSelector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQULoginSchoolSelector.h; sourceTree = "<group>"; };
+		DE7F51D5178C8B5E00A677CE /* SQULoginSchoolSelector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQULoginSchoolSelector.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -216,6 +219,8 @@
 			children = (
 				DE0615D61787ADFE004B2877 /* SQULoginViewController.h */,
 				DE0615D71787ADFE004B2877 /* SQULoginViewController.m */,
+				DE7F51D4178C8B5E00A677CE /* SQULoginSchoolSelector.h */,
+				DE7F51D5178C8B5E00A677CE /* SQULoginSchoolSelector.m */,
 			);
 			name = "Login UI";
 			sourceTree = "<group>";
@@ -387,6 +392,7 @@
 				DE0615C917874F17004B2877 /* AFImageRequestOperation.m in Sources */,
 				DE06158D17874D0D004B2877 /* SQUAppDelegate.m in Sources */,
 				DE0615CC17874F17004B2877 /* AFPropertyListRequestOperation.m in Sources */,
+				DE7F51D6178C8B5E00A677CE /* SQULoginSchoolSelector.m in Sources */,
 				DE06158917874D0D004B2877 /* main.m in Sources */,
 				DE0615DC17890851004B2877 /* SQUHACInterface.m in Sources */,
 				DE0615CD17874F17004B2877 /* AFURLConnectionOperation.m in Sources */,

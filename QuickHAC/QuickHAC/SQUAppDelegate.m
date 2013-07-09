@@ -22,15 +22,19 @@
     
     _navController = [[UINavigationController alloc] initWithRootViewController:_rootViewController];
     
-    
     // Set up UIWindow
     self.window.rootViewController = _navController;
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     
-    dispatch_async(dispatch_get_main_queue(), ^{
+    // Check if we have the authenticated flag set
+    if(![[NSUserDefaults standardUserDefaults] boolForKey:@"authenticated"]) {
         SQULoginViewController *loginController = [[SQULoginViewController alloc] init];
         [_navController presentViewController:[[UINavigationController alloc] initWithRootViewController:loginController] animated:NO completion:NULL];
+    }
+    
+    // Put other initialisation here so this function can return faster (UI can display)
+    dispatch_async(dispatch_get_main_queue(), ^{
     });
     
     return YES;
