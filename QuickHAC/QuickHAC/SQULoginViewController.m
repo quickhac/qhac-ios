@@ -22,7 +22,7 @@
     
     // Set up QuickHAC "q" logo
     _qLogo = [CALayer layer];
-    _qLogo.frame = CGRectMake(160 - (150 / 2), 32, 150, 150);
+    _qLogo.frame = CGRectMake(160 - (140 / 2), 32, 140, 140);
     _qLogo.contents = (__bridge id)([UIImage imageNamed:@"QuickHACIcon"].CGImage);
     
     [self.view.layer addSublayer:_qLogo];
@@ -31,7 +31,7 @@
     _qText.font = (__bridge CFTypeRef)([UIFont boldSystemFontOfSize:50.0]);
     _qText.foregroundColor = [UIColor blackColor].CGColor;
     _qText.string = NSLocalizedString(@"QuickHAC", @"login screen");
-    _qText.frame = CGRectMake(0, 190, 320, 50);
+    _qText.frame = CGRectMake(0, 170, 320, 50);
     _qText.alignmentMode = kCAAlignmentCenter;
     _qText.contentsScale = [UIScreen mainScreen].scale;
     
@@ -42,9 +42,9 @@
     
     // set up login fields
     if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
-        _authFieldTable = [[UITableView alloc] initWithFrame:CGRectMake(-16, 240, 336, 198) style:UITableViewStylePlain];
+        _authFieldTable = [[UITableView alloc] initWithFrame:CGRectMake(-16, 210, 336, 198) style:UITableViewStylePlain];
     } else {
-        _authFieldTable = [[UITableView alloc] initWithFrame:CGRectMake(0, 240, 320, 198) style:UITableViewStyleGrouped];
+        _authFieldTable = [[UITableView alloc] initWithFrame:CGRectMake(0, 230, 320, 198) style:UITableViewStyleGrouped];
     }
     
     _authFieldTable.delegate = self;
@@ -52,12 +52,6 @@
     _authFieldTable.backgroundColor = [UIColor clearColor];
     _authFieldTable.backgroundView = nil;
     _authFieldTable.bounces = NO;
-    
-    // iOS 7 specific stuff
-    if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
-    //    _authFieldTable.contentOffset = CGPointMake(0, 0);
-    //    _authFieldTable.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
-    }
     
     [_authFieldTable registerClass:[UITableViewCell class] forCellReuseIdentifier:@"LoginCell"];
     
@@ -172,7 +166,7 @@
     
     [UIView animateWithDuration:0.25 delay:0 options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseInOut animations:^{
         CGRect tempFrame = _authFieldTable.frame;
-        tempFrame.origin.y -= 145;
+        tempFrame.origin.y -= 140;
         _authFieldTable.frame = tempFrame;
         
 /*        _loginButton.alpha = 0.0f;
@@ -183,6 +177,7 @@
             _qText.frame = CGRectMake(86, 39, 234, 50);
         } else {
             _qLogo.frame = CGRectMake(12, 12, 64, 64);
+            _qText.frame = CGRectMake(86, 19, 234, 50);
         }
     } completion:^(BOOL finished) { }];
 }
@@ -192,17 +187,18 @@
     
     [UIView animateWithDuration:0.25 delay:0 options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseInOut animations:^{
         CGRect tempFrame = _authFieldTable.frame;
-        tempFrame.origin.y += 145;
+        tempFrame.origin.y += 140;
         _authFieldTable.frame = tempFrame;
         
 /*        _loginButton.alpha = 1.0f;
         _loginButton.userInteractionEnabled = YES;*/
         
         if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
-            _qLogo.frame = CGRectMake(160 - (150 / 2), 32, 150, 150);
-            _qText.frame = CGRectMake(0, 190, 320, 50);
+            _qLogo.frame = CGRectMake(160 - (140 / 2), 32, 140, 140);
+            _qText.frame = CGRectMake(0, 170, 320, 50);
         } else {
-            _qLogo.frame = CGRectMake(160 - (150 / 2), 12, 150, 150);
+            _qLogo.frame = CGRectMake(160 - (140 / 2), 22, 140, 140);
+            _qText.frame = CGRectMake(0, 150, 320, 50);
         }
     } completion:^(BOOL finished) { }];
 }
@@ -241,26 +237,73 @@
                 
                 // TODO: Eval regex to check for the link: /id=([\w\d%]*)/.
                 if([gradeURL rangeOfString:@"Server Error in '/HomeAccess' Application." options: NSCaseInsensitiveSearch].location == NSNotFound) {
-                    NSLog(@"Grades URL: %@", gradeURL);
+                    NSLog(@"Grades URL value: %@", gradeURL);
                     
-                    // Stick session ID into keychain
+                    // Delete session ID if it exists
                     NSMutableDictionary *query = [NSMutableDictionary dictionary];
                     [query setObject:(__bridge id)kSecClassGenericPassword forKey:(__bridge id)kSecClass];
                     [query setObject:@"session_key" forKey:(__bridge id)kSecAttrAccount];
+                    
+                    OSStatus error = SecItemDelete((__bridge CFDictionaryRef) query);
+                    
+                    query = [NSMutableDictionary dictionary];
+                    [query setObject:(__bridge id)kSecClassGenericPassword forKey:(__bridge id)kSecClass];
+                    [query setObject:[@"co.squee.quickhac.account" dataUsingEncoding:NSUTF8StringEncoding] forKey:(__bridge id)kSecAttrGeneric];
+                    
+                    error = SecItemDelete((__bridge CFDictionaryRef) query);
+                    
+                    NSLog(@"Session key deletion error: %i", (int)error);
+                    
+                    // Stick session ID into keychain
+                    query = [NSMutableDictionary dictionary];
+                    [query setObject:(__bridge id)kSecClassGenericPassword forKey:(__bridge id)kSecClass];
+                     // Make the item be only accessible when the device is unlocked
                     [query setObject:(__bridge id)kSecAttrAccessibleWhenUnlocked forKey:(__bridge id)kSecAttrAccessible];
+                    
+                    [query setObject:@"session_key" forKey:(__bridge id)kSecAttrAccount];
+                    // Store the session key as an UTF8-encoded string
                     [query setObject:[sessionID dataUsingEncoding:NSUTF8StringEncoding] forKey:(__bridge id)kSecValueData];
                     
-                    OSStatus error = SecItemAdd((__bridge CFDictionaryRef) query, NULL);
+                    error = SecItemAdd((__bridge CFDictionaryRef) query, NULL);
                     
                     if(error != errSecSuccess) {
                         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Saving Credentials", nil) message:[NSString stringWithFormat:NSLocalizedString(@"The session key could not be saved due to a Keychain Services error. (%i)", nil), error] delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
                         [alert show];
+                        
+                        [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Error", nil)];
+                        return;
                     }
+                    
+                    // Stick user/password combo into keychain
+                    query = [NSMutableDictionary dictionary];
+                    [query setObject:(__bridge id)kSecClassGenericPassword forKey:(__bridge id)kSecClass];
+                    [query setObject:(__bridge id)kSecAttrAccessibleWhenUnlocked forKey:(__bridge id)kSecAttrAccessible];
+                    
+                    [query setObject:_emailField.text forKey:(__bridge id)kSecAttrAccount];
+                    [query setObject:[_passField.text dataUsingEncoding:NSUTF8StringEncoding] forKey:(__bridge id)kSecValueData];
+                    [query setObject:[@"co.squee.quickhac.account" dataUsingEncoding:NSUTF8StringEncoding] forKey:(__bridge id)kSecAttrGeneric];
+                    
+                    error = SecItemAdd((__bridge CFDictionaryRef) query, NULL);
+                    
+                    if(error != errSecSuccess) {
+                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Saving Credentials", nil) message:[NSString stringWithFormat:NSLocalizedString(@"The username and password could not be saved due to a Keychain Services error. (%i)", nil), error] delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
+                        [alert show];
+                        
+                        [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Error", nil)];
+                        return;
+                    }
+                    
+                    // Shove the student ID in as well (not as sensitive, can live in user defaults)
+                    [[NSUserDefaults standardUserDefaults] setObject:_sidField.text forKey:@"studentid"];
+                    
+                    [SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"Logged In", nil)];
+                    
+                    [self dismissViewControllerAnimated:YES completion:NO];
                 } else {
                     NSLog(@"Login apparently failed");
+                    [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Wrong Credentials", nil)];
                 }
                 
-                [SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"Logged In", nil)];
             }];
         } else {
             NSLog(@"Auth error: %@", error);
@@ -271,6 +314,15 @@
             [alert show];
         }
     }];
+}
+
+#pragma mark - View Controller Shenanigans
+- (NSUInteger) supportedInterfaceOrientations {
+    return UIInterfaceOrientationMaskPortrait | UIInterfaceOrientationPortraitUpsideDown;
+}
+
+- (BOOL) shouldAutorotate {
+    return YES;
 }
 
 @end

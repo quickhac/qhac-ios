@@ -593,6 +593,7 @@
 				DE0615AB17874D0F004B2877 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		DE0615AC17874D0F004B2877 /* Build configuration list for PBXNativeTarget "QuickHACTests" */ = {
 			isa = XCConfigurationList;
@@ -601,6 +602,7 @@
 				DE0615AE17874D0F004B2877 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
