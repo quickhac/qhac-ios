@@ -18,7 +18,7 @@
     self = [super initWithStyle:style];
     if (self) {
         [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"SchoolCell"];
-        self.title = NSLocalizedString(@"School", nil);
+        self.title = NSLocalizedString(@"Select School District", nil);
     }
     return self;
 }

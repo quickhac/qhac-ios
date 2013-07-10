@@ -7,7 +7,7 @@
 //
 
 #import "SQUAppDelegate.h"
-#import "SQULoginViewController.h"
+#import "SQULoginSchoolSelector.h"
 
 @implementation SQUAppDelegate
 
@@ -29,7 +29,7 @@
     
     // Check if we have the authenticated flag set
     if(![[NSUserDefaults standardUserDefaults] boolForKey:@"authenticated"]) {
-        SQULoginViewController *loginController = [[SQULoginViewController alloc] init];
+        SQULoginSchoolSelector *loginController = [[SQULoginSchoolSelector alloc] initWithStyle:UITableViewStyleGrouped];
         [_navController presentViewController:[[UINavigationController alloc] initWithRootViewController:loginController] animated:NO completion:NULL];
     }
     

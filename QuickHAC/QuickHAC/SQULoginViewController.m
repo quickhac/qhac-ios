@@ -20,6 +20,8 @@
 - (void) viewDidLoad {
     [super viewDidLoad];
     
+    self.view.backgroundColor = [UIColor whiteColor];
+    
     // Set up QuickHAC "q" logo
     _qLogo = [CALayer layer];
     _qLogo.frame = CGRectMake(160 - (140 / 2), 32, 140, 140);
@@ -41,33 +43,33 @@
     _districtSelected = [CATextLayer layer];
     _districtSelected.fontSize = 14;
     _districtSelected.contentsScale = [UIScreen mainScreen].scale;
-    _districtSelected.alignmentMode = kCAAlignmentLeft;
-    _districtSelected.frame = CGRectMake(16, 420, (320 - 32), 36);
-    _districtSelected.string = @"Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! ";
+    _districtSelected.alignmentMode = kCAAlignmentCenter;
+    _districtSelected.frame = CGRectMake(16, 420, (320 - 32), 18);
+    _districtSelected.string = [NSString stringWithFormat:NSLocalizedString(@"You selected %@.", nil), [SQUHACInterface schoolEnumToName:_district]];
     _districtSelected.foregroundColor = [UIColor grayColor].CGColor;
     
     [self.view.layer addSublayer:_districtSelected];
     
-    NSMutableAttributedString *changeDistrictTitle = [[NSMutableAttributedString alloc] initWithString:NSLocalizedString(@"Change District", nil) attributes:nil];
-  //  [changeDistrictTitle addAttribute:(__bridge NSString *) kCTUnderlineStyleAttributeName value:[NSNumber numberWithInteger:kCTUnderlineStyleSingle] range:NSMakeRange(0, changeDistrictTitle.length)];
-  //  [changeDistrictTitle addAttribute:(__bridge NSString *) kCTFontSizeAttribute value:[NSNumber numberWithInteger:14] range:NSMakeRange(0, changeDistrictTitle.length)];
-    
     _changeDistrictLink = [UIButton buttonWithType:UIButtonTypeCustom];
-    [_changeDistrictLink.titleLabel setAttributedText:changeDistrictTitle];
-    [_changeDistrictLink setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-    _changeDistrictLink.frame = CGRectMake((160 - 50), _districtSelected.frame.size.height + 40, 100, 18);
+    
+    NSMutableAttributedString *changeDistrictTitle = [[NSMutableAttributedString alloc] initWithString:NSLocalizedString(@"Change District", nil) attributes:nil];
+    [changeDistrictTitle addAttribute:(__bridge NSString *) kCTUnderlineStyleAttributeName value:[NSNumber numberWithInteger:kCTUnderlineStyleSingle] range:NSMakeRange(0, changeDistrictTitle.length)];
+    [changeDistrictTitle addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:14.0f] range:NSMakeRange(0, changeDistrictTitle.length)];
+    [changeDistrictTitle addAttribute:NSForegroundColorAttributeName value:[UIColor grayColor] range:NSMakeRange(0, changeDistrictTitle.length)];
+    [_changeDistrictLink setAttributedTitle:changeDistrictTitle forState:UIControlStateNormal];
+    
+    [_changeDistrictLink addTarget:self action:@selector(changeDistrictSelection:) forControlEvents:UIControlEventTouchUpInside];
+    _changeDistrictLink.frame = CGRectMake((160 - 50), _districtSelected.frame.origin.y + 24, 100, 18);
     
     [self.view addSubview:_changeDistrictLink];
     
-    
     self.title = NSLocalizedString(@"Log In", nil);
-    self.navigationController.navigationBarHidden = YES;
     
     // set up login fields
     if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
-        _authFieldTable = [[UITableView alloc] initWithFrame:CGRectMake(-16, 210, 336, 198) style:UITableViewStylePlain];
+        _authFieldTable = [[UITableView alloc] initWithFrame:CGRectMake(-16, 210, 336, 150) style:UITableViewStylePlain];
     } else {
-        _authFieldTable = [[UITableView alloc] initWithFrame:CGRectMake(0, 230, 320, 198) style:UITableViewStyleGrouped];
+        _authFieldTable = [[UITableView alloc] initWithFrame:CGRectMake(0, 230, 320, 150) style:UITableViewStyleGrouped];
     }
     
     _authFieldTable.delegate = self;
@@ -78,7 +80,7 @@
     
     [_authFieldTable registerClass:[UITableViewCell class] forCellReuseIdentifier:@"LoginCell"];
     
- //   [self.view addSubview:_authFieldTable];
+    [self.view addSubview:_authFieldTable];
     
     _tableMovedAlready = NO;
 }
@@ -88,15 +90,20 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - Table View
-- (UIView *) tableView:(UITableView *) tableView viewForFooterInSection:(NSInteger) section {
-    return _loginButtonContainer;
-}
-    
-- (CGFloat) tableView:(UITableView *) tableView heightForFooterInSection:(NSInteger) section {
-    return _loginButtonContainer.frame.size.height;
+#pragma mark - Miscellaneous UI actions
+- (void) changeDistrictSelection:(id) sender {
+    [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
+- (void) viewWillAppear:(BOOL)animated {
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
+}
+
+- (void) viewWillDisappear:(BOOL)animated {
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
+}
+
+#pragma mark - Table View
 - (NSInteger) tableView:(UITableView *) tableView numberOfRowsInSection:(NSInteger) section {
     return 3;
 }
@@ -189,18 +196,18 @@
     
     [UIView animateWithDuration:0.25 delay:0 options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseInOut animations:^{
         CGRect tempFrame = _authFieldTable.frame;
-        tempFrame.origin.y -= 140;
+        tempFrame.origin.y -= 100;
         _authFieldTable.frame = tempFrame;
         
 /*        _loginButton.alpha = 0.0f;
         _loginButton.userInteractionEnabled = NO;*/
         
         if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
-            _qLogo.frame = CGRectMake(12, 32, 64, 64);
-            _qText.frame = CGRectMake(86, 39, 234, 50);
+            _qLogo.frame = CGRectMake(12, 32, 74, 74);
+            _qText.frame = CGRectMake(96, 44, 224, 50);
         } else {
-            _qLogo.frame = CGRectMake(12, 12, 64, 64);
-            _qText.frame = CGRectMake(86, 19, 234, 50);
+            _qLogo.frame = CGRectMake(12, 12, 74, 74);
+            _qText.frame = CGRectMake(96, 19, 224, 50);
         }
     } completion:^(BOOL finished) { }];
 }
@@ -210,7 +217,7 @@
     
     [UIView animateWithDuration:0.25 delay:0 options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseInOut animations:^{
         CGRect tempFrame = _authFieldTable.frame;
-        tempFrame.origin.y += 140;
+        tempFrame.origin.y += 100;
         _authFieldTable.frame = tempFrame;
         
 /*        _loginButton.alpha = 1.0f;
