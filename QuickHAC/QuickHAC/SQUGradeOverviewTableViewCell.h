@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <CoreGraphics/CoreGraphics.h>
 
-#define SQUGradeOverviewCellHeight 56
+#define SQUGradeOverviewCellHeight 54
 
 @interface SQUGradeOverviewTableViewCell : UITableViewCell {
     // public properties

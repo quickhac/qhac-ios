@@ -70,7 +70,15 @@
     
     _courseTitle.string = _classTitle;
     
-    _gradeBadge.backgroundColor = [SQUHACInterface colourizeGrade:_grade].CGColor;
+    UIColor *gradeColor = [SQUHACInterface colourizeGrade:_grade];
+    _gradeBadge.backgroundColor = gradeColor.CGColor;
+    
+    // "in my experience white on white is hard to read"
+    if(_grade > 80) {
+        _gradeText.foregroundColor = [UIColor darkGrayColor].CGColor;
+    } else {
+        _gradeText.foregroundColor = [UIColor whiteColor].CGColor;
+    }
 }
 
 @end
