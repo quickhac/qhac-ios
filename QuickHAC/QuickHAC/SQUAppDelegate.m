@@ -8,6 +8,7 @@
 
 #import "SQUAppDelegate.h"
 #import "SQULoginSchoolSelector.h"
+#import "SQUGradeOverviewController.h"
 
 @implementation SQUAppDelegate
 
@@ -18,7 +19,7 @@
 - (BOOL) application:(UIApplication *) application didFinishLaunchingWithOptions:(NSDictionary *) launchOptions {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
    
-    _rootViewController = [[UIViewController alloc] init];
+    _rootViewController = [[SQUGradeOverviewController alloc] initWithStyle:UITableViewStylePlain];
     
     _navController = [[UINavigationController alloc] initWithRootViewController:_rootViewController];
     
@@ -28,11 +29,11 @@
     [self.window makeKeyAndVisible];
     
     // Check if we have the authenticated flag set
-    if(![[NSUserDefaults standardUserDefaults] boolForKey:@"authenticated"]) {
+ /*   if(![[NSUserDefaults standardUserDefaults] boolForKey:@"authenticated"]) {
         SQULoginSchoolSelector *loginController = [[SQULoginSchoolSelector alloc] initWithStyle:UITableViewStyleGrouped];
         [_navController presentViewController:[[UINavigationController alloc] initWithRootViewController:loginController] animated:NO completion:NULL];
-    }
-    
+    }*/
+        
     // Put other initialisation here so this function can return faster (UI can display)
     dispatch_async(dispatch_get_main_queue(), ^{
     });

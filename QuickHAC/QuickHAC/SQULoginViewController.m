@@ -204,7 +204,7 @@
         
         if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
             _qLogo.frame = CGRectMake(12, 32, 74, 74);
-            _qText.frame = CGRectMake(96, 44, 224, 50);
+            _qText.frame = CGRectMake(96, 44 , 224, 50);
         } else {
             _qLogo.frame = CGRectMake(12, 12, 74, 74);
             _qText.frame = CGRectMake(96, 19, 224, 50);
@@ -264,6 +264,8 @@
             
             [[SQUHACInterface sharedInstance] getGradesURLWithBlob:sessionID callback:^(NSError *err, id data) {
                 NSString *gradeURL = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+                
+                NSLog(@"Grades URL value: %@", gradeURL);
                 
                 // TODO: Eval regex to check for the link: /id=([\w\d%]*)/.
                 if([gradeURL rangeOfString:@"Server Error in '/HomeAccess' Application." options: NSCaseInsensitiveSearch].location == NSNotFound) {
@@ -334,7 +336,7 @@
                     [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:YES] forKey:@"authenticated"];
                     [[NSUserDefaults standardUserDefaults] synchronize];
                 } else {
-                    NSLog(@"Login apparently failed");
+                    NSLog(@"Login failed");
                     [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Wrong Credentials", nil)];
                 }
                 

@@ -8,9 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
+@class SQUGradeOverviewController;
+
 @interface SQUAppDelegate : UIResponder <UIApplicationDelegate> {
     UINavigationController *_navController;
-    UIViewController *_rootViewController;
+    SQUGradeOverviewController *_rootViewController;
 }
 
 @property (strong, nonatomic) UIWindow *window;

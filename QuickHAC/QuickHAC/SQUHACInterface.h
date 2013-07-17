@@ -25,6 +25,7 @@ typedef enum {
 
 + (SQUHACInterface *) sharedInstance;
 + (NSString *) schoolEnumToName:(SQUSchoolDistrict) district;
++ (UIColor *) colourizeGrade:(float) grade;
 
 - (void) performLoginWithUser:(NSString *) username andPassword:(NSString *) password andSID:(NSString *) sid callback:(SQUResponseHandler) callback;
 - (void) getGradesURLWithBlob:(NSString *) blob callback:(SQUResponseHandler) callback;

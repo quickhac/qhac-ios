@@ -37,6 +37,8 @@
 		DE0615E517891E0C004B2877 /* SVProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DE0615E217891E0B004B2877 /* SVProgressHUD.bundle */; };
 		DE0615E617891E0C004B2877 /* SVProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0615E417891E0C004B2877 /* SVProgressHUD.m */; };
 		DE7F51D6178C8B5E00A677CE /* SQULoginSchoolSelector.m in Sources */ = {isa = PBXBuildFile; fileRef = DE7F51D5178C8B5E00A677CE /* SQULoginSchoolSelector.m */; };
+		DEF43B0317965B0D00190803 /* SQUGradeOverviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF43B0217965B0D00190803 /* SQUGradeOverviewController.m */; };
+		DEF43B0617965B1F00190803 /* SQUGradeOverviewTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF43B0517965B1F00190803 /* SQUGradeOverviewTableViewCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -98,6 +100,10 @@
 		DE0615E417891E0C004B2877 /* SVProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVProgressHUD.m; sourceTree = "<group>"; };
 		DE7F51D4178C8B5E00A677CE /* SQULoginSchoolSelector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQULoginSchoolSelector.h; sourceTree = "<group>"; };
 		DE7F51D5178C8B5E00A677CE /* SQULoginSchoolSelector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQULoginSchoolSelector.m; sourceTree = "<group>"; };
+		DEF43B0117965B0D00190803 /* SQUGradeOverviewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUGradeOverviewController.h; sourceTree = "<group>"; };
+		DEF43B0217965B0D00190803 /* SQUGradeOverviewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUGradeOverviewController.m; sourceTree = "<group>"; };
+		DEF43B0417965B1F00190803 /* SQUGradeOverviewTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUGradeOverviewTableViewCell.h; sourceTree = "<group>"; };
+		DEF43B0517965B1F00190803 /* SQUGradeOverviewTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUGradeOverviewTableViewCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -166,6 +172,7 @@
 				DE0615D017874F73004B2877 /* QuickHAC.entitlements */,
 				DE0615D917890813004B2877 /* Server I/F */,
 				DE0615D11787ACDA004B2877 /* Login UI */,
+				DEF43B0017965AAF00190803 /* Grade Display UI */,
 				DE0615E717891E23004B2877 /* 3rd Party */,
 				DE06158B17874D0D004B2877 /* SQUAppDelegate.h */,
 				DE06158C17874D0D004B2877 /* SQUAppDelegate.m */,
@@ -262,6 +269,17 @@
 				DE0615E117891E0B004B2877 /* SVProgressHUD */,
 			);
 			name = "3rd Party";
+			sourceTree = "<group>";
+		};
+		DEF43B0017965AAF00190803 /* Grade Display UI */ = {
+			isa = PBXGroup;
+			children = (
+				DEF43B0117965B0D00190803 /* SQUGradeOverviewController.h */,
+				DEF43B0217965B0D00190803 /* SQUGradeOverviewController.m */,
+				DEF43B0417965B1F00190803 /* SQUGradeOverviewTableViewCell.h */,
+				DEF43B0517965B1F00190803 /* SQUGradeOverviewTableViewCell.m */,
+			);
+			name = "Grade Display UI";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -401,8 +419,10 @@
 				DE0615D81787ADFE004B2877 /* SQULoginViewController.m in Sources */,
 				DE0615E617891E0C004B2877 /* SVProgressHUD.m in Sources */,
 				DE0615CF17874F17004B2877 /* UIImageView+AFNetworking.m in Sources */,
+				DEF43B0617965B1F00190803 /* SQUGradeOverviewTableViewCell.m in Sources */,
 				DE0615CB17874F17004B2877 /* AFNetworkActivityIndicatorManager.m in Sources */,
 				DE0615C817874F17004B2877 /* AFHTTPRequestOperation.m in Sources */,
+				DEF43B0317965B0D00190803 /* SQUGradeOverviewController.m in Sources */,
 				DE06159017874D0D004B2877 /* QuickHAC.xcdatamodeld in Sources */,
 				DE0615C717874F17004B2877 /* AFHTTPClient.m in Sources */,
 				DE0615DF178909B1004B2877 /* JSONKit.m in Sources */,
