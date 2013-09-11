@@ -24,4 +24,8 @@
 - (void)saveContext;
 - (NSURL *)applicationDocumentsDirectory;
 
+- (NSManagedObjectContext *) managedObjectContext;
+
++ (SQUAppDelegate *) sharedDelegate;
+
 @end

@@ -37,8 +37,13 @@
 		DE0615E517891E0C004B2877 /* SVProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DE0615E217891E0B004B2877 /* SVProgressHUD.bundle */; };
 		DE0615E617891E0C004B2877 /* SVProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0615E417891E0C004B2877 /* SVProgressHUD.m */; };
 		DE7F51D6178C8B5E00A677CE /* SQULoginSchoolSelector.m in Sources */ = {isa = PBXBuildFile; fileRef = DE7F51D5178C8B5E00A677CE /* SQULoginSchoolSelector.m */; };
+		DECA57CB17DFD99500156AFC /* SQUClassInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = DECA57CA17DFD99500156AFC /* SQUClassInfo.m */; };
+		DECA57CE17DFD99700156AFC /* SQUClassAssignment.m in Sources */ = {isa = PBXBuildFile; fileRef = DECA57CD17DFD99700156AFC /* SQUClassAssignment.m */; };
+		DECA57D117DFD99700156AFC /* SQUStudent.m in Sources */ = {isa = PBXBuildFile; fileRef = DECA57D017DFD99700156AFC /* SQUStudent.m */; };
+		DECA57D417DFD99700156AFC /* SQUGradeCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = DECA57D317DFD99700156AFC /* SQUGradeCategory.m */; };
 		DEF43B0317965B0D00190803 /* SQUGradeOverviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF43B0217965B0D00190803 /* SQUGradeOverviewController.m */; };
 		DEF43B0617965B1F00190803 /* SQUGradeOverviewTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF43B0517965B1F00190803 /* SQUGradeOverviewTableViewCell.m */; };
+		DEF43B0B179719B800190803 /* SQUHueWheel.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF43B0A179719B800190803 /* SQUHueWheel.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -100,10 +105,21 @@
 		DE0615E417891E0C004B2877 /* SVProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVProgressHUD.m; sourceTree = "<group>"; };
 		DE7F51D4178C8B5E00A677CE /* SQULoginSchoolSelector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQULoginSchoolSelector.h; sourceTree = "<group>"; };
 		DE7F51D5178C8B5E00A677CE /* SQULoginSchoolSelector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQULoginSchoolSelector.m; sourceTree = "<group>"; };
+		DECA57C917DFD99500156AFC /* SQUClassInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUClassInfo.h; sourceTree = "<group>"; };
+		DECA57CA17DFD99500156AFC /* SQUClassInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUClassInfo.m; sourceTree = "<group>"; };
+		DECA57CC17DFD99700156AFC /* SQUClassAssignment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUClassAssignment.h; sourceTree = "<group>"; };
+		DECA57CD17DFD99700156AFC /* SQUClassAssignment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUClassAssignment.m; sourceTree = "<group>"; };
+		DECA57CF17DFD99700156AFC /* SQUStudent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUStudent.h; sourceTree = "<group>"; };
+		DECA57D017DFD99700156AFC /* SQUStudent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUStudent.m; sourceTree = "<group>"; };
+		DECA57D217DFD99700156AFC /* SQUGradeCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUGradeCategory.h; sourceTree = "<group>"; };
+		DECA57D317DFD99700156AFC /* SQUGradeCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUGradeCategory.m; sourceTree = "<group>"; };
+		DECA57D517DFD9D400156AFC /* SQUCoreData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SQUCoreData.h; sourceTree = "<group>"; };
 		DEF43B0117965B0D00190803 /* SQUGradeOverviewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUGradeOverviewController.h; sourceTree = "<group>"; };
 		DEF43B0217965B0D00190803 /* SQUGradeOverviewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUGradeOverviewController.m; sourceTree = "<group>"; };
 		DEF43B0417965B1F00190803 /* SQUGradeOverviewTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUGradeOverviewTableViewCell.h; sourceTree = "<group>"; };
 		DEF43B0517965B1F00190803 /* SQUGradeOverviewTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUGradeOverviewTableViewCell.m; sourceTree = "<group>"; };
+		DEF43B09179719B800190803 /* SQUHueWheel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUHueWheel.h; sourceTree = "<group>"; };
+		DEF43B0A179719B800190803 /* SQUHueWheel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUHueWheel.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -173,6 +189,9 @@
 				DE0615D917890813004B2877 /* Server I/F */,
 				DE0615D11787ACDA004B2877 /* Login UI */,
 				DEF43B0017965AAF00190803 /* Grade Display UI */,
+				DEF43B071797122400190803 /* Class Display UI */,
+				DECA57C817DFD96300156AFC /* CoreData */,
+				DEF43B081797122E00190803 /* Settings UI */,
 				DE0615E717891E23004B2877 /* 3rd Party */,
 				DE06158B17874D0D004B2877 /* SQUAppDelegate.h */,
 				DE06158C17874D0D004B2877 /* SQUAppDelegate.m */,
@@ -271,6 +290,22 @@
 			name = "3rd Party";
 			sourceTree = "<group>";
 		};
+		DECA57C817DFD96300156AFC /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				DECA57C917DFD99500156AFC /* SQUClassInfo.h */,
+				DECA57CA17DFD99500156AFC /* SQUClassInfo.m */,
+				DECA57CC17DFD99700156AFC /* SQUClassAssignment.h */,
+				DECA57CD17DFD99700156AFC /* SQUClassAssignment.m */,
+				DECA57D217DFD99700156AFC /* SQUGradeCategory.h */,
+				DECA57D317DFD99700156AFC /* SQUGradeCategory.m */,
+				DECA57CF17DFD99700156AFC /* SQUStudent.h */,
+				DECA57D017DFD99700156AFC /* SQUStudent.m */,
+				DECA57D517DFD9D400156AFC /* SQUCoreData.h */,
+			);
+			name = CoreData;
+			sourceTree = "<group>";
+		};
 		DEF43B0017965AAF00190803 /* Grade Display UI */ = {
 			isa = PBXGroup;
 			children = (
@@ -280,6 +315,22 @@
 				DEF43B0517965B1F00190803 /* SQUGradeOverviewTableViewCell.m */,
 			);
 			name = "Grade Display UI";
+			sourceTree = "<group>";
+		};
+		DEF43B071797122400190803 /* Class Display UI */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "Class Display UI";
+			sourceTree = "<group>";
+		};
+		DEF43B081797122E00190803 /* Settings UI */ = {
+			isa = PBXGroup;
+			children = (
+				DEF43B09179719B800190803 /* SQUHueWheel.h */,
+				DEF43B0A179719B800190803 /* SQUHueWheel.m */,
+			);
+			name = "Settings UI";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -409,8 +460,12 @@
 			files = (
 				DE0615C917874F17004B2877 /* AFImageRequestOperation.m in Sources */,
 				DE06158D17874D0D004B2877 /* SQUAppDelegate.m in Sources */,
+				DECA57CB17DFD99500156AFC /* SQUClassInfo.m in Sources */,
 				DE0615CC17874F17004B2877 /* AFPropertyListRequestOperation.m in Sources */,
 				DE7F51D6178C8B5E00A677CE /* SQULoginSchoolSelector.m in Sources */,
+				DEF43B0B179719B800190803 /* SQUHueWheel.m in Sources */,
+				DECA57D117DFD99700156AFC /* SQUStudent.m in Sources */,
+				DECA57D417DFD99700156AFC /* SQUGradeCategory.m in Sources */,
 				DE06158917874D0D004B2877 /* main.m in Sources */,
 				DE0615DC17890851004B2877 /* SQUHACInterface.m in Sources */,
 				DE0615CD17874F17004B2877 /* AFURLConnectionOperation.m in Sources */,
@@ -426,6 +481,7 @@
 				DE06159017874D0D004B2877 /* QuickHAC.xcdatamodeld in Sources */,
 				DE0615C717874F17004B2877 /* AFHTTPClient.m in Sources */,
 				DE0615DF178909B1004B2877 /* JSONKit.m in Sources */,
+				DECA57CE17DFD99700156AFC /* SQUClassAssignment.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

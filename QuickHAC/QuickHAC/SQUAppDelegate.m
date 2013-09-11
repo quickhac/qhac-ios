@@ -12,11 +12,16 @@
 
 @implementation SQUAppDelegate
 
+static SQUAppDelegate *sharedDelegate = nil;
+
 @synthesize managedObjectContext = _managedObjectContext;
 @synthesize managedObjectModel = _managedObjectModel;
 @synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
 
 - (BOOL) application:(UIApplication *) application didFinishLaunchingWithOptions:(NSDictionary *) launchOptions {
+    // Used for the entire singleton thing
+    sharedDelegate = self;
+    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
    
     _rootViewController = [[SQUGradeOverviewController alloc] initWithStyle:UITableViewStylePlain];
@@ -28,12 +33,23 @@
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     
-    // Check if we have the authenticated flag set
- /*   if(![[NSUserDefaults standardUserDefaults] boolForKey:@"authenticated"]) {
+    NSManagedObjectContext *context = [self managedObjectContext];
+    NSError *db_err = nil;
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"SQUStudent" inManagedObjectContext:context];
+    [fetchRequest setEntity:entity];
+    
+    NSArray *students = [context executeFetchRequest:fetchRequest error:&db_err];
+    
+    // If there is at least one student object, we're logged in.
+    if(students.count == 0) {
         SQULoginSchoolSelector *loginController = [[SQULoginSchoolSelector alloc] initWithStyle:UITableViewStyleGrouped];
         [_navController presentViewController:[[UINavigationController alloc] initWithRootViewController:loginController] animated:NO completion:NULL];
-    }*/
-        
+    }
+    
+    NSLog(@"Student objects: %@", students);
+    
     // Put other initialisation here so this function can return faster (UI can display)
     dispatch_async(dispatch_get_main_queue(), ^{
     });
@@ -75,6 +91,11 @@
             abort();
         } 
     }
+}
+
+
++ (SQUAppDelegate *) sharedDelegate {
+    return sharedDelegate;
 }
 
 #pragma mark - Core Data stack

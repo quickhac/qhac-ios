@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SQUGradeOverviewController : UITableViewController
+@interface SQUGradeOverviewController : UITableViewController {
+    NSUInteger _gradingCycle;
+    NSMutableArray *_classes;
+}
 
 @end

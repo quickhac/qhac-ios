@@ -25,15 +25,12 @@
                                        (self.frame.size.height / 2) - 16, 70, 32);
         _gradeBadge.backgroundColor = [UIColor greenColor].CGColor;
         
-        NSLog(@"%@", NSStringFromCGRect(self.frame));
-        
         _gradeText = [CATextLayer layer];
         _gradeText.contentsScale = [UIScreen mainScreen].scale;
         _gradeText.foregroundColor = [UIColor whiteColor].CGColor;
         _gradeText.fontSize = 24.0f;
         _gradeText.font = (__bridge CFTypeRef) [UIFont boldSystemFontOfSize:24.0f];
         _gradeText.alignmentMode = kCAAlignmentCenter;
-        _gradeText.string = @"98";
         _gradeText.frame = CGRectMake(0, 2, 70, 24);
         [_gradeBadge addSublayer:_gradeText];
         

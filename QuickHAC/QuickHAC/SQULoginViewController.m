@@ -9,6 +9,9 @@
 
 #import "SQULoginViewController.h"
 #import "SVProgressHUD.h"
+#import "SQUAppDelegate.h"
+
+#import "SQUCoreData.h"
 
 @interface SQULoginViewController ()
 
@@ -325,15 +328,22 @@
                         return;
                     }
                     
-                    // Shove the student ID in as well (not as sensitive, can live in user defaults)
-                    [[NSUserDefaults standardUserDefaults] setObject:_sidField.text forKey:@"studentid"];
-                    
                     [SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"Logged In", nil)];
                     
                     [self dismissViewControllerAnimated:YES completion:NO];
                     
-                    // Set authenticated flag and sync user defaults
-                    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:YES] forKey:@"authenticated"];
+                    // Save some information about the user in the database
+                    NSManagedObjectContext *context = [[SQUAppDelegate sharedDelegate] managedObjectContext];
+                    SQUStudent *studentInfo = [NSEntityDescription insertNewObjectForEntityForName:@"SQUStudent" inManagedObjectContext:context];
+                    studentInfo.student_id = _sidField.text;
+                    studentInfo.district = [NSNumber numberWithInt:_district];
+                    
+                    // Save info to database
+                    NSError *db_err = nil;
+                    if (![context save:&db_err]) {
+                        NSLog(@"Whoops, couldn't save: %@", [db_err localizedDescription]);
+                    }
+                    
                     [[NSUserDefaults standardUserDefaults] synchronize];
                 } else {
                     NSLog(@"Login failed");
