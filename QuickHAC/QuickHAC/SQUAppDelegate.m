@@ -3,12 +3,16 @@
 //  QuickHAC
 //
 //  Created by Tristan Seifert on 05/07/2013.
-//  Copyright (c) 2013 Squee! Apps. All rights reserved.
+//  See README.MD for licensing and copyright information.
 //
 
 #import "SQUAppDelegate.h"
 #import "SQULoginSchoolSelector.h"
 #import "SQUGradeOverviewController.h"
+#import "SQUStudent.h"
+
+#import "SVProgressHUD.h"
+#import "Lockbox.h"
 
 @implementation SQUAppDelegate
 
@@ -46,6 +50,60 @@ static SQUAppDelegate *sharedDelegate = nil;
     if(students.count == 0) {
         SQULoginSchoolSelector *loginController = [[SQULoginSchoolSelector alloc] initWithStyle:UITableViewStyleGrouped];
         [_navController presentViewController:[[UINavigationController alloc] initWithRootViewController:loginController] animated:NO completion:NULL];
+    } else {
+        SQUStudent *student = students[0];
+        
+        // Fetch username/pw from keychain
+        NSString *username, *password;
+        
+        username = [Lockbox stringForKey:@"accountEmail"];
+        password = [Lockbox stringForKey:@"accountPassword"];
+        
+        NSLog(@"User: %@\nPass: %@\nSID: %@", username, password, student.student_id);
+        
+        [[SQUHACInterface sharedInstance] performLoginWithUser:username andPassword:password andSID:student.student_id callback:^(NSError *error, id returnData){
+            if(!error) {
+                NSString *sessionID = [[NSString alloc] initWithData:returnData encoding:NSUTF8StringEncoding];
+                
+                NSLog(@"Session key: %@", sessionID);
+                
+                [SVProgressHUD showProgress:-1 status:NSLocalizedString(@"Checking Session…", nil) maskType:SVProgressHUDMaskTypeGradient];
+                
+                // Try to get URL of grades from session key
+                [[SQUHACInterface sharedInstance] getGradesURLWithBlob:sessionID callback:^(NSError *err, id data) {
+                    NSString *gradeURL = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+                    
+                    NSLog(@"Grades URL value: %@", gradeURL);
+                    
+                    // TODO: Eval regex to check for the link: /id=([\w\d%]*)/.
+                    if([gradeURL rangeOfString:@"Server Error in '/HomeAccess' Application." options: NSCaseInsensitiveSearch].location == NSNotFound) {
+                        // when we're in here, we got the overall grades
+                        NSLog(@"Grades URL value: %@", gradeURL);
+ 
+                        if(![Lockbox setString:sessionID forKey:@"sessionKey"]) {
+                            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Saving Credentials", nil) message:[NSString stringWithFormat:NSLocalizedString(@"The session key could not be saved due to a Keychain Services error. (%i)", nil), error] delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
+                            [alert show];
+                            
+                            [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Error", nil)];
+                            return;
+                        }
+                        
+                        [SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"Logged In", nil)];
+                    } else {
+                        NSLog(@"Login failed");
+                        [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Wrong Credentials", nil)];
+                    }
+                    
+                }];
+            } else {
+                NSLog(@"Auth error: %@", error);
+                
+                [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Error", nil)];
+                
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Authenticating", nil) message:error.localizedDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
+                [alert show];
+            }
+        }];
     }
     
     NSLog(@"Student objects: %@", students);

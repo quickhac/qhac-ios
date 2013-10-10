@@ -3,7 +3,7 @@
 //  QuickHAC
 //
 //  Created by Tristan Seifert on 09/07/2013.
-//  Copyright (c) 2013 Squee! Apps. All rights reserved.
+//  See README.MD for licensing and copyright information.
 //
 
 #import "SQULoginSchoolSelector.h"

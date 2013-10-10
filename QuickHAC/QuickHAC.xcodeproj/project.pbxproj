@@ -36,6 +36,8 @@
 		DE0615DF178909B1004B2877 /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0615DE178909B1004B2877 /* JSONKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DE0615E517891E0C004B2877 /* SVProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DE0615E217891E0B004B2877 /* SVProgressHUD.bundle */; };
 		DE0615E617891E0C004B2877 /* SVProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0615E417891E0C004B2877 /* SVProgressHUD.m */; };
+		DE35E9A9180614DF00F15F20 /* Lockbox.m in Sources */ = {isa = PBXBuildFile; fileRef = DE35E9A8180614DF00F15F20 /* Lockbox.m */; };
+		DE35E9AB18061F8100F15F20 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE35E9AA18061F8100F15F20 /* Security.framework */; };
 		DE7F51D6178C8B5E00A677CE /* SQULoginSchoolSelector.m in Sources */ = {isa = PBXBuildFile; fileRef = DE7F51D5178C8B5E00A677CE /* SQULoginSchoolSelector.m */; };
 		DECA57CB17DFD99500156AFC /* SQUClassInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = DECA57CA17DFD99500156AFC /* SQUClassInfo.m */; };
 		DECA57CE17DFD99700156AFC /* SQUClassAssignment.m in Sources */ = {isa = PBXBuildFile; fileRef = DECA57CD17DFD99700156AFC /* SQUClassAssignment.m */; };
@@ -103,6 +105,9 @@
 		DE0615E217891E0B004B2877 /* SVProgressHUD.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = SVProgressHUD.bundle; sourceTree = "<group>"; };
 		DE0615E317891E0C004B2877 /* SVProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVProgressHUD.h; sourceTree = "<group>"; };
 		DE0615E417891E0C004B2877 /* SVProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVProgressHUD.m; sourceTree = "<group>"; };
+		DE35E9A7180614DF00F15F20 /* Lockbox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Lockbox.h; path = ../../Lockbox/Lockbox.h; sourceTree = "<group>"; };
+		DE35E9A8180614DF00F15F20 /* Lockbox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Lockbox.m; path = ../../Lockbox/Lockbox.m; sourceTree = "<group>"; };
+		DE35E9AA18061F8100F15F20 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		DE7F51D4178C8B5E00A677CE /* SQULoginSchoolSelector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQULoginSchoolSelector.h; sourceTree = "<group>"; };
 		DE7F51D5178C8B5E00A677CE /* SQULoginSchoolSelector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQULoginSchoolSelector.m; sourceTree = "<group>"; };
 		DECA57C917DFD99500156AFC /* SQUClassInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUClassInfo.h; sourceTree = "<group>"; };
@@ -127,6 +132,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DE35E9AB18061F8100F15F20 /* Security.framework in Frameworks */,
 				DE0615D51787AD50004B2877 /* MobileCoreServices.framework in Frameworks */,
 				DE0615D31787AD3E004B2877 /* SystemConfiguration.framework in Frameworks */,
 				DE06157D17874D0C004B2877 /* CoreGraphics.framework in Frameworks */,
@@ -171,6 +177,7 @@
 		DE06157917874D0C004B2877 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				DE35E9AA18061F8100F15F20 /* Security.framework */,
 				DE0615D41787AD50004B2877 /* MobileCoreServices.framework */,
 				DE0615D21787AD3D004B2877 /* SystemConfiguration.framework */,
 				DE06157A17874D0C004B2877 /* Foundation.framework */,
@@ -283,11 +290,21 @@
 		DE0615E717891E23004B2877 /* 3rd Party */ = {
 			isa = PBXGroup;
 			children = (
+				DE35E9A61806147900F15F20 /* Lockbox (Keychain) */,
 				DE0615B317874F17004B2877 /* AFNetworking */,
 				DE0615E0178909BB004B2877 /* JSONKit */,
 				DE0615E117891E0B004B2877 /* SVProgressHUD */,
 			);
 			name = "3rd Party";
+			sourceTree = "<group>";
+		};
+		DE35E9A61806147900F15F20 /* Lockbox (Keychain) */ = {
+			isa = PBXGroup;
+			children = (
+				DE35E9A7180614DF00F15F20 /* Lockbox.h */,
+				DE35E9A8180614DF00F15F20 /* Lockbox.m */,
+			);
+			name = "Lockbox (Keychain)";
 			sourceTree = "<group>";
 		};
 		DECA57C817DFD96300156AFC /* CoreData */ = {
@@ -480,6 +497,7 @@
 				DEF43B0317965B0D00190803 /* SQUGradeOverviewController.m in Sources */,
 				DE06159017874D0D004B2877 /* QuickHAC.xcdatamodeld in Sources */,
 				DE0615C717874F17004B2877 /* AFHTTPClient.m in Sources */,
+				DE35E9A9180614DF00F15F20 /* Lockbox.m in Sources */,
 				DE0615DF178909B1004B2877 /* JSONKit.m in Sources */,
 				DECA57CE17DFD99700156AFC /* SQUClassAssignment.m in Sources */,
 			);
@@ -593,7 +611,7 @@
 				GCC_PREFIX_HEADER = "QuickHAC/QuickHAC-Prefix.pch";
 				GCC_WARN_UNDECLARED_SELECTOR = NO;
 				INFOPLIST_FILE = "QuickHAC/QuickHAC-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -610,7 +628,7 @@
 				GCC_PREFIX_HEADER = "QuickHAC/QuickHAC-Prefix.pch";
 				GCC_WARN_UNDECLARED_SELECTOR = NO;
 				INFOPLIST_FILE = "QuickHAC/QuickHAC-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};

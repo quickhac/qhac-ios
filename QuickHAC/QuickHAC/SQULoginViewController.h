@@ -3,7 +3,7 @@
 //  QuickHAC
 //
 //  Created by Tristan Seifert on 05/07/2013.
-//  Copyright (c) 2013 Squee! Apps. All rights reserved.
+//  See README.MD for licensing and copyright information.
 //
 
 #import <UIKit/UIKit.h>
@@ -31,6 +31,8 @@
     CATextLayer *_districtSelected;
     
     SQUSchoolDistrict _district;
+    
+    UIView *_selectedTableTextField;
 }
 
 @property (nonatomic) SQUSchoolDistrict district;

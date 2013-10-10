@@ -7,3 +7,6 @@
 [submodule "SVProgressHUD"]
 	path = SVProgressHUD
 	url = git@github.com:samvermette/SVProgressHUD.git
+[submodule "Lockbox"]
+	path = Lockbox
+	url = git@github.com:granoff/Lockbox.git
