@@ -10,5 +10,9 @@
 #define QuickHAC_SQUCoreData_h
 
 #import "SQUStudent.h"
+#import "SQUCourse.h"
+#import "SQUCycle.h"
+#import "SQUCategory.h"
+#import "SQUAssignment.h"
 
 #endif

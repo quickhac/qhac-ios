@@ -10,7 +10,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import <CoreText/CoreText.h>
 
-#import "SQUHACInterface.h"
+@class SQUDistrict;
 
 @interface SQULoginViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate> {
     UITableView *_authFieldTable;
@@ -30,11 +30,11 @@
     UIButton *_changeDistrictLink;
     CATextLayer *_districtSelected;
     
-    SQUSchoolDistrict _district;
+    SQUDistrict *_district;
     
     UIView *_selectedTableTextField;
 }
 
-@property (nonatomic) SQUSchoolDistrict district;
+@property (nonatomic) SQUDistrict *district;
 
 @end

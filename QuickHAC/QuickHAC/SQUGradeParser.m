@@ -13,6 +13,7 @@
 
 #import "TFHpple.h"
 #import "SQUGradeParser.h"
+#import "SQUDistrict.h"
 
 static SQUGradeParser *_sharedInstance = nil;
 

@@ -7,6 +7,8 @@
 //
 
 #import "SQULoginSchoolSelector.h"
+#import "SQUDistrictManager.h"
+#import "SQUDistrict.h"
 
 @interface SQULoginSchoolSelector ()
 
@@ -39,14 +41,16 @@
 
 - (NSInteger) tableView:(UITableView *) tableView numberOfRowsInSection:(NSInteger) section {
     // Return the number of rows in the section.
-    return SQUNumSupportedSchools;
+    return [[SQUDistrictManager sharedInstance] loadedDistricts].count;
 }
 
 - (UITableViewCell *) tableView:(UITableView *) tableView cellForRowAtIndexPath:(NSIndexPath *) indexPath {
     static NSString *CellIdentifier = @"SchoolCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+	
+	SQUDistrict *district = [[SQUDistrictManager sharedInstance] loadedDistricts][indexPath.row];
     
-    cell.textLabel.text = [SQUHACInterface schoolEnumToName:indexPath.row];
+    cell.textLabel.text = district.name;
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
     return cell;
@@ -55,7 +59,7 @@
 #pragma mark - Moving to actual login controller
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     SQULoginViewController *loginController = [[SQULoginViewController alloc] init];
-    loginController.district = indexPath.row;
+    loginController.district = [[SQUDistrictManager sharedInstance] loadedDistricts][indexPath.row];
     
     [self.navigationController pushViewController:loginController animated:YES];
 }

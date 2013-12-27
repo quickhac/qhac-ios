@@ -9,8 +9,7 @@
 #import "SQUAppDelegate.h"
 #import "SQULoginSchoolSelector.h"
 #import "SQUGradeOverviewController.h"
-#import "SQUGradeParser.h"
-
+#import "SQUDistrictManager.h"
 #import "SQUStudent.h"
 
 #import "SVProgressHUD.h"
@@ -36,13 +35,12 @@ static SQUAppDelegate *sharedDelegate = nil;
     
     // Set up UIWindow
     self.window.rootViewController = _navController;
-    self.window.backgroundColor = [UIColor whiteColor];
+    self.window.backgroundColor = [UIColor darkGrayColor];
     [self.window makeKeyAndVisible];
     
-    [application setMinimumBackgroundFetchInterval:SQUMinimumFetchInterval];
-    
-	NSLog(@"%@", [SQUGradeParser sharedInstance]);
+    [[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
 	
+	// Check for students in the database
     NSManagedObjectContext *context = [self managedObjectContext];
     NSError *db_err = nil;
     
@@ -57,71 +55,49 @@ static SQUAppDelegate *sharedDelegate = nil;
         SQULoginSchoolSelector *loginController = [[SQULoginSchoolSelector alloc] initWithStyle:UITableViewStyleGrouped];
         [_navController presentViewController:[[UINavigationController alloc] initWithRootViewController:loginController] animated:NO completion:NULL];
     } else {
+		// Select first student
         SQUStudent *student = students[0];
         
         // Fetch username/pw from keychain
-        NSString *username, *password;
+        NSString *username, *password, *studentID;
         
-        username = [Lockbox stringForKey:@"accountEmail"];
-        password = [Lockbox stringForKey:@"accountPassword"];
+		username = student.hacUsername;
+        password = [Lockbox stringForKey:username];
+		studentID = student.student_id;
         
-#ifdef DEBUG
-        NSLog(@"User: %@\nPass: %@\nSID: %@", username, password, student.student_id);
-#endif
-		
-        [[SQUHACInterface sharedInstance] performLoginWithUser:username andPassword:password andSID:student.student_id callback:^(NSError *error, id returnData){
-            if(!error) {
-                NSString *sessionID = [[NSString alloc] initWithData:returnData encoding:NSUTF8StringEncoding];
-                
-                [SVProgressHUD showProgress:-1 status:NSLocalizedString(@"Checking Session…", nil) maskType:SVProgressHUDMaskTypeGradient];
-                
-                // Try to get URL of grades from session key
-                [[SQUHACInterface sharedInstance] getGradesURLWithBlob:sessionID callback:^(NSError *err, id data) {
-                    if(data) {
-						NSString *gradesURL = (NSString *) data;
-						
-                        [Lockbox setString:sessionID forKey:@"sessionKey"];
-                        
-                        [SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"Logged In", nil)];
-						
-						// Update grades
-						[[SQUHACInterface sharedInstance] parseAveragesWithURL:gradesURL callback:^(NSError *error, id returnData) {
-							NSLog(@"Grades: %@", (NSDictionary *) returnData);
-						}];
-                    } else {
-                        [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Wrong Credentials", nil)];
-                    }
-                    
-                }];
-            } else {
-#ifdef DEBUG
-                NSLog(@"Auth error: %@", error);
-#endif
-                [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Error", nil)];
-                
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Authenticating", nil) message:error.localizedDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
-                [alert show];
-            }
-        }];
+		// Validate the student object.
+		dispatch_async(dispatch_get_main_queue(), ^{
+			if(![[SQUDistrictManager sharedInstance] selectDistrictWithID:student.district.integerValue]) {
+				UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Invalid District", nil) message:NSLocalizedString(@"The student record selected is not using a district supported by qHAC.", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
+				[alert show];
+				
+				// Delete from the database
+				[context deleteObject:student];
+				
+				// Pop up the login controller.
+				SQULoginSchoolSelector *loginController = [[SQULoginSchoolSelector alloc] initWithStyle:UITableViewStyleGrouped];
+				[_navController presentViewController:[[UINavigationController alloc] initWithRootViewController:loginController] animated:NO completion:NULL];
+			} else { // We found a district, so log in so we may update grades
+				NSLog(@"User Information\nUser: %@\nPass: %@\nSID: %@", username, password, studentID);
+			}
+		});
     }
     
     // Put other initialisation here so this function can return faster (UI can display)
     dispatch_async(dispatch_get_main_queue(), ^{
+		NSLog(@"Fetches: %@", [[NSUserDefaults standardUserDefaults] arrayForKey:@"fetchList"]);
     });
-    
-	NSLog(@"Fetches: %@", [[NSUserDefaults standardUserDefaults] arrayForKey:@"fetchList"]);
 	
     return YES;
 }
 
 #pragma mark - Application delegate
 - (void) applicationWillResignActive:(UIApplication *) application {
-    // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-    // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+
 }
 
 - (void) applicationDidBecomeActive:(UIApplication *) application {
-	NSLog(@"Application became active");
+	
 }
 
 - (void) applicationWillTerminate:(UIApplication *) application {
@@ -133,6 +109,20 @@ static SQUAppDelegate *sharedDelegate = nil;
 	NSMutableArray *array = [NSMutableArray arrayWithArray:[[NSUserDefaults standardUserDefaults] arrayForKey:@"fetchList"]];
 	[array addObject:[NSDate new]];
 	[[NSUserDefaults standardUserDefaults] setObject:array forKey:@"fetchList"];
+	
+	// Send notification of update
+	UILocalNotification *notification = [[UILocalNotification alloc]  init];
+    notification.fireDate = [NSDate dateWithTimeIntervalSinceNow:10];
+    notification.timeZone = [NSTimeZone localTimeZone];
+    notification.alertBody = @"QHAC Update";
+    notification.soundName = UILocalNotificationDefaultSoundName;
+    notification.applicationIconBadgeNumber = [[NSUserDefaults standardUserDefaults] integerForKey:@"fetches"]+1;
+    [[UIApplication sharedApplication] scheduleLocalNotification:notification];
+
+	// Update counter
+	[[NSUserDefaults standardUserDefaults] setInteger:[[NSUserDefaults standardUserDefaults] integerForKey:@"fetches"]+1 forKey:@"fetches"];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+
 	completionHandler(UIBackgroundFetchResultNewData);
 }
 

@@ -69,7 +69,6 @@ static SQUHACInterface *_sharedInstance = nil;
 - (id) init {
     @synchronized(self) {
         if(self = [super init]) {
-            _HTTPClient = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:SQUHACAPIRoot]];
         }
 
         
@@ -186,12 +185,6 @@ char* do_rot13(char *inBuffer) {
     [requestParams setValue:[self encrypt:username] forKey:@"login"];
     [requestParams setValue:[self encrypt:password] forKey:@"password"];
     [requestParams setValue:sid forKey:@"studentid"];
-    
-    [_HTTPClient postPath:@"login" parameters:requestParams success:^(AFHTTPRequestOperation *operation, id responseObject) {        
-        callback(nil, responseObject);
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {            
-        callback(error, nil);
-    }];
 }
 
 - (void) getGradesURLWithBlob:(NSString *) blob callback:(SQUResponseHandler) callback {
@@ -200,28 +193,6 @@ char* do_rot13(char *inBuffer) {
     blob = [blob substringWithRange:NSMakeRange(0, 24)]; // Ensure blob is 24 chars max
     
     [requestParams setValue:[self rot13:blob] forKey:@"sessionid"];
-    
-    [_HTTPClient postPath:@"gradesURL" parameters:requestParams success:^(AFHTTPRequestOperation *operation, id responseObject) {
-		NSString *returnString = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-		
-		if([self isServerReturnValid:returnString]) {
-			NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"<a\\shref.*(h.*)\">" options:NSRegularExpressionCaseInsensitive error:nil];
-			NSRange URLLocInString = [[regex firstMatchInString:returnString options:0 range:NSMakeRange(0, [returnString length])] rangeAtIndex:1];
-			
-			// Check if we got a good URL
-			if (!NSEqualRanges(URLLocInString, NSMakeRange(NSNotFound, 0))) {
-				// we get the entire link, so we need to grab just the text between the first quotes.
-				NSString *gradesURL = [NSString stringWithFormat:@"%@%@%@", SQURRISDHACRoot, @"studentid=", [returnString substringWithRange:URLLocInString]];
-				callback(nil, gradesURL);
-			} else {
-				callback(nil, nil);
-			}
-		} else {
-			callback(nil, nil);
-		}
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        callback(error, nil);
-    }];
 }
 
 /*
@@ -229,13 +200,7 @@ char* do_rot13(char *inBuffer) {
  * the class averages from it.
  */
 - (void) parseAveragesWithURL:(NSString *) url callback:(SQUResponseHandler) callback {
-	[_HTTPClient getPath:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-		NSString *returnString = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-		
-		[[SQUGradeParser sharedInstance] parseAveragesForDistrict:nil withString:returnString];
-	} failure:^(AFHTTPRequestOperation *operation, NSError* failure) {
-				 
-	}];
+
 }
 
 /*
@@ -258,16 +223,6 @@ char* do_rot13(char *inBuffer) {
 }
 
 #pragma mark - User-interface support
-static NSArray *enumToSchoolArray = nil;
-
-+ (NSString *) schoolEnumToName:(SQUSchoolDistrict) district {
-    if(!enumToSchoolArray) {
-        enumToSchoolArray = [[NSArray alloc] initWithObjects:@"Round Rock ISD", @"Austin ISD", nil];   
-    }
-
-    return enumToSchoolArray[district];
-}
-
 // warning: contains magical numbers and some kind of black magic
 + (UIColor *) colourizeGrade:(float) grade {    
     // Makes sure asianness cannot be negative

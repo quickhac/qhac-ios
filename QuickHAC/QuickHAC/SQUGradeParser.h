@@ -9,11 +9,6 @@
 #import <Foundation/Foundation.h>
 #import <JavaScriptCore/JavaScriptCore.h>
 
-typedef struct {
-	NSUInteger semesters;
-	NSUInteger cyclesPerSemester;
-} semester_params_t;
-
 @interface SQUGradeParser : NSObject {
 	JSVirtualMachine *_jsVirtualMachine;
 	JSContext *_jsContext;

@@ -10,7 +10,9 @@
 #import "SQULoginViewController.h"
 #import "SVProgressHUD.h"
 #import "SQUAppDelegate.h"
-
+#import "SQUDistrict.h"
+#import "SQUDistrictManager.h"
+#import "SQUHACInterface.h"
 #import "SQUCoreData.h"
 
 // seriously, I thought I could handle the Keychain APIs but nope.avi
@@ -41,7 +43,7 @@
     _districtSelected.contentsScale = [UIScreen mainScreen].scale;
     _districtSelected.alignmentMode = kCAAlignmentCenter;
     _districtSelected.frame = CGRectMake(16, 370, (320 - 32), 18);
-    _districtSelected.string = [NSString stringWithFormat:NSLocalizedString(@"You selected %@.", nil), [SQUHACInterface schoolEnumToName:_district]];
+    _districtSelected.string = [NSString stringWithFormat:NSLocalizedString(@"You selected %@.", nil), _district.name];
     _districtSelected.foregroundColor = [UIColor grayColor].CGColor;
     
     [self.view.layer addSublayer:_districtSelected];
@@ -84,6 +86,9 @@
                                               initWithTitle:NSLocalizedString(@"Log In", @"login screen")
                                               style:UIBarButtonItemStyleDone
                                               target:self action:@selector(loginBarButtonItemPressed:)];
+	
+	// Set up district interfacing
+	[SQUDistrictManager sharedInstance].currentDistrict = _district;
 }
 
 - (void) didReceiveMemoryWarning {
@@ -246,7 +251,54 @@
     
     [SVProgressHUD showProgress:-1 status:NSLocalizedString(@"Logging In…", nil) maskType:SVProgressHUDMaskTypeGradient];
     
-    [[SQUHACInterface sharedInstance] performLoginWithUser:_emailField.text andPassword:_passField.text andSID:_sidField.text callback:^(NSError *error, id returnData){
+	// Ask the current district instance to do a log in
+	[[SQUDistrictManager sharedInstance] performLoginRequestWithUser:_emailField.text usingPassword:_passField.text andCallback:^(NSError *error, id returnData){
+		if(!error) {
+			if(!returnData) {
+				[SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Wrong Credentials", nil)];
+			} else {
+				[SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"Logged In", nil)];
+				// returnData contains student info. (user, pass, id)
+				NSMutableDictionary *returnInfo = (NSMutableDictionary *) returnData;
+				returnInfo[@"sid"] = _sidField.text;
+				
+				// Store the username's password in the keychain
+				[Lockbox setString:returnInfo[@"password"] forKey:returnInfo[@"username"]];
+				
+				// Insert an SQUStudent object into the database
+				NSManagedObjectContext *context = [[SQUAppDelegate sharedDelegate] managedObjectContext];
+				SQUStudent *studentInfo = [NSEntityDescription insertNewObjectForEntityForName:@"SQUStudent" inManagedObjectContext:context];
+				
+				// Set up student ID and district to database
+				studentInfo.student_id = returnInfo[@"sid"];
+				studentInfo.district = [NSNumber numberWithInteger:_district.district_id];
+				studentInfo.hacUsername = returnInfo[@"username"];
+				
+				// Save info to database
+				NSError *db_err = nil;
+				if (![context save:&db_err]) {
+					UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Storing Information", nil) message:db_err.localizedDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
+					[alert show];
+					
+					NSLog(@"Couldn't save database: %@", [db_err localizedDescription]);
+					return;
+				}
+				
+				[[NSUserDefaults standardUserDefaults] synchronize];
+
+				
+				// Dismiss this view and go to the grade overview
+				[self dismissViewControllerAnimated:YES completion:NO];
+			}
+		} else {
+            [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Error", nil)];
+            
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Authenticating", nil) message:error.localizedDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
+            [alert show];
+		}
+	}];
+	
+    /*[[SQUHACInterface sharedInstance] performLoginWithUser:_emailField.text andPassword:_passField.text andSID:_sidField.text callback:^(NSError *error, id returnData){
         if(!error) {
             NSString *sessionID = [[NSString alloc] initWithData:returnData encoding:NSUTF8StringEncoding];
             
@@ -311,7 +363,7 @@
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Authenticating", nil) message:error.localizedDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
             [alert show];
         }
-    }];
+    }];*/
 }
 
 #pragma mark - View Controller Shenanigans
