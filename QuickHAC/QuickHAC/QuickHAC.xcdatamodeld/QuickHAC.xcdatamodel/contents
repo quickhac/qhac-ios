@@ -1,33 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3381.3" systemVersion="12E55" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
-    <entity name="SQUClassAssignment" representedClassName="SQUClassAssignment" syncable="YES">
-        <attribute name="grade" optional="YES" attributeType="Float" minValueString="0" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="title" optional="YES" attributeType="String" spotlightIndexingEnabled="YES" syncable="YES"/>
-        <attribute name="weight" optional="YES" attributeType="Float" minValueString="0" maxValueString="1" defaultValueString="0.0" syncable="YES"/>
-        <relationship name="category" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SQUGradeCategory" inverseName="grades" inverseEntity="SQUGradeCategory" syncable="YES"/>
-    </entity>
-    <entity name="SQUClassInfo" representedClassName="SQUClassInfo" syncable="YES">
-        <attribute name="currentGrade" optional="YES" attributeType="Float" minValueString="0" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="period" optional="YES" attributeType="Integer 16" minValueString="1" syncable="YES"/>
-        <attribute name="teacher" optional="YES" attributeType="String" spotlightIndexingEnabled="YES" syncable="YES"/>
-        <attribute name="title" optional="YES" attributeType="String" spotlightIndexingEnabled="YES" syncable="YES"/>
-        <relationship name="categories" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="SQUGradeCategory" syncable="YES"/>
-    </entity>
-    <entity name="SQUGradeCategory" representedClassName="SQUGradeCategory" syncable="YES">
-        <attribute name="title" optional="YES" attributeType="String" spotlightIndexingEnabled="YES" syncable="YES"/>
-        <attribute name="weight" optional="YES" attributeType="Float" minValueString="0" maxValueString="1" defaultValueString="0.0" syncable="YES"/>
-        <relationship name="grades" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SQUClassAssignment" inverseName="category" inverseEntity="SQUClassAssignment" syncable="YES"/>
-    </entity>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3401" systemVersion="13B42" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="SQUStudent" representedClassName="SQUStudent" syncable="YES">
         <attribute name="district" optional="YES" attributeType="Integer 16" minValueString="0" defaultValueString="0" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="student_id" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="classes" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="SQUClassInfo" syncable="YES"/>
     </entity>
     <elements>
-        <element name="SQUClassInfo" positionX="-9936" positionY="-3600" width="128" height="118"/>
-        <element name="SQUClassAssignment" positionX="-9612" positionY="-3600" width="128" height="103"/>
-        <element name="SQUStudent" positionX="-9936" positionY="-3735" width="128" height="103"/>
-        <element name="SQUGradeCategory" positionX="-9776" positionY="-3600" width="128" height="88"/>
+        <element name="SQUStudent" positionX="0" positionY="0" width="0" height="0"/>
     </elements>
 </model>

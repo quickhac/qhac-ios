@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+#define SQUMinimumFetchInterval 60*30 // seconds
+
 @class SQUGradeOverviewController;
 
 @interface SQUAppDelegate : UIResponder <UIApplicationDelegate> {

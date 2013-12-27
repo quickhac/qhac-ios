@@ -10,8 +10,5 @@
 #define QuickHAC_SQUCoreData_h
 
 #import "SQUStudent.h"
-#import "SQUGradeCategory.h"
-#import "SQUClassAssignment.h"
-#import "SQUClassInfo.h"
 
 #endif

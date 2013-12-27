@@ -46,11 +46,11 @@
         forControlEvents:UIControlEventValueChanged];
     self.refreshControl = refresher;
     
-    [self updateDatabase];
+//    [self updateDatabase];
 }
 
 - (void) viewWillAppear:(BOOL) animated {
-    [self updateDatabase];
+//    [self updateDatabase];
 }
 
 - (void) didReceiveMemoryWarning {
@@ -75,11 +75,11 @@
     [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
     // Get class info
-    SQUClassInfo *classInfo = (SQUClassInfo *) _classes[indexPath.row];
+/*    SQUClassInfo *classInfo = (SQUClassInfo *) _classes[indexPath.row];
     
     cell.period = indexPath.row + 1;
     cell.classTitle = classInfo.title;
-    cell.grade = classInfo.currentGrade.floatValue;
+    cell.grade = classInfo.currentGrade.floatValue;*/
     
     [cell updateUI];
     
@@ -92,7 +92,7 @@
 
 #pragma mark - UI Callbacks
 - (void) openSettings:(id) sender {
-    // lolsettings
+    [[[UIAlertView alloc] initWithTitle:@"Settings" message:@"The settings view has not been implemented yet." delegate:Nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil] show];
 }
 
 - (void) reloadData:(UIRefreshControl *) control {
@@ -109,7 +109,7 @@
     [control endRefreshing];
 }
 
-- (void) updateDatabase {
+/*- (void) updateDatabase {
     // Load classes from CoreData
     NSManagedObjectContext *context = [[SQUAppDelegate sharedDelegate] managedObjectContext];
     NSError *db_err = nil;
@@ -135,7 +135,7 @@
     
         [self.tableView reloadData];
     }
-}
+}*/
 
 #pragma mark - Miscellaneous helper methods
 - (NSString *) getTitleForGradingCycle:(NSUInteger) cycle {

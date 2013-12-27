@@ -9,6 +9,8 @@
 #import "SQUAppDelegate.h"
 #import "SQULoginSchoolSelector.h"
 #import "SQUGradeOverviewController.h"
+#import "SQUGradeParser.h"
+
 #import "SQUStudent.h"
 
 #import "SVProgressHUD.h"
@@ -37,6 +39,10 @@ static SQUAppDelegate *sharedDelegate = nil;
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     
+    [application setMinimumBackgroundFetchInterval:SQUMinimumFetchInterval];
+    
+	NSLog(@"%@", [SQUGradeParser sharedInstance]);
+	
     NSManagedObjectContext *context = [self managedObjectContext];
     NSError *db_err = nil;
     
@@ -59,45 +65,38 @@ static SQUAppDelegate *sharedDelegate = nil;
         username = [Lockbox stringForKey:@"accountEmail"];
         password = [Lockbox stringForKey:@"accountPassword"];
         
+#ifdef DEBUG
         NSLog(@"User: %@\nPass: %@\nSID: %@", username, password, student.student_id);
-        
+#endif
+		
         [[SQUHACInterface sharedInstance] performLoginWithUser:username andPassword:password andSID:student.student_id callback:^(NSError *error, id returnData){
             if(!error) {
                 NSString *sessionID = [[NSString alloc] initWithData:returnData encoding:NSUTF8StringEncoding];
-                
-                NSLog(@"Session key: %@", sessionID);
                 
                 [SVProgressHUD showProgress:-1 status:NSLocalizedString(@"Checking Session…", nil) maskType:SVProgressHUDMaskTypeGradient];
                 
                 // Try to get URL of grades from session key
                 [[SQUHACInterface sharedInstance] getGradesURLWithBlob:sessionID callback:^(NSError *err, id data) {
-                    NSString *gradeURL = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-                    
-                    NSLog(@"Grades URL value: %@", gradeURL);
-                    
-                    // TODO: Eval regex to check for the link: /id=([\w\d%]*)/.
-                    if([gradeURL rangeOfString:@"Server Error in '/HomeAccess' Application." options: NSCaseInsensitiveSearch].location == NSNotFound) {
-                        // when we're in here, we got the overall grades
-                        NSLog(@"Grades URL value: %@", gradeURL);
- 
-                        if(![Lockbox setString:sessionID forKey:@"sessionKey"]) {
-                            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Saving Credentials", nil) message:[NSString stringWithFormat:NSLocalizedString(@"The session key could not be saved due to a Keychain Services error. (%i)", nil), error] delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
-                            [alert show];
-                            
-                            [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Error", nil)];
-                            return;
-                        }
+                    if(data) {
+						NSString *gradesURL = (NSString *) data;
+						
+                        [Lockbox setString:sessionID forKey:@"sessionKey"];
                         
                         [SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"Logged In", nil)];
+						
+						// Update grades
+						[[SQUHACInterface sharedInstance] parseAveragesWithURL:gradesURL callback:^(NSError *error, id returnData) {
+							NSLog(@"Grades: %@", (NSDictionary *) returnData);
+						}];
                     } else {
-                        NSLog(@"Login failed");
                         [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Wrong Credentials", nil)];
                     }
                     
                 }];
             } else {
+#ifdef DEBUG
                 NSLog(@"Auth error: %@", error);
-                
+#endif
                 [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Error", nil)];
                 
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Authenticating", nil) message:error.localizedDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
@@ -106,37 +105,38 @@ static SQUAppDelegate *sharedDelegate = nil;
         }];
     }
     
-    NSLog(@"Student objects: %@", students);
-    
     // Put other initialisation here so this function can return faster (UI can display)
     dispatch_async(dispatch_get_main_queue(), ^{
     });
     
+	NSLog(@"Fetches: %@", [[NSUserDefaults standardUserDefaults] arrayForKey:@"fetchList"]);
+	
     return YES;
 }
 
+#pragma mark - Application delegate
 - (void) applicationWillResignActive:(UIApplication *) application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
 }
 
-- (void) applicationDidEnterBackground:(UIApplication *) application {
-    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
-    // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-}
-
-- (void) applicationWillEnterForeground:(UIApplication *) application {
-    // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
-}
-
 - (void) applicationDidBecomeActive:(UIApplication *) application {
-    // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+	NSLog(@"Application became active");
 }
 
 - (void) applicationWillTerminate:(UIApplication *) application {
     // Saves changes in the application's managed object context before the application terminates.
     [self saveContext];
 }
+
+- (void)application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult result))completionHandler {
+	NSMutableArray *array = [NSMutableArray arrayWithArray:[[NSUserDefaults standardUserDefaults] arrayForKey:@"fetchList"]];
+	[array addObject:[NSDate new]];
+	[[NSUserDefaults standardUserDefaults] setObject:array forKey:@"fetchList"];
+	completionHandler(UIBackgroundFetchResultNewData);
+}
+
+#pragma mark - CoreData Stack
 
 - (void) saveContext {
     NSError *error = nil;
@@ -150,13 +150,6 @@ static SQUAppDelegate *sharedDelegate = nil;
         } 
     }
 }
-
-
-+ (SQUAppDelegate *) sharedDelegate {
-    return sharedDelegate;
-}
-
-#pragma mark - Core Data stack
 
 // Returns the managed object context for the application.
 // If the context doesn't already exist, it is created and bound to the persistent store coordinator for the application.
@@ -195,7 +188,7 @@ static SQUAppDelegate *sharedDelegate = nil;
     
     NSError *error = nil;
     _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
-    if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error]) {
+    if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:@{NSMigratePersistentStoresAutomaticallyOption:@YES, NSInferMappingModelAutomaticallyOption:@YES} error:&error]) {
         /*
          Replace this implementation with code to handle the error appropriately.
          
@@ -219,17 +212,27 @@ static SQUAppDelegate *sharedDelegate = nil;
          Lightweight migration will only work for a limited set of schema changes; consult "Core Data Model Versioning and Data Migration Programming Guide" for details.
          
          */
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+#ifdef DEBUG
+        [[NSFileManager defaultManager] removeItemAtURL:storeURL error:nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Database Error" message:[NSString stringWithFormat:@"The database was erased due to an error loading it.\n%@", error.description] delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
+        [alert show];
+#else
+        NSLog(@"Unresolved database error: %@, %@", error, [error userInfo]);
         abort();
-    }    
+#endif
+    }
     
     return _persistentStoreCoordinator;
 }
 
-#pragma mark - Application's Documents directory
+#pragma mark - Helper Methods
 // Returns the URL to the application's Documents directory.
 - (NSURL *) applicationDocumentsDirectory {
     return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
+}
+
++ (SQUAppDelegate *) sharedDelegate {
+    return sharedDelegate;
 }
 
 @end

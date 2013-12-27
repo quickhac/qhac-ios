@@ -39,10 +39,14 @@
 		DE35E9A9180614DF00F15F20 /* Lockbox.m in Sources */ = {isa = PBXBuildFile; fileRef = DE35E9A8180614DF00F15F20 /* Lockbox.m */; };
 		DE35E9AB18061F8100F15F20 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE35E9AA18061F8100F15F20 /* Security.framework */; };
 		DE7F51D6178C8B5E00A677CE /* SQULoginSchoolSelector.m in Sources */ = {isa = PBXBuildFile; fileRef = DE7F51D5178C8B5E00A677CE /* SQULoginSchoolSelector.m */; };
-		DECA57CB17DFD99500156AFC /* SQUClassInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = DECA57CA17DFD99500156AFC /* SQUClassInfo.m */; };
-		DECA57CE17DFD99700156AFC /* SQUClassAssignment.m in Sources */ = {isa = PBXBuildFile; fileRef = DECA57CD17DFD99700156AFC /* SQUClassAssignment.m */; };
-		DECA57D117DFD99700156AFC /* SQUStudent.m in Sources */ = {isa = PBXBuildFile; fileRef = DECA57D017DFD99700156AFC /* SQUStudent.m */; };
-		DECA57D417DFD99700156AFC /* SQUGradeCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = DECA57D317DFD99700156AFC /* SQUGradeCategory.m */; };
+		DE81CDC3186D1B9900DC1CAB /* SQUStudent.m in Sources */ = {isa = PBXBuildFile; fileRef = DE81CDC2186D1B9900DC1CAB /* SQUStudent.m */; };
+		DE81CDCA186D2C4D00DC1CAB /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE81CDC9186D2C4D00DC1CAB /* JavaScriptCore.framework */; };
+		DE81CDCD186D2C6B00DC1CAB /* SQUGradeParser.m in Sources */ = {isa = PBXBuildFile; fileRef = DE81CDCC186D2C6B00DC1CAB /* SQUGradeParser.m */; };
+		DE81CDCF186D31D500DC1CAB /* qhac.js in Resources */ = {isa = PBXBuildFile; fileRef = DE81CDC4186D298100DC1CAB /* qhac.js */; };
+		DE81CDD7186D517800DC1CAB /* TFHpple.m in Sources */ = {isa = PBXBuildFile; fileRef = DE81CDD2186D517800DC1CAB /* TFHpple.m */; };
+		DE81CDD8186D517800DC1CAB /* TFHppleElement.m in Sources */ = {isa = PBXBuildFile; fileRef = DE81CDD4186D517800DC1CAB /* TFHppleElement.m */; };
+		DE81CDD9186D517800DC1CAB /* XPathQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = DE81CDD6186D517800DC1CAB /* XPathQuery.m */; };
+		DE81CDDC186D538000DC1CAB /* libxml2.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DE81CDDA186D518C00DC1CAB /* libxml2.2.dylib */; };
 		DEF43B0317965B0D00190803 /* SQUGradeOverviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF43B0217965B0D00190803 /* SQUGradeOverviewController.m */; };
 		DEF43B0617965B1F00190803 /* SQUGradeOverviewTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF43B0517965B1F00190803 /* SQUGradeOverviewTableViewCell.m */; };
 		DEF43B0B179719B800190803 /* SQUHueWheel.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF43B0A179719B800190803 /* SQUHueWheel.m */; };
@@ -110,14 +114,19 @@
 		DE35E9AA18061F8100F15F20 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		DE7F51D4178C8B5E00A677CE /* SQULoginSchoolSelector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQULoginSchoolSelector.h; sourceTree = "<group>"; };
 		DE7F51D5178C8B5E00A677CE /* SQULoginSchoolSelector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQULoginSchoolSelector.m; sourceTree = "<group>"; };
-		DECA57C917DFD99500156AFC /* SQUClassInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUClassInfo.h; sourceTree = "<group>"; };
-		DECA57CA17DFD99500156AFC /* SQUClassInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUClassInfo.m; sourceTree = "<group>"; };
-		DECA57CC17DFD99700156AFC /* SQUClassAssignment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUClassAssignment.h; sourceTree = "<group>"; };
-		DECA57CD17DFD99700156AFC /* SQUClassAssignment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUClassAssignment.m; sourceTree = "<group>"; };
-		DECA57CF17DFD99700156AFC /* SQUStudent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUStudent.h; sourceTree = "<group>"; };
-		DECA57D017DFD99700156AFC /* SQUStudent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUStudent.m; sourceTree = "<group>"; };
-		DECA57D217DFD99700156AFC /* SQUGradeCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUGradeCategory.h; sourceTree = "<group>"; };
-		DECA57D317DFD99700156AFC /* SQUGradeCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUGradeCategory.m; sourceTree = "<group>"; };
+		DE81CDC1186D1B9900DC1CAB /* SQUStudent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUStudent.h; sourceTree = "<group>"; };
+		DE81CDC2186D1B9900DC1CAB /* SQUStudent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUStudent.m; sourceTree = "<group>"; };
+		DE81CDC4186D298100DC1CAB /* qhac.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = qhac.js; sourceTree = "<group>"; };
+		DE81CDC9186D2C4D00DC1CAB /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		DE81CDCB186D2C6B00DC1CAB /* SQUGradeParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUGradeParser.h; sourceTree = "<group>"; };
+		DE81CDCC186D2C6B00DC1CAB /* SQUGradeParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUGradeParser.m; sourceTree = "<group>"; };
+		DE81CDD1186D517800DC1CAB /* TFHpple.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TFHpple.h; path = ../../hpple/TFHpple.h; sourceTree = "<group>"; };
+		DE81CDD2186D517800DC1CAB /* TFHpple.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TFHpple.m; path = ../../hpple/TFHpple.m; sourceTree = "<group>"; };
+		DE81CDD3186D517800DC1CAB /* TFHppleElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TFHppleElement.h; path = ../../hpple/TFHppleElement.h; sourceTree = "<group>"; };
+		DE81CDD4186D517800DC1CAB /* TFHppleElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TFHppleElement.m; path = ../../hpple/TFHppleElement.m; sourceTree = "<group>"; };
+		DE81CDD5186D517800DC1CAB /* XPathQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XPathQuery.h; path = ../../hpple/XPathQuery.h; sourceTree = "<group>"; };
+		DE81CDD6186D517800DC1CAB /* XPathQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = XPathQuery.m; path = ../../hpple/XPathQuery.m; sourceTree = "<group>"; };
+		DE81CDDA186D518C00DC1CAB /* libxml2.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.2.dylib; path = usr/lib/libxml2.2.dylib; sourceTree = SDKROOT; };
 		DECA57D517DFD9D400156AFC /* SQUCoreData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SQUCoreData.h; sourceTree = "<group>"; };
 		DEF43B0117965B0D00190803 /* SQUGradeOverviewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUGradeOverviewController.h; sourceTree = "<group>"; };
 		DEF43B0217965B0D00190803 /* SQUGradeOverviewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUGradeOverviewController.m; sourceTree = "<group>"; };
@@ -132,6 +141,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DE81CDDC186D538000DC1CAB /* libxml2.2.dylib in Frameworks */,
+				DE81CDCA186D2C4D00DC1CAB /* JavaScriptCore.framework in Frameworks */,
 				DE35E9AB18061F8100F15F20 /* Security.framework in Frameworks */,
 				DE0615D51787AD50004B2877 /* MobileCoreServices.framework in Frameworks */,
 				DE0615D31787AD3E004B2877 /* SystemConfiguration.framework in Frameworks */,
@@ -177,6 +188,8 @@
 		DE06157917874D0C004B2877 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				DE81CDDA186D518C00DC1CAB /* libxml2.2.dylib */,
+				DE81CDC9186D2C4D00DC1CAB /* JavaScriptCore.framework */,
 				DE35E9AA18061F8100F15F20 /* Security.framework */,
 				DE0615D41787AD50004B2877 /* MobileCoreServices.framework */,
 				DE0615D21787AD3D004B2877 /* SystemConfiguration.framework */,
@@ -193,13 +206,14 @@
 			isa = PBXGroup;
 			children = (
 				DE0615D017874F73004B2877 /* QuickHAC.entitlements */,
-				DE0615D917890813004B2877 /* Server I/F */,
+				DE0615D917890813004B2877 /* HAC Interface */,
 				DE0615D11787ACDA004B2877 /* Login UI */,
 				DEF43B0017965AAF00190803 /* Grade Display UI */,
 				DEF43B071797122400190803 /* Class Display UI */,
 				DECA57C817DFD96300156AFC /* CoreData */,
 				DEF43B081797122E00190803 /* Settings UI */,
 				DE0615E717891E23004B2877 /* 3rd Party */,
+				DE81CDC6186D298A00DC1CAB /* qhac-common */,
 				DE06158B17874D0D004B2877 /* SQUAppDelegate.h */,
 				DE06158C17874D0D004B2877 /* SQUAppDelegate.m */,
 				DE06159117874D0D004B2877 /* Images.xcassets */,
@@ -258,13 +272,15 @@
 			name = "Login UI";
 			sourceTree = "<group>";
 		};
-		DE0615D917890813004B2877 /* Server I/F */ = {
+		DE0615D917890813004B2877 /* HAC Interface */ = {
 			isa = PBXGroup;
 			children = (
 				DE0615DA1789084E004B2877 /* SQUHACInterface.h */,
 				DE0615DB1789084F004B2877 /* SQUHACInterface.m */,
+				DE81CDCB186D2C6B00DC1CAB /* SQUGradeParser.h */,
+				DE81CDCC186D2C6B00DC1CAB /* SQUGradeParser.m */,
 			);
-			name = "Server I/F";
+			name = "HAC Interface";
 			sourceTree = "<group>";
 		};
 		DE0615E0178909BB004B2877 /* JSONKit */ = {
@@ -290,6 +306,7 @@
 		DE0615E717891E23004B2877 /* 3rd Party */ = {
 			isa = PBXGroup;
 			children = (
+				DE81CDD0186D50E800DC1CAB /* TFHpple */,
 				DE35E9A61806147900F15F20 /* Lockbox (Keychain) */,
 				DE0615B317874F17004B2877 /* AFNetworking */,
 				DE0615E0178909BB004B2877 /* JSONKit */,
@@ -307,17 +324,32 @@
 			name = "Lockbox (Keychain)";
 			sourceTree = "<group>";
 		};
+		DE81CDC6186D298A00DC1CAB /* qhac-common */ = {
+			isa = PBXGroup;
+			children = (
+				DE81CDC4186D298100DC1CAB /* qhac.js */,
+			);
+			name = "qhac-common";
+			sourceTree = "<group>";
+		};
+		DE81CDD0186D50E800DC1CAB /* TFHpple */ = {
+			isa = PBXGroup;
+			children = (
+				DE81CDD1186D517800DC1CAB /* TFHpple.h */,
+				DE81CDD2186D517800DC1CAB /* TFHpple.m */,
+				DE81CDD3186D517800DC1CAB /* TFHppleElement.h */,
+				DE81CDD4186D517800DC1CAB /* TFHppleElement.m */,
+				DE81CDD5186D517800DC1CAB /* XPathQuery.h */,
+				DE81CDD6186D517800DC1CAB /* XPathQuery.m */,
+			);
+			name = TFHpple;
+			sourceTree = "<group>";
+		};
 		DECA57C817DFD96300156AFC /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
-				DECA57C917DFD99500156AFC /* SQUClassInfo.h */,
-				DECA57CA17DFD99500156AFC /* SQUClassInfo.m */,
-				DECA57CC17DFD99700156AFC /* SQUClassAssignment.h */,
-				DECA57CD17DFD99700156AFC /* SQUClassAssignment.m */,
-				DECA57D217DFD99700156AFC /* SQUGradeCategory.h */,
-				DECA57D317DFD99700156AFC /* SQUGradeCategory.m */,
-				DECA57CF17DFD99700156AFC /* SQUStudent.h */,
-				DECA57D017DFD99700156AFC /* SQUStudent.m */,
+				DE81CDC1186D1B9900DC1CAB /* SQUStudent.h */,
+				DE81CDC2186D1B9900DC1CAB /* SQUStudent.m */,
 				DECA57D517DFD9D400156AFC /* SQUCoreData.h */,
 			);
 			name = CoreData;
@@ -402,6 +434,9 @@
 					DE06157617874D0C004B2877 = {
 						DevelopmentTeam = 62JL7NTBQJ;
 						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
 							com.apple.DataProtection = {
 								enabled = 1;
 							};
@@ -439,6 +474,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DE06158717874D0D004B2877 /* InfoPlist.strings in Resources */,
+				DE81CDCF186D31D500DC1CAB /* qhac.js in Resources */,
 				DE0615E517891E0C004B2877 /* SVProgressHUD.bundle in Resources */,
 				DE06159217874D0D004B2877 /* Images.xcassets in Resources */,
 			);
@@ -477,14 +513,13 @@
 			files = (
 				DE0615C917874F17004B2877 /* AFImageRequestOperation.m in Sources */,
 				DE06158D17874D0D004B2877 /* SQUAppDelegate.m in Sources */,
-				DECA57CB17DFD99500156AFC /* SQUClassInfo.m in Sources */,
 				DE0615CC17874F17004B2877 /* AFPropertyListRequestOperation.m in Sources */,
 				DE7F51D6178C8B5E00A677CE /* SQULoginSchoolSelector.m in Sources */,
 				DEF43B0B179719B800190803 /* SQUHueWheel.m in Sources */,
-				DECA57D117DFD99700156AFC /* SQUStudent.m in Sources */,
-				DECA57D417DFD99700156AFC /* SQUGradeCategory.m in Sources */,
 				DE06158917874D0D004B2877 /* main.m in Sources */,
 				DE0615DC17890851004B2877 /* SQUHACInterface.m in Sources */,
+				DE81CDD7186D517800DC1CAB /* TFHpple.m in Sources */,
+				DE81CDD9186D517800DC1CAB /* XPathQuery.m in Sources */,
 				DE0615CD17874F17004B2877 /* AFURLConnectionOperation.m in Sources */,
 				DE0615CE17874F17004B2877 /* AFXMLRequestOperation.m in Sources */,
 				DE0615CA17874F17004B2877 /* AFJSONRequestOperation.m in Sources */,
@@ -496,10 +531,12 @@
 				DE0615C817874F17004B2877 /* AFHTTPRequestOperation.m in Sources */,
 				DEF43B0317965B0D00190803 /* SQUGradeOverviewController.m in Sources */,
 				DE06159017874D0D004B2877 /* QuickHAC.xcdatamodeld in Sources */,
+				DE81CDCD186D2C6B00DC1CAB /* SQUGradeParser.m in Sources */,
 				DE0615C717874F17004B2877 /* AFHTTPClient.m in Sources */,
 				DE35E9A9180614DF00F15F20 /* Lockbox.m in Sources */,
 				DE0615DF178909B1004B2877 /* JSONKit.m in Sources */,
-				DECA57CE17DFD99700156AFC /* SQUClassAssignment.m in Sources */,
+				DE81CDC3186D1B9900DC1CAB /* SQUStudent.m in Sources */,
+				DE81CDD8186D517800DC1CAB /* TFHppleElement.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -607,12 +644,19 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = QuickHAC/QuickHAC.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "QuickHAC/QuickHAC-Prefix.pch";
 				GCC_WARN_UNDECLARED_SELECTOR = NO;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(SDKROOT)/usr/include/libxml2/**",
+				);
 				INFOPLIST_FILE = "QuickHAC/QuickHAC-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -624,12 +668,19 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = QuickHAC/QuickHAC.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "QuickHAC/QuickHAC-Prefix.pch";
 				GCC_WARN_UNDECLARED_SELECTOR = NO;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(SDKROOT)/usr/include/libxml2/**",
+				);
 				INFOPLIST_FILE = "QuickHAC/QuickHAC-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

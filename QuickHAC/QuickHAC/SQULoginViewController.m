@@ -290,7 +290,7 @@
                     // Save info to database
                     NSError *db_err = nil;
                     if (![context save:&db_err]) {
-                        NSLog(@"Whoops, couldn't save: %@", [db_err localizedDescription]);
+                        NSLog(@"Couldn't save database: %@", [db_err localizedDescription]);
                     }
                     
                     [[NSUserDefaults standardUserDefaults] synchronize];

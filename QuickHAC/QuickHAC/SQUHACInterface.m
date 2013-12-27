@@ -7,23 +7,23 @@
 //
 //  Created by Tristan Seifert on 06/07/2013.
 //  See README.MD for licensing and copyright information.
-//  See README file for license information.
 //
 
 #import "SQUHACInterface.h"
+#import "SQUGradeParser.h"
 
 #import <objc/runtime.h>
 #import <objc/message.h>
 
 #define SQUHACAPIRoot @"https://hacaccess.herokuapp.com/api/"
-#define SQURRISDHACRoot @"https://gradebook.roundrockisd.org/pc/displaygrades.aspx"
+#define SQURRISDHACRoot @"https://gradebook.roundrockisd.org/pc/displaygrades.aspx?"
 
 @interface SQUHACInterface (PrivateMethods)
 
 - (NSString *) rot13:(NSString *) theText;
 - (NSString *) base64Encode:(NSString *) data;
 
-- (NSString *) rot13AndBase64AreNotEncryptionDammit:(NSString *) godDamnWhenWillTheyLearn;
+- (NSString *) weirdEncryption:(NSString *) input;
 - (NSString *) doTheInverseOfWhateverTheHellThatDoes:(NSString *) string;
 
 @end
@@ -78,7 +78,7 @@ static SQUHACInterface *_sharedInstance = nil;
 }
 
 + (void) load {
-    MethodSwizzle([self class], @selector(encrypt:), @selector(rot13AndBase64AreNotEncryptionDammit:));
+    MethodSwizzle([self class], @selector(encrypt:), @selector(weirdEncryption:));
     MethodSwizzle([self class], @selector(decrypt:), @selector(doTheInverseOfWhateverTheHellThatDoes:));
 }
 
@@ -112,12 +112,8 @@ static SQUHACInterface *_sharedInstance = nil;
     free(output);
     return s;
 }   
-- (NSString *) rot13AndBase64AreNotEncryptionDammit:(NSString *) godDamnWhenWillTheyLearn {
-    NSString *notReallyEncryptedString = [self rot13:[self base64Encode:godDamnWhenWillTheyLearn]];
-    
-//    NSLog(@"Raw: %@\nEnc: %@", godDamnWhenWillTheyLearn, notReallyEncryptedString);
-    
-    return notReallyEncryptedString;
+- (NSString *) weirdEncryption:(NSString *) input {
+    return [self rot13:[self base64Encode:input]];
 }
 
 // This is an objc wrapper around do_rot13(char)
@@ -203,16 +199,62 @@ char* do_rot13(char *inBuffer) {
     
     blob = [blob substringWithRange:NSMakeRange(0, 24)]; // Ensure blob is 24 chars max
     
-    NSLog(@" Blob: %@\nRot13: %@", blob, [self rot13:blob]);
-    
     [requestParams setValue:[self rot13:blob] forKey:@"sessionid"];
     
     [_HTTPClient postPath:@"gradesURL" parameters:requestParams success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        callback(nil, responseObject);
+		NSString *returnString = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
+		
+		if([self isServerReturnValid:returnString]) {
+			NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"<a\\shref.*(h.*)\">" options:NSRegularExpressionCaseInsensitive error:nil];
+			NSRange URLLocInString = [[regex firstMatchInString:returnString options:0 range:NSMakeRange(0, [returnString length])] rangeAtIndex:1];
+			
+			// Check if we got a good URL
+			if (!NSEqualRanges(URLLocInString, NSMakeRange(NSNotFound, 0))) {
+				// we get the entire link, so we need to grab just the text between the first quotes.
+				NSString *gradesURL = [NSString stringWithFormat:@"%@%@%@", SQURRISDHACRoot, @"studentid=", [returnString substringWithRange:URLLocInString]];
+				callback(nil, gradesURL);
+			} else {
+				callback(nil, nil);
+			}
+		} else {
+			callback(nil, nil);
+		}
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         callback(error, nil);
     }];
-    
+}
+
+/*
+ * Loads the document at url and interprets it as the overall grades, extracting
+ * the class averages from it.
+ */
+- (void) parseAveragesWithURL:(NSString *) url callback:(SQUResponseHandler) callback {
+	[_HTTPClient getPath:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+		NSString *returnString = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
+		
+		[[SQUGradeParser sharedInstance] parseAveragesForDistrict:nil withString:returnString];
+	} failure:^(AFHTTPRequestOperation *operation, NSError* failure) {
+				 
+	}];
+}
+
+/*
+ * Loads the document at url and parses it as a class' grades, extracting the
+ * individual assignments from it.
+ */
+- (void) parseClassGradesWithURL:(NSString *) url callback:(SQUResponseHandler) callback {
+	
+}
+
+#pragma mark - Helper methods
+- (BOOL) isServerReturnValid:(NSString *) string {
+	NSError *regexError = nil;
+	NSRegularExpression *regex = [NSRegularExpression
+								  regularExpressionWithPattern:@"/id=([\\w\\d%]*)/"
+								  options:NSRegularExpressionCaseInsensitive
+								  error:&regexError];
+	
+	return ([regex numberOfMatchesInString:string options:0 range:NSMakeRange(0, string.length)] == 0);
 }
 
 #pragma mark - User-interface support
@@ -236,17 +278,17 @@ static NSArray *enumToSchoolArray = nil;
     
     // determine color. ***MAGIC DO NOT TOUCH UNDER ANY CIRCUMSTANCES***
     if (grade > 100) {
-        h = 0.13056;
+        h = 0.13055;
         s = 0;
         v = 1;
     } else if (grade < 0) {
         h = 0;
         s = 1;
-        v = 0.86944;
+        v = 0.86945;
     } else {
         h = MIN(0.25 * pow(grade / 100, asianness_limited), 0.13056);
         s = 1 - pow(grade / 100, asianness_limited * 2);
-        v = 0.86944 + h;
+        v = 0.86945 + h;
     }
     
     // apply hue transformation

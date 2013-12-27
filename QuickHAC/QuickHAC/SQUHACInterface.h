@@ -30,4 +30,9 @@ typedef enum {
 - (void) performLoginWithUser:(NSString *) username andPassword:(NSString *) password andSID:(NSString *) sid callback:(SQUResponseHandler) callback;
 - (void) getGradesURLWithBlob:(NSString *) blob callback:(SQUResponseHandler) callback;
 
+- (void) parseAveragesWithURL:(NSString *) url callback:(SQUResponseHandler) callback;
+- (void) parseClassGradesWithURL:(NSString *) url callback:(SQUResponseHandler) callback;
+
+- (BOOL) isServerReturnValid:(NSString *) string;
+
 @end
