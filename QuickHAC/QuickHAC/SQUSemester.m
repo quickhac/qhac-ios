@@ -1,20 +1,21 @@
 //
-//  SQUExam.m
+//  SQUSemester.m
 //  QuickHAC
 //
 //  Created by Tristan Seifert on 12/28/13.
 //  Copyright (c) 2013 Squee! Apps. All rights reserved.
 //
 
-#import "SQUExam.h"
+#import "SQUSemester.h"
 #import "SQUCourse.h"
 
 
-@implementation SQUExam
+@implementation SQUSemester
 
-@dynamic grade;
-@dynamic isExempt;
+@dynamic examGrade;
+@dynamic examIsExempt;
 @dynamic semester;
+@dynamic average;
 @dynamic course;
 
 @end

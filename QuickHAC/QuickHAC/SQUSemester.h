@@ -1,5 +1,5 @@
 //
-//  SQUExam.h
+//  SQUSemester.h
 //  QuickHAC
 //
 //  Created by Tristan Seifert on 12/28/13.
@@ -11,11 +11,12 @@
 
 @class SQUCourse;
 
-@interface SQUExam : NSManagedObject
+@interface SQUSemester : NSManagedObject
 
-@property (nonatomic, retain) NSNumber * grade;
-@property (nonatomic, retain) NSNumber * isExempt;
+@property (nonatomic, retain) NSNumber * examGrade;
+@property (nonatomic, retain) NSNumber * examIsExempt;
 @property (nonatomic, retain) NSNumber * semester;
+@property (nonatomic, retain) NSNumber * average;
 @property (nonatomic, retain) SQUCourse *course;
 
 @end

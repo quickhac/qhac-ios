@@ -34,7 +34,7 @@
 		_backgroundLayer.shadowOpacity = 1.0;
 		_backgroundLayer.shadowRadius = 3.0;
 		_backgroundLayer.shadowOffset = CGSizeMake(0, 3);
-		_backgroundLayer.masksToBounds = NO;
+		_backgroundLayer.masksToBounds = YES;
 		
 		UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:_backgroundLayer.frame cornerRadius:_backgroundLayer.cornerRadius];
 		_backgroundLayer.shadowPath = path.CGPath;
@@ -68,7 +68,7 @@
 			CGFloat currentX = 16 + ((_backgroundLayer.frame.size.width / 2) * i);
 			
 			CATextLayer *semesterHead = [CATextLayer layer];
-			semesterHead.frame = CGRectMake(currentX, 32, (_backgroundLayer.frame.size.width / 2) - 24, 16);
+			semesterHead.frame = CGRectMake(currentX, 34, (_backgroundLayer.frame.size.width / 2) - 24, 16);
 			semesterHead.contentsScale = [UIScreen mainScreen].scale;
 			semesterHead.foregroundColor = [UIColor blackColor].CGColor;
 			semesterHead.font = (__bridge CFTypeRef) [UIFont boldSystemFontOfSize:14.0f];
@@ -81,13 +81,14 @@
 				CGFloat currentX = 16 + ((_backgroundLayer.frame.size.width / 2) * i);
 				
 				CATextLayer *cycleHead = [CATextLayer layer];
-				cycleHead.frame = CGRectMake(currentX, 52 + (j * 19), (_backgroundLayer.frame.size.width / 2) - 24, 16);
+				cycleHead.frame = CGRectMake(currentX, 60 + (j * 19), (_backgroundLayer.frame.size.width / 2) - 24, 16);
 				cycleHead.contentsScale = [UIScreen mainScreen].scale;
 				cycleHead.foregroundColor = [UIColor blackColor].CGColor;
 				cycleHead.font = (__bridge CFTypeRef) [UIFont systemFontOfSize:14.0f];
 				cycleHead.fontSize = 14.0f;
 				cycleHead.string = @"Cycle 1: 100";
-				cycleHead.alignmentMode = (i == 0) ? kCAAlignmentLeft : kCAAlignmentRight;
+				//cycleHead.alignmentMode = (i == 0) ? kCAAlignmentLeft : kCAAlignmentRight;
+				cycleHead.alignmentMode = kCAAlignmentLeft;
 				
 				[_cycleHeads addObject:cycleHead];
 				[_backgroundLayer addSublayer:cycleHead];
@@ -147,6 +148,41 @@
 	
     _periodTitle.string = [NSString stringWithFormat:NSLocalizedString(@"Period %u", nil), period];
     _courseTitle.string = _courseInfo.title;
+	
+	for(NSUInteger i = 0; i < 2; i++) {
+		SQUSemester *semester = _courseInfo.semesters[i];
+		
+		CATextLayer *semesterHead = _semesterHeads[i];
+		
+		if(semester.average.integerValue == -1) {
+			semesterHead.string = [NSString stringWithFormat:NSLocalizedString(@"Semester %u: N/A", nil), i + 1];			
+		} else {
+			semesterHead.string = [NSString stringWithFormat:NSLocalizedString(@"Semester %u: %u", nil), i + 1, semester.average.unsignedIntegerValue];
+		}
+		
+		for(NSUInteger j = 0; j < 4; j++) {
+			CATextLayer *cycleHead = _cycleHeads[j + (i * 4)];
+			
+			// Exam grade
+			if(j == 3) {
+				if(semester.examGrade.integerValue == -1) {
+					cycleHead.string = [NSString stringWithFormat:NSLocalizedString(@"Exam %u: N/A", nil), i + 1];
+				} else if(!semester.examIsExempt.boolValue) {
+					cycleHead.string = [NSString stringWithFormat:NSLocalizedString(@"Exam %u: %u", nil), i + 1, semester.examGrade.unsignedIntegerValue];
+				} else {
+					cycleHead.string = [NSString stringWithFormat:NSLocalizedString(@"Exam %u: Exc", nil), i + 1];
+				}
+			} else {
+				SQUCycle *cycle = _courseInfo.cycles[j + (i * 3)];
+				
+				if(cycle.average.unsignedIntegerValue == 0) {
+					cycleHead.string = [NSString stringWithFormat:NSLocalizedString(@"Cycle %u: N/A", nil), j + 1];
+				} else {
+					cycleHead.string = [NSString stringWithFormat:NSLocalizedString(@"Cycle %u: %u", nil), j + 1, cycle.average.unsignedIntegerValue];
+				}
+			}
+		}
+	}
 }
 
 @end

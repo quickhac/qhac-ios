@@ -213,18 +213,19 @@ static SQUGradeManager *_sharedInstance = nil;
 			}
 			
 			// Take care of the exams here.
-			SQUExam *exam;
+			SQUSemester *dbSemester;
 			
-			if(course.exams.count != [class[@"semesters"] count]) {
-				exam = [NSEntityDescription insertNewObjectForEntityForName:@"SQUExam" inManagedObjectContext:_coreDataMOContext];
-				[course addExamsObject:exam];
+			if(course.semesters.count != [class[@"semesters"] count]) {
+				dbSemester = [NSEntityDescription insertNewObjectForEntityForName:@"SQUSemester" inManagedObjectContext:_coreDataMOContext];
+				[course addSemestersObject:dbSemester];
 			} else {
-				exam = course.exams[[semester[@"index"] integerValue]];
+				dbSemester = course.semesters[[semester[@"index"] integerValue]];
 			}
 			
-			exam.isExempt = semester[@"examIsExempt"];
-			exam.grade = semester[@"examGrade"];
-			exam.semester = semester[@"index"];
+			dbSemester.examIsExempt = semester[@"examIsExempt"];
+			dbSemester.examGrade = semester[@"examGrade"];
+			dbSemester.semester = semester[@"index"];
+			dbSemester.average = semester[@"semesterAverage"];
 		}
 		
 /*		NSLog(@"Course entry for ID %@: %@", course.courseCode, course);

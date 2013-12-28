@@ -37,11 +37,11 @@
 		DE81CDD9186D517800DC1CAB /* XPathQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = DE81CDD6186D517800DC1CAB /* XPathQuery.m */; };
 		DE81CDDC186D538000DC1CAB /* libxml2.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DE81CDDA186D518C00DC1CAB /* libxml2.2.dylib */; };
 		DEF0F19B186EC7F700116B61 /* SQUStudent.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F19A186EC7F700116B61 /* SQUStudent.m */; };
-		DEF0F19E186EC7F800116B61 /* SQUExam.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F19D186EC7F800116B61 /* SQUExam.m */; };
 		DEF0F1A1186EC7F800116B61 /* SQUCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F1A0186EC7F800116B61 /* SQUCategory.m */; };
 		DEF0F1A7186EC7F800116B61 /* SQUAssignment.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F1A6186EC7F800116B61 /* SQUAssignment.m */; };
 		DEF0F1AA186EC7F800116B61 /* SQUCycle.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F1A9186EC7F800116B61 /* SQUCycle.m */; };
-		DEF0F1AD186EC8D200116B61 /* SQUCourse.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F1AC186EC8D200116B61 /* SQUCourse.m */; };
+		DEF0F1B6186EDFD800116B61 /* SQUSemester.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F1B5186EDFD800116B61 /* SQUSemester.m */; };
+		DEF0F1B9186EE05400116B61 /* SQUCourse.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F1B8186EE05400116B61 /* SQUCourse.m */; };
 		DEF43B0317965B0D00190803 /* SQUGradeOverviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF43B0217965B0D00190803 /* SQUGradeOverviewController.m */; };
 		DEF43B0617965B1F00190803 /* SQUGradeOverviewTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF43B0517965B1F00190803 /* SQUGradeOverviewTableViewCell.m */; };
 		DEF43B0B179719B800190803 /* SQUHueWheel.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF43B0A179719B800190803 /* SQUHueWheel.m */; };
@@ -138,16 +138,16 @@
 		DECA57D517DFD9D400156AFC /* SQUCoreData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SQUCoreData.h; sourceTree = "<group>"; };
 		DEF0F199186EC7F700116B61 /* SQUStudent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUStudent.h; sourceTree = "<group>"; };
 		DEF0F19A186EC7F700116B61 /* SQUStudent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUStudent.m; sourceTree = "<group>"; };
-		DEF0F19C186EC7F800116B61 /* SQUExam.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUExam.h; sourceTree = "<group>"; };
-		DEF0F19D186EC7F800116B61 /* SQUExam.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUExam.m; sourceTree = "<group>"; };
 		DEF0F19F186EC7F800116B61 /* SQUCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUCategory.h; sourceTree = "<group>"; };
 		DEF0F1A0186EC7F800116B61 /* SQUCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUCategory.m; sourceTree = "<group>"; };
 		DEF0F1A5186EC7F800116B61 /* SQUAssignment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUAssignment.h; sourceTree = "<group>"; };
 		DEF0F1A6186EC7F800116B61 /* SQUAssignment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUAssignment.m; sourceTree = "<group>"; };
 		DEF0F1A8186EC7F800116B61 /* SQUCycle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUCycle.h; sourceTree = "<group>"; };
 		DEF0F1A9186EC7F800116B61 /* SQUCycle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUCycle.m; sourceTree = "<group>"; };
-		DEF0F1AB186EC8D200116B61 /* SQUCourse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUCourse.h; sourceTree = "<group>"; };
-		DEF0F1AC186EC8D200116B61 /* SQUCourse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUCourse.m; sourceTree = "<group>"; };
+		DEF0F1B4186EDFD800116B61 /* SQUSemester.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUSemester.h; sourceTree = "<group>"; };
+		DEF0F1B5186EDFD800116B61 /* SQUSemester.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUSemester.m; sourceTree = "<group>"; };
+		DEF0F1B7186EE05400116B61 /* SQUCourse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUCourse.h; sourceTree = "<group>"; };
+		DEF0F1B8186EE05400116B61 /* SQUCourse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUCourse.m; sourceTree = "<group>"; };
 		DEF43B0117965B0D00190803 /* SQUGradeOverviewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUGradeOverviewController.h; sourceTree = "<group>"; };
 		DEF43B0217965B0D00190803 /* SQUGradeOverviewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUGradeOverviewController.m; sourceTree = "<group>"; };
 		DEF43B0417965B1F00190803 /* SQUGradeOverviewTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUGradeOverviewTableViewCell.h; sourceTree = "<group>"; };
@@ -422,16 +422,16 @@
 		DECA57C817DFD96300156AFC /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
-				DEF0F1AB186EC8D200116B61 /* SQUCourse.h */,
-				DEF0F1AC186EC8D200116B61 /* SQUCourse.m */,
+				DEF0F1B7186EE05400116B61 /* SQUCourse.h */,
+				DEF0F1B8186EE05400116B61 /* SQUCourse.m */,
+				DEF0F1B4186EDFD800116B61 /* SQUSemester.h */,
+				DEF0F1B5186EDFD800116B61 /* SQUSemester.m */,
 				DEF0F1A8186EC7F800116B61 /* SQUCycle.h */,
 				DEF0F1A9186EC7F800116B61 /* SQUCycle.m */,
 				DEF0F1A5186EC7F800116B61 /* SQUAssignment.h */,
 				DEF0F1A6186EC7F800116B61 /* SQUAssignment.m */,
 				DEF0F19F186EC7F800116B61 /* SQUCategory.h */,
 				DEF0F1A0186EC7F800116B61 /* SQUCategory.m */,
-				DEF0F19C186EC7F800116B61 /* SQUExam.h */,
-				DEF0F19D186EC7F800116B61 /* SQUExam.m */,
 				DEF0F199186EC7F700116B61 /* SQUStudent.h */,
 				DEF0F19A186EC7F700116B61 /* SQUStudent.m */,
 				DECA57D517DFD9D400156AFC /* SQUCoreData.h */,
@@ -677,7 +677,8 @@
 				DEFFDE5D186E270900E26423 /* UIProgressView+AFNetworking.m in Sources */,
 				DEFFDE3F186E26FC00E26423 /* AFHTTPRequestOperation.m in Sources */,
 				DE81CDD7186D517800DC1CAB /* TFHpple.m in Sources */,
-				DEF0F1AD186EC8D200116B61 /* SQUCourse.m in Sources */,
+				DEF0F1B9186EE05400116B61 /* SQUCourse.m in Sources */,
+				DEF0F1B6186EDFD800116B61 /* SQUSemester.m in Sources */,
 				DE81CDD9186D517800DC1CAB /* XPathQuery.m in Sources */,
 				DEFFDE27186D8C5F00E26423 /* SQUDistrictManager.m in Sources */,
 				DEFFDE58186E270900E26423 /* AFNetworkActivityIndicatorManager.m in Sources */,
@@ -696,7 +697,6 @@
 				DEF0F1AA186EC7F800116B61 /* SQUCycle.m in Sources */,
 				DEFFDE40186E26FC00E26423 /* AFHTTPRequestOperationManager.m in Sources */,
 				DE81CDCD186D2C6B00DC1CAB /* SQUGradeParser.m in Sources */,
-				DEF0F19E186EC7F800116B61 /* SQUExam.m in Sources */,
 				DEF0F1A7186EC7F800116B61 /* SQUAssignment.m in Sources */,
 				DE35E9A9180614DF00F15F20 /* Lockbox.m in Sources */,
 				DEFFDE42186E26FC00E26423 /* AFNetworkReachabilityManager.m in Sources */,

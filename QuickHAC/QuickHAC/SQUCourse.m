@@ -8,7 +8,7 @@
 
 #import "SQUCourse.h"
 #import "SQUCycle.h"
-#import "SQUExam.h"
+#import "SQUSemester.h"
 #import "SQUStudent.h"
 
 
@@ -23,6 +23,6 @@
 @dynamic title;
 @dynamic cycles;
 @dynamic student;
-@dynamic exams;
+@dynamic semesters;
 
 @end

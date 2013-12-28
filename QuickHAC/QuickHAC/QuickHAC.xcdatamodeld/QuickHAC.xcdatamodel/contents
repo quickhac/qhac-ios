@@ -28,7 +28,7 @@
         <attribute name="teacher_name" attributeType="String" indexed="YES" spotlightIndexingEnabled="YES" syncable="YES"/>
         <attribute name="title" attributeType="String" indexed="YES" spotlightIndexingEnabled="YES" syncable="YES"/>
         <relationship name="cycles" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="SQUCycle" inverseName="course" inverseEntity="SQUCycle" syncable="YES"/>
-        <relationship name="exams" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="SQUExam" inverseName="course" inverseEntity="SQUExam" syncable="YES"/>
+        <relationship name="semesters" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="SQUSemester" inverseName="course" inverseEntity="SQUSemester" syncable="YES"/>
         <relationship name="student" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SQUStudent" inverseName="courses" inverseEntity="SQUStudent" syncable="YES"/>
     </entity>
     <entity name="SQUCycle" representedClassName="SQUCycle" syncable="YES">
@@ -39,11 +39,12 @@
         <relationship name="categories" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SQUCategory" inverseName="cycle" inverseEntity="SQUCategory" syncable="YES"/>
         <relationship name="course" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SQUCourse" inverseName="cycles" inverseEntity="SQUCourse" syncable="YES"/>
     </entity>
-    <entity name="SQUExam" representedClassName="SQUExam" syncable="YES">
-        <attribute name="grade" optional="YES" attributeType="Float" defaultValueString="-1" syncable="YES"/>
-        <attribute name="isExempt" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+    <entity name="SQUSemester" representedClassName="SQUSemester" syncable="YES">
+        <attribute name="average" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="examGrade" optional="YES" attributeType="Float" defaultValueString="-1" syncable="YES"/>
+        <attribute name="examIsExempt" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="semester" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <relationship name="course" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SQUCourse" inverseName="exams" inverseEntity="SQUCourse" syncable="YES"/>
+        <relationship name="course" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SQUCourse" inverseName="semesters" inverseEntity="SQUCourse" syncable="YES"/>
     </entity>
     <entity name="SQUStudent" representedClassName="SQUStudent" syncable="YES">
         <attribute name="district" attributeType="Integer 16" minValueString="0" defaultValueString="0" syncable="YES"/>
@@ -58,6 +59,6 @@
         <element name="SQUCourse" positionX="-3960" positionY="360" width="128" height="193"/>
         <element name="SQUCycle" positionX="-3744" positionY="360" width="128" height="133"/>
         <element name="SQUStudent" positionX="-4160" positionY="360" width="128" height="118"/>
-        <element name="SQUExam" positionX="-3962" positionY="648" width="128" height="103"/>
+        <element name="SQUSemester" positionX="-3962" positionY="648" width="128" height="118"/>
     </elements>
 </model>
