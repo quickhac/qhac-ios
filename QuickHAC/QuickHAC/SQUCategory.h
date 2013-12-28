@@ -2,7 +2,7 @@
 //  SQUCategory.h
 //  QuickHAC
 //
-//  Created by Tristan Seifert on 12/27/13.
+//  Created by Tristan Seifert on 12/28/13.
 //  Copyright (c) 2013 Squee! Apps. All rights reserved.
 //
 
@@ -16,8 +16,8 @@
 @property (nonatomic, retain) NSNumber * average;
 @property (nonatomic, retain) NSString * title;
 @property (nonatomic, retain) NSNumber * weight;
-@property (nonatomic, retain) SQUCycle *cycle;
 @property (nonatomic, retain) NSSet *assignments;
+@property (nonatomic, retain) SQUCycle *cycle;
 @end
 
 @interface SQUCategory (CoreDataGeneratedAccessors)

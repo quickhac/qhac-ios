@@ -7,14 +7,21 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "PKRevealController.h"
 
-#define SQUMinimumFetchInterval 60*30 // seconds
+#define kSQUAlertChangePassword 1
 
 @class SQUGradeOverviewController;
+@class SQUSidebarController;
 
-@interface SQUAppDelegate : UIResponder <UIApplicationDelegate> {
+@interface SQUAppDelegate : UIResponder <UIApplicationDelegate, UIAlertViewDelegate> {
     UINavigationController *_navController;
     SQUGradeOverviewController *_rootViewController;
+	
+	UINavigationController *_sidebarNavController;
+	SQUSidebarController *_sidebarController;
+	
+	PKRevealController *_drawerController;
 }
 
 @property (strong, nonatomic) UIWindow *window;

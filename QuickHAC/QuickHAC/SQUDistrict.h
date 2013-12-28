@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+typedef void (^ SQULoggedInCallback)(BOOL isLoggedIn);
 
 typedef struct {
 	NSUInteger semesters;
@@ -17,6 +18,7 @@ typedef struct {
 typedef struct {
 	NSUInteger title;
 	NSUInteger grades;
+	NSUInteger period;
 } col_offsets_t;
 
 /*
@@ -30,7 +32,7 @@ typedef struct {
 - (NSDictionary *) buildLoginRequestWithUser:(NSString *) username usingPassword:(NSString *) password andUserData:(id) userData;
 - (NSDictionary *) buildDisambiguationRequestWithStudentID:(NSString *) sid andUserData:(id) userData;
 - (NSDictionary *) buildAveragesRequestWithUserData:(id) userData;
-- (NSDictionary *) buildClassGradesRequestWithCourseCode:(NSString *) course andCycle:(NSUInteger) cycle andUserData:(id) userData;
+- (NSDictionary *) buildClassGradesRequestWithCourseCode:(NSString *) course andSemester:(NSUInteger) semester andCycle:(NSUInteger) cycle andUserData:(id) userData;
 
 // callbacks
 - (void) updateDistrictStateWithClassGrades:(NSArray *) grades;
@@ -39,6 +41,10 @@ typedef struct {
 
 // Validation
 - (BOOL) didLoginSucceedWithLoginData:(NSData *) data;
+- (BOOL) didDisambiguationSucceedWithLoginData:(NSData *) data;
+
+// Network requests/etc
+- (void) isLoggedInWithCallback:(SQULoggedInCallback) callback;
 
 @end
 
@@ -47,6 +53,9 @@ typedef struct {
  * base behaviour that usually does not need to change.
  */
 @interface SQUDistrict : NSObject <SQUDistrictProtocol> {
+@public
+	
+@protected
 	NSString *_driver;
 	NSString *_name;
 	float _examWeight;

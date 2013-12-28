@@ -11,8 +11,8 @@
 #import "SVProgressHUD.h"
 #import "SQUAppDelegate.h"
 #import "SQUDistrict.h"
+#import "SQUGradeManager.h"
 #import "SQUDistrictManager.h"
-#import "SQUHACInterface.h"
 #import "SQUCoreData.h"
 
 // seriously, I thought I could handle the Keychain APIs but nope.avi
@@ -257,7 +257,8 @@
 			if(!returnData) {
 				[SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Wrong Credentials", nil)];
 			} else {
-				[SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"Logged In", nil)];
+				[SVProgressHUD showProgress:-1 status:NSLocalizedString(@"Updating Grades…", nil) maskType:SVProgressHUDMaskTypeGradient];
+				
 				// returnData contains student info. (user, pass, id)
 				NSMutableDictionary *returnInfo = (NSMutableDictionary *) returnData;
 				returnInfo[@"sid"] = _sidField.text;
@@ -274,21 +275,23 @@
 				studentInfo.district = [NSNumber numberWithInteger:_district.district_id];
 				studentInfo.hacUsername = returnInfo[@"username"];
 				
-				// Save info to database
-				NSError *db_err = nil;
-				if (![context save:&db_err]) {
-					UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Storing Information", nil) message:db_err.localizedDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
-					[alert show];
-					
-					NSLog(@"Couldn't save database: %@", [db_err localizedDescription]);
-					return;
-				}
+				// Make sure we do the same setp that SQUAppDelgate does.
+				[[SQUGradeManager sharedInstance] setStudent:studentInfo];
 				
-				[[NSUserDefaults standardUserDefaults] synchronize];
-
-				
-				// Dismiss this view and go to the grade overview
-				[self dismissViewControllerAnimated:YES completion:NO];
+				// Now, try to update the grades
+				[[SQUGradeManager sharedInstance] fetchNewClassGradesFromServerWithDoneCallback:^(NSError *error) {
+					if(!error) {
+						[SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"Done!", nil)];
+						
+						// Dismiss login view and show overview
+						[self dismissViewControllerAnimated:YES completion:NO];
+					} else {
+						[SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Error", nil)];
+						
+						UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Fetching Grades", nil) message:error.localizedDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
+						[alert show];
+					}
+				}];
 			}
 		} else {
             [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Error", nil)];

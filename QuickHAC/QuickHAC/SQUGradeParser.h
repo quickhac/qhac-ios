@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <JavaScriptCore/JavaScriptCore.h>
 
+@class SQUDistrict;
 @interface SQUGradeParser : NSObject {
 	JSVirtualMachine *_jsVirtualMachine;
 	JSContext *_jsContext;
@@ -16,7 +17,10 @@
 
 + (SQUGradeParser *) sharedInstance;
 
-- (NSArray *) parseAveragesForDistrict:(void *) district withString:(NSString *) string;
-- (NSString *) getStudentNameForDistrict:(void *) district withString:(NSString *) string;
-- (NSDictionary *) getClassGradesForDistrict:(void *) district withString:(NSString *) string;
+- (NSArray *) parseAveragesForDistrict:(SQUDistrict *) district withString:(NSString *) string;
+- (NSString *) getStudentNameForDistrict:(SQUDistrict *) district withString:(NSString *) string;
+- (NSDictionary *) getClassGradesForDistrict:(SQUDistrict *) district withString:(NSString *) string;
+
++ (UIColor *) colourizeGrade:(float) grade;
+
 @end

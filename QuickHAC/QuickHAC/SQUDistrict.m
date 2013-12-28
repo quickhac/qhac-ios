@@ -50,7 +50,7 @@
  * Builds a request to fetch the class grades for the specified course and
  * cycle.
  */
-- (NSDictionary *) buildClassGradesRequestWithCourseCode:(NSString *) course andCycle:(NSUInteger) cycle andUserData:(id) userData {
+- (NSDictionary *) buildClassGradesRequestWithCourseCode:(NSString *) course andSemester:(NSUInteger) semester andCycle:(NSUInteger) cycle andUserData:(id) userData {
 	NSLog(@"%s(%i) %s: SQUDistrict method not overridden or no subclass used", __FILE__, __LINE__, __func__);
 	return nil;
 }
@@ -87,6 +87,22 @@
 - (BOOL) didLoginSucceedWithLoginData:(NSData *) data {
 	NSLog(@"%s(%i) %s: SQUDistrict method not overridden or no subclass used", __FILE__, __LINE__, __func__);
 	return NO;
+}
+
+/*
+ * Called with the data returned by the disambiguation request to evaluate if
+ * the correct student was disambiguated.
+ */
+- (BOOL) didDisambiguationSucceedWithLoginData:(NSData *) data {
+	NSLog(@"%s(%i) %s: SQUDistrict method not overridden or no subclass used", __FILE__, __LINE__, __func__);
+	return NO;
+}
+
+/*
+ * Called to get the current login status.
+ */
+- (void) isLoggedInWithCallback:(SQULoggedInCallback) callback {
+	NSLog(@"%s(%i) %s: SQUDistrict method not overridden or no subclass used", __FILE__, __LINE__, __func__);
 }
 
 @end

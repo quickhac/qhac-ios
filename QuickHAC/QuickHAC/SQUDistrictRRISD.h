@@ -9,7 +9,11 @@
 #import "SQUDistrict.h"
 
 @interface SQUDistrictRRISD : SQUDistrict {
+@public
+	
+@private
 	NSMutableDictionary *_loginASPNetInfo;
+	NSMutableDictionary *_classToHashMap;
 }
 
 @end

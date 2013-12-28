@@ -14,13 +14,13 @@
 #import "TFHpple.h"
 #import "SQUGradeParser.h"
 #import "SQUDistrict.h"
+#import "SQUDistrict.h"
 
 static SQUGradeParser *_sharedInstance = nil;
 
 @implementation SQUGradeParser
 
 #pragma mark - Singleton
-
 + (SQUGradeParser *) sharedInstance {
     @synchronized (self) {
         if (_sharedInstance == nil) {
@@ -49,47 +49,15 @@ static SQUGradeParser *_sharedInstance = nil;
 - (id) init {
     @synchronized(self) {
         if(self = [super init]) {
-			/*// Set up the JS contexts
-			_jsVirtualMachine = [[JSVirtualMachine alloc] init];
-			_jsContext = [[JSContext alloc] initWithVirtualMachine:_jsVirtualMachine];
-			
-			// Set up exception handler
-			_jsContext.exceptionHandler = ^(JSContext *context, JSValue *exception) {
-				context.exception = exception;
-				NSLog(@"Unhandled exception in context %@: %@", context, exception);
-			};
-			
-			// Load in env.js
-			NSError *err = nil;
-			NSURL *pathOfScript = [[NSBundle mainBundle] URLForResource:@"env" withExtension:@"js"];
-			NSString *loadedScript = [NSString stringWithContentsOfURL:pathOfScript encoding:NSUTF8StringEncoding error:&err];
-			
-			if(err) {
-				NSLog(@"Error loading env.js (URL = %@): %@", pathOfScript, err);
-			} else {
-				JSValue *returnValue = [_jsContext evaluateScript:loadedScript];
-				NSLog(@"Loaded env.js: %@", returnValue);
-			}
-			
-			// Load qhac.js into the context
-			pathOfScript = [[NSBundle mainBundle] URLForResource:@"qhac" withExtension:@"js"];
-			loadedScript = [NSString stringWithContentsOfURL:pathOfScript encoding:NSUTF8StringEncoding error:&err];
-			
-			if(err) {
-				NSLog(@"Error loading qhac.js (URL = %@): %@", pathOfScript, err);
-			} else {
-				JSValue *returnValue = [_jsContext evaluateScript:loadedScript];
-				NSLog(@"Loaded qhac.js: %@", returnValue);
-			}*/
+
         }
-		
-        
+		      
         return self;
     }
 }
 
 #pragma mark - Private DOM parsing interfaces
-- (NSDictionary *) parseCycleWithDistrict:(void *) district andCell:(TFHppleElement *) cell andIndex:(NSUInteger) index {
+- (NSDictionary *) parseCycleWithDistrict:(SQUDistrict *) district andCell:(TFHppleElement *) cell andIndex:(NSUInteger) index {
 	// Try to find a link inside the cell
 	NSArray *links = [cell childrenWithTagName:@"a"];
 	
@@ -124,7 +92,7 @@ static SQUGradeParser *_sharedInstance = nil;
 	return returnValue;
 }
 
-- (NSDictionary *) parseSemesterWithDistrict:(void *) district andSemesterCells:(NSArray *) cells andSemester:(NSUInteger) semester andSemesterParams:(semester_params_t) semParams {
+- (NSDictionary *) parseSemesterWithDistrict:(SQUDistrict *) district andSemesterCells:(NSArray *) cells andSemester:(NSUInteger) semester andSemesterParams:(semester_params_t) semParams {
 	NSMutableArray *cycles = [NSMutableArray new];
 	NSMutableDictionary *returnValue = [NSMutableDictionary new];
 	
@@ -173,7 +141,25 @@ static SQUGradeParser *_sharedInstance = nil;
 	return returnValue;
 }
 
-- (NSDictionary *) parseCourseWithDistrict:(void *) district andTableRow:(TFHppleElement *) row andSemesterParams:(semester_params_t) semParams {
+- (NSString *) getCourseNumberForDistrict:(SQUDistrict *) district andCells:(NSArray *) columns {
+	for(NSUInteger i = district.tableOffsets.grades; i < columns.count; i++) {
+		NSArray *links = [columns[i] childrenWithTagName:@"a"];
+		
+		// If there's a link, get the part after "data"
+		if(links.count > 0) {
+			TFHppleElement *link = links[0];
+			NSString *data = [link[@"href"] componentsSeparatedByString:@"data="][1];
+			NSString *urlDecoded = (NSString *) CFBridgingRelease(CFURLCreateStringByReplacingPercentEscapes(NULL, (CFStringRef) data, CFSTR("")));
+			NSString *base64Decoded = [[NSString alloc] initWithData:[[NSData alloc] initWithBase64EncodedString:urlDecoded options:0] encoding:NSUTF8StringEncoding];
+			
+			return [base64Decoded componentsSeparatedByString:@"|"][3];
+		}
+	}
+	
+	return nil;
+}
+
+- (NSDictionary *) parseCourseWithDistrict:(SQUDistrict *) district andTableRow:(TFHppleElement *) row andSemesterParams:(semester_params_t) semParams {
 	NSMutableDictionary *dict = [NSMutableDictionary new];
 	NSMutableArray *semesters = [NSMutableArray new];
 
@@ -184,7 +170,7 @@ static SQUGradeParser *_sharedInstance = nil;
 	// Build a list of cells in a semester
 	for (NSUInteger i = 0; i < semParams.semesters; i++) {
 		NSMutableArray *semesterCells = [NSMutableArray new];
-		NSUInteger cellOffset = 2 + (i * (semParams.cyclesPerSemester + 2));
+		NSUInteger cellOffset = district.tableOffsets.grades + (i * (semParams.cyclesPerSemester + 2));
 		
 		for(NSUInteger j = 0; j < semParams.cyclesPerSemester + 2; j++) {
 			semesterCells[j] = cells[cellOffset + j];
@@ -194,16 +180,18 @@ static SQUGradeParser *_sharedInstance = nil;
 		semesters[i] = [self parseSemesterWithDistrict:district andSemesterCells:semesterCells andSemester:i andSemesterParams:semParams];
 	}
 	
-	dict[@"title"] = [cells[0] text];
+	dict[@"title"] = [cells[district.tableOffsets.title] text];
+	dict[@"period"] = [NSNumber numberWithInteger:[[cells[district.tableOffsets.period] text] integerValue]];
 	dict[@"teacherName"] = [teacherLink text];
-	dict[@"teacherEmail"] = teacherLink[@"href"];
+	dict[@"teacherEmail"] = [teacherLink[@"href"] substringFromIndex:7];
 	dict[@"semesters"] = semesters;
+	dict[@"courseNum"] = [self getCourseNumberForDistrict:district andCells:cells];
 	
 	return dict;
 }
 
 #pragma mark - Grade parsing
-- (NSArray *) parseAveragesForDistrict:(void *) district withString:(NSString *) string {
+- (NSArray *) parseAveragesForDistrict:(SQUDistrict *) district withString:(NSString *) string {
 	NSData *htmlData = [string dataUsingEncoding:NSUTF8StringEncoding];
 	TFHpple *parser = [TFHpple hppleWithHTMLData:htmlData];
 	
@@ -213,16 +201,40 @@ static SQUGradeParser *_sharedInstance = nil;
 	@try {
 #endif
 		// Find table
-		TFHppleElement *table = [parser searchWithXPathQuery:@"//table[@class='DataTable']"][0];
+		NSArray *tables = [parser searchWithXPathQuery:@"//table[@class='DataTable']"];
+		TFHppleElement *table = nil;
+		
+		if(tables.count > 0) {
+			table = tables[0];
+		} else {
+			return nil;
+		}
 		
 		// Find the rows inside the table
 		NSArray *rows = [table childrenWithTagName:@"tr"];
 		
 		// Calculate semesters and cycles
-#warning Change to calculate cycles and semesters
+		TFHppleElement *tableHeader = [table childrenWithClassName:@"TableHeader"][0];
+		NSArray *headerCells = [tableHeader childrenWithTagName:@"th"];
+		NSString *semesterCellString = [headerCells[headerCells.count - 1] text];
+		NSString *cycleCellString = [headerCells[headerCells.count - 3] text];
+		
+		NSUInteger sem = NSNotFound; NSUInteger cyc = NSNotFound;
+		
+		// Find number of semesters
+		sem = [[semesterCellString componentsSeparatedByString:@" "][1] integerValue];
+		
+		// Do same for number of cycles
+		cyc = [[cycleCellString componentsSeparatedByString:@" "][1] integerValue] / sem;
+		
+		NSLog(@"Semesters: %u\nCycles: %u", sem, cyc);
+		
+		NSAssert(sem < 3, @"Too many semesters, calculated %u", sem);
+		NSAssert(cyc < 5, @"Too many grading cycles, calculated %u", cyc);
+	
 		semester_params_t semesterParams = {
-			.semesters = 2,
-			.cyclesPerSemester = 3
+			.semesters = sem,
+			.cyclesPerSemester = cyc
 		};
 		
 		// Iterate the rows
@@ -241,19 +253,51 @@ static SQUGradeParser *_sharedInstance = nil;
 	}
 #endif
 	
-	NSLog(@"Averages: %@", averages);
+	//NSLog(@"Averages: %@", averages);
 	
 	return averages;
 }
 
-- (NSString *) getStudentNameForDistrict:(void *) district withString:(NSString *) string {
+- (NSString *) getStudentNameForDistrict:(SQUDistrict *) district withString:(NSString *) string {
 	// GradeParser.getStudentName(district, doc)
 	return @"";
 }
 
-- (NSDictionary *) getClassGradesForDistrict:(void *) district withString:(NSString *) string {
+- (NSDictionary *) getClassGradesForDistrict:(SQUDistrict *) district withString:(NSString *) string {
 	// GradeParser.parseClassGrades(district, doc, urlHash, semesterIndex, cycleIndex)
 	return nil;
+}
+
+#pragma mark - User-interface support
+// warning: contains magical numbers and some kind of black magic
++ (UIColor *) colourizeGrade:(float) grade {
+    // Makes sure asianness cannot be negative
+    NSUInteger asianness_limited = MAX(2, 0);
+    
+    // interpolate a hue gradient and convert to rgb
+    float h, s, v;
+    
+    // determine color. ***MAGIC DO NOT TOUCH UNDER ANY CIRCUMSTANCES***
+    if (grade > 100) {
+        h = 0.13055;
+        s = 0;
+        v = 1;
+    } else if (grade < 0) {
+        h = 0;
+        s = 1;
+        v = 0.86945;
+    } else {
+        h = MIN(0.25 * pow(grade / 100, asianness_limited), 0.13056);
+        s = 1 - pow(grade / 100, asianness_limited * 2);
+        v = 0.86945 + h;
+    }
+    
+    // apply hue transformation
+	//    h += hue;
+	//    h %= 1;
+	//    if (h < 0) h += 1;
+    
+    return [UIColor colorWithHue:h saturation:s brightness:v alpha:1.0];
 }
 
 @end

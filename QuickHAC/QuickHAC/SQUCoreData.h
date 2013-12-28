@@ -14,5 +14,6 @@
 #import "SQUCycle.h"
 #import "SQUCategory.h"
 #import "SQUAssignment.h"
+#import "SQUExam.h"
 
 #endif

@@ -2,19 +2,21 @@
 //  SQUGradeOverviewController.m
 //  QuickHAC
 //
+//	Handles rendering a table overview of all courses of a student, using the
+//	cards interface.
+//
 //  Created by Tristan Seifert on 16/07/2013.
 //  See README.MD for licensing and copyright information.
 //
 
 #import "SQUGradeOverviewController.h"
 #import "SQUGradeOverviewTableViewCell.h"
-
 #import "SQUAppDelegate.h"
 #import "SQUCoreData.h"
+#import "SQUGradeManager.h"
 
-@interface SQUGradeOverviewController ()
-- (NSString *) getTitleForGradingCycle:(NSUInteger) cycle;
-@end
+#import "UIViewController+PKRevealController.h"
+#import "PKRevealController.h"
 
 @implementation SQUGradeOverviewController
 
@@ -23,16 +25,18 @@
     if (self) {
         [self.tableView registerClass:[SQUGradeOverviewTableViewCell class]
                forCellReuseIdentifier:@"GradeOverviewCell"];
+		self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+		self.tableView.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1.0];
         
-        _gradingCycle = 0;
-        self.title = [self getTitleForGradingCycle:_gradingCycle];
+        self.title = NSLocalizedString(@"Overview", nil);
         
-        UIBarButtonItem *settings = [[UIBarButtonItem alloc]
-                                     initWithTitle:NSLocalizedString(@"Settings", nil)
+        UIBarButtonItem *showSidebar = [[UIBarButtonItem alloc]
+                                     initWithTitle:NSLocalizedString(@"Sidebar", nil)
                                      style:UIBarButtonItemStyleBordered target:self
-                                     action:@selector(openSettings:)];
-        
-        [self.navigationItem setLeftBarButtonItem:settings];
+                                     action:@selector(openSidebar:)];
+        [self.navigationItem setLeftBarButtonItem:showSidebar];
+		
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateTableNotification:) name:SQUGradesDataUpdatedNotification object:nil];
     }
     return self;
 }
@@ -45,20 +49,17 @@
     [refresher addTarget:self action:@selector(reloadData:)
         forControlEvents:UIControlEventValueChanged];
     self.refreshControl = refresher;
-    
-//    [self updateDatabase];
 }
 
 - (void) viewWillAppear:(BOOL) animated {
-//    [self updateDatabase];
-}
-
-- (void) didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+	[self.tableView reloadData];
 }
 
 #pragma mark - Table view data source
+- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	return SQUGradeOverviewCellHeight + 15;
+}
+
 - (NSInteger) numberOfSectionsInTableView:(UITableView *) tableView {
     // Return the number of sections.
     return 1;
@@ -66,87 +67,54 @@
 
 - (NSInteger) tableView:(UITableView *) tableView numberOfRowsInSection:(NSInteger) section {
     // Return the number of rows in the section.
-    return _classes.count;
+    return [[SQUGradeManager sharedInstance] getCoursesForCurrentStudent].count;
 }
 
 - (UITableViewCell *) tableView:(UITableView *) tableView cellForRowAtIndexPath:(NSIndexPath *) indexPath {
     static NSString *CellIdentifier = @"GradeOverviewCell";
     SQUGradeOverviewTableViewCell *cell = (SQUGradeOverviewTableViewCell *)
     [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-    
-    // Get class info
-/*    SQUClassInfo *classInfo = (SQUClassInfo *) _classes[indexPath.row];
-    
-    cell.period = indexPath.row + 1;
-    cell.classTitle = classInfo.title;
-    cell.grade = classInfo.currentGrade.floatValue;*/
-    
+	
+    cell.courseInfo = [[[SQUGradeManager sharedInstance] getCoursesForCurrentStudent] objectAtIndex:indexPath.row];
+	cell.backgroundColor = [UIColor clearColor];
+	
     [cell updateUI];
     
     return cell;
 }
 
-- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return SQUGradeOverviewCellHeight;
-}
-
 #pragma mark - UI Callbacks
-- (void) openSettings:(id) sender {
-    [[[UIAlertView alloc] initWithTitle:@"Settings" message:@"The settings view has not been implemented yet." delegate:Nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil] show];
+- (void) openSidebar:(id) sender {
+	if([self revealController].state == PKRevealControllerShowsFrontViewController) {
+		[[self revealController] showViewController:[self revealController].leftViewController];
+	} else {
+		[[self revealController] resignPresentationModeEntirely:YES animated:YES completion:NULL];
+	}
 }
 
 - (void) reloadData:(UIRefreshControl *) control {
-    control.attributedTitle = [[NSAttributedString alloc]
-                               initWithString:NSLocalizedString(@"Refreshing Data…", nil)];
-    
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"MMM d, h:mm a"];
-    NSDate *date = [NSDate date];
-    NSString *lastUpdated = [NSString stringWithFormat:NSLocalizedString(@"Last Updated on %@", nil),
-                             [formatter stringFromDate:date]];
-    control.attributedTitle = [[NSAttributedString alloc] initWithString:lastUpdated];
-    
-    [control endRefreshing];
+	[[SQUGradeManager sharedInstance] fetchNewClassGradesFromServerWithDoneCallback:^(NSError *error){
+		if(error) {
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Updating Grades", nil) message:error.localizedDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
+            [alert show];
+		} else {
+			NSLog(@"Grades Refreshed");
+			[self.tableView reloadData];
+		}
+		
+		// End refreshing
+		NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+		[formatter setDateFormat:@"MMM d, h:mm a"];
+		NSDate *date = [NSDate date];
+		NSString *lastUpdated = [NSString stringWithFormat:NSLocalizedString(@"Last Updated on %@", nil), [formatter stringFromDate:date]];
+		control.attributedTitle = [[NSAttributedString alloc] initWithString:lastUpdated];
+		
+		[control endRefreshing];
+	}];
 }
 
-/*- (void) updateDatabase {
-    // Load classes from CoreData
-    NSManagedObjectContext *context = [[SQUAppDelegate sharedDelegate] managedObjectContext];
-    NSError *db_err = nil;
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"SQUStudent" inManagedObjectContext:context];
-    [fetchRequest setEntity:entity];
-    
-    // If we have students, try and display grades
-    NSArray *students = [context executeFetchRequest:fetchRequest error:&db_err];
-    if(students.count > 0) {
-        if(_classes) {
-            [_classes removeAllObjects];
-        } else {
-            _classes = [[NSMutableArray alloc] init];
-        }
-        
-        SQUStudent *activeStudent = students[0];
-        
-        for (SQUClassInfo *class in activeStudent.classes) {
-            // Insert the classes into an array used for display
-            [_classes addObject:class];
-        }
-    
-        [self.tableView reloadData];
-    }
-}*/
-
-#pragma mark - Miscellaneous helper methods
-- (NSString *) getTitleForGradingCycle:(NSUInteger) cycle {
-    static NSArray *items = nil;
-    
-    if(!items) {
-        items = @[@"Cycle 1", @"Cycle 2", @"Cycle 3", @"Exam 1", @"Semester 1",
-                  @"Cycle 4", @"Cycle 5", @"Cycle 6", @"Exam 2", @"Semester 2"];
-    }
-    
-    return NSLocalizedString(items[cycle], nil);
+- (void) updateTableNotification:(NSNotification *) notif {
+	[self.tableView reloadData];
 }
 
 @end

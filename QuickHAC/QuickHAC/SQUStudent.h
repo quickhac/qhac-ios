@@ -2,7 +2,7 @@
 //  SQUStudent.h
 //  QuickHAC
 //
-//  Created by Tristan Seifert on 12/27/13.
+//  Created by Tristan Seifert on 12/28/13.
 //  Copyright (c) 2013 Squee! Apps. All rights reserved.
 //
 
@@ -14,17 +14,22 @@
 @interface SQUStudent : NSManagedObject
 
 @property (nonatomic, retain) NSNumber * district;
+@property (nonatomic, retain) NSString * hacUsername;
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSString * student_id;
-@property (nonatomic, retain) NSString * hacUsername;
-@property (nonatomic, retain) NSSet *courses;
+@property (nonatomic, retain) NSOrderedSet *courses;
 @end
 
 @interface SQUStudent (CoreDataGeneratedAccessors)
 
+- (void)insertObject:(SQUCourse *)value inCoursesAtIndex:(NSUInteger)idx;
+- (void)removeObjectFromCoursesAtIndex:(NSUInteger)idx;
+- (void)insertCourses:(NSArray *)value atIndexes:(NSIndexSet *)indexes;
+- (void)removeCoursesAtIndexes:(NSIndexSet *)indexes;
+- (void)replaceObjectInCoursesAtIndex:(NSUInteger)idx withObject:(SQUCourse *)value;
+- (void)replaceCoursesAtIndexes:(NSIndexSet *)indexes withCourses:(NSArray *)values;
 - (void)addCoursesObject:(SQUCourse *)value;
 - (void)removeCoursesObject:(SQUCourse *)value;
-- (void)addCourses:(NSSet *)values;
-- (void)removeCourses:(NSSet *)values;
-
+- (void)addCourses:(NSOrderedSet *)values;
+- (void)removeCourses:(NSOrderedSet *)values;
 @end

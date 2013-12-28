@@ -10,6 +10,7 @@
 
 #import "SQUDistrictManager.h"
 #import "SQUDistrict.h"
+#import "SQUGradeParser.h"
 #import "AFNetworking.h"
 
 static SQUDistrictManager *_sharedInstance = nil;
@@ -195,15 +196,84 @@ static SQUDistrictManager *_sharedInstance = nil;
 	}
 }
 
+/*
+ * Makes sure the correct user is selected
+ */
 - (void) performDisambiguationRequestWithStudentID:(NSString *) sid andCallback:(SQUDistrictCallback) callback {
+	NSDictionary *disambiguationRequest = [_currentDistrict buildDisambiguationRequestWithStudentID:sid andUserData:nil];
 	
+	// Called if the request succeeds
+	void (^disambiguateSuccess)(AFHTTPRequestOperation *operation, id responseObject) = ^(AFHTTPRequestOperation *operation, id responseObject) {
+		
+		if([_currentDistrict didDisambiguationSucceedWithLoginData:responseObject]) {
+			callback(nil, responseObject);
+		} else {
+			callback([NSError errorWithDomain:@"SQUDistrictManagerErrorDomain" code:kSQUDistrictManagerErrorInvalidDisambiguation userInfo:@{@"localizedDescription" : NSLocalizedString(@"The disambiguation process failed.", nil)}], nil);
+		}
+	};
+	
+	// Called on server error
+	void (^disambiguateFailure)(AFHTTPRequestOperation *operation, NSError *error) = ^(AFHTTPRequestOperation *operation, NSError *error) {
+		callback(error, nil);
+		NSLog(@"Disambiguation error: %@", error);
+	};
+	
+	// Set up the request
+	NSURL *url = disambiguationRequest[@"request"][@"URL"];
+	
+	if([disambiguationRequest[@"request"][@"method"] isEqualToString:@"GET"]) {
+		[self sendGETRequestToURL:url withParameters:disambiguationRequest[@"params"] andSuccessBlock:disambiguateSuccess andFailureBlock:disambiguateFailure];
+	} else {
+		NSLog(@"Unsupported disambiguation method: %@", disambiguationRequest[@"request"][@"method"]);
+		return;
+	}
 }
 
-- (void) performAveragesRequestWithUserDataAndCallback:(SQUDistrictCallback) callback {
+/*
+ * Fetches class averages from the server, parsing the data appropriately and
+ * returning it to the callback.
+ */
+- (void) performAveragesRequestWithCallback:(SQUDistrictCallback) callback {
+	NSDictionary *avgRequest = [_currentDistrict buildAveragesRequestWithUserData:nil];
 	
+	// Called if the request succeeds
+	void (^averagesSuccess)(AFHTTPRequestOperation *operation, id responseObject) = ^(AFHTTPRequestOperation *operation, id responseObject) {
+		NSArray *averages = [[SQUGradeParser sharedInstance] parseAveragesForDistrict:_currentDistrict withString:[[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding]];
+		
+		if(averages != nil) {
+			[_currentDistrict updateDistrictStateWithClassGrades:averages];
+			callback(nil, averages);
+		} else {
+			callback([NSError errorWithDomain:@"SQUDistrictManagerErrorDomain" code:kSQUDistrictManagerErrorInvalidDisambiguation userInfo:@{@"localizedDescription" : NSLocalizedString(@"The gradebook returned invalid data.", nil)}], nil);
+		}
+	};
+	
+	// Called on server error
+	void (^averagesFailure)(AFHTTPRequestOperation *operation, NSError *error) = ^(AFHTTPRequestOperation *operation, NSError *error) {
+		callback(error, nil);
+		NSLog(@"Averages error: %@", error);
+	};
+	
+	// Set up the request
+	NSURL *url = avgRequest[@"request"][@"URL"];
+	
+	if([avgRequest[@"request"][@"method"] isEqualToString:@"GET"]) {
+		[self sendGETRequestToURL:url withParameters:avgRequest[@"params"] andSuccessBlock:averagesSuccess andFailureBlock:averagesFailure];
+	} else {
+		NSLog(@"Unsupported average fetching method: %@", avgRequest[@"request"][@"method"]);
+		return;
+	}
 }
 
 - (void) performClassGradesRequestWithCourseCode:(NSString *) course andCycle:(NSUInteger) cycle andCallback:(SQUDistrictCallback) callback {
 	
 }
+
+/*
+ * Calls the login verification method on the district.
+ */
+- (void) checkIfLoggedIn:(SQULoggedInCallback) callback {
+	[_currentDistrict isLoggedInWithCallback:callback];
+}
+
 @end

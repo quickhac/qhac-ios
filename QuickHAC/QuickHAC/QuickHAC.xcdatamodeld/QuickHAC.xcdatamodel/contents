@@ -4,6 +4,7 @@
         <attribute name="date_assigned" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="date_due" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="extra_credit" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="marked" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="note" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
         <attribute name="ptr_earned" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="pts_possible" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
@@ -13,40 +14,50 @@
     </entity>
     <entity name="SQUCategory" representedClassName="SQUCategory" syncable="YES">
         <attribute name="average" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="title" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
-        <attribute name="weight" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="title" attributeType="String" indexed="YES" syncable="YES"/>
+        <attribute name="weight" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <relationship name="assignments" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SQUAssignment" inverseName="category" inverseEntity="SQUAssignment" syncable="YES"/>
         <relationship name="cycle" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SQUCycle" inverseName="categories" inverseEntity="SQUCycle" syncable="YES"/>
     </entity>
     <entity name="SQUCourse" representedClassName="SQUCourse" syncable="YES">
+        <attribute name="courseCode" attributeType="String" syncable="YES"/>
         <attribute name="isExcludedFromGPA" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="isHonours" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="period" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <attribute name="teacher_email" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
-        <attribute name="teacher_string" optional="YES" attributeType="String" indexed="YES" spotlightIndexingEnabled="YES" syncable="YES"/>
-        <attribute name="title" optional="YES" attributeType="String" indexed="YES" spotlightIndexingEnabled="YES" syncable="YES"/>
-        <relationship name="cycles" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SQUCycle" inverseName="course" inverseEntity="SQUCycle" syncable="YES"/>
+        <attribute name="teacher_email" attributeType="String" indexed="YES" syncable="YES"/>
+        <attribute name="teacher_name" attributeType="String" indexed="YES" spotlightIndexingEnabled="YES" syncable="YES"/>
+        <attribute name="title" attributeType="String" indexed="YES" spotlightIndexingEnabled="YES" syncable="YES"/>
+        <relationship name="cycles" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="SQUCycle" inverseName="course" inverseEntity="SQUCycle" syncable="YES"/>
+        <relationship name="exams" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="SQUExam" inverseName="course" inverseEntity="SQUExam" syncable="YES"/>
         <relationship name="student" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SQUStudent" inverseName="courses" inverseEntity="SQUStudent" syncable="YES"/>
     </entity>
     <entity name="SQUCycle" representedClassName="SQUCycle" syncable="YES">
         <attribute name="average" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="index" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="cycleIndex" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="last_updated" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="semester" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <relationship name="categories" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SQUCategory" inverseName="cycle" inverseEntity="SQUCategory" syncable="YES"/>
         <relationship name="course" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SQUCourse" inverseName="cycles" inverseEntity="SQUCourse" syncable="YES"/>
     </entity>
+    <entity name="SQUExam" representedClassName="SQUExam" syncable="YES">
+        <attribute name="grade" optional="YES" attributeType="Float" defaultValueString="-1" syncable="YES"/>
+        <attribute name="isExempt" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="semester" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <relationship name="course" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SQUCourse" inverseName="exams" inverseEntity="SQUCourse" syncable="YES"/>
+    </entity>
     <entity name="SQUStudent" representedClassName="SQUStudent" syncable="YES">
-        <attribute name="district" optional="YES" attributeType="Integer 16" minValueString="0" defaultValueString="0" syncable="YES"/>
-        <attribute name="hacUsername" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="district" attributeType="Integer 16" minValueString="0" defaultValueString="0" syncable="YES"/>
+        <attribute name="hacUsername" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" indexed="YES" spotlightIndexingEnabled="YES" syncable="YES"/>
-        <attribute name="student_id" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="courses" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SQUCourse" inverseName="student" inverseEntity="SQUCourse" syncable="YES"/>
+        <attribute name="student_id" attributeType="String" syncable="YES"/>
+        <relationship name="courses" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="SQUCourse" inverseName="student" inverseEntity="SQUCourse" syncable="YES"/>
     </entity>
     <elements>
-        <element name="SQUCategory" positionX="-153" positionY="201" width="128" height="118"/>
-        <element name="SQUCourse" positionX="-153" positionY="-72" width="128" height="163"/>
-        <element name="SQUCycle" positionX="18" positionY="-72" width="128" height="118"/>
-        <element name="SQUStudent" positionX="-333" positionY="-72" width="128" height="118"/>
-        <element name="SQUAssignment" positionX="34" positionY="198" width="128" height="178"/>
+        <element name="SQUAssignment" positionX="-3528" positionY="648" width="128" height="193"/>
+        <element name="SQUCategory" positionX="-3744" positionY="648" width="128" height="118"/>
+        <element name="SQUCourse" positionX="-3960" positionY="360" width="128" height="193"/>
+        <element name="SQUCycle" positionX="-3744" positionY="360" width="128" height="133"/>
+        <element name="SQUStudent" positionX="-4160" positionY="360" width="128" height="118"/>
+        <element name="SQUExam" positionX="-3962" positionY="648" width="128" height="103"/>
     </elements>
 </model>

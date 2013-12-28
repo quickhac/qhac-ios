@@ -2,7 +2,7 @@
 //  SQUCategory.m
 //  QuickHAC
 //
-//  Created by Tristan Seifert on 12/27/13.
+//  Created by Tristan Seifert on 12/28/13.
 //  Copyright (c) 2013 Squee! Apps. All rights reserved.
 //
 
@@ -16,7 +16,7 @@
 @dynamic average;
 @dynamic title;
 @dynamic weight;
-@dynamic cycle;
 @dynamic assignments;
+@dynamic cycle;
 
 @end

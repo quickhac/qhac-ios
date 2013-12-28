@@ -6,12 +6,17 @@
 //  See README.MD for licensing and copyright information.
 //
 
+#import "SQUSidebarController.h"
 #import "SQUAppDelegate.h"
 #import "SQULoginSchoolSelector.h"
 #import "SQUGradeOverviewController.h"
 #import "SQUDistrictManager.h"
 #import "SQUStudent.h"
+#import "SQUGradeManager.h"
+#import "NSManagedObjectModel+KCOrderedAccessorFix.h"
 
+#import "PKRevealController.h"
+#import "AFNetworkActivityIndicatorManager.h"
 #import "SVProgressHUD.h"
 #import "Lockbox.h"
 
@@ -29,14 +34,27 @@ static SQUAppDelegate *sharedDelegate = nil;
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
    
+	// Set up grade overview
     _rootViewController = [[SQUGradeOverviewController alloc] initWithStyle:UITableViewStylePlain];
-    
     _navController = [[UINavigationController alloc] initWithRootViewController:_rootViewController];
     
+	// Set up sidebar menu
+	_sidebarController = [[SQUSidebarController alloc] initWithStyle:UITableViewStylePlain];
+	_sidebarNavController = [[UINavigationController alloc] initWithRootViewController:_sidebarController];
+	
+	// Set up drawer
+	_drawerController = [PKRevealController revealControllerWithFrontViewController:_navController
+																 leftViewController:_sidebarNavController
+																rightViewController:nil];
+    _drawerController.animationDuration = 0.25;
+	
     // Set up UIWindow
-    self.window.rootViewController = _navController;
+    self.window.rootViewController = _drawerController;
     self.window.backgroundColor = [UIColor darkGrayColor];
     [self.window makeKeyAndVisible];
+	
+	// Set up automagical network indicator management
+	[[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     
     [[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
 	
@@ -47,7 +65,6 @@ static SQUAppDelegate *sharedDelegate = nil;
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"SQUStudent" inManagedObjectContext:context];
     [fetchRequest setEntity:entity];
-    
     NSArray *students = [context executeFetchRequest:fetchRequest error:&db_err];
     
     // If there is at least one student object, we're logged in.
@@ -65,6 +82,9 @@ static SQUAppDelegate *sharedDelegate = nil;
         password = [Lockbox stringForKey:username];
 		studentID = student.student_id;
         
+		[[SQUGradeManager sharedInstance] setStudent:student];
+		[[NSNotificationCenter defaultCenter] postNotificationName:SQUGradesDataUpdatedNotification object:nil];
+		
 		// Validate the student object.
 		dispatch_async(dispatch_get_main_queue(), ^{
 			if(![[SQUDistrictManager sharedInstance] selectDistrictWithID:student.district.integerValue]) {
@@ -78,7 +98,27 @@ static SQUAppDelegate *sharedDelegate = nil;
 				SQULoginSchoolSelector *loginController = [[SQULoginSchoolSelector alloc] initWithStyle:UITableViewStyleGrouped];
 				[_navController presentViewController:[[UINavigationController alloc] initWithRootViewController:loginController] animated:NO completion:NULL];
 			} else { // We found a district, so log in so we may update grades
-				NSLog(@"User Information\nUser: %@\nPass: %@\nSID: %@", username, password, studentID);
+				// Ask the current district instance to do a log in to validate we're still valid
+				[[SQUDistrictManager sharedInstance] performLoginRequestWithUser:username usingPassword:password andCallback:^(NSError *error, id returnData){
+					if(!error) {
+						if(!returnData) {
+							[SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Wrong Credentials", nil)];
+							
+							// Tell the user what happened
+							UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Authenticating", nil) message:NSLocalizedString(@"Your username or password were rejected by HAC. Please update your password, if it was changed, and try again.", nil) delegate:self cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:NSLocalizedString(@"Settings", nil), nil];
+							alert.tag = kSQUAlertChangePassword;
+							[alert show];
+						} else {
+							// Login succeeded, so we can do a fetch of grades.
+							[[SQUGradeManager sharedInstance] fetchNewClassGradesFromServerWithDoneCallback:NULL];
+						}
+					} else {
+						[SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Error", nil)];
+						
+						UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Authenticating", nil) message:error.localizedDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
+						[alert show];
+					}
+				}];
 			}
 		});
     }
@@ -127,7 +167,6 @@ static SQUAppDelegate *sharedDelegate = nil;
 }
 
 #pragma mark - CoreData Stack
-
 - (void) saveContext {
     NSError *error = nil;
     NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
@@ -164,6 +203,12 @@ static SQUAppDelegate *sharedDelegate = nil;
     }
     NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"QuickHAC" withExtension:@"momd"];
     _managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
+	
+	/*
+	 * This is needed to fix the one-to-many relationships which are broken in
+	 * CoreData. (see rdar://10114310)
+	 */
+	[_managedObjectModel kc_generateOrderedSetAccessors];
     return _managedObjectModel;
 }
 
@@ -206,6 +251,9 @@ static SQUAppDelegate *sharedDelegate = nil;
         [[NSFileManager defaultManager] removeItemAtURL:storeURL error:nil];
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Database Error" message:[NSString stringWithFormat:@"The database was erased due to an error loading it.\n%@", error.description] delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
         [alert show];
+		
+		// Re-create the database.
+		[_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:@{NSMigratePersistentStoresAutomaticallyOption:@YES, NSInferMappingModelAutomaticallyOption:@YES} error:&error];
 #else
         NSLog(@"Unresolved database error: %@, %@", error, [error userInfo]);
         abort();
@@ -223,6 +271,18 @@ static SQUAppDelegate *sharedDelegate = nil;
 
 + (SQUAppDelegate *) sharedDelegate {
     return sharedDelegate;
+}
+
+#pragma mark - Alert view callbacks
+- (void) alertView:(UIAlertView *) alertView clickedButtonAtIndex:(NSInteger) buttonIndex {
+	switch(alertView.tag) {
+		case kSQUAlertChangePassword:
+			NSLog(@"Change password alert");
+			break;
+			
+		default:
+			break;
+	}
 }
 
 @end

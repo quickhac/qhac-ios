@@ -25,6 +25,7 @@
 		_examWeight = 15.0f;
 		
 		_tableOffsets.title = 0;
+		_tableOffsets.period = 1;
 		_tableOffsets.grades = 2;
 		
 		_district_id = 1;
@@ -82,8 +83,18 @@
  * Build a request to disambiguate the student ID specified.
  */
 - (NSDictionary *) buildDisambiguationRequestWithStudentID:(NSString *) sid andUserData:(id) userData {
-	NSLog(@"%s(%i) %s: SQUDistrict method not overridden or no subclass used", __FILE__, __LINE__, __func__);
-	return nil;
+	NSMutableDictionary *dictionary = [NSMutableDictionary new];
+	dictionary[@"request"] = [NSMutableDictionary new];
+	dictionary[@"params"] = [NSMutableDictionary new];
+	
+	// Request information (URL, method, etc)
+	dictionary[@"request"][@"URL"] = [NSURL URLWithString:@"https://accesscenter.roundrockisd.org/homeaccess/Student/DailySummary.aspx"];
+	dictionary[@"request"][@"method"] = @"GET";
+	
+	// Set up GET parameters
+	dictionary[@"params"][@"student_id"] = sid;
+	
+	return dictionary;
 }
 
 /*
@@ -91,17 +102,39 @@
  * student ID.
  */
 - (NSDictionary *) buildAveragesRequestWithUserData:(id) userData {
-	NSLog(@"%s(%i) %s: SQUDistrict method not overridden or no subclass used", __FILE__, __LINE__, __func__);
-	return nil;
+	NSMutableDictionary *dictionary = [NSMutableDictionary new];
+	dictionary[@"request"] = [NSMutableDictionary new];
+	
+	// Request information (URL, method, etc)
+	dictionary[@"request"][@"URL"] = [NSURL URLWithString:@"https://accesscenter.roundrockisd.org/homeaccess/Student/Gradespeed.aspx?target=https://gradebook.roundrockisd.org/pc/displaygrades.aspx"];
+	dictionary[@"request"][@"method"] = @"GET";
+	
+	return dictionary;
 }
 
 /*
  * Builds a request to fetch the class grades for the specified course and
  * cycle.
  */
-- (NSDictionary *) buildClassGradesRequestWithCourseCode:(NSString *) course andCycle:(NSUInteger) cycle andUserData:(id) userData {
-	NSLog(@"%s(%i) %s: SQUDistrict method not overridden or no subclass used", __FILE__, __LINE__, __func__);
-	return nil;
+- (NSDictionary *) buildClassGradesRequestWithCourseCode:(NSString *) course andSemester:(NSUInteger) semester andCycle:(NSUInteger) cycle andUserData:(id) userData {
+	NSMutableDictionary *dictionary = [NSMutableDictionary new];
+	dictionary[@"request"] = [NSMutableDictionary new];
+	dictionary[@"params"] = [NSMutableDictionary new];
+	
+	// Request information (URL, method, etc)
+	dictionary[@"request"][@"URL"] = [NSURL URLWithString:@"https://gradebook.roundrockisd.org/pc/displaygrades.aspx"];
+	dictionary[@"request"][@"method"] = @"GET";
+	
+	NSArray *semesterArray = _classToHashMap[course];
+	if(!semesterArray) return nil;
+	if(semester > semesterArray.count) return nil;
+	NSArray *cycleArray = semesterArray[semester];
+	if(cycle > cycleArray.count) return nil;
+	
+	// Check the array for the course's cycle hash
+	dictionary[@"params"][@"hash"] = cycleArray[cycle];
+	
+	return dictionary;
 }
 
 #pragma mark - Data callbacks
@@ -110,8 +143,28 @@
  * updated, so the district code can perform internal housekeeping, like keeping
  * track of the URLs for specifc class grades information.
  */
-- (void) updateDistrictStateWithClassGrades:(NSArray *) grade {
-	NSLog(@"%s(%i) %s: SQUDistrict method not overridden or no subclass used", __FILE__, __LINE__, __func__);
+- (void) updateDistrictStateWithClassGrades:(NSArray *) grades {
+	if(!_classToHashMap) {
+		_classToHashMap = [NSMutableDictionary new];
+	} else {
+		[_classToHashMap removeAllObjects];
+	}
+	
+	for(NSDictionary *class in grades) {
+		NSMutableArray *semesterArray = [NSMutableArray new];
+		
+		for(NSDictionary *semester in class[@"semesters"]) {
+			NSMutableArray *cycleArray = [NSMutableArray new];
+			
+			for(NSDictionary *cycle in semester[@"cycles"]) {
+				[cycleArray addObject:cycle[@"urlHash"]];
+			}
+			
+			[semesterArray addObject:cycleArray];
+		}
+		
+		_classToHashMap[class[@"courseNum"]] = semesterArray;
+	}
 }
 
 /*
@@ -163,17 +216,58 @@
 	 * with id "ctl00_plnMain_ValidationSummary1" contains any text.
 	 */
 	if([form[@"action"] isEqualToString:@"default.aspx"]) {
-		TFHppleElement *validationErrorContainer = [parser searchWithXPathQuery:@"//div[@id='ctl00_plnMain_ValidationSummary1']"][0];
-		NSArray *children = [validationErrorContainer childrenWithTagName:@"font"];
+		NSArray *errorContainers = [parser searchWithXPathQuery:@"//div[@id='ctl00_plnMain_ValidationSummary1']"];
 		
-		if(children.count > 0) {
-			// NSLog(@"//div[@id='ctl00_plnMain_ValidationSummary1']: %@", children);
+		if(errorContainers.count > 0) {
+			TFHppleElement *validationErrorContainer = errorContainers[0];
+			
+			NSArray *children = [validationErrorContainer childrenWithTagName:@"font"];
+			
+			if(children.count > 0) {
+				// NSLog(@"//div[@id='ctl00_plnMain_ValidationSummary1']: %@", children);
+			}
+			
+			return NO;
+		} else {
+			NSLog(@"Got strange HTML: %@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
 		}
-		
-		return NO;
 	}
 	
 	return YES;
+}
+
+/*
+ * Called with the data returned by the disambiguation request to evaluate if
+ * the correct student was disambiguated.
+ */
+- (BOOL) didDisambiguationSucceedWithLoginData:(NSData *) data {
+	TFHpple *parser = [TFHpple hppleWithHTMLData:data];
+	TFHppleElement *content = [parser searchWithXPathQuery:@"//td[@id='ctl00_tdContent']"][0];
+	
+	NSArray *contentChildren = [content childrenWithTagName:@"p"];
+
+	if(contentChildren.count == 0) return YES;
+	
+	return NO;
+}
+
+
+/*
+ * Called to get the current login status.
+ */
+- (void) isLoggedInWithCallback:(SQULoggedInCallback) callback {
+	AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+	manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+	
+	[manager HEAD:@"https://accesscenter.roundrockisd.org/homeaccess/Student/Gradespeed.aspx?target=https://gradebook.roundrockisd.org/pc/displaygrades.aspx" parameters:nil success:^(AFHTTPRequestOperation *operation) {
+		callback(YES);
+	} failure:^(AFHTTPRequestOperation *operation, NSError *err) {
+		if(operation.response.statusCode != 500) {
+			NSLog(@"Log in error: %@", err);
+		}
+		
+		callback(NO);
+	}];
 }
 
 @end
