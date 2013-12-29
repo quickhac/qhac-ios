@@ -72,7 +72,6 @@ static SQUGradeManager *_sharedInstance = nil;
 			[[SQUDistrictManager sharedInstance] performDisambiguationRequestWithStudentID:studentID andCallback:^(NSError *error, id returnData) {
 				if(!error) {
 					// We successfully selected this student, so update grades.
-					NSLog(@"Disambiguation succeeded");
 					
 					[[SQUDistrictManager sharedInstance] performAveragesRequestWithCallback:^(NSError *error, id returnData) {
 						if(!error) {
@@ -111,8 +110,63 @@ static SQUGradeManager *_sharedInstance = nil;
 						doGradeChecking();
 					}
 				} else {
-					UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Authenticating", nil) message:error.localizedDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
-					[alert show];
+					if(callback) callback(error);
+				}
+			}];
+		}
+	}];
+}
+
+- (void) fetchNewCycleGradesFromServerForCourse:(NSString *) course withCycle:(NSUInteger) cycle andSemester:(NSUInteger) semester andDoneCallback:(void (^)(NSError *)) callback {
+	// Fetch username/pw from keychain
+	NSString *username, *password, *studentID;
+	
+	username = _student.hacUsername;
+	password = [Lockbox stringForKey:username];
+	studentID = _student.student_id;
+	
+	[[SQUDistrictManager sharedInstance] checkIfLoggedIn:^(BOOL loggedIn) {
+		void (^doGradeChecking)(void) = ^{
+			[[SQUDistrictManager sharedInstance] performDisambiguationRequestWithStudentID:studentID andCallback:^(NSError *error, id returnData) {
+				if(!error) {
+					// We successfully selected this student, so update grades.
+					
+					[[SQUDistrictManager sharedInstance] performClassGradesRequestWithCourseCode:course andCycle:cycle inSemester:semester andCallback:^(NSError *error, id returnData) {
+						if(!error) {
+							NSDictionary *grades = (NSDictionary *) returnData;
+							
+							[self updateCurrentStudentWithClassGrades:grades forClass:course andCycle:cycle andSemester:semester];
+							[[NSNotificationCenter defaultCenter] postNotificationName:SQUGradesDataUpdatedNotification object:nil];
+							
+							if(callback) callback(nil);
+						} else {
+							if(callback) callback(error);
+							NSLog(@"Error while fetching grades: %@", error);
+						}
+					}];
+				} else {
+					if(callback) callback(error);
+				}
+			}];
+		};
+		
+		// If we're logged in, just run the above block.
+		if(loggedIn) {
+			doGradeChecking();
+		} else {
+			// Ask the current district instance to do a log in to validate we're still valid
+			[[SQUDistrictManager sharedInstance] performLoginRequestWithUser:username usingPassword:password andCallback:^(NSError *error, id returnData){
+				if(!error) {
+					if(!returnData) {
+						// Tell the user what happened
+						UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Authenticating", nil) message:NSLocalizedString(@"Your username or password were rejected by HAC. Please update your password, if it was changed, and try again.", nil) delegate:[SQUAppDelegate sharedDelegate] cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:NSLocalizedString(@"Settings", nil), nil];
+						alert.tag = kSQUAlertChangePassword;
+						[alert show];
+						callback([NSError errorWithDomain:@"SQUInvalidHACUsername" code:kSQUDistrictManagerErrorInvalidDisambiguation userInfo:@{@"localizedDescription" : NSLocalizedString(@"The login was rejected.", nil)}]);
+					} else {
+						doGradeChecking();
+					}
+				} else {
 					if(callback) callback(error);
 				}
 			}];
@@ -148,7 +202,38 @@ static SQUGradeManager *_sharedInstance = nil;
 	cycle.average = dict[@"average"];
 }
 
+/*
+ * Updates the assignments associated with a category, by removing the old ones,
+ * and re-creating them from the data given.
+ */
+
 #pragma mark - Database updates
+- (void) updateCategory:(SQUCategory *) category withAssignments:(NSArray *) array {
+	/*
+	 * Remove old assignments from persistent store, which nullifies the
+	 * relationship they had with the category, removing them from the set.
+	 */
+	for(SQUAssignment *assignment in category.assignments) {
+		[_coreDataMOContext deleteObject:assignment];
+	}
+	
+	// Re-create assignments.
+	for(NSDictionary *assignment in array) {
+		SQUAssignment *dbAssignment = [NSEntityDescription insertNewObjectForEntityForName:@"SQUAssignment" inManagedObjectContext:_coreDataMOContext];
+		
+		dbAssignment.date_assigned = assignment[@"assignedDate"];
+		dbAssignment.date_due = assignment[@"dueDate"];
+		dbAssignment.extra_credit = assignment[@"extraCredit"];
+		dbAssignment.note = assignment[@"note"];
+		dbAssignment.pts_earned = assignment[@"ptsEarned"];
+		dbAssignment.pts_possible = assignment[@"ptsPossible"];
+		dbAssignment.title = assignment[@"title"];
+		dbAssignment.weight = assignment[@"weight"];
+		dbAssignment.category = category;
+		
+		[category addAssignmentsObject:dbAssignment];
+	}
+}
 
 /*
  * Updates the database with the specified class averages.
@@ -233,6 +318,8 @@ static SQUGradeManager *_sharedInstance = nil;
 		NSLog(@"Exams for course %@: %i\n\tExam 1:\n%@", course.courseCode, course.exams.count, course.exams[0]);*/
 	}
 	
+	_student.lastAveragesUpdate = [NSDate new];
+	
 	// Write changes to the database.
 	if(![_coreDataMOContext save:&err]) {
 		NSLog(@"Could not save data: %@", err);
@@ -241,6 +328,83 @@ static SQUGradeManager *_sharedInstance = nil;
 		[alert show];
 	} else {
 		NSLog(@"Saved class averages information.");
+	}
+}
+
+/*
+ * Update assignments and grades for a course during a specific cycle in the
+ * specified semester.
+ */
+- (void) updateCurrentStudentWithClassGrades:(NSDictionary *) classGrades forClass:(NSString *) class andCycle:(NSUInteger) numCycle andSemester:(NSUInteger) numSemester {
+	NSUInteger cycleOffset = numCycle + (numSemester * 3);
+	SQUCourse *course = nil;
+	NSError *err = nil;
+	
+	// Locate the course
+	for(SQUCourse *dbCourse in _student.courses) {
+		if([dbCourse.courseCode isEqualToString:class]) {
+			course = dbCourse;
+			break;
+		}
+	}
+	
+	if(!course) return;
+	
+	// Fetch the cycle.
+	SQUCycle *cycle = course.cycles[cycleOffset];
+	NSUInteger numCategories = [classGrades[@"categories"] count];
+	
+	// Create the necessary SQUCategory instances
+	if(cycle.categories.count == 0) {
+		for(NSUInteger i = 0; i < numCategories; i++) {
+			SQUCategory *category = [NSEntityDescription insertNewObjectForEntityForName:@"SQUCategory" inManagedObjectContext:_coreDataMOContext];
+			[cycle addCategoriesObject:category];
+			category.title = classGrades[@"categories"][i][@"name"];
+			category.cycle = cycle;
+			
+			[cycle addCategoriesObject:category];
+		}
+	}
+	
+	// Loop through the categories in the array
+	for(NSDictionary *category in classGrades[@"categories"]) {
+		NSFetchRequest *request = [[NSFetchRequest alloc] init];
+		NSEntityDescription *entity =
+		[NSEntityDescription entityForName:@"SQUCategory" inManagedObjectContext:_coreDataMOContext];
+		[request setEntity:entity];
+		
+		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(cycle == %@) AND (title LIKE[c] %@)", cycle, category[@"name"]];
+		[request setPredicate:predicate];
+		
+		NSArray *array = [_coreDataMOContext executeFetchRequest:request error:&err];
+		if(array) {
+			// Set up the weight
+			SQUCategory *dbCategory = array[0];
+			dbCategory.weight = category[@"weight"];
+			dbCategory.average = category[@"average"];
+			
+			// Update assignments
+			[self updateCategory:dbCategory withAssignments:category[@"assignments"]];
+		} else {
+			NSLog(@"Error fetching category: %@", err);
+			
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Database Error", nil) message:err.localizedDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
+			[alert show];
+			
+			return;
+		}
+	}
+	
+	NSLog(@"Cycle: %@", cycle);
+	
+	// Write changes to the database.
+	if(![_coreDataMOContext save:&err]) {
+		NSLog(@"Could not save grades for class %@, cycle %u semester %u.", class, numCycle+1, numSemester+1);
+		
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Database Error", nil) message:err.localizedDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
+		[alert show];
+	} else {
+		NSLog(@"Saved grades for class %@, cycle %u semester %u.", class, numCycle+1, numSemester+1);
 	}
 }
 

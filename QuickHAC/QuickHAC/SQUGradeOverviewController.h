@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface SQUGradeOverviewController : UITableViewController {
-	
+	NSDateFormatter *_refreshDateFormatter;
 }
 
 @end

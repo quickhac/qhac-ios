@@ -9,14 +9,19 @@
 //  See README.MD for licensing and copyright information.
 //
 
+#import <CoreImage/CoreImage.h>
+#import <QuartzCore/QuartzCore.h>
+
 #import "SQUGradeOverviewController.h"
 #import "SQUGradeOverviewTableViewCell.h"
 #import "SQUAppDelegate.h"
 #import "SQUCoreData.h"
 #import "SQUGradeManager.h"
+#import "SQUSidebarController.h"
 
 #import "UIViewController+PKRevealController.h"
 #import "PKRevealController.h"
+#import "UIView+JMNoise.h"
 
 @implementation SQUGradeOverviewController
 
@@ -26,8 +31,11 @@
         [self.tableView registerClass:[SQUGradeOverviewTableViewCell class]
                forCellReuseIdentifier:@"GradeOverviewCell"];
 		self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-		self.tableView.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1.0];
         
+		self.tableView.backgroundView = [[UIView alloc] initWithFrame:self.tableView.frame];
+		self.tableView.backgroundView.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1.0];
+		[self.tableView.backgroundView applyNoiseWithOpacity:0.15f];
+		
         self.title = NSLocalizedString(@"Overview", nil);
         
         UIBarButtonItem *showSidebar = [[UIBarButtonItem alloc]
@@ -37,7 +45,11 @@
         [self.navigationItem setLeftBarButtonItem:showSidebar];
 		
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateTableNotification:) name:SQUGradesDataUpdatedNotification object:nil];
+		
+		_refreshDateFormatter = [[NSDateFormatter alloc] init];
+		[_refreshDateFormatter setDateFormat:@"MMM d, h:mm a"];
     }
+	
     return self;
 }
 
@@ -48,7 +60,17 @@
     UIRefreshControl *refresher = [[UIRefreshControl alloc] init];
     [refresher addTarget:self action:@selector(reloadData:)
         forControlEvents:UIControlEventValueChanged];
+	
+	NSString *lastUpdated = [NSString stringWithFormat:NSLocalizedString(@"Last Updated on %@", nil), [_refreshDateFormatter stringFromDate:[SQUGradeManager sharedInstance].student.lastAveragesUpdate]];
+	refresher.attributedTitle = [[NSAttributedString alloc] initWithString:lastUpdated];
+
     self.refreshControl = refresher;
+	
+	// iOS 7 is stupid and draws the referesh control behind the table's BG view
+	self.refreshControl.layer.zPosition = self.tableView.backgroundView.layer.zPosition + 1;
+	
+	// Blurry navbar
+	self.navigationController.navigationBar.translucent = YES;
 }
 
 - (void) viewWillAppear:(BOOL) animated {
@@ -57,7 +79,7 @@
 
 #pragma mark - Table view data source
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return SQUGradeOverviewCellHeight + 15;
+	return SQUGradeOverviewCellHeight + 20;
 }
 
 - (NSInteger) numberOfSectionsInTableView:(UITableView *) tableView {
@@ -77,6 +99,8 @@
 	
     cell.courseInfo = [[[SQUGradeManager sharedInstance] getCoursesForCurrentStudent] objectAtIndex:indexPath.row];
 	cell.backgroundColor = [UIColor clearColor];
+	cell.clipsToBounds = NO;
+	cell.selectionStyle = UITableViewCellSelectionStyleNone;
 	
     [cell updateUI];
     
@@ -103,10 +127,8 @@
 		}
 		
 		// End refreshing
-		NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-		[formatter setDateFormat:@"MMM d, h:mm a"];
 		NSDate *date = [NSDate date];
-		NSString *lastUpdated = [NSString stringWithFormat:NSLocalizedString(@"Last Updated on %@", nil), [formatter stringFromDate:date]];
+		NSString *lastUpdated = [NSString stringWithFormat:NSLocalizedString(@"Last Updated on %@", nil), [_refreshDateFormatter stringFromDate:date]];
 		control.attributedTitle = [[NSAttributedString alloc] initWithString:lastUpdated];
 		
 		[control endRefreshing];
@@ -115,6 +137,19 @@
 
 - (void) updateTableNotification:(NSNotification *) notif {
 	[self.tableView reloadData];
+	
+	NSString *lastUpdated = [NSString stringWithFormat:NSLocalizedString(@"Last Updated on %@", nil), [_refreshDateFormatter stringFromDate:[SQUGradeManager sharedInstance].student.lastAveragesUpdate]];
+	self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:lastUpdated];
+}
+
+- (void) tableView:(UITableView *) tableView didSelectRowAtIndexPath:(NSIndexPath *) indexPath {
+	[tableView deselectRowAtIndexPath:indexPath animated:NO];
+	
+/*	SQUCourse *course = [SQUGradeManager sharedInstance].courses[indexPath.row];
+	
+	UINavigationController *sidebarNavCtrlr = (UINavigationController *) [self revealController].leftViewController;
+	SQUSidebarController *sidebar = sidebarNavCtrlr.viewControllers[0];
+	[sidebar showCourseOverviewForCourse:course];*/
 }
 
 @end

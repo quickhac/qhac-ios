@@ -15,9 +15,8 @@
 @dynamic date_assigned;
 @dynamic date_due;
 @dynamic extra_credit;
-@dynamic marked;
 @dynamic note;
-@dynamic ptr_earned;
+@dynamic pts_earned;
 @dynamic pts_possible;
 @dynamic title;
 @dynamic weight;

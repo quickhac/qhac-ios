@@ -16,6 +16,7 @@
 @dynamic hacUsername;
 @dynamic name;
 @dynamic student_id;
+@dynamic lastAveragesUpdate;
 @dynamic courses;
 
 @end

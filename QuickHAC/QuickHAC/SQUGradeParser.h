@@ -7,12 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <JavaScriptCore/JavaScriptCore.h>
 
 @class SQUDistrict;
 @interface SQUGradeParser : NSObject {
-	JSVirtualMachine *_jsVirtualMachine;
-	JSContext *_jsContext;
+	NSDateFormatter *_gradespeedDateFormatter;
 }
 
 + (SQUGradeParser *) sharedInstance;

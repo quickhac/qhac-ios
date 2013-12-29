@@ -6,9 +6,12 @@
 //  See README.MD for licensing and copyright information.
 //
 
+#import <QuartzCore/QuartzCore.h>
+
 #import "SQUGradeOverviewTableViewCell.h"
 #import "SQUGradeParser.h"
 #import "SQUCoreData.h"
+#import "UIColor+SQUColourUtilities.h"
 
 @implementation SQUGradeOverviewTableViewCell
 @synthesize courseInfo = _courseInfo;
@@ -27,28 +30,36 @@
 		_backgroundLayer.cornerRadius = 3.0;
 		
 		// Card shadow
-		_backgroundLayer.borderWidth = 1.0;
-		_backgroundLayer.borderColor = [UIColor colorWithWhite:0.95 alpha:1.0].CGColor;
-		
-		_backgroundLayer.shadowColor = [UIColor colorWithWhite:0.85 alpha:1.0].CGColor;
-		_backgroundLayer.shadowOpacity = 1.0;
-		_backgroundLayer.shadowRadius = 3.0;
-		_backgroundLayer.shadowOffset = CGSizeMake(0, 3);
-		_backgroundLayer.masksToBounds = YES;
+		_backgroundLayer.borderWidth = 0.0;
+		_backgroundLayer.shadowColor = [UIColor blackColor].CGColor;
+		_backgroundLayer.shadowOpacity = 0.25;
+		_backgroundLayer.shadowRadius = 4.0;
+		_backgroundLayer.shadowOffset = CGSizeMake(0, 2);
+		_backgroundLayer.masksToBounds = NO;
 		
 		UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:_backgroundLayer.frame cornerRadius:_backgroundLayer.cornerRadius];
 		_backgroundLayer.shadowPath = path.CGPath;
 		
 		// Left bar on card
         _sideBar = [CAGradientLayer layer];
-        _sideBar.frame = CGRectMake(0, 1, 8, _backgroundLayer.frame.size.height - 6);
+        _sideBar.frame = CGRectMake(0, 0, 8, _backgroundLayer.frame.size.height);
+		
+		// Prepare and apply a mask to apply rounded corners.
+		UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:_sideBar.frame
+													   byRoundingCorners:UIRectCornerTopLeft | UIRectCornerBottomLeft
+															 cornerRadii:CGSizeMake(3.0, 3.0)];
+		
+		CAShapeLayer *maskLayer = [CAShapeLayer layer];
+		maskLayer.frame = _sideBar.bounds;
+		maskLayer.path = maskPath.CGPath;
+		_sideBar.mask = maskLayer;
         
 		// Course title
         _courseTitle = [CATextLayer layer];
-        _courseTitle.frame = CGRectMake(12, 4, _backgroundLayer.frame.size.width - 90, 32);
+        _courseTitle.frame = CGRectMake(20, 4, _backgroundLayer.frame.size.width - 106, 32);
         _courseTitle.contentsScale = [UIScreen mainScreen].scale;
         _courseTitle.foregroundColor = [UIColor blackColor].CGColor;
-        _courseTitle.font = (__bridge CFTypeRef) [UIFont boldSystemFontOfSize:24.0f];
+        _courseTitle.font = (__bridge CFTypeRef) [UIFont fontWithName:@"HelveticaNeue-Light" size:15.0f];
         _courseTitle.fontSize = 23.5f;
         
 		// Period label
@@ -81,7 +92,7 @@
 				CGFloat currentX = 16 + ((_backgroundLayer.frame.size.width / 2) * i);
 				
 				CATextLayer *cycleHead = [CATextLayer layer];
-				cycleHead.frame = CGRectMake(currentX, 60 + (j * 19), (_backgroundLayer.frame.size.width / 2) - 24, 16);
+				cycleHead.frame = CGRectMake(currentX, 56 + (j * 20), (_backgroundLayer.frame.size.width / 2) - 24, 16);
 				cycleHead.contentsScale = [UIScreen mainScreen].scale;
 				cycleHead.foregroundColor = [UIColor blackColor].CGColor;
 				cycleHead.font = (__bridge CFTypeRef) [UIFont systemFontOfSize:14.0f];
@@ -138,12 +149,13 @@
 						   [UIColor colorWithRed:1 green:0.322 blue:0.322 alpha:1] /*#ff5252*/
 						   ];
 	
+	// Periods start counting at 1, not 0, so offset by -1 for the array
 	NSUInteger period = _courseInfo.period.unsignedIntegerValue;
 	
 	if(period > sbcolours.count) {
-		_sideBar.backgroundColor = [UIColor colorWithWhite:0.08 alpha:1.0].CGColor;
+		_sideBar.colors = @[(id) [UIColor colorWithWhite:0.08 alpha:1.0].CGColor, (id) [[UIColor colorWithWhite:0.08 alpha:1.0] darkerColor].CGColor];
 	} else {
-		_sideBar.backgroundColor = [sbcolours[period] CGColor];
+		_sideBar.colors = @[(id) [sbcolours[period-1] CGColor], (id) [[sbcolours[period-1] darkerColor] CGColor]];
 	}
 	
     _periodTitle.string = [NSString stringWithFormat:NSLocalizedString(@"Period %u", nil), period];
@@ -155,7 +167,7 @@
 		CATextLayer *semesterHead = _semesterHeads[i];
 		
 		if(semester.average.integerValue == -1) {
-			semesterHead.string = [NSString stringWithFormat:NSLocalizedString(@"Semester %u: N/A", nil), i + 1];			
+			semesterHead.string = [NSString stringWithFormat:NSLocalizedString(@"Semester %u: N/A", nil), i + 1];
 		} else {
 			semesterHead.string = [NSString stringWithFormat:NSLocalizedString(@"Semester %u: %u", nil), i + 1, semester.average.unsignedIntegerValue];
 		}

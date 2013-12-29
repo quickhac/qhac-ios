@@ -16,6 +16,20 @@
 #import "SQUDistrict.h"
 #import "SQUDistrict.h"
 
+// Category on TFHppleElement for table
+@interface TFHppleElement (TableSupport)
+- (NSString *) getColumnContentsWithClass:(NSString *) class;
+@end
+
+@implementation TFHppleElement (TableSupport)
+- (NSString *) getColumnContentsWithClass:(NSString *) class{
+	NSArray *children = [self childrenWithClassName:class];
+	if(children.count == 0) return @"";
+	
+	return [children[0] text];
+}
+@end
+
 static SQUGradeParser *_sharedInstance = nil;
 
 @implementation SQUGradeParser
@@ -49,14 +63,15 @@ static SQUGradeParser *_sharedInstance = nil;
 - (id) init {
     @synchronized(self) {
         if(self = [super init]) {
-
+			_gradespeedDateFormatter = [NSDateFormatter new];
+			[_gradespeedDateFormatter setDateFormat:@"MMM-dd"];
         }
 		      
         return self;
     }
 }
 
-#pragma mark - Private DOM parsing interfaces
+#pragma mark - Course average parsing
 - (NSDictionary *) parseCycleWithDistrict:(SQUDistrict *) district andCell:(TFHppleElement *) cell andIndex:(NSUInteger) index {
 	// Try to find a link inside the cell
 	NSArray *links = [cell childrenWithTagName:@"a"];
@@ -81,7 +96,7 @@ static SQUGradeParser *_sharedInstance = nil;
 	
 	// Make sure the range is valid before trying to use it
 	if(!NSEqualRanges(range, NSMakeRange(NSNotFound, 0))) {
-		returnValue[@"urlHash"] = [gradeLinkURL substringWithRange:range];
+		returnValue[@"urlHash"] = (__bridge id)(CFURLCreateStringByReplacingPercentEscapes(NULL, (CFStringRef) [gradeLinkURL substringWithRange:range], CFSTR("")));
 	} else {
 		returnValue[@"urlHash"] = @"";
 	}
@@ -190,7 +205,9 @@ static SQUGradeParser *_sharedInstance = nil;
 	return dict;
 }
 
-#pragma mark - Grade parsing
+/*
+ * Parses the class averages from the first .DataTable.
+ */
 - (NSArray *) parseAveragesForDistrict:(SQUDistrict *) district withString:(NSString *) string {
 	NSData *htmlData = [string dataUsingEncoding:NSUTF8StringEncoding];
 	TFHpple *parser = [TFHpple hppleWithHTMLData:htmlData];
@@ -227,8 +244,6 @@ static SQUGradeParser *_sharedInstance = nil;
 		// Do same for number of cycles
 		cyc = [[cycleCellString componentsSeparatedByString:@" "][1] integerValue] / sem;
 		
-		NSLog(@"Semesters: %u\nCycles: %u", sem, cyc);
-		
 		NSAssert(sem < 3, @"Too many semesters, calculated %u", sem);
 		NSAssert(cyc < 5, @"Too many grading cycles, calculated %u", cyc);
 	
@@ -258,14 +273,171 @@ static SQUGradeParser *_sharedInstance = nil;
 	return averages;
 }
 
-- (NSString *) getStudentNameForDistrict:(SQUDistrict *) district withString:(NSString *) string {
-	// GradeParser.getStudentName(district, doc)
-	return @"";
+#pragma mark - Category parsing
+- (NSDictionary *) parseAssignmentWithRow:(TFHppleElement *) row andIs100Pts:(BOOL) is100Pts {
+	NSMutableDictionary *dict = [NSMutableDictionary new];
+	
+	// Extract some data
+	float ptsEarnedNum, weight;
+	BOOL extraCredit = NO;
+	
+	NSString *title = [row getColumnContentsWithClass:@"AssignmentName"];
+	NSString *dueDate = [row getColumnContentsWithClass:@"DateDue"];
+	NSString *assignedDate = [row getColumnContentsWithClass:@"DateAssigned"];
+	NSString *note = [row getColumnContentsWithClass:@"AssignmentNote"];
+	NSString *ptsEarned = [row getColumnContentsWithClass:@"AssignmentGrade"];
+	float ptsPossibleNum = is100Pts ? 100.0 : [row getColumnContentsWithClass:@"AssignmentPointsPossible"].floatValue;
+	
+	/*
+	 * Process the ptsEarned value to see if the assignment has been inputted
+	 * with a weight. It would then look like this:
+	 *
+	 * 88x0.6
+	 * 90x0.2
+	 * 100x0.2
+	 *
+	 * The first number is the actual points earned, whereas the second is the
+	 * weight of the assignment. If not specified, we assume a weight of 1.
+	 */
+	if(NSEqualRanges(NSMakeRange(NSNotFound,0),[ptsEarned rangeOfString:@"x"])) {
+		// The assignment has no weight specified.
+		ptsEarnedNum = ptsEarned.floatValue;
+		weight = 1.0;
+	} else {
+		NSArray *split = [ptsEarned componentsSeparatedByString:@"x"];
+		ptsEarnedNum = [split[0] floatValue];
+		weight = [split[1] floatValue];
+	}
+	
+	/*
+	 * GradeSpeed is a bit stupid and doesn't explicitly mark assignments as
+	 * extra credit, so we run a string compare on the assignment title and note
+	 * to determine if it is, in fact, extra credit.
+	 */
+	
+	BOOL temp = NO;
+	
+	if(note.length > 0) {
+		temp = !NSEqualRanges(NSMakeRange(NSNotFound, 0), [note rangeOfString:@"extra credit" options:NSCaseInsensitiveSearch]);
+	}
+	
+	extraCredit = !NSEqualRanges(NSMakeRange(NSNotFound, 0), [title rangeOfString:@"extra credit" options:NSCaseInsensitiveSearch]) || temp;
+	
+	// Shove everything in the dictionary.
+	dict[@"title"] = title;
+	dict[@"dueDate"] = [_gradespeedDateFormatter dateFromString:dueDate];
+	dict[@"assignedDate"] = [_gradespeedDateFormatter dateFromString:assignedDate];
+	dict[@"ptsEarned"] = @(ptsEarnedNum);
+	dict[@"ptsPossible"] = @(ptsPossibleNum);
+	dict[@"weight"] = @(weight);
+	dict[@"note"] = !note ? @"" : note;
+	dict[@"extraCredit"] = @(extraCredit);
+	
+	return dict;
 }
 
+- (NSDictionary *) parseCategory:(SQUDistrict *) district withName:(NSString *) name andTable:(TFHppleElement *) table {
+	NSMutableDictionary *category = [NSMutableDictionary new];
+	
+	// Attempt to fetch the weight for each category
+	NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"^(.*) - (\\d+)%$" options:NSRegularExpressionCaseInsensitive error:nil];
+	
+	NSArray *catNameMatches = [regex matchesInString:name options:0 range:NSMakeRange(0, name.length)];
+	if(catNameMatches.count == 0) {
+		regex = [NSRegularExpression regularExpressionWithPattern:@"^(.*) - Each assignment counts (\\d+)" options:NSRegularExpressionCaseInsensitive error:nil];
+		catNameMatches = [regex matchesInString:name options:0 range:NSMakeRange(0, name.length)];
+	}
+	
+	// Locate category header
+	TFHppleElement *header = [table childrenWithClassName:@"TableHeader"][0];
+	
+	// Figure out if assignments are out of 100 points.
+	BOOL is100Pts = !([header childrenWithClassName:@"AssignmentPointsPossible"].count);
+	
+	// Find all rows
+	NSArray *rows = [table childrenWithTagName:@"tr"];
+	NSMutableArray *assignments = [NSMutableArray arrayWithArray:[table childrenWithClassName:@"DataRow"]];
+	[assignments addObjectsFromArray:[table childrenWithClassName:@"DataRowAlt"]];
+	
+	// Find the average cell.
+	TFHppleElement *averageRow = rows[rows.count-1];
+	NSArray *averageCells = [averageRow childrenWithTagName:@"td"];
+	TFHppleElement *averageCell;
+	
+	for(TFHppleElement *column in averageCells) {
+		if(!NSEqualRanges([column.text rangeOfString:@"Average"], NSMakeRange(NSNotFound, 0))) {
+			averageCell = averageCells[[averageCells indexOfObject:column] + 1];
+			break;
+		}
+	}
+	
+	// Parse the assignments found.
+	NSMutableArray *assignmentInfo = [NSMutableArray new];
+	
+	for(TFHppleElement *row in assignments) {
+		NSDictionary *assignment = [self parseAssignmentWithRow:row andIs100Pts:is100Pts];
+		
+		[assignmentInfo addObject:assignment];
+	}
+	
+	// Populate dictionary
+	category[@"average"] = [NSNumber numberWithFloat:averageCell.text.floatValue];
+	category[@"weight"] = [NSNumber numberWithFloat:[[name substringWithRange:[catNameMatches[0] rangeAtIndex:2]] floatValue]];
+	category[@"name"] = [name substringWithRange:[catNameMatches[0] rangeAtIndex:1]];
+	category[@"bonus"] = @(0);
+	category[@"assignments"] = assignmentInfo;
+	
+	return category;
+}
+
+/*
+ * Parses the assignments in a class.
+ */
 - (NSDictionary *) getClassGradesForDistrict:(SQUDistrict *) district withString:(NSString *) string {
-	// GradeParser.parseClassGrades(district, doc, urlHash, semesterIndex, cycleIndex)
-	return nil;
+	NSMutableDictionary *grades = [NSMutableDictionary new];
+	
+	NSData *htmlData = [string dataUsingEncoding:NSUTF8StringEncoding];
+	TFHpple *parser = [TFHpple hppleWithHTMLData:htmlData];
+
+#ifndef DEBUG
+	@try {
+#endif
+		NSMutableArray *tables = [NSMutableArray arrayWithArray:[parser searchWithXPathQuery:@"//table[@class='DataTable']"]];
+		[tables removeObjectAtIndex:0];
+		
+		NSArray *categoryTitles = [parser searchWithXPathQuery:@"//span[@class='CategoryName']"];
+		
+		// If this isn't true, we've got issues
+		NSAssert(tables.count == categoryTitles.count,
+				 @"Found %u tables, but only %u categories", tables.count,
+				 categoryTitles.count);
+		
+		// Extract current average
+		TFHppleElement *currentAverage = [parser searchWithXPathQuery:@"//p[@class='CurrentAverage']"][0];
+		grades[@"average"] = [NSNumber numberWithInteger:[[currentAverage.text componentsSeparatedByString:@":"][1] integerValue]];
+		
+		// Process each of the categories
+		NSMutableArray *categories = [NSMutableArray new];
+		NSUInteger i = 0;
+		
+		for(TFHppleElement *table in tables) {
+			TFHppleElement *nameHeader = [categoryTitles objectAtIndex:i];
+			NSDictionary *dict = [self parseCategory:district withName:nameHeader.text andTable:table];
+			[categories addObject:dict];
+			i++;
+		}
+		
+		grades[@"categories"] = categories;
+#ifndef DEBUG
+	} @catch (NSException *e) {
+		NSLog(@"Error while parsing categories: %@", e);
+		return nil;
+	}
+#endif
+	
+	//NSLog(@"%@", grades);
+	
+	return grades;
 }
 
 #pragma mark - User-interface support
@@ -298,6 +470,22 @@ static SQUGradeParser *_sharedInstance = nil;
 	//    if (h < 0) h += 1;
     
     return [UIColor colorWithHue:h saturation:s brightness:v alpha:1.0];
+}
+
+/*
+ * Finds the name of the student in the output of the gradebook.
+ */
+- (NSString *) getStudentNameForDistrict:(SQUDistrict *) district withString:(NSString *) string {
+	NSData *htmlData = [string dataUsingEncoding:NSUTF8StringEncoding];
+	TFHpple *parser = [TFHpple hppleWithHTMLData:htmlData];
+	NSArray *matches = [parser searchWithXPathQuery:@"//span[@class='StudentName']"];
+	
+	if(matches.count != 0) {
+		TFHppleElement *studentName = matches[0];
+		return studentName.text;
+	}
+	
+	return @"";
 }
 
 @end

@@ -126,13 +126,24 @@
 	dictionary[@"request"][@"method"] = @"GET";
 	
 	NSArray *semesterArray = _classToHashMap[course];
-	if(!semesterArray) return nil;
-	if(semester > semesterArray.count) return nil;
+	if(!semesterArray) {
+		NSLog(@"Could not find course %@ in hash map", course);
+		return nil;
+	}
+	
+	if(semester > semesterArray.count) {
+		NSLog(@"Semester %u is out of range (got %u semesters)", semester, semesterArray.count);
+		return nil;
+	}
+
 	NSArray *cycleArray = semesterArray[semester];
-	if(cycle > cycleArray.count) return nil;
+	if(cycle > cycleArray.count) {
+		NSLog(@"Cycle %u is out of range (got %u cycles)", cycle, cycleArray.count);
+		return nil;
+	}
 	
 	// Check the array for the course's cycle hash
-	dictionary[@"params"][@"hash"] = cycleArray[cycle];
+	dictionary[@"params"][@"data"] = cycleArray[cycle];
 	
 	return dictionary;
 }
@@ -165,6 +176,8 @@
 		
 		_classToHashMap[class[@"courseNum"]] = semesterArray;
 	}
+	
+	// NSLog(@"Hash map: %@", _classToHashMap);
 }
 
 /*

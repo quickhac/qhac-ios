@@ -25,3 +25,6 @@
 [submodule "KCOrderedAccessorFix"]
 	path = KCOrderedAccessorFix
 	url = git@github.com:CFKevinRef/KCOrderedAccessorFix.git
+[submodule "JMNoise"]
+	path = JMNoise
+	url = git@github.com:jasonmorrissey/JMNoise.git

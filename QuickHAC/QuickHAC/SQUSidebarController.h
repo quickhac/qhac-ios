@@ -8,6 +8,17 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SQUSidebarController : UITableViewController
+@class SQUCourse;
+@class SQUGradeOverviewController;
+
+@interface SQUSidebarController : UITableViewController {
+	NSIndexPath *selectedItem;
+	
+	SQUGradeOverviewController *_overview;
+}
+
+@property (nonatomic, readwrite, strong) SQUGradeOverviewController *overviewController;
+
+- (void) showCourseOverviewForCourse:(SQUCourse *) course;
 
 @end

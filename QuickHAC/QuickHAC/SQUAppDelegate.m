@@ -42,6 +42,8 @@ static SQUAppDelegate *sharedDelegate = nil;
 	_sidebarController = [[SQUSidebarController alloc] initWithStyle:UITableViewStylePlain];
 	_sidebarNavController = [[UINavigationController alloc] initWithRootViewController:_sidebarController];
 	
+	_sidebarController.overviewController = _rootViewController;
+	
 	// Set up drawer
 	_drawerController = [PKRevealController revealControllerWithFrontViewController:_navController
 																 leftViewController:_sidebarNavController
@@ -55,8 +57,6 @@ static SQUAppDelegate *sharedDelegate = nil;
 	
 	// Set up automagical network indicator management
 	[[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
-    
-    [[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
 	
 	// Check for students in the database
     NSManagedObjectContext *context = [self managedObjectContext];
@@ -82,6 +82,7 @@ static SQUAppDelegate *sharedDelegate = nil;
         password = [Lockbox stringForKey:username];
 		studentID = student.student_id;
         
+		// This ensures we can see cached data while the new data is fetched
 		[[SQUGradeManager sharedInstance] setStudent:student];
 		[[NSNotificationCenter defaultCenter] postNotificationName:SQUGradesDataUpdatedNotification object:nil];
 		
@@ -125,7 +126,7 @@ static SQUAppDelegate *sharedDelegate = nil;
     
     // Put other initialisation here so this function can return faster (UI can display)
     dispatch_async(dispatch_get_main_queue(), ^{
-		NSLog(@"Fetches: %@", [[NSUserDefaults standardUserDefaults] arrayForKey:@"fetchList"]);
+		
     });
 	
     return YES;
@@ -143,27 +144,6 @@ static SQUAppDelegate *sharedDelegate = nil;
 - (void) applicationWillTerminate:(UIApplication *) application {
     // Saves changes in the application's managed object context before the application terminates.
     [self saveContext];
-}
-
-- (void)application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult result))completionHandler {
-	NSMutableArray *array = [NSMutableArray arrayWithArray:[[NSUserDefaults standardUserDefaults] arrayForKey:@"fetchList"]];
-	[array addObject:[NSDate new]];
-	[[NSUserDefaults standardUserDefaults] setObject:array forKey:@"fetchList"];
-	
-	// Send notification of update
-	UILocalNotification *notification = [[UILocalNotification alloc]  init];
-    notification.fireDate = [NSDate dateWithTimeIntervalSinceNow:10];
-    notification.timeZone = [NSTimeZone localTimeZone];
-    notification.alertBody = @"QHAC Update";
-    notification.soundName = UILocalNotificationDefaultSoundName;
-    notification.applicationIconBadgeNumber = [[NSUserDefaults standardUserDefaults] integerForKey:@"fetches"]+1;
-    [[UIApplication sharedApplication] scheduleLocalNotification:notification];
-
-	// Update counter
-	[[NSUserDefaults standardUserDefaults] setInteger:[[NSUserDefaults standardUserDefaults] integerForKey:@"fetches"]+1 forKey:@"fetches"];
-	[[NSUserDefaults standardUserDefaults] synchronize];
-
-	completionHandler(UIBackgroundFetchResultNewData);
 }
 
 #pragma mark - CoreData Stack

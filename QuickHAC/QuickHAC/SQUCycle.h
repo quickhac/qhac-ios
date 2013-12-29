@@ -17,15 +17,20 @@
 @property (nonatomic, retain) NSNumber * cycleIndex;
 @property (nonatomic, retain) NSDate * last_updated;
 @property (nonatomic, retain) NSNumber * semester;
-@property (nonatomic, retain) NSSet *categories;
+@property (nonatomic, retain) NSOrderedSet *categories;
 @property (nonatomic, retain) SQUCourse *course;
 @end
 
 @interface SQUCycle (CoreDataGeneratedAccessors)
 
+- (void)insertObject:(SQUCategory *)value inCategoriesAtIndex:(NSUInteger)idx;
+- (void)removeObjectFromCategoriesAtIndex:(NSUInteger)idx;
+- (void)insertCategories:(NSArray *)value atIndexes:(NSIndexSet *)indexes;
+- (void)removeCategoriesAtIndexes:(NSIndexSet *)indexes;
+- (void)replaceObjectInCategoriesAtIndex:(NSUInteger)idx withObject:(SQUCategory *)value;
+- (void)replaceCategoriesAtIndexes:(NSIndexSet *)indexes withCategories:(NSArray *)values;
 - (void)addCategoriesObject:(SQUCategory *)value;
 - (void)removeCategoriesObject:(SQUCategory *)value;
-- (void)addCategories:(NSSet *)values;
-- (void)removeCategories:(NSSet *)values;
-
+- (void)addCategories:(NSOrderedSet *)values;
+- (void)removeCategories:(NSOrderedSet *)values;
 @end

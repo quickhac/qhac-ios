@@ -18,6 +18,7 @@
 }
 
 @property (nonatomic, readwrite, strong) SQUStudent *student;
+@property (nonatomic, readonly, getter = getCoursesForCurrentStudent) NSOrderedSet *courses;
 
 + (SQUGradeManager *) sharedInstance;
 
@@ -25,5 +26,8 @@
 
 - (void) fetchNewClassGradesFromServerWithDoneCallback:(void (^)(NSError *)) callback;
 - (void) updateCurrentStudentWithClassAverages:(NSArray *) classAvgs;
+
+- (void) fetchNewCycleGradesFromServerForCourse:(NSString *) course withCycle:(NSUInteger) cycle andSemester:(NSUInteger) semester andDoneCallback:(void (^)(NSError *)) callback;
+- (void) updateCurrentStudentWithClassGrades:(NSDictionary *) classGrades forClass:(NSString *) class andCycle:(NSUInteger) numCycle andSemester:(NSUInteger) numSemester;
 
 @end

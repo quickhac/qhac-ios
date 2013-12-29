@@ -21,9 +21,9 @@
 	NSMutableArray *_cycleHeads;
 	
 	CALayer *_backgroundLayer;
+    CAGradientLayer *_sideBar;
 	
 	CAGradientLayer *_semesterSeperator;
-    CAGradientLayer *_sideBar;
     CATextLayer *_courseTitle;
     CATextLayer *_periodTitle;
 }

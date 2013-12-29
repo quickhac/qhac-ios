@@ -17,6 +17,7 @@
 @property (nonatomic, retain) NSString * hacUsername;
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSString * student_id;
+@property (nonatomic, retain) NSDate * lastAveragesUpdate;
 @property (nonatomic, retain) NSOrderedSet *courses;
 @end
 

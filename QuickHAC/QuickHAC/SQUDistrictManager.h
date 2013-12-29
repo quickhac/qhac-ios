@@ -35,7 +35,7 @@ typedef void (^ SQUDistrictCallback)(NSError *error, id returnData);
 - (void) performLoginRequestWithUser:(NSString *) username usingPassword:(NSString *) password andCallback:(SQUDistrictCallback) callback;
 - (void) performDisambiguationRequestWithStudentID:(NSString *) sid andCallback:(SQUDistrictCallback) callback;
 - (void) performAveragesRequestWithCallback:(SQUDistrictCallback) callback;
-- (void) performClassGradesRequestWithCourseCode:(NSString *) course andCycle:(NSUInteger) cycle andCallback:(SQUDistrictCallback) callback;
+- (void) performClassGradesRequestWithCourseCode:(NSString *) course andCycle:(NSUInteger) cycle inSemester:(NSUInteger) semester andCallback:(SQUDistrictCallback) callback;
 - (void) checkIfLoggedIn:(SQULoggedInCallback) callback;
 
 @end

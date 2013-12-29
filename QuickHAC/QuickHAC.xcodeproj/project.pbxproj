@@ -29,19 +29,24 @@
 		DE35E9AB18061F8100F15F20 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE35E9AA18061F8100F15F20 /* Security.framework */; };
 		DE7B4E85186EB0F3008079CC /* NSManagedObjectModel+KCOrderedAccessorFix.m in Sources */ = {isa = PBXBuildFile; fileRef = DE7B4E84186EB0F3008079CC /* NSManagedObjectModel+KCOrderedAccessorFix.m */; };
 		DE7F51D6178C8B5E00A677CE /* SQULoginSchoolSelector.m in Sources */ = {isa = PBXBuildFile; fileRef = DE7F51D5178C8B5E00A677CE /* SQULoginSchoolSelector.m */; };
-		DE81CDCA186D2C4D00DC1CAB /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE81CDC9186D2C4D00DC1CAB /* JavaScriptCore.framework */; };
 		DE81CDCD186D2C6B00DC1CAB /* SQUGradeParser.m in Sources */ = {isa = PBXBuildFile; fileRef = DE81CDCC186D2C6B00DC1CAB /* SQUGradeParser.m */; };
 		DE81CDCF186D31D500DC1CAB /* qhac.js in Resources */ = {isa = PBXBuildFile; fileRef = DE81CDC4186D298100DC1CAB /* qhac.js */; };
 		DE81CDD7186D517800DC1CAB /* TFHpple.m in Sources */ = {isa = PBXBuildFile; fileRef = DE81CDD2186D517800DC1CAB /* TFHpple.m */; };
 		DE81CDD8186D517800DC1CAB /* TFHppleElement.m in Sources */ = {isa = PBXBuildFile; fileRef = DE81CDD4186D517800DC1CAB /* TFHppleElement.m */; };
 		DE81CDD9186D517800DC1CAB /* XPathQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = DE81CDD6186D517800DC1CAB /* XPathQuery.m */; };
 		DE81CDDC186D538000DC1CAB /* libxml2.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DE81CDDA186D518C00DC1CAB /* libxml2.2.dylib */; };
-		DEF0F19B186EC7F700116B61 /* SQUStudent.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F19A186EC7F700116B61 /* SQUStudent.m */; };
-		DEF0F1A1186EC7F800116B61 /* SQUCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F1A0186EC7F800116B61 /* SQUCategory.m */; };
-		DEF0F1A7186EC7F800116B61 /* SQUAssignment.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F1A6186EC7F800116B61 /* SQUAssignment.m */; };
-		DEF0F1AA186EC7F800116B61 /* SQUCycle.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F1A9186EC7F800116B61 /* SQUCycle.m */; };
 		DEF0F1B6186EDFD800116B61 /* SQUSemester.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F1B5186EDFD800116B61 /* SQUSemester.m */; };
 		DEF0F1B9186EE05400116B61 /* SQUCourse.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F1B8186EE05400116B61 /* SQUCourse.m */; };
+		DEF0F1BD186EE52B00116B61 /* UIColor+SQUColourUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F1BC186EE52B00116B61 /* UIColor+SQUColourUtilities.m */; };
+		DEF0F1BF186EEA6500116B61 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DEF0F1BE186EEA6400116B61 /* CoreImage.framework */; };
+		DEF0F1C1186EEA6900116B61 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DEF0F1C0186EEA6900116B61 /* QuartzCore.framework */; };
+		DEF0F1C5186EEB9500116B61 /* UIView+JMNoise.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F1C4186EEB9500116B61 /* UIView+JMNoise.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DEF0F1C8186EEE5A00116B61 /* SQUStudent.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F1C7186EEE5A00116B61 /* SQUStudent.m */; };
+		DEF0F1CB186F7D8F00116B61 /* SQUClassDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F1CA186F7D8F00116B61 /* SQUClassDetailController.m */; };
+		DEF0F1CE186F7D9E00116B61 /* SQUClassDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F1CD186F7D9E00116B61 /* SQUClassDetailCell.m */; };
+		DEF0F1D4186FC73F00116B61 /* SQUCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F1D3186FC73F00116B61 /* SQUCategory.m */; };
+		DEF0F1D7186FC7FA00116B61 /* SQUAssignment.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F1D6186FC7FA00116B61 /* SQUAssignment.m */; };
+		DEF0F1DA186FCB5C00116B61 /* SQUCycle.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F1D9186FCB5C00116B61 /* SQUCycle.m */; };
 		DEF43B0317965B0D00190803 /* SQUGradeOverviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF43B0217965B0D00190803 /* SQUGradeOverviewController.m */; };
 		DEF43B0617965B1F00190803 /* SQUGradeOverviewTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF43B0517965B1F00190803 /* SQUGradeOverviewTableViewCell.m */; };
 		DEF43B0B179719B800190803 /* SQUHueWheel.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF43B0A179719B800190803 /* SQUHueWheel.m */; };
@@ -136,18 +141,28 @@
 		DE81CDD6186D517800DC1CAB /* XPathQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = XPathQuery.m; path = ../../hpple/XPathQuery.m; sourceTree = "<group>"; };
 		DE81CDDA186D518C00DC1CAB /* libxml2.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.2.dylib; path = usr/lib/libxml2.2.dylib; sourceTree = SDKROOT; };
 		DECA57D517DFD9D400156AFC /* SQUCoreData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SQUCoreData.h; sourceTree = "<group>"; };
-		DEF0F199186EC7F700116B61 /* SQUStudent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUStudent.h; sourceTree = "<group>"; };
-		DEF0F19A186EC7F700116B61 /* SQUStudent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUStudent.m; sourceTree = "<group>"; };
-		DEF0F19F186EC7F800116B61 /* SQUCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUCategory.h; sourceTree = "<group>"; };
-		DEF0F1A0186EC7F800116B61 /* SQUCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUCategory.m; sourceTree = "<group>"; };
-		DEF0F1A5186EC7F800116B61 /* SQUAssignment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUAssignment.h; sourceTree = "<group>"; };
-		DEF0F1A6186EC7F800116B61 /* SQUAssignment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUAssignment.m; sourceTree = "<group>"; };
-		DEF0F1A8186EC7F800116B61 /* SQUCycle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUCycle.h; sourceTree = "<group>"; };
-		DEF0F1A9186EC7F800116B61 /* SQUCycle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUCycle.m; sourceTree = "<group>"; };
 		DEF0F1B4186EDFD800116B61 /* SQUSemester.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUSemester.h; sourceTree = "<group>"; };
 		DEF0F1B5186EDFD800116B61 /* SQUSemester.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUSemester.m; sourceTree = "<group>"; };
 		DEF0F1B7186EE05400116B61 /* SQUCourse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUCourse.h; sourceTree = "<group>"; };
 		DEF0F1B8186EE05400116B61 /* SQUCourse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUCourse.m; sourceTree = "<group>"; };
+		DEF0F1BB186EE52B00116B61 /* UIColor+SQUColourUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+SQUColourUtilities.h"; sourceTree = "<group>"; };
+		DEF0F1BC186EE52B00116B61 /* UIColor+SQUColourUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+SQUColourUtilities.m"; sourceTree = "<group>"; };
+		DEF0F1BE186EEA6400116B61 /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
+		DEF0F1C0186EEA6900116B61 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		DEF0F1C3186EEB9500116B61 /* UIView+JMNoise.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIView+JMNoise.h"; path = "../../JMNoise/JMNoise/UIView+JMNoise.h"; sourceTree = "<group>"; };
+		DEF0F1C4186EEB9500116B61 /* UIView+JMNoise.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIView+JMNoise.m"; path = "../../JMNoise/JMNoise/UIView+JMNoise.m"; sourceTree = "<group>"; };
+		DEF0F1C6186EEE5A00116B61 /* SQUStudent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUStudent.h; sourceTree = "<group>"; };
+		DEF0F1C7186EEE5A00116B61 /* SQUStudent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUStudent.m; sourceTree = "<group>"; };
+		DEF0F1C9186F7D8F00116B61 /* SQUClassDetailController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUClassDetailController.h; sourceTree = "<group>"; };
+		DEF0F1CA186F7D8F00116B61 /* SQUClassDetailController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUClassDetailController.m; sourceTree = "<group>"; };
+		DEF0F1CC186F7D9E00116B61 /* SQUClassDetailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUClassDetailCell.h; sourceTree = "<group>"; };
+		DEF0F1CD186F7D9E00116B61 /* SQUClassDetailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUClassDetailCell.m; sourceTree = "<group>"; };
+		DEF0F1D2186FC73F00116B61 /* SQUCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUCategory.h; sourceTree = "<group>"; };
+		DEF0F1D3186FC73F00116B61 /* SQUCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUCategory.m; sourceTree = "<group>"; };
+		DEF0F1D5186FC7FA00116B61 /* SQUAssignment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUAssignment.h; sourceTree = "<group>"; };
+		DEF0F1D6186FC7FA00116B61 /* SQUAssignment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUAssignment.m; sourceTree = "<group>"; };
+		DEF0F1D8186FCB5B00116B61 /* SQUCycle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUCycle.h; sourceTree = "<group>"; };
+		DEF0F1D9186FCB5C00116B61 /* SQUCycle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUCycle.m; sourceTree = "<group>"; };
 		DEF43B0117965B0D00190803 /* SQUGradeOverviewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUGradeOverviewController.h; sourceTree = "<group>"; };
 		DEF43B0217965B0D00190803 /* SQUGradeOverviewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUGradeOverviewController.m; sourceTree = "<group>"; };
 		DEF43B0417965B1F00190803 /* SQUGradeOverviewTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUGradeOverviewTableViewCell.h; sourceTree = "<group>"; };
@@ -206,9 +221,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DEF0F1C1186EEA6900116B61 /* QuartzCore.framework in Frameworks */,
+				DEF0F1BF186EEA6500116B61 /* CoreImage.framework in Frameworks */,
 				DEFFDE94186E784E00E26423 /* libPKRevealController.a in Frameworks */,
 				DE81CDDC186D538000DC1CAB /* libxml2.2.dylib in Frameworks */,
-				DE81CDCA186D2C4D00DC1CAB /* JavaScriptCore.framework in Frameworks */,
 				DE35E9AB18061F8100F15F20 /* Security.framework in Frameworks */,
 				DE0615D51787AD50004B2877 /* MobileCoreServices.framework in Frameworks */,
 				DE0615D31787AD3E004B2877 /* SystemConfiguration.framework in Frameworks */,
@@ -255,6 +271,8 @@
 		DE06157917874D0C004B2877 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				DEF0F1C0186EEA6900116B61 /* QuartzCore.framework */,
+				DEF0F1BE186EEA6400116B61 /* CoreImage.framework */,
 				DE81CDDA186D518C00DC1CAB /* libxml2.2.dylib */,
 				DE81CDC9186D2C4D00DC1CAB /* JavaScriptCore.framework */,
 				DE35E9AA18061F8100F15F20 /* Security.framework */,
@@ -279,6 +297,7 @@
 				DEF43B071797122400190803 /* Class Overview UI */,
 				DEFFDE85186E6A9D00E26423 /* Sidebar UI */,
 				DEF43B081797122E00190803 /* Settings UI */,
+				DEF0F1BA186EE4E100116B61 /* Miscellaneous UI */,
 				DECA57C817DFD96300156AFC /* CoreData */,
 				DE0615E717891E23004B2877 /* 3rd Party */,
 				DE81CDC6186D298A00DC1CAB /* qhac-common */,
@@ -371,6 +390,7 @@
 		DE0615E717891E23004B2877 /* 3rd Party */ = {
 			isa = PBXGroup;
 			children = (
+				DEF0F1C2186EEB8000116B61 /* JMNoise */,
 				DE7B4E82186EB0CB008079CC /* KCOrderedAccessorFix */,
 				DE81CDD0186D50E800DC1CAB /* TFHpple (HTML Parsing) */,
 				DE35E9A61806147900F15F20 /* Lockbox (Keychain) */,
@@ -422,21 +442,39 @@
 		DECA57C817DFD96300156AFC /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
+				DEF0F1D8186FCB5B00116B61 /* SQUCycle.h */,
+				DEF0F1D9186FCB5C00116B61 /* SQUCycle.m */,
+				DEF0F1D5186FC7FA00116B61 /* SQUAssignment.h */,
+				DEF0F1D6186FC7FA00116B61 /* SQUAssignment.m */,
+				DEF0F1D2186FC73F00116B61 /* SQUCategory.h */,
+				DEF0F1D3186FC73F00116B61 /* SQUCategory.m */,
+				DEF0F1C6186EEE5A00116B61 /* SQUStudent.h */,
+				DEF0F1C7186EEE5A00116B61 /* SQUStudent.m */,
 				DEF0F1B7186EE05400116B61 /* SQUCourse.h */,
 				DEF0F1B8186EE05400116B61 /* SQUCourse.m */,
 				DEF0F1B4186EDFD800116B61 /* SQUSemester.h */,
 				DEF0F1B5186EDFD800116B61 /* SQUSemester.m */,
-				DEF0F1A8186EC7F800116B61 /* SQUCycle.h */,
-				DEF0F1A9186EC7F800116B61 /* SQUCycle.m */,
-				DEF0F1A5186EC7F800116B61 /* SQUAssignment.h */,
-				DEF0F1A6186EC7F800116B61 /* SQUAssignment.m */,
-				DEF0F19F186EC7F800116B61 /* SQUCategory.h */,
-				DEF0F1A0186EC7F800116B61 /* SQUCategory.m */,
-				DEF0F199186EC7F700116B61 /* SQUStudent.h */,
-				DEF0F19A186EC7F700116B61 /* SQUStudent.m */,
 				DECA57D517DFD9D400156AFC /* SQUCoreData.h */,
 			);
 			name = CoreData;
+			sourceTree = "<group>";
+		};
+		DEF0F1BA186EE4E100116B61 /* Miscellaneous UI */ = {
+			isa = PBXGroup;
+			children = (
+				DEF0F1BB186EE52B00116B61 /* UIColor+SQUColourUtilities.h */,
+				DEF0F1BC186EE52B00116B61 /* UIColor+SQUColourUtilities.m */,
+			);
+			name = "Miscellaneous UI";
+			sourceTree = "<group>";
+		};
+		DEF0F1C2186EEB8000116B61 /* JMNoise */ = {
+			isa = PBXGroup;
+			children = (
+				DEF0F1C3186EEB9500116B61 /* UIView+JMNoise.h */,
+				DEF0F1C4186EEB9500116B61 /* UIView+JMNoise.m */,
+			);
+			name = JMNoise;
 			sourceTree = "<group>";
 		};
 		DEF43B0017965AAF00190803 /* Grade Display UI */ = {
@@ -453,6 +491,10 @@
 		DEF43B071797122400190803 /* Class Overview UI */ = {
 			isa = PBXGroup;
 			children = (
+				DEF0F1C9186F7D8F00116B61 /* SQUClassDetailController.h */,
+				DEF0F1CA186F7D8F00116B61 /* SQUClassDetailController.m */,
+				DEF0F1CC186F7D9E00116B61 /* SQUClassDetailCell.h */,
+				DEF0F1CD186F7D9E00116B61 /* SQUClassDetailCell.m */,
 			);
 			name = "Class Overview UI";
 			sourceTree = "<group>";
@@ -662,6 +704,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DEFFDE5A186E270900E26423 /* UIAlertView+AFNetworking.m in Sources */,
+				DEF0F1CE186F7D9E00116B61 /* SQUClassDetailCell.m in Sources */,
 				DEFFDE5C186E270900E26423 /* UIImageView+AFNetworking.m in Sources */,
 				DEFFDE45186E26FC00E26423 /* AFURLRequestSerialization.m in Sources */,
 				DEFFDE44186E26FC00E26423 /* AFURLConnectionOperation.m in Sources */,
@@ -675,17 +718,20 @@
 				DEFFDE24186D881E00E26423 /* SQUDistrict.m in Sources */,
 				DEFFDE43186E26FC00E26423 /* AFSecurityPolicy.m in Sources */,
 				DEFFDE5D186E270900E26423 /* UIProgressView+AFNetworking.m in Sources */,
+				DEF0F1D4186FC73F00116B61 /* SQUCategory.m in Sources */,
 				DEFFDE3F186E26FC00E26423 /* AFHTTPRequestOperation.m in Sources */,
 				DE81CDD7186D517800DC1CAB /* TFHpple.m in Sources */,
 				DEF0F1B9186EE05400116B61 /* SQUCourse.m in Sources */,
+				DEF0F1BD186EE52B00116B61 /* UIColor+SQUColourUtilities.m in Sources */,
 				DEF0F1B6186EDFD800116B61 /* SQUSemester.m in Sources */,
 				DE81CDD9186D517800DC1CAB /* XPathQuery.m in Sources */,
 				DEFFDE27186D8C5F00E26423 /* SQUDistrictManager.m in Sources */,
 				DEFFDE58186E270900E26423 /* AFNetworkActivityIndicatorManager.m in Sources */,
-				DEF0F1A1186EC7F800116B61 /* SQUCategory.m in Sources */,
-				DEF0F19B186EC7F700116B61 /* SQUStudent.m in Sources */,
+				DEF0F1C5186EEB9500116B61 /* UIView+JMNoise.m in Sources */,
 				DEFFDE5E186E270900E26423 /* UIWebView+AFNetworking.m in Sources */,
+				DEF0F1CB186F7D8F00116B61 /* SQUClassDetailController.m in Sources */,
 				DE0615D81787ADFE004B2877 /* SQULoginViewController.m in Sources */,
+				DEF0F1D7186FC7FA00116B61 /* SQUAssignment.m in Sources */,
 				DE0615E617891E0C004B2877 /* SVProgressHUD.m in Sources */,
 				DEF43B0617965B1F00190803 /* SQUGradeOverviewTableViewCell.m in Sources */,
 				DEFFDE97186E85E300E26423 /* SQUGradeManager.m in Sources */,
@@ -694,15 +740,15 @@
 				DE06159017874D0D004B2877 /* QuickHAC.xcdatamodeld in Sources */,
 				DEFFDE88186E6ABE00E26423 /* SQUSidebarController.m in Sources */,
 				DEFFDE2B186D8EEF00E26423 /* SQUDistrictRRISD.m in Sources */,
-				DEF0F1AA186EC7F800116B61 /* SQUCycle.m in Sources */,
 				DEFFDE40186E26FC00E26423 /* AFHTTPRequestOperationManager.m in Sources */,
 				DE81CDCD186D2C6B00DC1CAB /* SQUGradeParser.m in Sources */,
-				DEF0F1A7186EC7F800116B61 /* SQUAssignment.m in Sources */,
 				DE35E9A9180614DF00F15F20 /* Lockbox.m in Sources */,
+				DEF0F1DA186FCB5C00116B61 /* SQUCycle.m in Sources */,
 				DEFFDE42186E26FC00E26423 /* AFNetworkReachabilityManager.m in Sources */,
 				DE7B4E85186EB0F3008079CC /* NSManagedObjectModel+KCOrderedAccessorFix.m in Sources */,
 				DEFFDE46186E26FC00E26423 /* AFURLResponseSerialization.m in Sources */,
 				DE81CDD8186D517800DC1CAB /* TFHppleElement.m in Sources */,
+				DEF0F1C8186EEE5A00116B61 /* SQUStudent.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

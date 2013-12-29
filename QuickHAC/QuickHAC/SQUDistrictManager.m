@@ -265,8 +265,38 @@ static SQUDistrictManager *_sharedInstance = nil;
 	}
 }
 
-- (void) performClassGradesRequestWithCourseCode:(NSString *) course andCycle:(NSUInteger) cycle andCallback:(SQUDistrictCallback) callback {
+/*
+ * Performs a request to fetch the grades for a specific class.
+ */
+- (void) performClassGradesRequestWithCourseCode:(NSString *) course andCycle:(NSUInteger) cycle inSemester:(NSUInteger) semester andCallback:(SQUDistrictCallback) callback {
+	NSDictionary *classGradesRequest = [_currentDistrict buildClassGradesRequestWithCourseCode:course andSemester:semester andCycle:cycle andUserData:nil];
 	
+	// Called if the request succeeds
+	void (^callbackSuccess)(AFHTTPRequestOperation *operation, id responseObject) = ^(AFHTTPRequestOperation *operation, id responseObject) {
+		NSDictionary *classGrades = [[SQUGradeParser sharedInstance] getClassGradesForDistrict:_currentDistrict withString:[[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding]];
+		
+		if(classGrades != nil) {
+			callback(nil, classGrades);
+		} else {
+			callback([NSError errorWithDomain:@"SQUDistrictManagerErrorDomain" code:kSQUDistrictManagerErrorInvalidDisambiguation userInfo:@{@"localizedDescription" : NSLocalizedString(@"The gradebook returned invalid data.", nil)}], nil);
+		}
+	};
+	
+	// Called on server error
+	void (^callbackFailure)(AFHTTPRequestOperation *operation, NSError *error) = ^(AFHTTPRequestOperation *operation, NSError *error) {
+		callback(error, nil);
+		NSLog(@"Class grade fetching error: %@", error);
+	};
+	
+	// Set up the request
+	NSURL *url = classGradesRequest[@"request"][@"URL"];
+	
+	if([classGradesRequest[@"request"][@"method"] isEqualToString:@"GET"]) {
+		[self sendGETRequestToURL:url withParameters:classGradesRequest[@"params"] andSuccessBlock:callbackSuccess andFailureBlock:callbackFailure];
+	} else {
+		NSLog(@"Unsupported class grades fetching method: %@", classGradesRequest[@"request"][@"method"]);
+		return;
+	}
 }
 
 /*
