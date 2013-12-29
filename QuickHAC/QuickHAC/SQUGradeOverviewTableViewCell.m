@@ -32,9 +32,9 @@
 		// Card shadow
 		_backgroundLayer.borderWidth = 0.0;
 		_backgroundLayer.shadowColor = [UIColor blackColor].CGColor;
-		_backgroundLayer.shadowOpacity = 0.25;
+		_backgroundLayer.shadowOpacity = 0.15;
 		_backgroundLayer.shadowRadius = 4.0;
-		_backgroundLayer.shadowOffset = CGSizeMake(0, 2);
+		_backgroundLayer.shadowOffset = CGSizeMake(-4.0, -1.0);
 		_backgroundLayer.masksToBounds = NO;
 		
 		UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:_backgroundLayer.frame cornerRadius:_backgroundLayer.cornerRadius];

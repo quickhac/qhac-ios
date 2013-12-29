@@ -272,7 +272,7 @@ static SQUGradeManager *_sharedInstance = nil;
 
 			// Generate empty cycle objects
 			NSUInteger numCycles = ([class[@"semesters"] count]) * ([class[@"semesters"][0][@"cycles"] count]);
-			NSUInteger cyclesPerSemester = [class[@"semester"][0] count];
+			NSUInteger cyclesPerSemester = [class[@"semesters"][0] count];
 			
 			for(NSUInteger i = 0; i < numCycles; i++) {
 				SQUCycle *cycle = [NSEntityDescription insertNewObjectForEntityForName:@"SQUCycle" inManagedObjectContext:_coreDataMOContext];
