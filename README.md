@@ -5,11 +5,11 @@ An iOS-native QuickHAC client, providing the functionality of the QuickHAC [Chro
 
 ## Features ##
 This app mirrors the features of the Chrome QuickHAC extension — it checks grades on roundrockisd.org. In addition to displaying class and assignment grades, the following features are available:
-* Highlighting changed grades
-* Colorization of grades based on a pre-determined scale
+* Lots and lots of magic
+* Even more magic
+* Something to do with black magic 
 
 ## Copyright ##
-
 Chrome extension created by Yash Aggarwal, Max Ciotti, Tristan Seifert and Xuming Zeng.
 
 iOS app by Tristan Seifert.

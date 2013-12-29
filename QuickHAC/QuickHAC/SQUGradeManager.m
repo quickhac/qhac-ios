@@ -395,7 +395,7 @@ static SQUGradeManager *_sharedInstance = nil;
 		}
 	}
 	
-	NSLog(@"Cycle: %@", cycle);
+	cycle.last_updated = [NSDate new];
 	
 	// Write changes to the database.
 	if(![_coreDataMOContext save:&err]) {

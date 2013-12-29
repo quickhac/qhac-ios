@@ -17,6 +17,11 @@
 	
 	NSUInteger _displayCycle;
 	SQUCycle *_currentCycle;
+	
+	// Navbar title view
+	UIView *_navbarTitle;
+	CATextLayer *_titleLayer;
+	CATextLayer *_subtitleLayer;
 }
 
 - (id) initWithCourse:(SQUCourse *) course;

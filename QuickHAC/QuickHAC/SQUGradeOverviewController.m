@@ -79,7 +79,7 @@
 
 #pragma mark - Table view data source
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return SQUGradeOverviewCellHeight + 20;
+	return SQUGradeOverviewCellHeight + 8;
 }
 
 - (NSInteger) numberOfSectionsInTableView:(UITableView *) tableView {

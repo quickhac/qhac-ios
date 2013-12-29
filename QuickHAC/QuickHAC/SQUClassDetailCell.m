@@ -15,10 +15,10 @@
 @synthesize index = _index;
 
 // X position and width info for the three table columns
-static NSUInteger SQUClassDetailColX[3] = {20, 191, 245};
-static NSUInteger SQUClassDetailColWidth[3] = {166, 52, 52};
+static NSUInteger SQUClassDetailColX[3] = {24, 176, 230};
+static NSUInteger SQUClassDetailColWidth[3] = {147, 52, 52};
 static NSUInteger SQUClassDetailSeparatorX = 18;
-static NSUInteger SQUClassDetailSeparatorWidth = 282;
+static NSUInteger SQUClassDetailSeparatorWidth = 254;
 static NSUInteger SQUClassDetailRowHeight = 32;
 static NSUInteger SQUClassDetailRowTextOffset = 4;
 
@@ -27,16 +27,16 @@ static NSUInteger SQUClassDetailRowTextOffset = 4;
     if (self) {
 		// Card background
 		_backgroundLayer = [CALayer layer];
-		_backgroundLayer.frame = CGRectMake(5, 5, self.frame.size.width - 10, self.frame.size.height - 10);
+		_backgroundLayer.frame = CGRectMake(15, 15, self.frame.size.width - 30, self.frame.size.height - 10);
         _backgroundLayer.backgroundColor = [UIColor whiteColor].CGColor;
 		_backgroundLayer.cornerRadius = 3.0;
 		
 		// Card shadow
 		_backgroundLayer.borderWidth = 0.0;
 		_backgroundLayer.shadowColor = [UIColor blackColor].CGColor;
-		_backgroundLayer.shadowOpacity = 0.15;
+		_backgroundLayer.shadowOpacity = 0.0625;
 		_backgroundLayer.shadowRadius = 4.0;
-		_backgroundLayer.shadowOffset = CGSizeMake(-4.0, -1.0);
+		_backgroundLayer.shadowOffset = CGSizeMake(-8.0, -8.0);
 		_backgroundLayer.masksToBounds = NO;
 		
 		UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:_backgroundLayer.frame cornerRadius:_backgroundLayer.cornerRadius];
@@ -59,7 +59,7 @@ static NSUInteger SQUClassDetailRowTextOffset = 4;
         
 		// Category title
         _categoryTitle = [CATextLayer layer];
-        _categoryTitle.frame = CGRectMake(20, 4, _backgroundLayer.frame.size.width - 66, 24);
+        _categoryTitle.frame = CGRectMake(24, 4, _backgroundLayer.frame.size.width - 66, 24);
         _categoryTitle.contentsScale = [UIScreen mainScreen].scale;
         _categoryTitle.foregroundColor = [UIColor blackColor].CGColor;
         _categoryTitle.font = (__bridge CFTypeRef) [UIFont fontWithName:@"HelveticaNeue-Light" size:15.0f];
@@ -101,7 +101,7 @@ static NSUInteger SQUClassDetailRowTextOffset = 4;
 			CATextLayer *layer = [CATextLayer layer];
 			layer.contentsScale = [UIScreen mainScreen].scale;
 			layer.foregroundColor = [UIColor colorWithWhite:0.25 alpha:1.0].CGColor;
-			layer.font = (__bridge CFTypeRef) [UIFont fontWithName:@"HelveticaNeue-Bold" size:14.0f];
+			layer.font = (__bridge CFTypeRef) [UIFont fontWithName:@"HelveticaNeue-Medium" size:14.0f];
 			layer.fontSize = 13.0f;
 			layer.string = rowHeaderTitles[i];
 			
@@ -143,7 +143,7 @@ static NSUInteger SQUClassDetailRowTextOffset = 4;
 	rect.size.height = [SQUClassDetailCell cellHeightForCategory:_category];
 	self.frame = rect;
 	
-	_backgroundLayer.frame = CGRectMake(5, 5, self.frame.size.width - 10, self.frame.size.height);
+	_backgroundLayer.frame = CGRectMake(15, 15, self.frame.size.width - 30, self.frame.size.height - 10);
 	
 	// We also need to update the mask on the sidebar when changing the frame
 	_sideBar.frame = CGRectMake(0, 0, 8, _backgroundLayer.frame.size.height);
@@ -278,13 +278,38 @@ static NSUInteger SQUClassDetailRowTextOffset = 4;
 		y += SQUClassDetailRowHeight;
 		x = 12;
 		
-		if(i + 1 != _category.assignments.count) {
+//		if(i + 1 != _category.assignments.count) {
 			CAGradientLayer *layer = [CAGradientLayer layer];
 			layer.frame = CGRectMake(SQUClassDetailSeparatorX, y - 3, SQUClassDetailSeparatorWidth, 1);
 			layer.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1.0].CGColor;
 			[_rowSeparators addObject:layer];
-		}
+//		}
 	}
+
+	// Draw average label
+	CATextLayer *textLayer = [CATextLayer layer];
+	textLayer.contentsScale = [UIScreen mainScreen].scale;
+	textLayer.foregroundColor = [UIColor colorWithWhite:0.375 alpha:1.0].CGColor;
+	textLayer.font = (__bridge CFTypeRef) [UIFont fontWithName:@"HelveticaNeue-Medium" size:14.0f];
+	textLayer.fontSize = 13.0f;
+	textLayer.string = NSLocalizedString(@"AVERAGE", @"category detail");
+	textLayer.alignmentMode = kCAAlignmentRight;
+	width = [_tableColumnWidths[0] floatValue];
+	textLayer.frame = CGRectMake(SQUClassDetailColX[0], y + SQUClassDetailRowTextOffset, SQUClassDetailColWidth[0], 18);
+	x += width;
+	[_tableLabels addObject:textLayer];
+	
+	textLayer = [CATextLayer layer];
+	textLayer.contentsScale = [UIScreen mainScreen].scale;
+	textLayer.foregroundColor = [UIColor colorWithWhite:0.375 alpha:1.0].CGColor;
+	textLayer.font = (__bridge CFTypeRef) [UIFont fontWithName:@"HelveticaNeue-Medium" size:14.0f];
+	textLayer.fontSize = 13.0f;
+	textLayer.string = [NSString stringWithFormat:NSLocalizedString(@"%.2f%%", @"category detail average"), _category.average.floatValue];
+	textLayer.alignmentMode = kCAAlignmentLeft;
+	width = [_tableColumnWidths[0] floatValue];
+	textLayer.frame = CGRectMake(SQUClassDetailColX[1], y + SQUClassDetailRowTextOffset, SQUClassDetailColWidth[1], 18);
+	x += width;
+	[_tableLabels addObject:textLayer];
 	
 	// Add headers
 	for(CALayer *layer in _rowHeaders) {
@@ -309,12 +334,13 @@ static NSUInteger SQUClassDetailRowTextOffset = 4;
  */
 + (CGFloat) cellHeightForCategory:(SQUCategory *) category {
 	if(category.assignments.count == 0) {
-		return 55;
+		return 65;
 	} else if(category.assignments.count == 1) {
-		return 55+30+SQUClassDetailRowHeight;
+		return 65+(SQUClassDetailRowHeight * 2);
 	} else {
-		CGFloat height = 55+30;
+		CGFloat height = 65+30;
 		height += (category.assignments.count - 1) * SQUClassDetailRowHeight;
+		height += SQUClassDetailRowHeight;
 		return height;
 	}
 }

@@ -16,6 +16,9 @@
 @implementation SQUGradeOverviewTableViewCell
 @synthesize courseInfo = _courseInfo;
 
+static NSUInteger SQUGradeOverviewTableViewCellXPos[2] = {24, 162};
+static NSUInteger SQUGradeOverviewTableViewCellWidth[2] = {115, 115};
+
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
@@ -25,16 +28,16 @@
 		
 		// Card background
 		_backgroundLayer = [CALayer layer];
-		_backgroundLayer.frame = CGRectMake(5, 5, self.frame.size.width - 10, self.frame.size.height - 10);
+		_backgroundLayer.frame = CGRectMake(15, 15, self.frame.size.width - 30, self.frame.size.height - 10);
         _backgroundLayer.backgroundColor = [UIColor whiteColor].CGColor;
 		_backgroundLayer.cornerRadius = 3.0;
 		
 		// Card shadow
 		_backgroundLayer.borderWidth = 0.0;
 		_backgroundLayer.shadowColor = [UIColor blackColor].CGColor;
-		_backgroundLayer.shadowOpacity = 0.15;
+		_backgroundLayer.shadowOpacity = 0.0625;
 		_backgroundLayer.shadowRadius = 4.0;
-		_backgroundLayer.shadowOffset = CGSizeMake(-4.0, -1.0);
+		_backgroundLayer.shadowOffset = CGSizeMake(-8.0, -8.0);
 		_backgroundLayer.masksToBounds = NO;
 		
 		UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:_backgroundLayer.frame cornerRadius:_backgroundLayer.cornerRadius];
@@ -56,7 +59,7 @@
         
 		// Course title
         _courseTitle = [CATextLayer layer];
-        _courseTitle.frame = CGRectMake(20, 4, _backgroundLayer.frame.size.width - 106, 32);
+        _courseTitle.frame = CGRectMake(SQUGradeOverviewTableViewCellXPos[0], 4, _backgroundLayer.frame.size.width - 106, 32);
         _courseTitle.contentsScale = [UIScreen mainScreen].scale;
         _courseTitle.foregroundColor = [UIColor blackColor].CGColor;
         _courseTitle.font = (__bridge CFTypeRef) [UIFont fontWithName:@"HelveticaNeue-Light" size:15.0f];
@@ -67,7 +70,7 @@
         _periodTitle.frame = CGRectMake(_backgroundLayer.frame.size.width - 80, 8, 70, 24);
         _periodTitle.contentsScale = [UIScreen mainScreen].scale;
         _periodTitle.foregroundColor = [UIColor grayColor].CGColor;
-        _periodTitle.font = (__bridge CFTypeRef) [UIFont systemFontOfSize:18.0f];
+        _periodTitle.font = (__bridge CFTypeRef) [UIFont fontWithName:@"HelveticaNeue-Light" size:15.0f];
         _periodTitle.fontSize = 17.5f;
 		_periodTitle.alignmentMode = kCAAlignmentRight;
 		
@@ -75,31 +78,32 @@
 		_semesterHeads = [NSMutableArray new];
 		_cycleHeads = [NSMutableArray new];
 		
+		
 		for(NSUInteger i = 0; i < 2; i++) {
-			CGFloat currentX = 16 + ((_backgroundLayer.frame.size.width / 2) * i);
+			NSString *alignment = (i == 0) ? kCAAlignmentLeft : kCAAlignmentRight;
+			
+			CGFloat currentX = SQUGradeOverviewTableViewCellXPos[i];
 			
 			CATextLayer *semesterHead = [CATextLayer layer];
-			semesterHead.frame = CGRectMake(currentX, 34, (_backgroundLayer.frame.size.width / 2) - 24, 16);
+			semesterHead.frame = CGRectMake(currentX, 34, SQUGradeOverviewTableViewCellWidth[i], 16);
 			semesterHead.contentsScale = [UIScreen mainScreen].scale;
 			semesterHead.foregroundColor = [UIColor blackColor].CGColor;
-			semesterHead.font = (__bridge CFTypeRef) [UIFont boldSystemFontOfSize:14.0f];
+			semesterHead.font = (__bridge CFTypeRef) [UIFont fontWithName:@"HelveticaNeue-Medium" size:15.0f];
 			semesterHead.fontSize = 14.0f;
 			semesterHead.string = @"Semester 1: 100";
-			semesterHead.alignmentMode = kCAAlignmentCenter;
+			semesterHead.alignmentMode = alignment;
 			
 			// Create cycle subheads
 			for(NSUInteger j = 0; j < 4; j++) {
-				CGFloat currentX = 16 + ((_backgroundLayer.frame.size.width / 2) * i);
-				
 				CATextLayer *cycleHead = [CATextLayer layer];
-				cycleHead.frame = CGRectMake(currentX, 56 + (j * 20), (_backgroundLayer.frame.size.width / 2) - 24, 16);
+				cycleHead.frame = CGRectMake(currentX, 56 + (j * 20), SQUGradeOverviewTableViewCellWidth[i], 16);
 				cycleHead.contentsScale = [UIScreen mainScreen].scale;
 				cycleHead.foregroundColor = [UIColor blackColor].CGColor;
-				cycleHead.font = (__bridge CFTypeRef) [UIFont systemFontOfSize:14.0f];
+				cycleHead.font = (__bridge CFTypeRef) [UIFont fontWithName:@"HelveticaNeue-Light" size:15.0f];
 				cycleHead.fontSize = 14.0f;
 				cycleHead.string = @"Cycle 1: 100";
 				//cycleHead.alignmentMode = (i == 0) ? kCAAlignmentLeft : kCAAlignmentRight;
-				cycleHead.alignmentMode = kCAAlignmentLeft;
+				cycleHead.alignmentMode = alignment;
 				
 				[_cycleHeads addObject:cycleHead];
 				[_backgroundLayer addSublayer:cycleHead];

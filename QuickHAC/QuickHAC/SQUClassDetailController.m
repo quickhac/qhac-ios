@@ -52,10 +52,14 @@
 }
 
 - (void) viewDidLoad {
-	
     UIRefreshControl *refresher = [[UIRefreshControl alloc] init];
     [refresher addTarget:self action:@selector(reloadData:)
         forControlEvents:UIControlEventValueChanged];
+	
+	NSLog(@"%@", _currentCycle);
+	
+	NSString *lastUpdated = [NSString stringWithFormat:NSLocalizedString(@"Last Updated on %@", nil), [_refreshDateFormatter stringFromDate:_currentCycle.last_updated]];
+	refresher.attributedTitle = [[NSAttributedString alloc] initWithString:lastUpdated];
     self.refreshControl = refresher;
 	
 	// iOS 7 is stupid and draws the referesh control behind the table's BG view
@@ -71,7 +75,33 @@
 	[self reloadData:self.refreshControl];
 	[self.tableView reloadData];
 	
-	NSLog(@"Course categories: %u", _currentCycle.categories.count);
+	// Set up the title view container and title text
+	_navbarTitle = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 200, 44)];
+	
+	_titleLayer = [CATextLayer new];
+	_titleLayer.frame = CGRectMake(0, 4, 200, 28);
+	_titleLayer.font = (__bridge CFTypeRef)([UIFont fontWithName:@"HelveticaNeue-Medium" size:26.0]);
+	_titleLayer.fontSize = 17.0f;
+	_titleLayer.contentsScale = [UIScreen mainScreen].scale;
+	_titleLayer.foregroundColor = [UIColor blackColor].CGColor;
+	_titleLayer.string = _course.title;
+	_titleLayer.alignmentMode = kCAAlignmentCenter;
+	
+	[_navbarTitle.layer addSublayer:_titleLayer];
+	
+	_subtitleLayer = [CATextLayer new];
+	_subtitleLayer.frame = CGRectMake(0, 25, 200, 28);
+	_subtitleLayer.font = (__bridge CFTypeRef)([UIFont fontWithName:@"HelveticaNeue-LightItalic" size:26.0]);
+	_subtitleLayer.fontSize = 12.0f;
+	_subtitleLayer.contentsScale = [UIScreen mainScreen].scale;
+	_subtitleLayer.foregroundColor = [UIColor lightGrayColor].CGColor;
+	_subtitleLayer.string = @"Cycle 3";
+	_subtitleLayer.alignmentMode = kCAAlignmentCenter;
+	
+	[_navbarTitle.layer addSublayer:_subtitleLayer];
+	
+	// Apply to nav item
+	self.navigationItem.titleView = _navbarTitle;
 }
 
 #pragma mark - Table view data source
@@ -86,7 +116,7 @@
 }
 
 - (CGFloat) tableView:(UITableView *) tableView heightForRowAtIndexPath:(NSIndexPath *) indexPath {
-	return [SQUClassDetailCell cellHeightForCategory:_currentCycle.categories[indexPath.row]] + 20;
+	return [SQUClassDetailCell cellHeightForCategory:_currentCycle.categories[indexPath.row]] + 8;
 }
 
 - (UITableViewCell *) tableView:(UITableView *) tableView cellForRowAtIndexPath:(NSIndexPath *) indexPath {
@@ -104,10 +134,20 @@
     return cell;
 }
 
+#pragma mark - Cycle switching
+- (void) updateCycle {
+	if(_displayCycle > _course.cycles.count) return;
+	
+	_currentCycle = _course.cycles[_displayCycle];
+	
+	NSString *lastUpdated = [NSString stringWithFormat:NSLocalizedString(@"Last Updated on %@", nil), [_refreshDateFormatter stringFromDate:_currentCycle.last_updated]];
+	self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:lastUpdated];
+	
+	[self.tableView reloadData];
+}
+
 #pragma mark - UI
 - (void) reloadData:(id) sender {
-	NSLog(@"Refreshing course grades for %@...", _course.courseCode);
-	
 	// Update course grades
 	[[SQUGradeManager sharedInstance] fetchNewCycleGradesFromServerForCourse:_course.courseCode withCycle:_displayCycle % 3 andSemester:_displayCycle / 3 andDoneCallback:^(NSError * error) {
 		if(!error) {
@@ -121,6 +161,9 @@
 		}
 		
 		[self.refreshControl endRefreshing];
+		
+		NSString *lastUpdated = [NSString stringWithFormat:NSLocalizedString(@"Last Updated on %@", nil), [_refreshDateFormatter stringFromDate:_currentCycle.last_updated]];
+		self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:lastUpdated];
 	}];
 }
 

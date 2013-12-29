@@ -10,7 +10,10 @@
 
 #import "SQUDistrictManager.h"
 #import "SQUDistrict.h"
+#import "SQUGradeManager.h"
 #import "SQUGradeParser.h"
+#import "SQUCoreData.h"
+
 #import "AFNetworking.h"
 
 static SQUDistrictManager *_sharedInstance = nil;
@@ -238,10 +241,16 @@ static SQUDistrictManager *_sharedInstance = nil;
 	
 	// Called if the request succeeds
 	void (^averagesSuccess)(AFHTTPRequestOperation *operation, id responseObject) = ^(AFHTTPRequestOperation *operation, id responseObject) {
-		NSArray *averages = [[SQUGradeParser sharedInstance] parseAveragesForDistrict:_currentDistrict withString:[[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding]];
+		NSString *string = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
+		
+		NSArray *averages = [[SQUGradeParser sharedInstance] parseAveragesForDistrict:_currentDistrict withString:string];
 		
 		if(averages != nil) {
+			NSString *studentName = [[SQUGradeParser sharedInstance] getStudentNameForDistrict:_currentDistrict withString:string];
+			[SQUGradeManager sharedInstance].student.name = studentName;
+			
 			[_currentDistrict updateDistrictStateWithClassGrades:averages];
+
 			callback(nil, averages);
 		} else {
 			callback([NSError errorWithDomain:@"SQUDistrictManagerErrorDomain" code:kSQUDistrictManagerErrorInvalidDisambiguation userInfo:@{@"localizedDescription" : NSLocalizedString(@"The gradebook returned invalid data.", nil)}], nil);
