@@ -10,6 +10,8 @@
 #import "SQUDistrict.h"
 
 #define kSQUDistrictManagerErrorInvalidDisambiguation 1000
+#define kSQUDistrictManagerErrorInvalidDataReceived 2000
+#define kSQUDistrictManagerErrorNoDataAvailable 3000
 
 typedef void (^ SQUDistrictCallback)(NSError *error, id returnData);
 
@@ -37,5 +39,6 @@ typedef void (^ SQUDistrictCallback)(NSError *error, id returnData);
 - (void) performAveragesRequestWithCallback:(SQUDistrictCallback) callback;
 - (void) performClassGradesRequestWithCourseCode:(NSString *) course andCycle:(NSUInteger) cycle inSemester:(NSUInteger) semester andCallback:(SQUDistrictCallback) callback;
 - (void) checkIfLoggedIn:(SQULoggedInCallback) callback;
+- (NSArray *) cyclesWithDataAvailableForCourse:(NSString *) course;
 
 @end

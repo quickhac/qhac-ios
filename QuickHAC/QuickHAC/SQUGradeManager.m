@@ -141,7 +141,6 @@ static SQUGradeManager *_sharedInstance = nil;
 							if(callback) callback(nil);
 						} else {
 							if(callback) callback(error);
-							NSLog(@"Error while fetching grades: %@", error);
 						}
 					}];
 				} else {
@@ -274,10 +273,13 @@ static SQUGradeManager *_sharedInstance = nil;
 			NSUInteger numCycles = ([class[@"semesters"] count]) * ([class[@"semesters"][0][@"cycles"] count]);
 			NSUInteger cyclesPerSemester = [class[@"semesters"][0] count];
 			
+			_student.cyclesPerSemester = @(cyclesPerSemester);
+			_student.numSemesters = @([class[@"semesters"] count]);
+
 			for(NSUInteger i = 0; i < numCycles; i++) {
 				SQUCycle *cycle = [NSEntityDescription insertNewObjectForEntityForName:@"SQUCycle" inManagedObjectContext:_coreDataMOContext];
 				
-				cycle.cycleIndex = @(i % cyclesPerSemester);
+				cycle.cycleIndex = @(i);
 				cycle.semester = @(i / cyclesPerSemester);
 				cycle.course = course;
 				
@@ -287,12 +289,25 @@ static SQUGradeManager *_sharedInstance = nil;
 			NSLog(@"Created %i cycles in course %@.", course.cycles.count, course.courseCode);
 		}
 		
+		// Check which cycles have data available
+		NSArray *dataAvailableForCycle = [[SQUDistrictManager sharedInstance] cyclesWithDataAvailableForCourse:course.courseCode];
+		
 		// There should be an initialised course entity now, so populate the cycles
 		NSUInteger i = 0;
 		
 		for(NSDictionary *semester in class[@"semesters"]) {
 			for(NSDictionary *cycle in semester[@"cycles"]) {
 				SQUCycle *dbCycle = (SQUCycle *) course.cycles[i];
+				
+				// Iterate through the cycle availability array
+				for(NSNumber *cycleNum in dataAvailableForCycle) {
+					if(cycleNum.unsignedIntegerValue == i) {
+						dbCycle.dataAvailableInGradebook = @(YES);
+						break;
+					}
+				}
+				
+				// Update cycle data
 				[self updateCycle:dbCycle withCycleInfo:cycle];
 				i++;
 			}
@@ -322,12 +337,12 @@ static SQUGradeManager *_sharedInstance = nil;
 	
 	// Write changes to the database.
 	if(![_coreDataMOContext save:&err]) {
-		NSLog(@"Could not save data: %@", err);
+		NSLog(@"Could not save class averages data: %@", err);
 		
 		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Database Error", nil) message:err.localizedDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
 		[alert show];
 	} else {
-		NSLog(@"Saved class averages information.");
+		// NSLog(@"Saved class averages information.");
 	}
 }
 
@@ -382,6 +397,7 @@ static SQUGradeManager *_sharedInstance = nil;
 			SQUCategory *dbCategory = array[0];
 			dbCategory.weight = category[@"weight"];
 			dbCategory.average = category[@"average"];
+			dbCategory.is100PtsBased = category[@"is100PtsBased"];
 			
 			// Update assignments
 			[self updateCategory:dbCategory withAssignments:category[@"assignments"]];
@@ -404,7 +420,7 @@ static SQUGradeManager *_sharedInstance = nil;
 		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Database Error", nil) message:err.localizedDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
 		[alert show];
 	} else {
-		NSLog(@"Saved grades for class %@, cycle %u semester %u.", class, numCycle+1, numSemester+1);
+		// NSLog(@"Saved grades for class %@, cycle %u semester %u.", class, numCycle+1, numSemester+1);
 	}
 }
 

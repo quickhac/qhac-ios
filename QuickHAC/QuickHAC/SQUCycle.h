@@ -2,7 +2,7 @@
 //  SQUCycle.h
 //  QuickHAC
 //
-//  Created by Tristan Seifert on 12/28/13.
+//  Created by Tristan Seifert on 12/29/13.
 //  Copyright (c) 2013 Squee! Apps. All rights reserved.
 //
 
@@ -17,6 +17,7 @@
 @property (nonatomic, retain) NSNumber * cycleIndex;
 @property (nonatomic, retain) NSDate * last_updated;
 @property (nonatomic, retain) NSNumber * semester;
+@property (nonatomic, retain) NSNumber * dataAvailableInGradebook;
 @property (nonatomic, retain) NSOrderedSet *categories;
 @property (nonatomic, retain) SQUCourse *course;
 @end

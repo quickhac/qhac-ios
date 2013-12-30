@@ -28,3 +28,6 @@
 [submodule "JMNoise"]
 	path = JMNoise
 	url = git@github.com:jasonmorrissey/JMNoise.git
+[submodule "WYPopoverController"]
+	path = WYPopoverController
+	url = git@github.com:nicolaschengdev/WYPopoverController.git

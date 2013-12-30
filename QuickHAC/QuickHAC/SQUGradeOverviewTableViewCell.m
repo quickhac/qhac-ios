@@ -17,7 +17,7 @@
 @synthesize courseInfo = _courseInfo;
 
 static NSUInteger SQUGradeOverviewTableViewCellXPos[2] = {24, 162};
-static NSUInteger SQUGradeOverviewTableViewCellWidth[2] = {115, 115};
+static NSUInteger SQUGradeOverviewTableViewCellWidth[2] = {115, 112};
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
@@ -67,7 +67,7 @@ static NSUInteger SQUGradeOverviewTableViewCellWidth[2] = {115, 115};
         
 		// Period label
         _periodTitle = [CATextLayer layer];
-        _periodTitle.frame = CGRectMake(_backgroundLayer.frame.size.width - 80, 8, 70, 24);
+        _periodTitle.frame = CGRectMake(_backgroundLayer.frame.size.width - 80, 8, 65, 24);
         _periodTitle.contentsScale = [UIScreen mainScreen].scale;
         _periodTitle.foregroundColor = [UIColor grayColor].CGColor;
         _periodTitle.font = (__bridge CFTypeRef) [UIFont fontWithName:@"HelveticaNeue-Light" size:15.0f];

@@ -46,6 +46,9 @@ typedef struct {
 // Network requests/etc
 - (void) isLoggedInWithCallback:(SQULoggedInCallback) callback;
 
+// Cycle validation
+- (NSArray *) cyclesWithDataForCourse:(NSString *) courseCode;
+
 @end
 
 /*

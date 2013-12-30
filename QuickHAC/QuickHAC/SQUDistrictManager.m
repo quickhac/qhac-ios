@@ -253,7 +253,7 @@ static SQUDistrictManager *_sharedInstance = nil;
 
 			callback(nil, averages);
 		} else {
-			callback([NSError errorWithDomain:@"SQUDistrictManagerErrorDomain" code:kSQUDistrictManagerErrorInvalidDisambiguation userInfo:@{@"localizedDescription" : NSLocalizedString(@"The gradebook returned invalid data.", nil)}], nil);
+			callback([NSError errorWithDomain:@"SQUDistrictManagerErrorDomain" code:kSQUDistrictManagerErrorInvalidDataReceived userInfo:@{@"localizedDescription" : NSLocalizedString(@"The gradebook returned invalid data.", nil)}], nil);
 		}
 	};
 	
@@ -280,6 +280,11 @@ static SQUDistrictManager *_sharedInstance = nil;
 - (void) performClassGradesRequestWithCourseCode:(NSString *) course andCycle:(NSUInteger) cycle inSemester:(NSUInteger) semester andCallback:(SQUDistrictCallback) callback {
 	NSDictionary *classGradesRequest = [_currentDistrict buildClassGradesRequestWithCourseCode:course andSemester:semester andCycle:cycle andUserData:nil];
 	
+	if(!classGradesRequest) {
+		callback([NSError errorWithDomain:@"SQUDistrictManagerErrorDomain" code:kSQUDistrictManagerErrorNoDataAvailable userInfo:@{@"localizedDescription" : NSLocalizedString(@"No data is available for the selected cycle.", nil)}], nil);
+		return;
+	}
+	
 	// Called if the request succeeds
 	void (^callbackSuccess)(AFHTTPRequestOperation *operation, id responseObject) = ^(AFHTTPRequestOperation *operation, id responseObject) {
 		NSDictionary *classGrades = [[SQUGradeParser sharedInstance] getClassGradesForDistrict:_currentDistrict withString:[[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding]];
@@ -287,7 +292,7 @@ static SQUDistrictManager *_sharedInstance = nil;
 		if(classGrades != nil) {
 			callback(nil, classGrades);
 		} else {
-			callback([NSError errorWithDomain:@"SQUDistrictManagerErrorDomain" code:kSQUDistrictManagerErrorInvalidDisambiguation userInfo:@{@"localizedDescription" : NSLocalizedString(@"The gradebook returned invalid data.", nil)}], nil);
+			callback([NSError errorWithDomain:@"SQUDistrictManagerErrorDomain" code:kSQUDistrictManagerErrorInvalidDataReceived userInfo:@{@"localizedDescription" : NSLocalizedString(@"The gradebook returned invalid data.", nil)}], nil);
 		}
 	};
 	
@@ -303,6 +308,7 @@ static SQUDistrictManager *_sharedInstance = nil;
 	if([classGradesRequest[@"request"][@"method"] isEqualToString:@"GET"]) {
 		[self sendGETRequestToURL:url withParameters:classGradesRequest[@"params"] andSuccessBlock:callbackSuccess andFailureBlock:callbackFailure];
 	} else {
+		callback([NSError errorWithDomain:@"SQUDistrictManagerErrorDomain" code:kSQUDistrictManagerErrorInvalidDataReceived userInfo:@{@"localizedDescription" : NSLocalizedString(@"The gradebook returned invalid data.", nil)}], nil);
 		NSLog(@"Unsupported class grades fetching method: %@", classGradesRequest[@"request"][@"method"]);
 		return;
 	}
@@ -313,6 +319,13 @@ static SQUDistrictManager *_sharedInstance = nil;
  */
 - (void) checkIfLoggedIn:(SQULoggedInCallback) callback {
 	[_currentDistrict isLoggedInWithCallback:callback];
+}
+
+/*
+ * Returns the cycles that data is available for in a specific course.
+ */
+- (NSArray *) cyclesWithDataAvailableForCourse:(NSString *) course {
+	return [_currentDistrict cyclesWithDataForCourse:course];
 }
 
 @end

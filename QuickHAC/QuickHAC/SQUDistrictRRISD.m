@@ -142,6 +142,11 @@
 		return nil;
 	}
 	
+	if([cycleArray[cycle] length] == 0) {
+		NSLog(@"There is no grade data available for cycle %u in semester %u for course %@",cycle,semester,course);
+		return nil;
+	}
+	
 	// Check the array for the course's cycle hash
 	dictionary[@"params"][@"data"] = cycleArray[cycle];
 	
@@ -281,6 +286,35 @@
 		
 		callback(NO);
 	}];
+}
+
+/*
+ * Returns an array of cycles that have data available for a specific course.
+ */
+- (NSArray *) cyclesWithDataForCourse:(NSString *) courseCode {
+	// Try to find the course in the map
+	NSArray *semesterArray = _classToHashMap[courseCode];
+	if(!semesterArray) {
+		NSLog(@"Could not find course %@ in cycle -> hash map", courseCode);
+		return nil;
+	}
+	
+	// Build a list of all the cycles that have data
+	NSMutableArray *result = [NSMutableArray new];
+	NSUInteger cycleCount = 0;
+	
+	for(NSArray *semester in semesterArray) {
+		for(NSString *hash in semester) {
+			// If the hash is not nil and not zero length we have data
+			if(hash && hash.length != 0) {
+				[result addObject:@(cycleCount)];
+			}
+			
+			cycleCount++;
+		}
+	}
+	
+	return result;
 }
 
 @end

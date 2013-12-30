@@ -105,4 +105,12 @@
 	NSLog(@"%s(%i) %s: SQUDistrict method not overridden or no subclass used", __FILE__, __LINE__, __func__);
 }
 
+/*
+ * Returns an array of cycles that have data available for a specific course.
+ */
+- (NSArray *) cyclesWithDataForCourse:(NSString *) courseCode {
+	NSLog(@"%s(%i) %s: SQUDistrict method not overridden or no subclass used", __FILE__, __LINE__, __func__);
+	return nil;
+}
+
 @end

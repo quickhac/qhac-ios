@@ -39,9 +39,10 @@
         self.title = NSLocalizedString(@"Overview", nil);
         
         UIBarButtonItem *showSidebar = [[UIBarButtonItem alloc]
-                                     initWithTitle:NSLocalizedString(@"Sidebar", nil)
-                                     style:UIBarButtonItemStyleBordered target:self
-                                     action:@selector(openSidebar:)];
+										initWithImage:[UIImage imageNamed:@"RevealSidebarIcon"]
+										style:UIBarButtonItemStyleBordered
+										target:self
+										action:@selector(openSidebar:)];
         [self.navigationItem setLeftBarButtonItem:showSidebar];
 		
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateTableNotification:) name:SQUGradesDataUpdatedNotification object:nil];

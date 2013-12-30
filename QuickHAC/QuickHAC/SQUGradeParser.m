@@ -244,8 +244,9 @@ static SQUGradeParser *_sharedInstance = nil;
 		// Do same for number of cycles
 		cyc = [[cycleCellString componentsSeparatedByString:@" "][1] integerValue] / sem;
 		
+		// Bounds checking
 		NSAssert(sem < 3, @"Too many semesters, calculated %u", sem);
-		NSAssert(cyc < 5, @"Too many grading cycles, calculated %u", cyc);
+		NSAssert(cyc < 5, @"Too many grading cycles per semester, calculated %u", cyc);
 	
 		semester_params_t semesterParams = {
 			.semesters = sem,
@@ -299,14 +300,19 @@ static SQUGradeParser *_sharedInstance = nil;
 	 * The first number is the actual points earned, whereas the second is the
 	 * weight of the assignment. If not specified, we assume a weight of 1.
 	 */
-	if(NSEqualRanges(NSMakeRange(NSNotFound,0),[ptsEarned rangeOfString:@"x"])) {
-		// The assignment has no weight specified.
-		ptsEarnedNum = ptsEarned.floatValue;
-		weight = 1.0;
+	if(ptsEarned.length != 0) {
+		if(NSEqualRanges(NSMakeRange(NSNotFound,0),[ptsEarned rangeOfString:@"x"])) {
+			// The assignment has no weight specified.
+			ptsEarnedNum = ptsEarned.floatValue;
+			weight = 1.0;
+		} else {
+			NSArray *split = [ptsEarned componentsSeparatedByString:@"x"];
+			ptsEarnedNum = [split[0] floatValue];
+			weight = [split[1] floatValue];
+		}
 	} else {
-		NSArray *split = [ptsEarned componentsSeparatedByString:@"x"];
-		ptsEarnedNum = [split[0] floatValue];
-		weight = [split[1] floatValue];
+		ptsEarnedNum = -1;
+		weight = 1.0;
 	}
 	
 	/*
@@ -330,6 +336,7 @@ static SQUGradeParser *_sharedInstance = nil;
 	dict[@"ptsEarned"] = @(ptsEarnedNum);
 	dict[@"ptsPossible"] = @(ptsPossibleNum);
 	dict[@"weight"] = @(weight);
+	dict[@"isOutOf100"] = @((ptsPossibleNum == 100) ? true : false);
 	dict[@"note"] = !note ? @"" : note;
 	dict[@"extraCredit"] = @(extraCredit);
 	
@@ -352,7 +359,7 @@ static SQUGradeParser *_sharedInstance = nil;
 	TFHppleElement *header = [table childrenWithClassName:@"TableHeader"][0];
 	
 	// Figure out if assignments are out of 100 points.
-	BOOL is100Pts = !([header childrenWithClassName:@"AssignmentPointsPossible"].count);
+	BOOL is100Pts = ([header childrenWithClassName:@"AssignmentGrade"].count == 1);
 	
 	// Find all rows
 	NSArray *rows = [table childrenWithTagName:@"tr"];
@@ -386,6 +393,7 @@ static SQUGradeParser *_sharedInstance = nil;
 	category[@"name"] = [name substringWithRange:[catNameMatches[0] rangeAtIndex:1]];
 	category[@"bonus"] = @(0);
 	category[@"assignments"] = assignmentInfo;
+	category[@"is100PtsBased"] = @(is100Pts);
 	
 	return category;
 }
@@ -403,6 +411,8 @@ static SQUGradeParser *_sharedInstance = nil;
 	@try {
 #endif
 		NSMutableArray *tables = [NSMutableArray arrayWithArray:[parser searchWithXPathQuery:@"//table[@class='DataTable']"]];
+		if(tables.count == 0) return nil;
+		
 		[tables removeObjectAtIndex:0];
 		
 		NSArray *categoryTitles = [parser searchWithXPathQuery:@"//span[@class='CategoryName']"];

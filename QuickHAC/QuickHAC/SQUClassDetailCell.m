@@ -9,16 +9,17 @@
 #import "SQUClassDetailCell.h"
 #import "UIColor+SQUColourUtilities.h"
 #import "SQUCoreData.h"
+#import "SQUAppDelegate.h"
 
 @implementation SQUClassDetailCell
 @synthesize category = _category;
 @synthesize index = _index;
 
 // X position and width info for the three table columns
-static NSUInteger SQUClassDetailColX[3] = {24, 176, 230};
-static NSUInteger SQUClassDetailColWidth[3] = {147, 52, 52};
+static NSUInteger SQUClassDetailColX[3] = {24, 171, 225};
+static NSUInteger SQUClassDetailColWidth[3] = {142, 52, 57};
 static NSUInteger SQUClassDetailSeparatorX = 18;
-static NSUInteger SQUClassDetailSeparatorWidth = 254;
+static NSUInteger SQUClassDetailSeparatorWidth = 263;
 static NSUInteger SQUClassDetailRowHeight = 32;
 static NSUInteger SQUClassDetailRowTextOffset = 4;
 
@@ -220,17 +221,23 @@ static NSUInteger SQUClassDetailRowTextOffset = 4;
 	
 	y += 4;
 	
+	// Sort assignments by date due
+	NSSortDescriptor *dateSort = [NSSortDescriptor sortDescriptorWithKey:@"date_due" ascending:YES];
+	NSArray *sortedAssignments = [_category.assignments sortedArrayUsingDescriptors:@[dateSort]];
+	
 	// Create table contents
-	for(NSUInteger i = 0; i < _category.assignments.count; i++) {
-		assignment = _category.assignments[i];
+	for(NSUInteger i = 0; i < sortedAssignments.count; i++) {
+		assignment = sortedAssignments[i];
 		
 		// Format the assignment grade accordingly
-		if(assignment.pts_possible.floatValue == 100 && !assignment.extra_credit.boolValue) {
-			assignmentValueString = [NSString stringWithFormat:NSLocalizedString(@"%u", @"assignment grade in table out of 100"), assignment.pts_earned.unsignedIntegerValue];
-		} else if(assignment.extra_credit.boolValue) {
-			assignmentValueString = [NSString stringWithFormat:NSLocalizedString(@"%u", @"assignment grade extra credit"), assignment.pts_earned.unsignedIntegerValue];
+		if(assignment.pts_earned.integerValue != -1) {
+			if(_category.is100PtsBased.boolValue) {
+				assignmentValueString = [NSString stringWithFormat:NSLocalizedString(@"%u", @"assignment grade in table out of 100"), assignment.pts_earned.unsignedIntegerValue];
+			} else {
+				assignmentValueString = [NSString stringWithFormat:NSLocalizedString(@"%u/%u", @"assignment grade in table not out of 100"), assignment.pts_earned.unsignedIntegerValue, assignment.pts_possible.unsignedIntegerValue];
+			}
 		} else {
-			assignmentValueString = [NSString stringWithFormat:NSLocalizedString(@"%u/%u", @"assignment grade in table not out of 100"), assignment.pts_earned.unsignedIntegerValue, assignment.pts_possible.unsignedIntegerValue];
+			assignmentValueString = NSLocalizedString(@"", @"shown with empty grade in category table");
 		}
 		
 		// Text to put on labels

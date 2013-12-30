@@ -2,7 +2,7 @@
 //  SQUCycle.m
 //  QuickHAC
 //
-//  Created by Tristan Seifert on 12/28/13.
+//  Created by Tristan Seifert on 12/29/13.
 //  Copyright (c) 2013 Squee! Apps. All rights reserved.
 //
 
@@ -17,6 +17,7 @@
 @dynamic cycleIndex;
 @dynamic last_updated;
 @dynamic semester;
+@dynamic dataAvailableInGradebook;
 @dynamic categories;
 @dynamic course;
 

@@ -2,7 +2,7 @@
 //  SQUStudent.h
 //  QuickHAC
 //
-//  Created by Tristan Seifert on 12/28/13.
+//  Created by Tristan Seifert on 12/29/13.
 //  Copyright (c) 2013 Squee! Apps. All rights reserved.
 //
 
@@ -18,6 +18,8 @@
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSString * student_id;
 @property (nonatomic, retain) NSDate * lastAveragesUpdate;
+@property (nonatomic, retain) NSNumber * cyclesPerSemester;
+@property (nonatomic, retain) NSNumber * numSemesters;
 @property (nonatomic, retain) NSOrderedSet *courses;
 @end
 

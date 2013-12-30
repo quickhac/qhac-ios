@@ -62,11 +62,8 @@
     [self.view addSubview:_changeDistrictLink];
     
     // set up login fields
-    if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
-        _authFieldTable = [[UITableView alloc] initWithFrame:CGRectMake(-16, 220, 336, 150) style:UITableViewStylePlain];
-    } else {
-        _authFieldTable = [[UITableView alloc] initWithFrame:CGRectMake(0, 216, 320, 150) style:UITableViewStyleGrouped];
-    }
+    _authFieldTable = [[UITableView alloc] initWithFrame:CGRectMake(0, 220, 304, 150) style:UITableViewStylePlain];
+
     
     _authFieldTable.delegate = self;
     _authFieldTable.dataSource = self;
