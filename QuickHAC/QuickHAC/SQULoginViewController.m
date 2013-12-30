@@ -4,7 +4,6 @@
 //
 //  Created by Tristan Seifert on 05/07/2013.
 //  See README.MD for licensing and copyright information.
-//  See README file for license information.
 //
 
 #import "SQULoginViewController.h"
@@ -246,6 +245,29 @@
         return;
     }
     
+	// See if a student with this HAC username and ID exists
+	NSManagedObjectContext *context = [[SQUAppDelegate sharedDelegate] managedObjectContext];
+	NSError *db_err = nil;
+	
+	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+	NSEntityDescription *entity = [NSEntityDescription entityForName:@"SQUStudent" inManagedObjectContext:context];
+	[fetchRequest setEntity:entity];
+	NSArray *students = [context executeFetchRequest:fetchRequest error:&db_err];
+	
+	if(db_err) {
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Database Error", nil) message:db_err.localizedDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
+		[alert show];
+	}
+	
+	for(SQUStudent *student in students) {
+		if([student.hacUsername isEqualToString:_emailField.text] && [student.student_id isEqualToString:_sidField.text]) {
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Student Exists", nil) message:NSLocalizedString(@"A student with the same student ID and username as you are trying to add already exists.", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
+			[alert show];
+			
+			return;
+		}
+	}
+	
     [SVProgressHUD showProgress:-1 status:NSLocalizedString(@"Logging In…", nil) maskType:SVProgressHUDMaskTypeGradient];
     
 	// Ask the current district instance to do a log in
@@ -280,7 +302,9 @@
 					if(!error) {
 						[SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"Done!", nil)];
 						
-						// Dismiss login view and show overview
+						[[NSNotificationCenter defaultCenter] postNotificationName:SQUStudentsUpdatedNotification object:nil];
+						
+						// Dismiss login view
 						[self dismissViewControllerAnimated:YES completion:NO];
 					} else {
 						[SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Error", nil)];
@@ -297,73 +321,6 @@
             [alert show];
 		}
 	}];
-	
-    /*[[SQUHACInterface sharedInstance] performLoginWithUser:_emailField.text andPassword:_passField.text andSID:_sidField.text callback:^(NSError *error, id returnData){
-        if(!error) {
-            NSString *sessionID = [[NSString alloc] initWithData:returnData encoding:NSUTF8StringEncoding];
-            
-            NSLog(@"Session key: %@", sessionID);
-            
-            [SVProgressHUD showProgress:-1 status:NSLocalizedString(@"Checking Session…", nil) maskType:SVProgressHUDMaskTypeGradient];
-            
-            [[SQUHACInterface sharedInstance] getGradesURLWithBlob:sessionID callback:^(NSError *err, id data) {
-                NSString *gradeURL = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-                
-                // TODO: Eval regex to check for the link: /id=([\w\d%]*)/.
-                if([gradeURL rangeOfString:@"Server Error in '/HomeAccess' Application." options: NSCaseInsensitiveSearch].location == NSNotFound) {
-                    NSLog(@"Grades URL value: %@", gradeURL);
-                    
-                    if(![Lockbox setString:sessionID forKey:@"sessionKey"]) {
-                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Saving Credentials", nil) message:[NSString stringWithFormat:NSLocalizedString(@"The session key could not be saved due to a Keychain Services error. (%i)", nil), error] delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
-                        [alert show];
-                        
-                        [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Error", nil)];
-                        return;
-                    }
-                    
-                    if(![Lockbox setString:_passField.text forKey:@"accountPassword"] || ![Lockbox setString:_emailField.text forKey:@"accountEmail"]) {
-                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Saving Credentials", nil) message:[NSString stringWithFormat:NSLocalizedString(@"The username and password could not be saved due to a Keychain Services error. (%i)", nil), error] delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
-                        [alert show];
-                        
-                        [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Error", nil)];
-                        return;
-                    }
-                    
-                    [SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"Logged In", nil)];
-                    
-                    [self dismissViewControllerAnimated:YES completion:NO];
-                    
-                    // Save some information about the user in the database
-                    NSManagedObjectContext *context = [[SQUAppDelegate sharedDelegate] managedObjectContext];
-                    SQUStudent *studentInfo = [NSEntityDescription insertNewObjectForEntityForName:@"SQUStudent" inManagedObjectContext:context];
-                    studentInfo.student_id = _sidField.text;
-                    studentInfo.district = [NSNumber numberWithInt:_district];
-                    
-                    // Save info to database
-                    NSError *db_err = nil;
-                    if (![context save:&db_err]) {
-                        NSLog(@"Couldn't save database: %@", [db_err localizedDescription]);
-                    }
-                    
-                    [[NSUserDefaults standardUserDefaults] synchronize];
-                } else {
-                    NSLog(@"Login failed");
-                    [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Wrong Credentials", nil)];
-                    
-                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Authenticating", nil) message:NSLocalizedString(@"Please check your username, password and student ID and try again.", @"login controller") delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
-                    [alert show];
-                }
-                
-            }];
-        } else {
-            NSLog(@"Auth error: %@", error);
-            
-            [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Error", nil)];
-            
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Authenticating", nil) message:error.localizedDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
-            [alert show];
-        }
-    }];*/
 }
 
 #pragma mark - View Controller Shenanigans

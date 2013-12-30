@@ -101,6 +101,19 @@ static SQUDistrictManager *_sharedInstance = nil;
 	return NO;
 }
 
+/*
+ * Returns a district for a specific ID.
+ */
+- (SQUDistrict *) districtWithID:(NSInteger) districtID {
+	for(SQUDistrict *district in _initialisedDistricts) {
+		if(district.district_id == districtID) {
+			return district;
+		}
+	}
+	
+	return nil;
+}
+
 #pragma mark - Request helper methods
 /*
  * Creates a GET request with the specified URL, parameters, and success and

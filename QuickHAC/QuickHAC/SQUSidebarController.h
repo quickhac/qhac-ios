@@ -12,11 +12,12 @@
 @class SQUGradeOverviewController;
 @class SQUSettingsViewController;
 
+#define SQUSidebarControllerShowSidebarMessage @"SQUSidebarControllerShowSidebarMessage"
+
 @interface SQUSidebarController : UITableViewController {
 	NSIndexPath *selectedItem;
 	
 	SQUGradeOverviewController *_overview;
-	SQUSettingsViewController *_settings;
 }
 
 @property (nonatomic, readwrite, strong) SQUGradeOverviewController *overviewController;

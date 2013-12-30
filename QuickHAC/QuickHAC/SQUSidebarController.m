@@ -11,6 +11,7 @@
 #import "SQUSidebarController.h"
 #import "SQUGradeManager.h"
 #import "SQUCoreData.h"
+#import "SQUAppDelegate.h"
 #import "SQUSettingsViewController.h"
 
 #import "PKRevealController.h"
@@ -34,6 +35,7 @@
 		[self.tableView selectRowAtIndexPath:selectedItem animated:NO scrollPosition:UITableViewScrollPositionTop];
 		
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(gradesUpdatedNotification:) name:SQUGradesDataUpdatedNotification object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showCourseOverviewNotification:) name:SQUSidebarControllerShowSidebarMessage object:nil];
     }
     return self;
 }
@@ -51,7 +53,6 @@
 }
 
 #pragma mark - Table view data source
-
 - (NSInteger) numberOfSectionsInTableView:(UITableView *) tableView {
     // Return the number of sections.
     return 3;
@@ -142,19 +143,15 @@
 			break;
 		}
 			
-		case 2:
-			if(!_settings) {
-				_settings = [[SQUSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
-				UINavigationController *navCtrlr = [[UINavigationController alloc] initWithRootViewController:_settings];
+		case 2: {
+			SQUSettingsViewController *settings = [[SQUSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
+			UINavigationController *navCtrlr = [[UINavigationController alloc] initWithRootViewController:settings];
 				
-				[[self revealController] setFrontViewController:navCtrlr];
-				[[self revealController] resignPresentationModeEntirely:YES animated:YES completion:NULL];
-			} else {
-				[[self revealController] setFrontViewController:_settings.navigationController];
-				[[self revealController] resignPresentationModeEntirely:YES animated:YES completion:NULL];
-			}
+			[[self revealController] setFrontViewController:navCtrlr];
+			[[self revealController] resignPresentationModeEntirely:YES animated:YES completion:NULL];
 			
 			break;
+		}
 			
 		default:
 			break;
@@ -167,6 +164,34 @@
 	
 	if(selectedItem) {
 		[self.tableView selectRowAtIndexPath:selectedItem animated:YES scrollPosition:UITableViewScrollPositionNone];
+	}
+}
+
+/*
+ * Notification fired when the main view wants to show the information for a
+ * specific course.
+ */
+- (void) showCourseOverviewNotification:(NSNotification *) notif {
+	SQUCourse *course = (SQUCourse *) notif.userInfo[@"course"];
+	
+	if(course) {
+		NSUInteger index = [[[SQUGradeManager sharedInstance] getCoursesForCurrentStudent] indexOfObject:course];
+		
+		selectedItem = [NSIndexPath indexPathForRow:index inSection:1];
+		[self.tableView selectRowAtIndexPath:selectedItem animated:YES scrollPosition:UITableViewScrollPositionNone];
+		
+		NSLog(@"Showing course index %u", index);
+		
+		SQUClassDetailController *controller = [[SQUClassDetailController alloc] initWithCourse:course];
+		UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+		
+		// !!! this is real kind of a hack
+		PKRevealController *drawerController = [PKRevealController revealControllerWithFrontViewController:navController
+																	 leftViewController:self.navigationController
+																	rightViewController:nil];
+		drawerController.animationDuration = 0.25;
+		
+		[[SQUAppDelegate sharedDelegate].window setRootViewController:drawerController];
 	}
 }
 

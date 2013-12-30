@@ -248,7 +248,7 @@
 
 	SQUClassCycleChooserController *controller = [[SQUClassCycleChooserController alloc] initWithCycles:cycles];
 	controller.delegate = self;
-	controller.contentSizeForViewInPopover = CGSizeMake(175, 230);
+	controller.contentSizeForViewInPopover = CGSizeMake(175, 220);
 	controller.selectedCycle = _displayCycle;
 	
 	_popover = [[WYPopoverController alloc] initWithContentViewController:[[UINavigationController alloc] initWithRootViewController:controller]];

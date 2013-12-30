@@ -72,8 +72,18 @@ static SQUAppDelegate *sharedDelegate = nil;
         SQULoginSchoolSelector *loginController = [[SQULoginSchoolSelector alloc] initWithStyle:UITableViewStyleGrouped];
         [_navController presentViewController:[[UINavigationController alloc] initWithRootViewController:loginController] animated:NO completion:NULL];
     } else {
+		NSUInteger selectedStudent = [[NSUserDefaults standardUserDefaults] integerForKey:@"selectedStudent"];
+		
+		// Ensure that
+		if(selectedStudent > students.count) {
+			selectedStudent = 0;
+			[[NSUserDefaults standardUserDefaults] setInteger:selectedStudent forKey:@"selectedStudent"];
+		} else {
+			[[NSUserDefaults standardUserDefaults] setInteger:selectedStudent forKey:@"selectedStudent"];
+		}
+		
 		// Select first student
-        SQUStudent *student = students[0];
+        SQUStudent *student = students[selectedStudent];
         
         // Fetch username/pw from keychain
         NSString *username, *password, *studentID;

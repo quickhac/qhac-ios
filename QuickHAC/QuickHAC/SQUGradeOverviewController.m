@@ -146,11 +146,9 @@
 - (void) tableView:(UITableView *) tableView didSelectRowAtIndexPath:(NSIndexPath *) indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:NO];
 	
-/*	SQUCourse *course = [SQUGradeManager sharedInstance].courses[indexPath.row];
+	SQUCourse *course = [SQUGradeManager sharedInstance].courses[indexPath.row];
 	
-	UINavigationController *sidebarNavCtrlr = (UINavigationController *) [self revealController].leftViewController;
-	SQUSidebarController *sidebar = sidebarNavCtrlr.viewControllers[0];
-	[sidebar showCourseOverviewForCourse:course];*/
+	[[NSNotificationCenter defaultCenter] postNotificationName:SQUSidebarControllerShowSidebarMessage object:nil userInfo:@{@"course": course}];
 }
 
 @end
