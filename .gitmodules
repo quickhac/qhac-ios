@@ -31,3 +31,9 @@
 [submodule "WYPopoverController"]
 	path = WYPopoverController
 	url = git@github.com:nicolaschengdev/WYPopoverController.git
+[submodule "InAppSettingsKit"]
+	path = InAppSettingsKit
+	url = git@github.com:futuretap/InAppSettingsKit.git
+[submodule "QuickDialog"]
+	path = QuickDialog
+	url = git@github.com:escoz/QuickDialog.git

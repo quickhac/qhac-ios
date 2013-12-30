@@ -30,7 +30,6 @@
 		DE7B4E85186EB0F3008079CC /* NSManagedObjectModel+KCOrderedAccessorFix.m in Sources */ = {isa = PBXBuildFile; fileRef = DE7B4E84186EB0F3008079CC /* NSManagedObjectModel+KCOrderedAccessorFix.m */; };
 		DE7F51D6178C8B5E00A677CE /* SQULoginSchoolSelector.m in Sources */ = {isa = PBXBuildFile; fileRef = DE7F51D5178C8B5E00A677CE /* SQULoginSchoolSelector.m */; };
 		DE81CDCD186D2C6B00DC1CAB /* SQUGradeParser.m in Sources */ = {isa = PBXBuildFile; fileRef = DE81CDCC186D2C6B00DC1CAB /* SQUGradeParser.m */; };
-		DE81CDCF186D31D500DC1CAB /* qhac.js in Resources */ = {isa = PBXBuildFile; fileRef = DE81CDC4186D298100DC1CAB /* qhac.js */; };
 		DE81CDD7186D517800DC1CAB /* TFHpple.m in Sources */ = {isa = PBXBuildFile; fileRef = DE81CDD2186D517800DC1CAB /* TFHpple.m */; };
 		DE81CDD8186D517800DC1CAB /* TFHppleElement.m in Sources */ = {isa = PBXBuildFile; fileRef = DE81CDD4186D517800DC1CAB /* TFHppleElement.m */; };
 		DE81CDD9186D517800DC1CAB /* XPathQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = DE81CDD6186D517800DC1CAB /* XPathQuery.m */; };
@@ -50,9 +49,11 @@
 		DEF0F1E71870E78000116B61 /* SQUClassCycleChooserController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F1E61870E78000116B61 /* SQUClassCycleChooserController.m */; };
 		DEF0F1EA1870FB3B00116B61 /* SQUStudent.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F1E91870FB3B00116B61 /* SQUStudent.m */; };
 		DEF0F1ED187101A900116B61 /* SQUCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F1EC187101A900116B61 /* SQUCategory.m */; };
+		DEF0F21218712DC700116B61 /* libQuickDialog.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DEF0F20F18712DB300116B61 /* libQuickDialog.a */; };
+		DEF0F2151871300A00116B61 /* SQUSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F2141871300A00116B61 /* SQUSettingsViewController.m */; };
+		DEF0F21C187156D000116B61 /* acknowledgements.rtf in Resources */ = {isa = PBXBuildFile; fileRef = DEF0F21B187156D000116B61 /* acknowledgements.rtf */; };
 		DEF43B0317965B0D00190803 /* SQUGradeOverviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF43B0217965B0D00190803 /* SQUGradeOverviewController.m */; };
 		DEF43B0617965B1F00190803 /* SQUGradeOverviewTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF43B0517965B1F00190803 /* SQUGradeOverviewTableViewCell.m */; };
-		DEF43B0B179719B800190803 /* SQUHueWheel.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF43B0A179719B800190803 /* SQUHueWheel.m */; };
 		DEFFDE24186D881E00E26423 /* SQUDistrict.m in Sources */ = {isa = PBXBuildFile; fileRef = DEFFDE23186D881E00E26423 /* SQUDistrict.m */; };
 		DEFFDE27186D8C5F00E26423 /* SQUDistrictManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DEFFDE26186D8C5F00E26423 /* SQUDistrictManager.m */; };
 		DEFFDE2B186D8EEF00E26423 /* SQUDistrictRRISD.m in Sources */ = {isa = PBXBuildFile; fileRef = DEFFDE2A186D8EEF00E26423 /* SQUDistrictRRISD.m */; };
@@ -84,6 +85,27 @@
 			proxyType = 1;
 			remoteGlobalIDString = DE06157617874D0C004B2877;
 			remoteInfo = QuickHAC;
+		};
+		DEF0F20C18712DB300116B61 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DEF0F20718712DB100116B61 /* QuickDialog.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D80B0E3313E052DF00FA85CA;
+			remoteInfo = QuickDialogExample;
+		};
+		DEF0F20E18712DB300116B61 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DEF0F20718712DB100116B61 /* QuickDialog.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 2C542393145ADEBD0026A152;
+			remoteInfo = QuickDialog;
+		};
+		DEF0F21018712DC200116B61 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DEF0F20718712DB100116B61 /* QuickDialog.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 2C542392145ADEBD0026A152;
+			remoteInfo = QuickDialog;
 		};
 		DEFFDE90186E782D00E26423 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -132,7 +154,6 @@
 		DE7B4E84186EB0F3008079CC /* NSManagedObjectModel+KCOrderedAccessorFix.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSManagedObjectModel+KCOrderedAccessorFix.m"; path = "../../KCOrderedAccessorFix/NSManagedObjectModel+KCOrderedAccessorFix.m"; sourceTree = "<group>"; };
 		DE7F51D4178C8B5E00A677CE /* SQULoginSchoolSelector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQULoginSchoolSelector.h; sourceTree = "<group>"; };
 		DE7F51D5178C8B5E00A677CE /* SQULoginSchoolSelector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQULoginSchoolSelector.m; sourceTree = "<group>"; };
-		DE81CDC4186D298100DC1CAB /* qhac.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = qhac.js; sourceTree = "<group>"; };
 		DE81CDC9186D2C4D00DC1CAB /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		DE81CDCB186D2C6B00DC1CAB /* SQUGradeParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUGradeParser.h; sourceTree = "<group>"; };
 		DE81CDCC186D2C6B00DC1CAB /* SQUGradeParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUGradeParser.m; sourceTree = "<group>"; };
@@ -172,12 +193,15 @@
 		DEF0F1E91870FB3B00116B61 /* SQUStudent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUStudent.m; sourceTree = "<group>"; };
 		DEF0F1EB187101A900116B61 /* SQUCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUCategory.h; sourceTree = "<group>"; };
 		DEF0F1EC187101A900116B61 /* SQUCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUCategory.m; sourceTree = "<group>"; };
+		DEF0F2031871287300116B61 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		DEF0F20718712DB100116B61 /* QuickDialog.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = QuickDialog.xcodeproj; path = ../QuickDialog/QuickDialog.xcodeproj; sourceTree = "<group>"; };
+		DEF0F2131871300A00116B61 /* SQUSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUSettingsViewController.h; sourceTree = "<group>"; };
+		DEF0F2141871300A00116B61 /* SQUSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUSettingsViewController.m; sourceTree = "<group>"; };
+		DEF0F21B187156D000116B61 /* acknowledgements.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; name = acknowledgements.rtf; path = assets/acknowledgements.rtf; sourceTree = SOURCE_ROOT; };
 		DEF43B0117965B0D00190803 /* SQUGradeOverviewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUGradeOverviewController.h; sourceTree = "<group>"; };
 		DEF43B0217965B0D00190803 /* SQUGradeOverviewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUGradeOverviewController.m; sourceTree = "<group>"; };
 		DEF43B0417965B1F00190803 /* SQUGradeOverviewTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUGradeOverviewTableViewCell.h; sourceTree = "<group>"; };
 		DEF43B0517965B1F00190803 /* SQUGradeOverviewTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUGradeOverviewTableViewCell.m; sourceTree = "<group>"; };
-		DEF43B09179719B800190803 /* SQUHueWheel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUHueWheel.h; sourceTree = "<group>"; };
-		DEF43B0A179719B800190803 /* SQUHueWheel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUHueWheel.m; sourceTree = "<group>"; };
 		DEFFDE22186D881E00E26423 /* SQUDistrict.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUDistrict.h; sourceTree = "<group>"; };
 		DEFFDE23186D881E00E26423 /* SQUDistrict.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUDistrict.m; sourceTree = "<group>"; };
 		DEFFDE25186D8C5F00E26423 /* SQUDistrictManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUDistrictManager.h; sourceTree = "<group>"; };
@@ -230,6 +254,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DEF0F21218712DC700116B61 /* libQuickDialog.a in Frameworks */,
 				DEF0F1C1186EEA6900116B61 /* QuartzCore.framework in Frameworks */,
 				DEF0F1BF186EEA6500116B61 /* CoreImage.framework in Frameworks */,
 				DEFFDE94186E784E00E26423 /* libPKRevealController.a in Frameworks */,
@@ -261,6 +286,7 @@
 		DE06156E17874D0C004B2877 = {
 			isa = PBXGroup;
 			children = (
+				DEF0F20718712DB100116B61 /* QuickDialog.xcodeproj */,
 				DEFFDE8C186E782D00E26423 /* PKRevealController.xcodeproj */,
 				DE06158217874D0C004B2877 /* QuickHAC */,
 				DE06157917874D0C004B2877 /* Frameworks */,
@@ -280,6 +306,7 @@
 		DE06157917874D0C004B2877 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				DEF0F2031871287300116B61 /* MessageUI.framework */,
 				DEF0F1C0186EEA6900116B61 /* QuartzCore.framework */,
 				DEF0F1BE186EEA6400116B61 /* CoreImage.framework */,
 				DE81CDDA186D518C00DC1CAB /* libxml2.2.dylib */,
@@ -309,7 +336,6 @@
 				DEF0F1BA186EE4E100116B61 /* Miscellaneous UI */,
 				DECA57C817DFD96300156AFC /* CoreData */,
 				DE0615E717891E23004B2877 /* 3rd Party */,
-				DE81CDC6186D298A00DC1CAB /* qhac-common */,
 				DE06158B17874D0D004B2877 /* SQUAppDelegate.h */,
 				DE06158C17874D0D004B2877 /* SQUAppDelegate.m */,
 				DE06159117874D0D004B2877 /* Images.xcassets */,
@@ -322,6 +348,7 @@
 		DE06158317874D0D004B2877 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				DEF0F21B187156D000116B61 /* acknowledgements.rtf */,
 				DE06158417874D0D004B2877 /* QuickHAC-Info.plist */,
 				DE06158517874D0D004B2877 /* InfoPlist.strings */,
 				DE06158817874D0D004B2877 /* main.m */,
@@ -428,14 +455,6 @@
 			name = KCOrderedAccessorFix;
 			sourceTree = "<group>";
 		};
-		DE81CDC6186D298A00DC1CAB /* qhac-common */ = {
-			isa = PBXGroup;
-			children = (
-				DE81CDC4186D298100DC1CAB /* qhac.js */,
-			);
-			name = "qhac-common";
-			sourceTree = "<group>";
-		};
 		DE81CDD0186D50E800DC1CAB /* TFHpple (HTML Parsing) */ = {
 			isa = PBXGroup;
 			children = (
@@ -499,6 +518,15 @@
 			path = ../../WYPopoverController/WYPopoverController;
 			sourceTree = "<group>";
 		};
+		DEF0F20818712DB100116B61 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				DEF0F20D18712DB300116B61 /* QuickDialogExample.app */,
+				DEF0F20F18712DB300116B61 /* libQuickDialog.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		DEF43B0017965AAF00190803 /* Grade Display UI */ = {
 			isa = PBXGroup;
 			children = (
@@ -526,8 +554,8 @@
 		DEF43B081797122E00190803 /* Settings UI */ = {
 			isa = PBXGroup;
 			children = (
-				DEF43B09179719B800190803 /* SQUHueWheel.h */,
-				DEF43B0A179719B800190803 /* SQUHueWheel.m */,
+				DEF0F2131871300A00116B61 /* SQUSettingsViewController.h */,
+				DEF0F2141871300A00116B61 /* SQUSettingsViewController.m */,
 			);
 			name = "Settings UI";
 			sourceTree = "<group>";
@@ -596,6 +624,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				DEF0F21118712DC200116B61 /* PBXTargetDependency */,
 				DEFFDE93186E784800E26423 /* PBXTargetDependency */,
 			);
 			name = QuickHAC;
@@ -665,6 +694,10 @@
 					ProductGroup = DEFFDE8D186E782D00E26423 /* Products */;
 					ProjectRef = DEFFDE8C186E782D00E26423 /* PKRevealController.xcodeproj */;
 				},
+				{
+					ProductGroup = DEF0F20818712DB100116B61 /* Products */;
+					ProjectRef = DEF0F20718712DB100116B61 /* QuickDialog.xcodeproj */;
+				},
 			);
 			projectRoot = "";
 			targets = (
@@ -675,6 +708,20 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		DEF0F20D18712DB300116B61 /* QuickDialogExample.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = QuickDialogExample.app;
+			remoteRef = DEF0F20C18712DB300116B61 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		DEF0F20F18712DB300116B61 /* libQuickDialog.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libQuickDialog.a;
+			remoteRef = DEF0F20E18712DB300116B61 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		DEFFDE91186E782D00E26423 /* libPKRevealController.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -690,7 +737,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DE06158717874D0D004B2877 /* InfoPlist.strings in Resources */,
-				DE81CDCF186D31D500DC1CAB /* qhac.js in Resources */,
+				DEF0F21C187156D000116B61 /* acknowledgements.rtf in Resources */,
 				DE0615E517891E0C004B2877 /* SVProgressHUD.bundle in Resources */,
 				DE06159217874D0D004B2877 /* Images.xcassets in Resources */,
 			);
@@ -739,7 +786,6 @@
 				DEFFDE5B186E270900E26423 /* UIButton+AFNetworking.m in Sources */,
 				DE7F51D6178C8B5E00A677CE /* SQULoginSchoolSelector.m in Sources */,
 				DEF0F1E31870E60B00116B61 /* WYPopoverController.m in Sources */,
-				DEF43B0B179719B800190803 /* SQUHueWheel.m in Sources */,
 				DEFFDE47186E26FC00E26423 /* AFURLSessionManager.m in Sources */,
 				DE06158917874D0D004B2877 /* main.m in Sources */,
 				DEFFDE24186D881E00E26423 /* SQUDistrict.m in Sources */,
@@ -764,6 +810,7 @@
 				DEFFDE41186E26FC00E26423 /* AFHTTPSessionManager.m in Sources */,
 				DEF0F1E71870E78000116B61 /* SQUClassCycleChooserController.m in Sources */,
 				DEF43B0317965B0D00190803 /* SQUGradeOverviewController.m in Sources */,
+				DEF0F2151871300A00116B61 /* SQUSettingsViewController.m in Sources */,
 				DE06159017874D0D004B2877 /* QuickHAC.xcdatamodeld in Sources */,
 				DEFFDE88186E6ABE00E26423 /* SQUSidebarController.m in Sources */,
 				DEFFDE2B186D8EEF00E26423 /* SQUDistrictRRISD.m in Sources */,
@@ -793,6 +840,11 @@
 			isa = PBXTargetDependency;
 			target = DE06157617874D0C004B2877 /* QuickHAC */;
 			targetProxy = DE06159D17874D0F004B2877 /* PBXContainerItemProxy */;
+		};
+		DEF0F21118712DC200116B61 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = QuickDialog;
+			targetProxy = DEF0F21018712DC200116B61 /* PBXContainerItemProxy */;
 		};
 		DEFFDE93186E784800E26423 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -897,6 +949,7 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SDKROOT)/usr/include/libxml2/**",
 					"\"$(SRCROOT)/../PKRevealController/Source/PKRevealController\"/**",
+					"\"$(SRCROOT)/../QuickDialog/quickdialog\"/**",
 				);
 				INFOPLIST_FILE = "QuickHAC/QuickHAC-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
@@ -923,6 +976,7 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SDKROOT)/usr/include/libxml2/**",
 					"\"$(SRCROOT)/../PKRevealController/Source/PKRevealController\"/**",
+					"\"$(SRCROOT)/../QuickDialog/quickdialog\"/**",
 				);
 				INFOPLIST_FILE = "QuickHAC/QuickHAC-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;

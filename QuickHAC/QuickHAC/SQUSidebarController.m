@@ -3,16 +3,17 @@
 //  QuickHAC
 //
 //  Created by Tristan Seifert on 12/27/13.
-//  Copyright (c) 2013 Squee! Apps. All rights reserved.
+//  See README.MD for licensing and copyright information.
 //
 
 #import "SQUGradeOverviewController.h"
 #import "SQUClassDetailController.h"
-
-#import "PKRevealController.h"
 #import "SQUSidebarController.h"
 #import "SQUGradeManager.h"
 #import "SQUCoreData.h"
+#import "SQUSettingsViewController.h"
+
+#import "PKRevealController.h"
 
 @interface SQUSidebarController ()
 
@@ -131,7 +132,8 @@
 	
 	switch(indexPath.section) {
 		case 0:
-			[[self revealController] setFrontViewController:_overview.navigationController focusAfterChange:YES completion:NULL];
+			[[self revealController] setFrontViewController:_overview.navigationController];
+			[[self revealController] resignPresentationModeEntirely:YES animated:YES completion:NULL];
 			break;
 			
 		case 1: {
@@ -141,7 +143,17 @@
 		}
 			
 		case 2:
-			// go to settings
+			if(!_settings) {
+				_settings = [[SQUSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
+				UINavigationController *navCtrlr = [[UINavigationController alloc] initWithRootViewController:_settings];
+				
+				[[self revealController] setFrontViewController:navCtrlr];
+				[[self revealController] resignPresentationModeEntirely:YES animated:YES completion:NULL];
+			} else {
+				[[self revealController] setFrontViewController:_settings.navigationController];
+				[[self revealController] resignPresentationModeEntirely:YES animated:YES completion:NULL];
+			}
+			
 			break;
 			
 		default:
@@ -169,9 +181,11 @@
 	
 	if([self revealController].state == PKRevealControllerShowsFrontViewController) {
 		[[self revealController] showViewController:[self revealController].leftViewController animated:NO completion:NULL];
-		[[self revealController] setFrontViewController:navController focusAfterChange:YES completion:NULL];
+		[[self revealController] setFrontViewController:navController];
+		[[self revealController] resignPresentationModeEntirely:YES animated:YES completion:NULL];
 	} else {
-		[[self revealController] setFrontViewController:navController focusAfterChange:YES completion:NULL];
+		[[self revealController] setFrontViewController:navController];
+		[[self revealController] resignPresentationModeEntirely:YES animated:YES completion:NULL];
 	}
 }
 

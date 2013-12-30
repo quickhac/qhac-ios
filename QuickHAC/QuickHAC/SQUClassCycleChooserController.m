@@ -3,7 +3,7 @@
 //  QuickHAC
 //
 //  Created by Tristan Seifert on 12/29/13.
-//  Copyright (c) 2013 Squee! Apps. All rights reserved.
+//  See README.MD for licensing and copyright information.
 //
 
 #import "SQUClassCycleChooserController.h"
