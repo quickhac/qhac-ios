@@ -53,6 +53,7 @@
 		DEF0F2151871300A00116B61 /* SQUSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F2141871300A00116B61 /* SQUSettingsViewController.m */; };
 		DEF0F21C187156D000116B61 /* acknowledgements.rtf in Resources */ = {isa = PBXBuildFile; fileRef = DEF0F21B187156D000116B61 /* acknowledgements.rtf */; };
 		DEF0F2221871DB9800116B61 /* SQUSettingsStudents.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F2211871DB9800116B61 /* SQUSettingsStudents.m */; };
+		DEF0F2251871EEAD00116B61 /* SQUDistrictAISD.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F2241871EEAD00116B61 /* SQUDistrictAISD.m */; };
 		DEF43B0317965B0D00190803 /* SQUGradeOverviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF43B0217965B0D00190803 /* SQUGradeOverviewController.m */; };
 		DEF43B0617965B1F00190803 /* SQUGradeOverviewTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF43B0517965B1F00190803 /* SQUGradeOverviewTableViewCell.m */; };
 		DEFFDE24186D881E00E26423 /* SQUDistrict.m in Sources */ = {isa = PBXBuildFile; fileRef = DEFFDE23186D881E00E26423 /* SQUDistrict.m */; };
@@ -201,6 +202,8 @@
 		DEF0F21B187156D000116B61 /* acknowledgements.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; name = acknowledgements.rtf; path = assets/acknowledgements.rtf; sourceTree = SOURCE_ROOT; };
 		DEF0F2201871DB9800116B61 /* SQUSettingsStudents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUSettingsStudents.h; sourceTree = "<group>"; };
 		DEF0F2211871DB9800116B61 /* SQUSettingsStudents.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUSettingsStudents.m; sourceTree = "<group>"; };
+		DEF0F2231871EEAD00116B61 /* SQUDistrictAISD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUDistrictAISD.h; sourceTree = "<group>"; };
+		DEF0F2241871EEAD00116B61 /* SQUDistrictAISD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUDistrictAISD.m; sourceTree = "<group>"; };
 		DEF43B0117965B0D00190803 /* SQUGradeOverviewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUGradeOverviewController.h; sourceTree = "<group>"; };
 		DEF43B0217965B0D00190803 /* SQUGradeOverviewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUGradeOverviewController.m; sourceTree = "<group>"; };
 		DEF43B0417965B1F00190803 /* SQUGradeOverviewTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUGradeOverviewTableViewCell.h; sourceTree = "<group>"; };
@@ -570,6 +573,8 @@
 			children = (
 				DEFFDE29186D8EEF00E26423 /* SQUDistrictRRISD.h */,
 				DEFFDE2A186D8EEF00E26423 /* SQUDistrictRRISD.m */,
+				DEF0F2231871EEAD00116B61 /* SQUDistrictAISD.h */,
+				DEF0F2241871EEAD00116B61 /* SQUDistrictAISD.m */,
 			);
 			name = "District Subclasses";
 			sourceTree = "<group>";
@@ -804,6 +809,7 @@
 				DE81CDD9186D517800DC1CAB /* XPathQuery.m in Sources */,
 				DEFFDE27186D8C5F00E26423 /* SQUDistrictManager.m in Sources */,
 				DEFFDE58186E270900E26423 /* AFNetworkActivityIndicatorManager.m in Sources */,
+				DEF0F2251871EEAD00116B61 /* SQUDistrictAISD.m in Sources */,
 				DEF0F1C5186EEB9500116B61 /* UIView+JMNoise.m in Sources */,
 				DEFFDE5E186E270900E26423 /* UIWebView+AFNetworking.m in Sources */,
 				DEF0F1CB186F7D8F00116B61 /* SQUClassDetailController.m in Sources */,

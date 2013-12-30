@@ -116,12 +116,21 @@ static SQUDistrictManager *_sharedInstance = nil;
 
 #pragma mark - Request helper methods
 /*
+ * These methods accept invalid SSL certificates, because AISD and RRISD
+ * cannot seem to get SSL right. This may be changed in the future so
+ * they instead compare against an included SSL certificate rather than
+ * accepting any arbitrary certificate.
+ */
+
+/*
  * Creates a GET request with the specified URL, parameters, and success and
  * failure callback blocks.
  */
 - (void) sendGETRequestToURL:(NSURL *) url withParameters:(NSDictionary *) params andSuccessBlock:(void (^)(AFHTTPRequestOperation *operation, id responseObject)) success andFailureBlock:(void (^)(AFHTTPRequestOperation *operation, NSError *error)) failure {
 	AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+	manager.securityPolicy.allowInvalidCertificates = YES;
 	manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+	
 	[manager GET:[url absoluteString] parameters:params success:success failure:failure];
 }
 
@@ -131,6 +140,7 @@ static SQUDistrictManager *_sharedInstance = nil;
  */
 - (void) sendPOSTRequestToURL:(NSURL *) url withParameters:(NSDictionary *) params andSuccessBlock:(void (^)(AFHTTPRequestOperation *operation, id responseObject)) success andFailureBlock:(void (^)(AFHTTPRequestOperation *operation, NSError *error)) failure {
 	AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+	manager.securityPolicy.allowInvalidCertificates = YES;
 	manager.responseSerializer = [AFHTTPResponseSerializer serializer];
 	[manager POST:[url absoluteString] parameters:params success:success failure:failure];
 }
@@ -145,7 +155,7 @@ static SQUDistrictManager *_sharedInstance = nil;
 	NSURL *url = loginRequest[@"request"][@"URL"];
 	
 	// Called on success of the operation (200 OK)
-	void (^loginSuccess)(AFHTTPRequestOperation *operation, id responseObject) = ^(AFHTTPRequestOperation *operation, id responseObject) {
+	void (^loginSuccess)(AFHTTPRequestOperation *operation, id responseObject) = ^(AFHTTPRequestOperation *operation, id responseObject) {		
 		[_currentDistrict updateDistrictStateWithPostLoginData:responseObject];
 		
 		// The server accepted our request, now check if the request succeeded
@@ -239,6 +249,8 @@ static SQUDistrictManager *_sharedInstance = nil;
 	
 	if([disambiguationRequest[@"request"][@"method"] isEqualToString:@"GET"]) {
 		[self sendGETRequestToURL:url withParameters:disambiguationRequest[@"params"] andSuccessBlock:disambiguateSuccess andFailureBlock:disambiguateFailure];
+	} else if([disambiguationRequest[@"request"][@"method"] isEqualToString:@"POST"]) {
+		[self sendPOSTRequestToURL:url withParameters:disambiguationRequest[@"params"] andSuccessBlock:disambiguateSuccess andFailureBlock:disambiguateFailure];
 	} else {
 		NSLog(@"Unsupported disambiguation method: %@", disambiguationRequest[@"request"][@"method"]);
 		return;
@@ -255,7 +267,6 @@ static SQUDistrictManager *_sharedInstance = nil;
 	// Called if the request succeeds
 	void (^averagesSuccess)(AFHTTPRequestOperation *operation, id responseObject) = ^(AFHTTPRequestOperation *operation, id responseObject) {
 		NSString *string = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-		
 		NSArray *averages = [[SQUGradeParser sharedInstance] parseAveragesForDistrict:_currentDistrict withString:string];
 		
 		if(averages != nil) {

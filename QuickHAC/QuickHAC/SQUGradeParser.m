@@ -166,8 +166,9 @@ static SQUGradeParser *_sharedInstance = nil;
 			NSString *data = [link[@"href"] componentsSeparatedByString:@"data="][1];
 			NSString *urlDecoded = (NSString *) CFBridgingRelease(CFURLCreateStringByReplacingPercentEscapes(NULL, (CFStringRef) data, CFSTR("")));
 			NSString *base64Decoded = [[NSString alloc] initWithData:[[NSData alloc] initWithBase64EncodedString:urlDecoded options:0] encoding:NSUTF8StringEncoding];
+			NSArray *components = [base64Decoded componentsSeparatedByString:@"|"];
 			
-			return [base64Decoded componentsSeparatedByString:@"|"][3];
+			return components[3];
 		}
 	}
 	
@@ -195,14 +196,25 @@ static SQUGradeParser *_sharedInstance = nil;
 		semesters[i] = [self parseSemesterWithDistrict:district andSemesterCells:semesterCells andSemester:i andSemesterParams:semParams];
 	}
 	
+	NSString *courseCode = [self getCourseNumberForDistrict:district andCells:cells];
+	
 	dict[@"title"] = [cells[district.tableOffsets.title] text];
 	dict[@"period"] = [NSNumber numberWithInteger:[[cells[district.tableOffsets.period] text] integerValue]];
 	dict[@"teacherName"] = [teacherLink text];
 	dict[@"teacherEmail"] = [teacherLink[@"href"] substringFromIndex:7];
 	dict[@"semesters"] = semesters;
-	dict[@"courseNum"] = [self getCourseNumberForDistrict:district andCells:cells];
 	
-	return dict;
+	/*
+	 * If the class doesn't have a course code we could extract, because there
+	 * is no grades entered for it, we must ignore it.
+	 */
+	if(courseCode) {
+		dict[@"courseNum"] = courseCode;
+		return dict;
+	} else {
+		NSLog(@"Couldn't find course code for course %@, ignoring it", dict[@"title"]);
+		return nil;
+	}
 }
 
 /*
@@ -258,7 +270,10 @@ static SQUGradeParser *_sharedInstance = nil;
 			// Ignore all rows that do not contain data
 			if([row[@"class"] isEqualToString:@"DataRow"] || [row[@"class"] isEqualToString:@"DataRowAlt"]) {
 				NSDictionary *classInfo = [self parseCourseWithDistrict:district andTableRow:row andSemesterParams:semesterParams];
-				[averages addObject:classInfo];
+				
+				if(classInfo) {
+					[averages addObject:classInfo];
+				}
 			}
 		}
 #ifndef DEBUG
@@ -269,7 +284,7 @@ static SQUGradeParser *_sharedInstance = nil;
 	}
 #endif
 	
-	//NSLog(@"Averages: %@", averages);
+	// NSLog(@"Averages: %@", averages);
 	
 	return averages;
 }

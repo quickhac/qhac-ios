@@ -202,11 +202,7 @@
         tempFrame.origin.y -= 88;
         _authFieldTable.frame = tempFrame;
         
-        if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
-            _qLogo.frame = CGRectMake(12, 68, 64, 64);
-        } else {
-            _qLogo.frame = CGRectMake(12, 12, 74, 74);
-        }
+        _qLogo.frame = CGRectMake(12, 68, 64, 64);
     } completion:^(BOOL finished) { }];
 }
 
@@ -218,11 +214,7 @@
         tempFrame.origin.y += 88;
         _authFieldTable.frame = tempFrame;
         
-        if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
-            _qLogo.frame = CGRectMake(160 - (140 / 2), 70, 140, 140);
-        } else {
-            _qLogo.frame = CGRectMake(160 - (140 / 2), 60, 140, 140);
-        }
+        _qLogo.frame = CGRectMake(160 - (140 / 2), 70, 140, 140);
     } completion:^(BOOL finished) { }];
 }
 
@@ -238,12 +230,25 @@
         [alert show];
         
         return;
-    } else if(_sidField.text.length != 6) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Invalid Student ID", nil) message:NSLocalizedString(@"Please enter a valid student ID, consisting of six consecutive digits.", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
-        [alert show];
-        
-        return;
     }
+	
+	// Handle length validation of the Student ID
+	if(_district.studentIDLength.length == _district.studentIDLength.location) {
+		if(_sidField.text.length != _district.studentIDLength.length) {
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Invalid Student ID", nil) message:[NSString stringWithFormat:NSLocalizedString(@"Please enter a valid student ID, consisting of %u consecutive digits.", nil), _district.studentIDLength.length] delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
+			[alert show];
+			
+			return;
+		}
+	} else {
+		// at least _district.studentIDLength.location to at most _district.studentIDLength.length
+		if(!(_sidField.text.length >= _district.studentIDLength.location) || !(_sidField.text.length <= _district.studentIDLength.length)) {
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Invalid Student ID", nil) message:[NSString stringWithFormat:NSLocalizedString(@"Please enter a valid student ID between %u and %u characters in length.", nil), _district.studentIDLength.location, _district.studentIDLength.length] delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
+			[alert show];
+			
+			return;
+		}
+	}
     
 	// See if a student with this HAC username and ID exists
 	NSManagedObjectContext *context = [[SQUAppDelegate sharedDelegate] managedObjectContext];
@@ -294,8 +299,11 @@
 				studentInfo.district = [NSNumber numberWithInteger:_district.district_id];
 				studentInfo.hacUsername = returnInfo[@"username"];
 				
-				// Make sure we do the same setp that SQUAppDelgate does.
-				[[SQUGradeManager sharedInstance] setStudent:studentInfo];
+				// Set student and district class, but only if there's no students
+				if(students.count == 0) {
+					[[SQUGradeManager sharedInstance] setStudent:studentInfo];
+					[[SQUDistrictManager sharedInstance] selectDistrictWithID:_district.district_id];
+				}
 				
 				// Now, try to update the grades
 				[[SQUGradeManager sharedInstance] fetchNewClassGradesFromServerWithDoneCallback:^(NSError *error) {

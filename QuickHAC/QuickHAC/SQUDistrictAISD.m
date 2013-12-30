@@ -1,18 +1,18 @@
 //
-//  SQUDistrictRRISD.m
+//  SQUDistrictAISD.m
 //  QuickHAC
 //
-//  Created by Tristan Seifert on 12/27/13.
+//  Created by Tristan Seifert on 12/30/13.
 //  See README.MD for licensing and copyright information.
 //
 
 #import "TFHpple.h"
 #import "AFNetworking.h"
 
-#import "SQUDistrictRRISD.h"
+#import "SQUDistrictAISD.h"
 #import "SQUDistrictManager.h"
 
-@implementation SQUDistrictRRISD
+@implementation SQUDistrictAISD
 
 /*
  * Called by the ObjC runtime when the class is loaded to register the district
@@ -28,17 +28,17 @@
  */
 - (id) init {
 	if(self = [super init]) {
-		_name = @"Round Rock ISD";
+		_name = @"Austin ISD";
 		_driver = @"gradespeed";
 		_examWeight = 15.0f;
 		
-		_tableOffsets.title = 0;
-		_tableOffsets.period = 1;
-		_tableOffsets.grades = 2;
+		_tableOffsets.title = 1;
+		_tableOffsets.period = 2;
+		_tableOffsets.grades = 3;
 		
-		_district_id = 1;
+		_district_id = 2;
 		
-		_studentIDLength = NSMakeRange(6, 6);
+		_studentIDLength = NSMakeRange(7, 8);
 	}
 	
 	return self;
@@ -55,7 +55,7 @@
 	dictionary[@"request"] = [NSMutableDictionary new];
 	
 	// Request information (URL, method, etc)
-	dictionary[@"request"][@"URL"] = [NSURL URLWithString:@"https://accesscenter.roundrockisd.org/homeaccess/default.aspx"];
+	dictionary[@"request"][@"URL"] = [NSURL URLWithString:@"https://gradespeed.austinisd.org/pc/default.aspx?DistrictID=227901"];
 	dictionary[@"request"][@"method"] = @"GET";
 	
 	return dictionary;
@@ -71,20 +71,24 @@
 	dictionary[@"params"] = [NSMutableDictionary new];
 	
 	// Request information (URL, method, etc)
-	dictionary[@"request"][@"URL"] = [NSURL URLWithString:@"https://accesscenter.roundrockisd.org/homeaccess/default.aspx"];
+	dictionary[@"request"][@"URL"] = [NSURL URLWithString:@"https://gradespeed.austinisd.org/pc/default.aspx?DistrictID=227901"];
 	dictionary[@"request"][@"method"] = @"POST";
 	
-	// Form fields
-	dictionary[@"params"][@"ctl00$plnMain$txtLogin"] = username;
-	dictionary[@"params"][@"ctl00$plnMain$txtPassword"] = password;
-	dictionary[@"params"][@"ctl00$plnMain$Submit1"] = @"Log In";
-	dictionary[@"params"][@"ctl00$strHiddenPageTitle"] = @"";
+	// Form fields (replicate login request in English language)
+	dictionary[@"params"][@"ddlDistricts"] = @"";
+	dictionary[@"params"][@"txtUserName"] = username;
+	dictionary[@"params"][@"txtPassword"] = password;
+	dictionary[@"params"][@"ddlLanguage"] = @"en";
+	dictionary[@"params"][@"btnLogOn"] = @"Log On";
+	
+	dictionary[@"params"][@"__scrollLeft"] = @(0);
+	dictionary[@"params"][@"__scrollTop"] = @(0);
 	
 	// ASP.NET fields
-	dictionary[@"params"][@"__VIEWSTATE"] = _loginASPNetInfo[@"__VIEWSTATE"];
-	dictionary[@"params"][@"__EVENTVALIDATION"] = _loginASPNetInfo[@"__EVENTVALIDATION"];
 	dictionary[@"params"][@"__EVENTTARGET"] = @"";
 	dictionary[@"params"][@"__EVENTARGUMENT"] = @"";
+	dictionary[@"params"][@"__LASTFOCUS"] = @"";
+	dictionary[@"params"][@"__VIEWSTATE"] = _loginASPNetInfo[@"__VIEWSTATE"];
 	
 	return dictionary;
 }
@@ -98,11 +102,26 @@
 	dictionary[@"params"] = [NSMutableDictionary new];
 	
 	// Request information (URL, method, etc)
-	dictionary[@"request"][@"URL"] = [NSURL URLWithString:@"https://accesscenter.roundrockisd.org/homeaccess/Student/DailySummary.aspx"];
-	dictionary[@"request"][@"method"] = @"GET";
+	dictionary[@"request"][@"URL"] = [NSURL URLWithString:@"https://gradespeed.austinisd.org/pc/ParentMain.aspx"];
+	dictionary[@"request"][@"method"] = @"POST";
 	
-	// Set up GET parameters
-	dictionary[@"params"][@"student_id"] = sid;
+	// Set up ASP.NET crap
+	dictionary[@"params"][@"__EVENTTARGET"] = @"_ctl0$ddlStudents";
+	dictionary[@"params"][@"__EVENTARGUMENT"] = @"";
+	dictionary[@"params"][@"__LASTFOCUS"] = @"";
+	dictionary[@"params"][@"__VIEWSTATE"] = _disambiguationASPNetInfo[@"__VIEWSTATE"];
+	dictionary[@"params"][@"__EVENTVALIDATION"] = _disambiguationASPNetInfo[@"__EVENTVALIDATION"];
+
+	dictionary[@"params"][@"__RUNEVENTTARGET"] = @"";
+	dictionary[@"params"][@"__RUNEVENTARGUMENT"] = @"";
+	dictionary[@"params"][@"__RUNEVENTARGUMENT2"] = @"";
+	
+	// Student ID
+	dictionary[@"params"][@"_ctl0:ddlStudents"] = sid;
+	
+	// Miscellaneous form crap
+	dictionary[@"params"][@"__scrollLeft"] = @(0);
+	dictionary[@"params"][@"__scrollTop"] = @(0);
 	
 	return dictionary;
 }
@@ -116,7 +135,7 @@
 	dictionary[@"request"] = [NSMutableDictionary new];
 	
 	// Request information (URL, method, etc)
-	dictionary[@"request"][@"URL"] = [NSURL URLWithString:@"https://accesscenter.roundrockisd.org/homeaccess/Student/Gradespeed.aspx?target=https://gradebook.roundrockisd.org/pc/displaygrades.aspx"];
+	dictionary[@"request"][@"URL"] = [NSURL URLWithString:@"https://gradespeed.austinisd.org/pc/ParentStudentGrades.aspx"];
 	dictionary[@"request"][@"method"] = @"GET";
 	
 	return dictionary;
@@ -132,7 +151,7 @@
 	dictionary[@"params"] = [NSMutableDictionary new];
 	
 	// Request information (URL, method, etc)
-	dictionary[@"request"][@"URL"] = [NSURL URLWithString:@"https://gradebook.roundrockisd.org/pc/displaygrades.aspx"];
+	dictionary[@"request"][@"URL"] = [NSURL URLWithString:@"https://gradespeed.austinisd.org/pc/ParentStudentGrades.aspx"];
 	dictionary[@"request"][@"method"] = @"GET";
 	
 	NSArray *semesterArray = _classToHashMap[course];
@@ -145,7 +164,7 @@
 		NSLog(@"Semester %u is out of range (got %u semesters)", semester, semesterArray.count);
 		return nil;
 	}
-
+	
 	NSArray *cycleArray = semesterArray[semester];
 	if(cycle > cycleArray.count) {
 		NSLog(@"Cycle %u is out of range (got %u cycles)", cycle, cycleArray.count);
@@ -208,7 +227,7 @@
 	
 	// Set up a parser
 	TFHpple *parser = [TFHpple hppleWithHTMLData:data];
-	TFHppleElement *form = [parser searchWithXPathQuery:@"//form[@name='aspnetForm']"][0];
+	TFHppleElement *form = [parser searchWithXPathQuery:@"//form[@name='Form1']"][0];
 	
 	// Find children of the form
 	NSArray *formChildren = [form childrenWithTagName:@"input"];
@@ -227,7 +246,30 @@
  * the web server returned.
  */
 - (void) updateDistrictStateWithPostLoginData:(NSData *) data {
-	// NSLog(@"Login data: %@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
+	if(!_disambiguationASPNetInfo) {
+		_disambiguationASPNetInfo = [NSMutableDictionary new];
+	} else {
+		[_disambiguationASPNetInfo removeAllObjects];
+	}
+	
+	// Set up a parser
+	TFHpple *parser = [TFHpple hppleWithHTMLData:data];
+	NSArray *forms = [parser searchWithXPathQuery:@"//form[@name='aspnetForm']"];
+	
+	NSAssert(forms.count > 0, @"Got an invalid login response: %@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
+	
+	TFHppleElement *form = forms[0];
+	
+	// Find children of the form
+	NSArray *formChildren = [form childrenWithTagName:@"input"];
+	
+	for (TFHppleElement *input in formChildren) {
+		if([input[@"name"] isEqualToString:@"__VIEWSTATE"]) {
+			_disambiguationASPNetInfo[@"__VIEWSTATE"] = input[@"value"];
+		} else if([input[@"name"] isEqualToString:@"__EVENTVALIDATION"]) {
+			_disambiguationASPNetInfo[@"__EVENTVALIDATION"] = input[@"value"];
+		}
+	}
 }
 
 /*
@@ -236,47 +278,27 @@
  */
 - (BOOL) didLoginSucceedWithLoginData:(NSData *) data {
 	TFHpple *parser = [TFHpple hppleWithHTMLData:data];
-	TFHppleElement *form = [parser searchWithXPathQuery:@"//form[@name='aspnetForm']"][0];
+	NSArray *forms = [parser searchWithXPathQuery:@"//form[@name='Form1']"];
 	
-	/* 
-	 * If the ASP form has a target of "default.aspx", we can assume the login
-	 * failed. We can further check if this is the case by testing if the div
-	 * with id "ctl00_plnMain_ValidationSummary1" contains any text.
-	 */
-	if([form[@"action"] isEqualToString:@"default.aspx"]) {
-		NSArray *errorContainers = [parser searchWithXPathQuery:@"//div[@id='ctl00_plnMain_ValidationSummary1']"];
-		
-		if(errorContainers.count > 0) {
-			TFHppleElement *validationErrorContainer = errorContainers[0];
-			
-			NSArray *children = [validationErrorContainer childrenWithTagName:@"font"];
-			
-			if(children.count > 0) {
-				// NSLog(@"//div[@id='ctl00_plnMain_ValidationSummary1']: %@", children);
-			}
-			
-			return NO;
-		} else {
-			NSLog(@"Got strange HTML: %@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
-		}
+	// Form1 is only on the login screen, so if it doesn't exist we're loggeed in
+	if(forms.count == 0) {
+		forms = [parser searchWithXPathQuery:@"//form[@name='aspnetForm']"];
+		return (forms.count == 1);
 	}
 	
-	return YES;
+	return NO;
 }
 
 /*
  * Called with the data returned by the disambiguation request to evaluate if
  * the correct student was disambiguated.
+ *
+ * AISD doesn't have the list of students as a separate page, but a drop-down on
+ * the main page. Therefore, as we scrape that to build the UI for student
+ * selection, there shouldn't be a way disambiguation can fail.
  */
 - (BOOL) didDisambiguationSucceedWithLoginData:(NSData *) data {
-	TFHpple *parser = [TFHpple hppleWithHTMLData:data];
-	TFHppleElement *content = [parser searchWithXPathQuery:@"//td[@id='ctl00_tdContent']"][0];
-	
-	NSArray *contentChildren = [content childrenWithTagName:@"p"];
-
-	if(contentChildren.count == 0) return YES;
-	
-	return NO;
+	return YES;
 }
 
 
@@ -287,8 +309,12 @@
 	AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
 	manager.responseSerializer = [AFHTTPResponseSerializer serializer];
 	
-	[manager HEAD:@"https://accesscenter.roundrockisd.org/homeaccess/Student/Gradespeed.aspx?target=https://gradebook.roundrockisd.org/pc/displaygrades.aspx" parameters:nil success:^(AFHTTPRequestOperation *operation) {
-		callback(YES);
+	[manager HEAD:@"https://gradespeed.austinisd.org/pc/ParentStudentGrades.aspx" parameters:nil success:^(AFHTTPRequestOperation *operation) {
+		if(operation.response.statusCode == 200) {
+			callback(YES);
+		} else {
+			callback(NO);
+		}
 	} failure:^(AFHTTPRequestOperation *operation, NSError *err) {
 		if(operation.response.statusCode != 500) {
 			NSLog(@"Log in error: %@", err);

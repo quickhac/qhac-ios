@@ -27,8 +27,8 @@
     self = [super initWithStyle:style];
     if (self) {
         [self.tableView registerClass:NSClassFromString(@"UITableViewCell") forCellReuseIdentifier:@"SettingsButtonCell"];
-        // [self.tableView registerClass:NSClassFromString(@"UITableViewCell") forCellReuseIdentifier:@"SettingsStudentCell"];
 		
+		// Fetch students objects from DB
 		NSManagedObjectContext *context = [[SQUAppDelegate sharedDelegate] managedObjectContext];
 		NSError *db_err = nil;
 		
@@ -45,6 +45,7 @@
 		
 		self.title = NSLocalizedString(@"Students", nil);
 		
+		// Register notification for when a student is added
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(studentsUpdated:) name:SQUStudentsUpdatedNotification object:nil];
     }
 	
@@ -159,6 +160,10 @@
 			
 			// Update internal state to reflect new student
 			SQUStudent *student = _students[selectedStudent];
+			[[SQUGradeManager sharedInstance] setStudent:student];
+			
+			// Change to correct district
+			[[SQUDistrictManager sharedInstance] selectDistrictWithID:student.district.integerValue];
 			
 			// We also have to log in again and disambiguate
 			NSString *username, *password, *studentID;
@@ -168,7 +173,6 @@
 			studentID = student.student_id;
 			
 			// Display at least cached grades if available
-			[[SQUGradeManager sharedInstance] setStudent:student];
 			[[NSNotificationCenter defaultCenter] postNotificationName:SQUGradesDataUpdatedNotification object:nil];
 			
 			// Log in

@@ -64,6 +64,8 @@ typedef struct {
 	float _examWeight;
 	NSInteger _district_id;
 	col_offsets_t _tableOffsets;
+	
+	NSRange _studentIDLength;
 }
 
 @property (readonly) NSString *driver;
@@ -71,5 +73,6 @@ typedef struct {
 @property (readonly) float examWeight;
 @property (readonly) NSInteger district_id;
 @property (readonly) col_offsets_t tableOffsets;
+@property (readonly) NSRange studentIDLength;
 
 @end

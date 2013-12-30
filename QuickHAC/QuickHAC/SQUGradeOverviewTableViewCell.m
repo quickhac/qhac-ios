@@ -11,6 +11,8 @@
 #import "SQUGradeOverviewTableViewCell.h"
 #import "SQUGradeParser.h"
 #import "SQUCoreData.h"
+#import "SQUDistrictManager.h"
+#import "SQUGradeManager.h"
 #import "UIColor+SQUColourUtilities.h"
 
 @implementation SQUGradeOverviewTableViewCell
@@ -59,11 +61,21 @@ static NSUInteger SQUGradeOverviewTableViewCellWidth[2] = {115, 112};
         
 		// Course title
         _courseTitle = [CATextLayer layer];
-        _courseTitle.frame = CGRectMake(SQUGradeOverviewTableViewCellXPos[0], 4, _backgroundLayer.frame.size.width - 106, 32);
+        _courseTitle.frame = CGRectMake(SQUGradeOverviewTableViewCellXPos[0], 5, _backgroundLayer.frame.size.width - 106, 32);
         _courseTitle.contentsScale = [UIScreen mainScreen].scale;
         _courseTitle.foregroundColor = [UIColor blackColor].CGColor;
         _courseTitle.font = (__bridge CFTypeRef) [UIFont fontWithName:@"HelveticaNeue-Light" size:15.0f];
-        _courseTitle.fontSize = 23.5f;
+        _courseTitle.fontSize = 23.0f;
+		
+		// Apply a mask so overly long course titles "fade out"
+		CAGradientLayer *courseTitleMask = [CAGradientLayer layer];
+		courseTitleMask.bounds = CGRectMake(0, 0, _courseTitle.frame.size.width, _courseTitle.frame.size.height);
+		courseTitleMask.position = CGPointMake(_courseTitle.bounds.size.width/2.0, _courseTitle.bounds.size.height/2.0);
+		courseTitleMask.locations = @[@(0.85f), @(1.0f)];
+		courseTitleMask.colors = @[(id)[UIColor blackColor].CGColor, (id)[UIColor clearColor].CGColor];
+		courseTitleMask.startPoint = CGPointMake(0.0, 0.5);
+		courseTitleMask.endPoint = CGPointMake(1.0, 0.5);
+		_courseTitle.mask = courseTitleMask;
         
 		// Period label
         _periodTitle = [CATextLayer layer];
@@ -159,7 +171,9 @@ static NSUInteger SQUGradeOverviewTableViewCellWidth[2] = {115, 112};
 	if(period > sbcolours.count) {
 		_sideBar.colors = @[(id) [UIColor colorWithWhite:0.08 alpha:1.0].CGColor, (id) [[UIColor colorWithWhite:0.08 alpha:1.0] darkerColor].CGColor];
 	} else {
-		_sideBar.colors = @[(id) [sbcolours[period-1] CGColor], (id) [[sbcolours[period-1] darkerColor] CGColor]];
+		NSUInteger index = [[SQUGradeManager sharedInstance].student.courses indexOfObject:_courseInfo];
+		
+		_sideBar.colors = @[(id) [sbcolours[index] CGColor], (id) [[sbcolours[index] darkerColor] CGColor]];
 	}
 	
     _periodTitle.string = [NSString stringWithFormat:NSLocalizedString(@"Period %u", nil), period];

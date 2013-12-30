@@ -141,6 +141,8 @@
 	
 	NSString *lastUpdated = [NSString stringWithFormat:NSLocalizedString(@"Last Updated on %@", nil), [_refreshDateFormatter stringFromDate:[SQUGradeManager sharedInstance].student.lastAveragesUpdate]];
 	self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:lastUpdated];
+	
+	[self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
 }
 
 - (void) tableView:(UITableView *) tableView didSelectRowAtIndexPath:(NSIndexPath *) indexPath {
