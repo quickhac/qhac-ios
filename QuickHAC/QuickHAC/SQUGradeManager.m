@@ -6,6 +6,8 @@
 //  See README.MD for licensing and copyright information.
 //
 
+#import <math.h>
+
 #import "SQUAppDelegate.h"
 #import "SQUGradeParser.h"
 #import "SQUDistrictManager.h"
@@ -56,8 +58,10 @@ static SQUGradeManager *_sharedInstance = nil;
 }
 
 #pragma mark - Grade updating
-/*
+/**
  * Logs in and fetches the latest class grades from the server.
+ *
+ * @param callback Callback block to be executed depending on requests.
  */
 - (void) fetchNewClassGradesFromServerWithDoneCallback:(void (^)(NSError *)) callback {
 	// Fetch username/pw from keychain
@@ -76,7 +80,6 @@ static SQUGradeManager *_sharedInstance = nil;
 					[[SQUDistrictManager sharedInstance] performAveragesRequestWithCallback:^(NSError *error, id returnData) {
 						if(!error) {
 							[self updateCurrentStudentWithClassAverages:returnData];
-							[[NSNotificationCenter defaultCenter] postNotificationName:SQUGradesDataUpdatedNotification object:nil];
 							
 							if(callback) callback(nil);
 						} else {
@@ -117,6 +120,14 @@ static SQUGradeManager *_sharedInstance = nil;
 	}];
 }
 
+/**
+ * Fetches the grades for a cycle of a class from the server.
+ *
+ * @param course Course identifier
+ * @param cycle Cycle whose grades to retrieve.
+ * @param semester Semester in which the cycle is.
+ * @param callback Callback block executed in response to the request state.
+ */
 - (void) fetchNewCycleGradesFromServerForCourse:(NSString *) course withCycle:(NSUInteger) cycle andSemester:(NSUInteger) semester andDoneCallback:(void (^)(NSError *)) callback {
 	// Fetch username/pw from keychain
 	NSString *username, *password, *studentID;
@@ -174,12 +185,16 @@ static SQUGradeManager *_sharedInstance = nil;
 }
 
 #pragma mark - Data retrieval
+/**
+ * @return The courses the student is enrolled in, according to the last
+ * gradebook scrape.
+ */
 - (NSOrderedSet *) getCoursesForCurrentStudent {
 	return _student.courses;
 }
 
 #pragma mark - Database interfacing
-/*
+/**
  * Checks if the student has a course entry for the specified course.
  */
 - (BOOL) classEntryExists:(NSDictionary *) class {
@@ -192,7 +207,7 @@ static SQUGradeManager *_sharedInstance = nil;
 	return NO;
 }
 
-/*
+/**
  * Updates a specific cycle with information.
  */
 - (void) updateCycle:(SQUCycle *) cycle withCycleInfo:(NSDictionary *) dict {
@@ -201,12 +216,11 @@ static SQUGradeManager *_sharedInstance = nil;
 	cycle.average = dict[@"average"];
 }
 
-/*
+#pragma mark - Database updates
+/**
  * Updates the assignments associated with a category, by removing the old ones,
  * and re-creating them from the data given.
  */
-
-#pragma mark - Database updates
 - (void) updateCategory:(SQUCategory *) category withAssignments:(NSArray *) array {
 	/*
 	 * Remove old assignments from persistent store, which nullifies the
@@ -234,8 +248,11 @@ static SQUGradeManager *_sharedInstance = nil;
 	}
 }
 
-/*
+/**
  * Updates the database with the specified class averages.
+ *
+ * @param classAvgs Array containing info about the class averages, as output
+ * by SQUGradeParser.
  */
 - (void) updateCurrentStudentWithClassAverages:(NSArray *) classAvgs {
 	NSAssert(_student != NULL, @"Student may not be NULL");
@@ -267,6 +284,20 @@ static SQUGradeManager *_sharedInstance = nil;
 			course.period = class[@"period"];
 			course.student = _student;
 			
+			/*
+			 * Attempt to detect if a course is honours or not by checking for
+			 * "AP", "IB" or "TAG" in the title.
+			 */
+			if(!NSEqualRanges([course.title rangeOfString:@"IB"], NSMakeRange(NSNotFound, 0))) {
+				course.isHonours = @(YES);
+			} else if(!NSEqualRanges([course.title rangeOfString:@"AP"], NSMakeRange(NSNotFound, 0))) {
+				course.isHonours = @(YES);
+			} else if(!NSEqualRanges([course.title rangeOfString:@"TAG"], NSMakeRange(NSNotFound, 0))) {
+				course.isHonours = @(YES);
+			} else {
+				course.isHonours = @(NO);
+			}
+			 
 			[_student addCoursesObject:course];
 
 			// Generate empty cycle objects
@@ -346,9 +377,14 @@ static SQUGradeManager *_sharedInstance = nil;
 	}
 }
 
-/*
+/**
  * Update assignments and grades for a course during a specific cycle in the
  * specified semester.
+ *
+ * @param classGrades Grades for a particular class, as output by SQUGradeParser.
+ * @param class Class identifier of the class the grades belong to.
+ * @param numCycle Cycle in which the grades are.
+ * @param numSemester Semester in which the grades are.
  */
 - (void) updateCurrentStudentWithClassGrades:(NSDictionary *) classGrades forClass:(NSString *) class andCycle:(NSUInteger) numCycle andSemester:(NSUInteger) numSemester {
 	NSUInteger cycleOffset = numCycle + (numSemester * 3);
@@ -422,6 +458,79 @@ static SQUGradeManager *_sharedInstance = nil;
 	} else {
 		// NSLog(@"Saved grades for class %@, cycle %u semester %u.", class, numCycle+1, numSemester+1);
 	}
+}
+
+/**
+ * Finds the grade point for a specific grade and offset.
+ *
+ * @param grade The grade, on a 0 to 100 scale.
+ * @param offset Offset to add to the grade for weighted GPA.
+ * @return The grade point as a float.
+ */
+- (double) calculateGradePointForGrade:(double) grade andOffset:(double) offset isWeighted:(BOOL) weighted {
+	if(grade < 70.0) return 0.0;
+	
+	// unweighted
+	if(!weighted) {
+		return fmin((grade - 60.0) / 10.0, 4.0);
+	} else {
+		/*
+		 * "gpaOffset" is defined by each district as the offset to apply to get
+		 * their standard GPAs.
+		 */
+		double gpaOffset = [SQUDistrictManager sharedInstance].currentDistrict.gpaOffset;
+		return ((grade - gpaOffset) / 10.0) + offset;
+	}
+}
+
+/**
+ * Calculates a GPA on the specified scale over the courses specified.
+ *
+ * @param type Type of GPA to calculate
+ * @param courses Array of SQUCourse objects to take into account.
+ * @return A NSNumber object wrapping the float GPA value.
+ */
+- (NSNumber *) calculateGPAType:(SQUGPAType) type forCourses:(NSArray *) courses {
+	double offset, gradePoint;
+	double numProcessedCourses = 0.0;
+	double gpa = 0.0;
+	
+	for(SQUCourse *course in courses) {
+		// Ignore excluded courses
+		if(!course.isExcludedFromGPA.boolValue) {
+			SQUSemester *dbSemester = course.semesters[0];
+			
+			// If there's no grade, exclude it.
+			if(dbSemester.average.integerValue != -1) {
+				offset = (course.isHonours.boolValue) ? (type) : 0.0;
+				gradePoint = [self calculateGradePointForGrade:dbSemester.average.doubleValue andOffset:offset isWeighted:(type != 0)];
+				
+				gpa += gradePoint;
+				
+				// Increment counter to get proper average
+				numProcessedCourses++;
+			}
+			
+			// Repeat for second semester.
+			dbSemester = course.semesters[1];
+			
+			// If there's no grade, exclude from GPA calculation
+			if(dbSemester.average.integerValue != -1) {
+				offset = (course.isHonours.boolValue) ? (type) : 0.0;
+				gradePoint = [self calculateGradePointForGrade:dbSemester.average.doubleValue andOffset:offset isWeighted:(type != 0)];
+				
+				gpa += gradePoint;
+				
+				// Increment counter to get proper average
+				numProcessedCourses++;
+			}
+		}
+	}
+	
+	// Do average
+	gpa /= numProcessedCourses;
+	
+	return [NSNumber numberWithFloat:gpa];
 }
 
 @end

@@ -61,8 +61,10 @@ static SQUDistrictManager *_sharedInstance = nil;
 }
 
 #pragma mark - District management
-/*
+/**
  * Registers the specified district with the manager.
+ *
+ * @param district: Class to register.
  */
 - (void) registerDistrict:(Class) district {
 	if([district conformsToProtocol:@protocol(SQUDistrictProtocol)]) {
@@ -78,16 +80,21 @@ static SQUDistrictManager *_sharedInstance = nil;
 	}
 }
 
-/*
+/**
  * Returns an array of SQUDistrict subclasses that have been registered.
+ *
+ * @return All districts currently registered.
  */
 - (NSArray *) loadedDistricts {
 	return [NSArray arrayWithArray:_initialisedDistricts];
 }
 
-/*
+/**
  * Searches through all loaded districts for one that matches the ID, then sets
  * it as the active district.
+ *
+ * @param districtID: Numerical identifier of the district.
+ * @return YES on success, NO if not found.
  */
 - (BOOL) selectDistrictWithID:(NSInteger) districtID {
 	for(SQUDistrict *district in _initialisedDistricts) {
@@ -101,8 +108,11 @@ static SQUDistrictManager *_sharedInstance = nil;
 	return NO;
 }
 
-/*
+/**
  * Returns a district for a specific ID.
+ *
+ * @param districtID: Numerical identifier of the district.
+ * @return A SQUDistrict object matching the identifier, or nil if not found.
  */
 - (SQUDistrict *) districtWithID:(NSInteger) districtID {
 	for(SQUDistrict *district in _initialisedDistricts) {
@@ -122,7 +132,7 @@ static SQUDistrictManager *_sharedInstance = nil;
  * accepting any arbitrary certificate.
  */
 
-/*
+/**
  * Creates a GET request with the specified URL, parameters, and success and
  * failure callback blocks.
  */
@@ -134,7 +144,7 @@ static SQUDistrictManager *_sharedInstance = nil;
 	[manager GET:[url absoluteString] parameters:params success:success failure:failure];
 }
 
-/*
+/**
  * Creates a POST request with the specified URL, parameters, and success and
  * failure callback blocks.
  */
@@ -146,7 +156,7 @@ static SQUDistrictManager *_sharedInstance = nil;
 }
 
 #pragma mark - District interfacing
-/*
+/**
  * Sends the actual login request.
  */
 - (void) performActualLoginRequestWithUser:(NSString *) username usingPassword:(NSString *) password andCallback:(SQUDistrictCallback) callback {
@@ -185,8 +195,13 @@ static SQUDistrictManager *_sharedInstance = nil;
 	}
 }
 
-/*
- * Handles pre-login requests, if they exist.
+/**
+ * Performs a login for the user, handling any pre-login requests if they are
+ * required.
+ *
+ * @param username: The username to log in with.
+ * @param password: The password to log in with.
+ * @param callback: Callback block to execute in response to login state.
  */
 - (void) performLoginRequestWithUser:(NSString *) username usingPassword:(NSString *) password andCallback:(SQUDistrictCallback) callback {
 	// Perform the pre-login request, if it's a thing
@@ -222,8 +237,13 @@ static SQUDistrictManager *_sharedInstance = nil;
 	}
 }
 
-/*
- * Makes sure the correct user is selected
+/**
+ * Disambiguates, or selects, a specific student on the account. This is required
+ * before accessing any other parts of the gradebook software, especially if the
+ * account has multiple students on it.
+ *
+ * @param sid: Student ID to select.
+ * @param callback: Callback block to execute.
  */
 - (void) performDisambiguationRequestWithStudentID:(NSString *) sid andCallback:(SQUDistrictCallback) callback {
 	NSDictionary *disambiguationRequest = [_currentDistrict buildDisambiguationRequestWithStudentID:sid andUserData:nil];
@@ -257,9 +277,11 @@ static SQUDistrictManager *_sharedInstance = nil;
 	}
 }
 
-/*
+/**
  * Fetches class averages from the server, parsing the data appropriately and
  * returning it to the callback.
+ *
+ * @param callback: Callback block to execute with parsed class averages.
  */
 - (void) performAveragesRequestWithCallback:(SQUDistrictCallback) callback {
 	NSDictionary *avgRequest = [_currentDistrict buildAveragesRequestWithUserData:nil];
@@ -278,6 +300,7 @@ static SQUDistrictManager *_sharedInstance = nil;
 			callback(nil, averages);
 		} else {
 			callback([NSError errorWithDomain:@"SQUDistrictManagerErrorDomain" code:kSQUDistrictManagerErrorInvalidDataReceived userInfo:@{@"localizedDescription" : NSLocalizedString(@"The gradebook returned invalid data.", nil)}], nil);
+			NSLog(@"Got screwy response from gradebook: %@", [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding]);
 		}
 	};
 	
@@ -298,8 +321,13 @@ static SQUDistrictManager *_sharedInstance = nil;
 	}
 }
 
-/*
+/**
  * Performs a request to fetch the grades for a specific class.
+ *
+ * @param course: Course code whose grades to look up.
+ * @param cycle: Cycle to load.
+ * @param semester: Semester containing the cycle.
+ * @param callback: Callback block to execute.
  */
 - (void) performClassGradesRequestWithCourseCode:(NSString *) course andCycle:(NSUInteger) cycle inSemester:(NSUInteger) semester andCallback:(SQUDistrictCallback) callback {
 	NSDictionary *classGradesRequest = [_currentDistrict buildClassGradesRequestWithCourseCode:course andSemester:semester andCycle:cycle andUserData:nil];
@@ -338,15 +366,21 @@ static SQUDistrictManager *_sharedInstance = nil;
 	}
 }
 
-/*
+/**
  * Calls the login verification method on the district.
+ *
+ * @param callback: Callback block to execute to validate if the login was
+ * successful or not.
  */
 - (void) checkIfLoggedIn:(SQULoggedInCallback) callback {
 	[_currentDistrict isLoggedInWithCallback:callback];
 }
 
-/*
+/**
  * Returns the cycles that data is available for in a specific course.
+ *
+ * @param course: Course code to check for.
+ * @return An array of NSNumbers of cycles that have data available.
  */
 - (NSArray *) cyclesWithDataAvailableForCourse:(NSString *) course {
 	return [_currentDistrict cyclesWithDataForCourse:course];

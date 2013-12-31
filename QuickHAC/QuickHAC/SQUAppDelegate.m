@@ -19,6 +19,11 @@
 #import "AFNetworkActivityIndicatorManager.h"
 #import "SVProgressHUD.h"
 #import "Lockbox.h"
+#import "LTHPasscodeViewController.h"
+
+#ifdef DEBUG
+#import "TestFlight.h"
+#endif
 
 @implementation SQUAppDelegate
 
@@ -29,6 +34,17 @@ static SQUAppDelegate *sharedDelegate = nil;
 @synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
 
 - (BOOL) application:(UIApplication *) application didFinishLaunchingWithOptions:(NSDictionary *) launchOptions {
+	// TestFlight
+#ifdef DEBUG
+	[TestFlight takeOff:@"66bad5ef-ff19-45c7-8e02-038658335dfd"];
+#endif
+	
+	// Initialise preferences defaults
+	NSURL *defaultPreferencesURL = [[NSBundle mainBundle] URLForResource:@"settings_defaults" withExtension:@"plist"];
+	NSDictionary *defaultPreferences = [NSDictionary dictionaryWithContentsOfURL:defaultPreferencesURL];
+	NSAssert(defaultPreferences, @"Default preferences could not be loaded from URL %@", defaultPreferencesURL);
+	[[NSUserDefaults standardUserDefaults] registerDefaults:defaultPreferences];
+	
     // Used for the entire singleton thing
     sharedDelegate = self;
     
@@ -72,6 +88,12 @@ static SQUAppDelegate *sharedDelegate = nil;
         SQULoginSchoolSelector *loginController = [[SQULoginSchoolSelector alloc] initWithStyle:UITableViewStyleGrouped];
         [_navController presentViewController:[[UINavigationController alloc] initWithRootViewController:loginController] animated:NO completion:NULL];
     } else {
+		// Show the passcode lock, if passcode is enabled
+/*		if([[NSUserDefaults standardUserDefaults] boolForKey:@"passcodeEnabled"]) {
+			[[LTHPasscodeViewController sharedUser] setDelegate:self];
+			[[LTHPasscodeViewController sharedUser] showLockScreenWithAnimation:YES];
+		}*/
+		
 		NSUInteger selectedStudent = [[NSUserDefaults standardUserDefaults] integerForKey:@"selectedStudent"];
 		
 		// Ensure that
@@ -121,7 +143,9 @@ static SQUAppDelegate *sharedDelegate = nil;
 							[alert show];
 						} else {
 							// Login succeeded, so we can do a fetch of grades.
-							[[SQUGradeManager sharedInstance] fetchNewClassGradesFromServerWithDoneCallback:NULL];
+							[[SQUGradeManager sharedInstance] fetchNewClassGradesFromServerWithDoneCallback:^(NSError *err) {
+								[[NSNotificationCenter defaultCenter] postNotificationName:SQUGradesDataUpdatedNotification object:nil];
+							}];
 						}
 					} else {
 						[SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Error", nil)];
@@ -273,6 +297,12 @@ static SQUAppDelegate *sharedDelegate = nil;
 		default:
 			break;
 	}
+}
+
+#pragma mark - Passcode lock
+- (void) maxNumberOfFailedAttemptsReached {
+	NSLog(@"Maximum passcode attempts reached.");
+	exit(-1);
 }
 
 @end

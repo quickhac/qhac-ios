@@ -299,16 +299,21 @@
 				studentInfo.district = [NSNumber numberWithInteger:_district.district_id];
 				studentInfo.hacUsername = returnInfo[@"username"];
 				
-				// Set student and district class, but only if there's no students
-				if(students.count == 0) {
-					[[SQUGradeManager sharedInstance] setStudent:studentInfo];
-					[[SQUDistrictManager sharedInstance] selectDistrictWithID:_district.district_id];
-				}
+				// Back up the old student as we need a temporary switch to retrieve data
+				SQUStudent *oldStudent = [SQUGradeManager sharedInstance].student;
+				
+				// Set student and district class to fetch grades
+				[[SQUGradeManager sharedInstance] setStudent:studentInfo];
+				[[SQUDistrictManager sharedInstance] selectDistrictWithID:_district.district_id];
 				
 				// Now, try to update the grades
 				[[SQUGradeManager sharedInstance] fetchNewClassGradesFromServerWithDoneCallback:^(NSError *error) {
 					if(!error) {
-						[SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"Done!", nil)];
+						[SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"Done", nil)];
+						
+						// Restore old student state
+						[[SQUGradeManager sharedInstance] setStudent:oldStudent];
+						[[SQUDistrictManager sharedInstance] selectDistrictWithID:oldStudent.district.integerValue];
 						
 						[[NSNotificationCenter defaultCenter] postNotificationName:SQUStudentsUpdatedNotification object:nil];
 						

@@ -217,8 +217,12 @@ static SQUGradeParser *_sharedInstance = nil;
 	}
 }
 
-/*
- * Parses the class averages from the first .DataTable.
+/**
+ * Parses the class averages from the gradebook.
+ *
+ * @param district: District to use for parsing.
+ * @param string: Gradebook HTML.
+ * @return Averages for all courses the student is enrolled in.
  */
 - (NSArray *) parseAveragesForDistrict:(SQUDistrict *) district withString:(NSString *) string {
 	NSData *htmlData = [string dataUsingEncoding:NSUTF8StringEncoding];
@@ -413,8 +417,12 @@ static SQUGradeParser *_sharedInstance = nil;
 	return category;
 }
 
-/*
+/**
  * Parses the assignments in a class.
+ *
+ * @param district: District to use in parsing.
+ * @param string: Gradebook HTML.
+ * @return Categories and assignments for the class.
  */
 - (NSDictionary *) getClassGradesForDistrict:(SQUDistrict *) district withString:(NSString *) string {
 	NSMutableDictionary *grades = [NSMutableDictionary new];
@@ -497,8 +505,10 @@ static SQUGradeParser *_sharedInstance = nil;
     return [UIColor colorWithHue:h saturation:s brightness:v alpha:1.0];
 }
 
-/*
- * Finds the name of the student in the output of the gradebook.
+/**
+ * @param district: District to use for parsing.
+ * @param string: Gradebook HTML.
+ * @return Student's name.
  */
 - (NSString *) getStudentNameForDistrict:(SQUDistrict *) district withString:(NSString *) string {
 	NSData *htmlData = [string dataUsingEncoding:NSUTF8StringEncoding];

@@ -75,7 +75,36 @@
 }
 
 - (void) viewWillAppear:(BOOL) animated {
+	// Set up the title view container and title text
+	_navbarTitle = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 200, 44)];
+	
+	_titleLayer = [CATextLayer new];
+	_titleLayer.frame = CGRectMake(0, 4, 200, 28);
+	_titleLayer.font = (__bridge CFTypeRef)([UIFont fontWithName:@"HelveticaNeue-Medium" size:26.0]);
+	_titleLayer.fontSize = 17.0f;
+	_titleLayer.contentsScale = [UIScreen mainScreen].scale;
+	_titleLayer.foregroundColor = [UIColor blackColor].CGColor;
+	_titleLayer.string = NSLocalizedString(@"Overview", nil);
+	_titleLayer.alignmentMode = kCAAlignmentCenter;
+	
+	[_navbarTitle.layer addSublayer:_titleLayer];
+	
+	_subtitleLayer = [CATextLayer new];
+	_subtitleLayer.frame = CGRectMake(0, 25, 200, 28);
+	_subtitleLayer.font = (__bridge CFTypeRef)([UIFont fontWithName:@"HelveticaNeue-LightItalic" size:26.0]);
+	_subtitleLayer.fontSize = 12.0f;
+	_subtitleLayer.contentsScale = [UIScreen mainScreen].scale;
+	_subtitleLayer.foregroundColor = [UIColor lightGrayColor].CGColor;
+	_subtitleLayer.alignmentMode = kCAAlignmentCenter;
+	
+	[_navbarTitle.layer addSublayer:_subtitleLayer];
+	
+	// Apply to nav item
+	self.navigationItem.titleView = _navbarTitle;
+	
+	// Reload table data and calculate GPA
 	[self.tableView reloadData];
+	[self updateGPA];
 }
 
 #pragma mark - Table view data source
@@ -108,6 +137,14 @@
     return cell;
 }
 
+- (void) tableView:(UITableView *) tableView didSelectRowAtIndexPath:(NSIndexPath *) indexPath {
+	[tableView deselectRowAtIndexPath:indexPath animated:NO];
+	
+	SQUCourse *course = [SQUGradeManager sharedInstance].courses[indexPath.row];
+	
+	[[NSNotificationCenter defaultCenter] postNotificationName:SQUSidebarControllerShowSidebarMessage object:nil userInfo:@{@"course": course}];
+}
+
 #pragma mark - UI Callbacks
 - (void) openSidebar:(id) sender {
 	if([self revealController].state == PKRevealControllerShowsFrontViewController) {
@@ -119,6 +156,8 @@
 
 - (void) reloadData:(UIRefreshControl *) control {
 	[[SQUGradeManager sharedInstance] fetchNewClassGradesFromServerWithDoneCallback:^(NSError *error){
+		[[NSNotificationCenter defaultCenter] postNotificationName:SQUGradesDataUpdatedNotification object:nil];
+		
 		if(error) {
 			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Updating Grades", nil) message:error.localizedDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
             [alert show];
@@ -136,6 +175,7 @@
 	}];
 }
 
+#pragma mark - Update handlers
 - (void) updateTableNotification:(NSNotification *) notif {
 	[self.tableView reloadData];
 	
@@ -143,14 +183,25 @@
 	self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:lastUpdated];
 	
 	[self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+	
+	// Update GPA display
+	[self updateGPA];
 }
 
-- (void) tableView:(UITableView *) tableView didSelectRowAtIndexPath:(NSIndexPath *) indexPath {
-	[tableView deselectRowAtIndexPath:indexPath animated:NO];
+/**
+ * Updates the GPA display.
+ */
+- (void) updateGPA {
+	// Take GPA precision preference into account
+	NSString *gpaFormatString = [NSString stringWithFormat:NSLocalizedString(@"GPA: %%.%uf", nil), [[NSUserDefaults standardUserDefaults] integerForKey:@"gpa_precision"]];
 	
-	SQUCourse *course = [SQUGradeManager sharedInstance].courses[indexPath.row];
+	// Get the type of GPA to calculate.
+	SQUGPAType gpaType = [[NSUserDefaults standardUserDefaults] integerForKey:@"gpa_type"];
 	
-	[[NSNotificationCenter defaultCenter] postNotificationName:SQUSidebarControllerShowSidebarMessage object:nil userInfo:@{@"course": course}];
+	// Calculate GPA
+	NSNumber *gpa = [[SQUGradeManager sharedInstance] calculateGPAType:gpaType forCourses:[SQUGradeManager sharedInstance].courses.array];
+	
+	_subtitleLayer.string = [NSString stringWithFormat:gpaFormatString, gpa.floatValue];
 }
 
 @end

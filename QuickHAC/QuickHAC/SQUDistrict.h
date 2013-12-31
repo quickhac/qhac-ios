@@ -21,7 +21,7 @@ typedef struct {
 	NSUInteger period;
 } col_offsets_t;
 
-/*
+/**
  * Required protocol for all district subclasses.
  */
 @protocol SQUDistrictProtocol <NSObject>
@@ -51,9 +51,11 @@ typedef struct {
 
 @end
 
-/*
+/**
  * Base district object implementing commonly-used methods for districts and
  * base behaviour that usually does not need to change.
+ *
+ * All methods will cause an error to be logged if not overridden.
  */
 @interface SQUDistrict : NSObject <SQUDistrictProtocol> {
 @public
@@ -64,7 +66,7 @@ typedef struct {
 	float _examWeight;
 	NSInteger _district_id;
 	col_offsets_t _tableOffsets;
-	
+	double _gpaOffset;
 	NSRange _studentIDLength;
 }
 
@@ -73,6 +75,7 @@ typedef struct {
 @property (readonly) float examWeight;
 @property (readonly) NSInteger district_id;
 @property (readonly) col_offsets_t tableOffsets;
+@property (readonly) double gpaOffset;
 @property (readonly) NSRange studentIDLength;
 
 @end

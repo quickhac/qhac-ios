@@ -54,6 +54,13 @@
 		DEF0F21C187156D000116B61 /* acknowledgements.rtf in Resources */ = {isa = PBXBuildFile; fileRef = DEF0F21B187156D000116B61 /* acknowledgements.rtf */; };
 		DEF0F2221871DB9800116B61 /* SQUSettingsStudents.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F2211871DB9800116B61 /* SQUSettingsStudents.m */; };
 		DEF0F2251871EEAD00116B61 /* SQUDistrictAISD.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F2241871EEAD00116B61 /* SQUDistrictAISD.m */; };
+		DEF0F23218727EA700116B61 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = DEF0F22718727EA700116B61 /* Localizable.strings */; };
+		DEF0F23318727EA700116B61 /* LTHNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F22C18727EA700116B61 /* LTHNavigationViewController.m */; };
+		DEF0F23418727EA700116B61 /* LTHPasscodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F22E18727EA700116B61 /* LTHPasscodeViewController.m */; };
+		DEF0F23518727EA700116B61 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F23118727EA700116B61 /* SFHFKeychainUtils.m */; };
+		DEF0F23718728FAC00116B61 /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DEF0F23618728FAC00116B61 /* libTestFlight.a */; };
+		DEF0F2391872901C00116B61 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DEF0F2381872901C00116B61 /* libz.dylib */; };
+		DEF0F23B1872C3AC00116B61 /* settings_defaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = DEF0F23A1872C3AC00116B61 /* settings_defaults.plist */; };
 		DEF43B0317965B0D00190803 /* SQUGradeOverviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF43B0217965B0D00190803 /* SQUGradeOverviewController.m */; };
 		DEF43B0617965B1F00190803 /* SQUGradeOverviewTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF43B0517965B1F00190803 /* SQUGradeOverviewTableViewCell.m */; };
 		DEFFDE24186D881E00E26423 /* SQUDistrict.m in Sources */ = {isa = PBXBuildFile; fileRef = DEFFDE23186D881E00E26423 /* SQUDistrict.m */; };
@@ -204,6 +211,19 @@
 		DEF0F2211871DB9800116B61 /* SQUSettingsStudents.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUSettingsStudents.m; sourceTree = "<group>"; };
 		DEF0F2231871EEAD00116B61 /* SQUDistrictAISD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUDistrictAISD.h; sourceTree = "<group>"; };
 		DEF0F2241871EEAD00116B61 /* SQUDistrictAISD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUDistrictAISD.m; sourceTree = "<group>"; };
+		DEF0F22818727EA700116B61 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		DEF0F22918727EA700116B61 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		DEF0F22A18727EA700116B61 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
+		DEF0F22B18727EA700116B61 /* LTHNavigationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTHNavigationViewController.h; sourceTree = "<group>"; };
+		DEF0F22C18727EA700116B61 /* LTHNavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTHNavigationViewController.m; sourceTree = "<group>"; };
+		DEF0F22D18727EA700116B61 /* LTHPasscodeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTHPasscodeViewController.h; sourceTree = "<group>"; };
+		DEF0F22E18727EA700116B61 /* LTHPasscodeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTHPasscodeViewController.m; sourceTree = "<group>"; };
+		DEF0F22F18727EA700116B61 /* ro */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ro; path = ro.lproj/Localizable.strings; sourceTree = "<group>"; };
+		DEF0F23018727EA700116B61 /* SFHFKeychainUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFHFKeychainUtils.h; sourceTree = "<group>"; };
+		DEF0F23118727EA700116B61 /* SFHFKeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFHFKeychainUtils.m; sourceTree = "<group>"; };
+		DEF0F23618728FAC00116B61 /* libTestFlight.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libTestFlight.a; path = ../TestFlightSDK2.1.3/libTestFlight.a; sourceTree = "<group>"; };
+		DEF0F2381872901C00116B61 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		DEF0F23A1872C3AC00116B61 /* settings_defaults.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = settings_defaults.plist; sourceTree = "<group>"; };
 		DEF43B0117965B0D00190803 /* SQUGradeOverviewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUGradeOverviewController.h; sourceTree = "<group>"; };
 		DEF43B0217965B0D00190803 /* SQUGradeOverviewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUGradeOverviewController.m; sourceTree = "<group>"; };
 		DEF43B0417965B1F00190803 /* SQUGradeOverviewTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUGradeOverviewTableViewCell.h; sourceTree = "<group>"; };
@@ -260,12 +280,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DEF0F2391872901C00116B61 /* libz.dylib in Frameworks */,
 				DEF0F21218712DC700116B61 /* libQuickDialog.a in Frameworks */,
 				DEF0F1C1186EEA6900116B61 /* QuartzCore.framework in Frameworks */,
 				DEF0F1BF186EEA6500116B61 /* CoreImage.framework in Frameworks */,
 				DEFFDE94186E784E00E26423 /* libPKRevealController.a in Frameworks */,
 				DE81CDDC186D538000DC1CAB /* libxml2.2.dylib in Frameworks */,
 				DE35E9AB18061F8100F15F20 /* Security.framework in Frameworks */,
+				DEF0F23718728FAC00116B61 /* libTestFlight.a in Frameworks */,
 				DE0615D51787AD50004B2877 /* MobileCoreServices.framework in Frameworks */,
 				DE0615D31787AD3E004B2877 /* SystemConfiguration.framework in Frameworks */,
 				DE06157D17874D0C004B2877 /* CoreGraphics.framework in Frameworks */,
@@ -312,6 +334,8 @@
 		DE06157917874D0C004B2877 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				DEF0F2381872901C00116B61 /* libz.dylib */,
+				DEF0F23618728FAC00116B61 /* libTestFlight.a */,
 				DEF0F2031871287300116B61 /* MessageUI.framework */,
 				DEF0F1C0186EEA6900116B61 /* QuartzCore.framework */,
 				DEF0F1BE186EEA6400116B61 /* CoreImage.framework */,
@@ -359,6 +383,7 @@
 				DE06158517874D0D004B2877 /* InfoPlist.strings */,
 				DE06158817874D0D004B2877 /* main.m */,
 				DE06158A17874D0D004B2877 /* QuickHAC-Prefix.pch */,
+				DEF0F23A1872C3AC00116B61 /* settings_defaults.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -432,6 +457,7 @@
 		DE0615E717891E23004B2877 /* 3rd Party */ = {
 			isa = PBXGroup;
 			children = (
+				DEF0F22618727EA700116B61 /* LTHPasscodeViewController */,
 				DEF0F1DE1870E60B00116B61 /* WYPopoverController */,
 				DEF0F1C2186EEB8000116B61 /* JMNoise */,
 				DE7B4E82186EB0CB008079CC /* KCOrderedAccessorFix */,
@@ -531,6 +557,21 @@
 				DEF0F20F18712DB300116B61 /* libQuickDialog.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		DEF0F22618727EA700116B61 /* LTHPasscodeViewController */ = {
+			isa = PBXGroup;
+			children = (
+				DEF0F22718727EA700116B61 /* Localizable.strings */,
+				DEF0F22B18727EA700116B61 /* LTHNavigationViewController.h */,
+				DEF0F22C18727EA700116B61 /* LTHNavigationViewController.m */,
+				DEF0F22D18727EA700116B61 /* LTHPasscodeViewController.h */,
+				DEF0F22E18727EA700116B61 /* LTHPasscodeViewController.m */,
+				DEF0F23018727EA700116B61 /* SFHFKeychainUtils.h */,
+				DEF0F23118727EA700116B61 /* SFHFKeychainUtils.m */,
+			);
+			name = LTHPasscodeViewController;
+			path = ../../LTHPasscodeViewController/LTHPasscodeViewController;
 			sourceTree = "<group>";
 		};
 		DEF43B0017965AAF00190803 /* Grade Display UI */ = {
@@ -695,6 +736,9 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				de,
+				es,
+				ro,
 			);
 			mainGroup = DE06156E17874D0C004B2877;
 			productRefGroup = DE06157817874D0C004B2877 /* Products */;
@@ -746,6 +790,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DEF0F23218727EA700116B61 /* Localizable.strings in Resources */,
+				DEF0F23B1872C3AC00116B61 /* settings_defaults.plist in Resources */,
 				DE06158717874D0D004B2877 /* InfoPlist.strings in Resources */,
 				DEF0F21C187156D000116B61 /* acknowledgements.rtf in Resources */,
 				DE0615E517891E0C004B2877 /* SVProgressHUD.bundle in Resources */,
@@ -791,6 +837,7 @@
 				DEFFDE45186E26FC00E26423 /* AFURLRequestSerialization.m in Sources */,
 				DEFFDE44186E26FC00E26423 /* AFURLConnectionOperation.m in Sources */,
 				DEFFDE59186E270900E26423 /* UIActivityIndicatorView+AFNetworking.m in Sources */,
+				DEF0F23318727EA700116B61 /* LTHNavigationViewController.m in Sources */,
 				DEF0F1ED187101A900116B61 /* SQUCategory.m in Sources */,
 				DE06158D17874D0D004B2877 /* SQUAppDelegate.m in Sources */,
 				DEFFDE5B186E270900E26423 /* UIButton+AFNetworking.m in Sources */,
@@ -805,6 +852,7 @@
 				DE81CDD7186D517800DC1CAB /* TFHpple.m in Sources */,
 				DEF0F1B9186EE05400116B61 /* SQUCourse.m in Sources */,
 				DEF0F1BD186EE52B00116B61 /* UIColor+SQUColourUtilities.m in Sources */,
+				DEF0F23418727EA700116B61 /* LTHPasscodeViewController.m in Sources */,
 				DEF0F1B6186EDFD800116B61 /* SQUSemester.m in Sources */,
 				DE81CDD9186D517800DC1CAB /* XPathQuery.m in Sources */,
 				DEFFDE27186D8C5F00E26423 /* SQUDistrictManager.m in Sources */,
@@ -814,6 +862,7 @@
 				DEFFDE5E186E270900E26423 /* UIWebView+AFNetworking.m in Sources */,
 				DEF0F1CB186F7D8F00116B61 /* SQUClassDetailController.m in Sources */,
 				DE0615D81787ADFE004B2877 /* SQULoginViewController.m in Sources */,
+				DEF0F23518727EA700116B61 /* SFHFKeychainUtils.m in Sources */,
 				DEF0F1D7186FC7FA00116B61 /* SQUAssignment.m in Sources */,
 				DE0615E617891E0C004B2877 /* SVProgressHUD.m in Sources */,
 				DEF43B0617965B1F00190803 /* SQUGradeOverviewTableViewCell.m in Sources */,
@@ -872,6 +921,17 @@
 				DE06158617874D0D004B2877 /* en */,
 			);
 			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		DEF0F22718727EA700116B61 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DEF0F22818727EA700116B61 /* de */,
+				DEF0F22918727EA700116B61 /* en */,
+				DEF0F22A18727EA700116B61 /* es */,
+				DEF0F22F18727EA700116B61 /* ro */,
+			);
+			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -962,9 +1022,14 @@
 					"$(SDKROOT)/usr/include/libxml2/**",
 					"\"$(SRCROOT)/../PKRevealController/Source/PKRevealController\"/**",
 					"\"$(SRCROOT)/../QuickDialog/quickdialog\"/**",
+					"\"$(SRCROOT)/../TestFlightSDK2.1.3\"/**",
 				);
 				INFOPLIST_FILE = "QuickHAC/QuickHAC-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Users/tristanseifert/quickhac-ios/TestFlightSDK2.1.3",
+				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -989,9 +1054,14 @@
 					"$(SDKROOT)/usr/include/libxml2/**",
 					"\"$(SRCROOT)/../PKRevealController/Source/PKRevealController\"/**",
 					"\"$(SRCROOT)/../QuickDialog/quickdialog\"/**",
+					"\"$(SRCROOT)/../TestFlightSDK2.1.3\"/**",
 				);
 				INFOPLIST_FILE = "QuickHAC/QuickHAC-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Users/tristanseifert/quickhac-ios/TestFlightSDK2.1.3",
+				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";

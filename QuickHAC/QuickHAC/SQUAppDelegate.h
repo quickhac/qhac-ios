@@ -8,13 +8,14 @@
 
 #import <UIKit/UIKit.h>
 #import "PKRevealController.h"
+#import "LTHPasscodeViewController.h"
 
 #define kSQUAlertChangePassword 1
 
 @class SQUGradeOverviewController;
 @class SQUSidebarController;
 
-@interface SQUAppDelegate : UIResponder <UIApplicationDelegate, UIAlertViewDelegate> {
+@interface SQUAppDelegate : UIResponder <UIApplicationDelegate, UIAlertViewDelegate, LTHPasscodeViewControllerDelegate> {
     UINavigationController *_navController;
     SQUGradeOverviewController *_rootViewController;
 	

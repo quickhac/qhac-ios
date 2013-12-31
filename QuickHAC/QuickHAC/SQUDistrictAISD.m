@@ -38,6 +38,8 @@
 		
 		_district_id = 2;
 		
+		_gpaOffset = 60.0;
+		
 		_studentIDLength = NSMakeRange(7, 8);
 	}
 	
@@ -210,8 +212,6 @@
 		
 		_classToHashMap[class[@"courseNum"]] = semesterArray;
 	}
-	
-	// NSLog(@"Hash map: %@", _classToHashMap);
 }
 
 /*
@@ -255,20 +255,23 @@
 	// Set up a parser
 	TFHpple *parser = [TFHpple hppleWithHTMLData:data];
 	NSArray *forms = [parser searchWithXPathQuery:@"//form[@name='aspnetForm']"];
-	
-	NSAssert(forms.count > 0, @"Got an invalid login response: %@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
-	
-	TFHppleElement *form = forms[0];
-	
-	// Find children of the form
-	NSArray *formChildren = [form childrenWithTagName:@"input"];
-	
-	for (TFHppleElement *input in formChildren) {
-		if([input[@"name"] isEqualToString:@"__VIEWSTATE"]) {
-			_disambiguationASPNetInfo[@"__VIEWSTATE"] = input[@"value"];
-		} else if([input[@"name"] isEqualToString:@"__EVENTVALIDATION"]) {
-			_disambiguationASPNetInfo[@"__EVENTVALIDATION"] = input[@"value"];
+
+	// Prevent crash if login is invalid
+	if(forms.count > 0) {
+		TFHppleElement *form = forms[0];
+		
+		// Find children of the form
+		NSArray *formChildren = [form childrenWithTagName:@"input"];
+		
+		for (TFHppleElement *input in formChildren) {
+			if([input[@"name"] isEqualToString:@"__VIEWSTATE"]) {
+				_disambiguationASPNetInfo[@"__VIEWSTATE"] = input[@"value"];
+			} else if([input[@"name"] isEqualToString:@"__EVENTVALIDATION"]) {
+				_disambiguationASPNetInfo[@"__EVENTVALIDATION"] = input[@"value"];
+			}
 		}
+	} else {
+		NSLog(@"WARNING: Login did not get good data, disambiguation may fail");
 	}
 }
 

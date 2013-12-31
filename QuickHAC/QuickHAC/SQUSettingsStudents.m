@@ -43,6 +43,11 @@
 			return nil;
 		}
 		
+		
+		if(_students.count > 1) {
+			self.navigationItem.rightBarButtonItem = self.editButtonItem;
+		}
+		
 		self.title = NSLocalizedString(@"Students", nil);
 		
 		// Register notification for when a student is added
@@ -135,8 +140,24 @@
 			[[NSUserDefaults standardUserDefaults] setInteger:selectedStudent forKey:@"selectedStudent"];
 		}
 		
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+		// Delete object from DB
+		[[SQUAppDelegate sharedDelegate].managedObjectContext deleteObject:_students[indexPath.row]];
 		[_students removeObjectAtIndex:indexPath.row];
+		
+		// Do animate-y thing
+        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+		
+		if(_students.count == 1) {
+			self.navigationItem.rightBarButtonItem = nil;
+			[self.tableView setEditing:NO animated:YES];
+		}
+		
+		// Save to DB
+		NSError *err = nil;
+		if(![[SQUAppDelegate sharedDelegate].managedObjectContext save:&err]) {
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Database Error", nil) message:err.localizedDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
+			[alert show];
+		}
     }
 }
 
@@ -190,6 +211,7 @@
 						[SVProgressHUD showProgress:-1 status:NSLocalizedString(@"Updating Grades…", nil) maskType:SVProgressHUDMaskTypeGradient];
 						[[SQUGradeManager sharedInstance] fetchNewClassGradesFromServerWithDoneCallback:^(NSError *err) {
 							[SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"Done", nil)];
+							[[NSNotificationCenter defaultCenter] postNotificationName:SQUGradesDataUpdatedNotification object:nil];
 							
 							// Display error
 							if(err) {
@@ -238,6 +260,10 @@
 	if(db_err) {
 		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Database Error", nil) message:db_err.localizedDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
 		[alert show];
+	}
+	
+	if(_students.count > 1) {
+		self.navigationItem.rightBarButtonItem = self.editButtonItem;
 	}
 	
 	[self.tableView reloadData];

@@ -8,6 +8,9 @@
 
 #import "SQUDistrict.h"
 
+/**
+ * District interface for Austin Independent School District.
+ */
 @interface SQUDistrictAISD : SQUDistrict {
 @public
 	

@@ -8,6 +8,9 @@
 
 #import "SQUDistrict.h"
 
+/**
+ * District interface for Round Rock Independent School District.
+ */
 @interface SQUDistrictRRISD : SQUDistrict {
 @public
 	

@@ -7,11 +7,14 @@
 //
 
 #import "SQUSettingsStudents.h"
-
+#import "LTHPasscodeViewController.h"
 #import "SQUSettingsViewController.h"
+#import "Testflight.h"
 
 #import <QuickDialog.h>
 #import <PKRevealController.h>
+
+#define kSQUSettingsPasscode 4211
 
 @interface SQUSettingsViewController ()
 
@@ -44,12 +47,28 @@
 
 - (NSInteger) numberOfSectionsInTableView:(UITableView *) tableView {
     // Return the number of sections.
-    return 2;
+    return 3;
 }
 
 - (NSInteger) tableView:(UITableView *) tableView numberOfRowsInSection:(NSInteger) section {
     // Return the number of rows in the section.
-	return (section == 0) ? 4 : 2;
+	switch(section) {
+		case 0:
+			return 3;
+			break;
+			
+		case 1:
+			return 2;
+			break;
+			
+		case 2:
+			return 1;
+			break;
+			
+		default:
+			return 0;
+			break;
+	}
 }
 
 - (UITableViewCell *) tableView:(UITableView *) tableView cellForRowAtIndexPath:(NSIndexPath *) indexPath {
@@ -63,12 +82,14 @@
 		
 		cell.imageView.image = [UIImage imageNamed:iconImage[indexPath.row]];
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-	} else {
+	} else if(indexPath.section == 1) {
 		NSArray *titles = @[NSLocalizedString(@"About QuickHAC…", @"settings"), NSLocalizedString(@"Acknowledgements", @"settings")];
 		cell.textLabel.text = titles[indexPath.row];
 		
 		cell.imageView.image = nil;
 		cell.accessoryType = UITableViewCellAccessoryNone;
+	} else {
+		cell.textLabel.text = @"BetaTest feedback";
 	}
 	
     return cell;
@@ -81,6 +102,7 @@
 	switch(indexPath.section) {
 		case 0:
 			switch(indexPath.row) {
+				// Students
 				case 1: {
 					SQUSettingsStudents *setting = [[SQUSettingsStudents alloc] initWithStyle:UITableViewStyleGrouped];
 					if(setting) {
@@ -89,9 +111,28 @@
 					break;
 				}
 					
-				default:
+				// Security
+			/*	case 2: {
+					if([[NSUserDefaults standardUserDefaults] boolForKey:@"passcodeEnabled"]) {
+						UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Passcode", nil) message:NSLocalizedString(@"You currently have a passcode set up for QuickHAC on this device.", nil) delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) otherButtonTitles:NSLocalizedString(@"Change", nil), NSLocalizedString(@"Disable", nil), nil];
+						alert.tag = kSQUSettingsPasscode;
+						[alert show];
+					} else {
+						UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Passcode", nil) message:NSLocalizedString(@"You do not have a passcode set up.", nil) delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) otherButtonTitles:NSLocalizedString(@"Set Up", nil), nil];
+						alert.tag = kSQUSettingsPasscode;
+						[alert show];
+					}
+					
+					break;
+				}*/
+					
+				default: {
+					UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Warning" message:@"Settings have not yet been implemented." delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
+					[alert show];
+					
 					NSLog(@"Selected unhandled settings: (%u, %u)", indexPath.row, indexPath.section);
 					break;
+				}
 			}
 			break;
 			
@@ -117,6 +158,21 @@
 			break;
 		}
 			
+		case 2: {
+			// Show testflight
+			UIViewController *controller = [[UIViewController alloc] init];
+			controller.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(submitFeedback:)];
+			controller.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(closeModal:)];
+			controller.title = NSLocalizedString(@"Feedback", @"settings");
+			
+			_feedbackView = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, 320, 480)];
+			controller.view = _feedbackView;
+			
+			[self presentViewController:[[UINavigationController alloc] initWithRootViewController:controller] animated:YES completion:NULL];
+			
+			break;
+		}
+			
 		default:
 			NSLog(@"Selected unhandled settings: (%u, %u)", indexPath.row, indexPath.section);
 			break;
@@ -136,8 +192,34 @@
 	}
 }
 
-- (void) showAcknowledgements {
-	
+#pragma mark - Passcode alert
+- (void)alertView:(UIAlertView *) alertView clickedButtonAtIndex:(NSInteger) buttonIndex {
+	if(alertView.tag == kSQUSettingsPasscode) {
+		if([[NSUserDefaults standardUserDefaults] boolForKey:@"passcodeEnabled"]) {
+			
+		} else {
+			// Enable passcode
+			NSLog(@"Button: %u", buttonIndex);
+			
+			if(buttonIndex == 1) {
+				[[LTHPasscodeViewController sharedUser] setDelegate:self];
+				[[LTHPasscodeViewController sharedUser] showForEnablingPasscodeInViewController:self];
+			}
+		}
+	}
+}
+
+- (void) passcodeViewControllerWasDismissed {
+	NSLog(@"Dismissed passcode view");
+}
+
+- (void)passcodeWasEnteredSuccessfully {
+	NSLog(@"Passcode entered successful !!!");
+}
+
+- (void) submitFeedback:(id) sender {
+	[TestFlight submitFeedback:_feedbackView.text];
+	[self dismissViewControllerAnimated:YES completion:NULL];
 }
 
 @end

@@ -10,6 +10,11 @@
 
 @interface SQUGradeOverviewController : UITableViewController {
 	NSDateFormatter *_refreshDateFormatter;
+	
+	// Navbar title view
+	UIView *_navbarTitle;
+	CATextLayer *_titleLayer;
+	CATextLayer *_subtitleLayer;
 }
 
 @end
