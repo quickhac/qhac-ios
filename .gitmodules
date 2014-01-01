@@ -40,3 +40,6 @@
 [submodule "LTHPasscodeViewController"]
 	path = LTHPasscodeViewController
 	url = git@github.com:rolandleth/LTHPasscodeViewController.git
+[submodule "MGSplitViewController"]
+	path = MGSplitViewController
+	url = git@github.com:mattgemmell/MGSplitViewController.git

@@ -14,6 +14,8 @@
 #import "SQUStudent.h"
 #import "SQUGradeManager.h"
 #import "NSManagedObjectModel+KCOrderedAccessorFix.h"
+#import "SQUTabletSidebarController.h"
+#import "MGSplitViewController.h"
 
 #import "PKRevealController.h"
 #import "AFNetworkActivityIndicatorManager.h"
@@ -48,28 +50,57 @@ static SQUAppDelegate *sharedDelegate = nil;
     // Used for the entire singleton thing
     sharedDelegate = self;
     
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    _window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
    
-	// Set up grade overview
-    _rootViewController = [[SQUGradeOverviewController alloc] initWithStyle:UITableViewStylePlain];
-    _navController = [[UINavigationController alloc] initWithRootViewController:_rootViewController];
+	if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+		// Set up grade overview
+		_rootViewController = [[SQUGradeOverviewController alloc] initWithStyle:UITableViewStylePlain];
+		_navController = [[UINavigationController alloc] initWithRootViewController:_rootViewController];
+		
+		// Set up sidebar menu
+		_sidebarController = [[SQUSidebarController alloc] initWithStyle:UITableViewStylePlain];
+		_sidebarNavController = [[UINavigationController alloc] initWithRootViewController:_sidebarController];
+		
+		_sidebarController.overviewController = _rootViewController;
+		
+		// Set up drawer
+		_drawerController = [PKRevealController revealControllerWithFrontViewController:_navController
+																	 leftViewController:_sidebarNavController
+																	rightViewController:nil];
+		_drawerController.animationDuration = 0.25;
+		
+		// Set up UIWindow
+		_window.rootViewController = _drawerController;
+	} else {
+		// Set up iPad UI
+		_ipadSidebar = [[SQUTabletSidebarController alloc] initWithStyle:UITableViewStyleGrouped];
+		_ipadSidebarWrapper = [[UINavigationController alloc] initWithRootViewController:_ipadSidebar];
+		
+		_ipadContentWrapper = [[UINavigationController alloc] initWithRootViewController:nil];
+		
+		// Initialise split view
+		_ipadSplitController = [[MGSplitViewController alloc] init];
+		_window.rootViewController = _ipadSplitController;
+		_ipadSplitController.masterViewController = _ipadSidebarWrapper;
+		_ipadSplitController.detailViewController = _ipadContentWrapper;
+		_ipadSplitController.showsMasterInPortrait = YES;
+		
+		// Hide splitter
+		_ipadSplitController.splitWidth = 0.0;
+		
+		// Set up iPad appearances
+		[[UINavigationBar appearance] setBackgroundColor:UIColorFromRGB(0x3a9ddd)];
+		[[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"navbar_bg"] forBarMetrics:UIBarMetricsDefault];
+	}
+	
+    _window.backgroundColor = UIColorFromRGB(0xECF0F1);
+    [_window makeKeyAndVisible];
     
-	// Set up sidebar menu
-	_sidebarController = [[SQUSidebarController alloc] initWithStyle:UITableViewStylePlain];
-	_sidebarNavController = [[UINavigationController alloc] initWithRootViewController:_sidebarController];
-	
-	_sidebarController.overviewController = _rootViewController;
-	
-	// Set up drawer
-	_drawerController = [PKRevealController revealControllerWithFrontViewController:_navController
-																 leftViewController:_sidebarNavController
-																rightViewController:nil];
-    _drawerController.animationDuration = 0.25;
-	
-    // Set up UIWindow
-    self.window.rootViewController = _drawerController;
-    self.window.backgroundColor = [UIColor darkGrayColor];
-    [self.window makeKeyAndVisible];
+    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+		// Hack for an MGSplitViewController bug
+		[_ipadSplitController setSplitPosition:_ipadSplitController.splitPosition - 1];
+		[_ipadSplitController setSplitPosition:_ipadSplitController.splitPosition + 1];
+	}
 	
 	// Set up automagical network indicator management
 	[[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
@@ -85,8 +116,12 @@ static SQUAppDelegate *sharedDelegate = nil;
     
     // If there is at least one student object, we're logged in.
     if(students.count == 0) {
-        SQULoginSchoolSelector *loginController = [[SQULoginSchoolSelector alloc] initWithStyle:UITableViewStyleGrouped];
-        [_navController presentViewController:[[UINavigationController alloc] initWithRootViewController:loginController] animated:NO completion:NULL];
+		if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+			SQULoginSchoolSelector *loginController = [[SQULoginSchoolSelector alloc] initWithStyle:UITableViewStyleGrouped];
+			[_navController presentViewController:[[UINavigationController alloc] initWithRootViewController:loginController] animated:NO completion:NULL];
+		} else {
+			// iPad login UI
+		}
     } else {
 		// Show the passcode lock, if passcode is enabled
 /*		if([[NSUserDefaults standardUserDefaults] boolForKey:@"passcodeEnabled"]) {
@@ -161,11 +196,6 @@ static SQUAppDelegate *sharedDelegate = nil;
 			}
 		});
     }
-    
-    // Put other initialisation here so this function can return faster (UI can display)
-    dispatch_async(dispatch_get_main_queue(), ^{
-		
-    });
 	
     return YES;
 }

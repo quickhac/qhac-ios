@@ -64,6 +64,13 @@
 		DEF0F23E1873797400116B61 /* DistrictCerts.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DEF0F23D1873797400116B61 /* DistrictCerts.bundle */; };
 		DEF0F2431873DC0600116B61 /* SQUSettingsGeneralController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F2421873DC0600116B61 /* SQUSettingsGeneralController.m */; };
 		DEF0F2461873E09400116B61 /* SQUSettingsGPAOptionsController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F2451873E09400116B61 /* SQUSettingsGPAOptionsController.m */; };
+		DEF0F2481873FB5D00116B61 /* login_background.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DEF0F2471873FB5C00116B61 /* login_background.jpg */; };
+		DEF0F25318740A1400116B61 /* MGSplitCornersView.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F24C18740A1400116B61 /* MGSplitCornersView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DEF0F25418740A1400116B61 /* MGSplitDividerView.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F24E18740A1400116B61 /* MGSplitDividerView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DEF0F25518740A1400116B61 /* MGSplitViewAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F25018740A1400116B61 /* MGSplitViewAppDelegate.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DEF0F25618740A1400116B61 /* MGSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F25218740A1400116B61 /* MGSplitViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DEF0F25B18740B3800116B61 /* SQUTabletSidebarController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F25A18740B3800116B61 /* SQUTabletSidebarController.m */; };
+		DEF0F25E1874198B00116B61 /* SQUSidebarCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F25D1874198B00116B61 /* SQUSidebarCell.m */; };
 		DEF43B0317965B0D00190803 /* SQUGradeOverviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF43B0217965B0D00190803 /* SQUGradeOverviewController.m */; };
 		DEF43B0617965B1F00190803 /* SQUGradeOverviewTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF43B0517965B1F00190803 /* SQUGradeOverviewTableViewCell.m */; };
 		DEFFDE24186D881E00E26423 /* SQUDistrict.m in Sources */ = {isa = PBXBuildFile; fileRef = DEFFDE23186D881E00E26423 /* SQUDistrict.m */; };
@@ -232,6 +239,19 @@
 		DEF0F2421873DC0600116B61 /* SQUSettingsGeneralController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUSettingsGeneralController.m; sourceTree = "<group>"; };
 		DEF0F2441873E09400116B61 /* SQUSettingsGPAOptionsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUSettingsGPAOptionsController.h; sourceTree = "<group>"; };
 		DEF0F2451873E09400116B61 /* SQUSettingsGPAOptionsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUSettingsGPAOptionsController.m; sourceTree = "<group>"; };
+		DEF0F2471873FB5C00116B61 /* login_background.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = login_background.jpg; path = assets/iPad/login_background.jpg; sourceTree = SOURCE_ROOT; };
+		DEF0F24B18740A1400116B61 /* MGSplitCornersView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MGSplitCornersView.h; path = ../../MGSplitViewController/Classes/MGSplitCornersView.h; sourceTree = "<group>"; };
+		DEF0F24C18740A1400116B61 /* MGSplitCornersView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MGSplitCornersView.m; path = ../../MGSplitViewController/Classes/MGSplitCornersView.m; sourceTree = "<group>"; };
+		DEF0F24D18740A1400116B61 /* MGSplitDividerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MGSplitDividerView.h; path = ../../MGSplitViewController/Classes/MGSplitDividerView.h; sourceTree = "<group>"; };
+		DEF0F24E18740A1400116B61 /* MGSplitDividerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MGSplitDividerView.m; path = ../../MGSplitViewController/Classes/MGSplitDividerView.m; sourceTree = "<group>"; };
+		DEF0F24F18740A1400116B61 /* MGSplitViewAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MGSplitViewAppDelegate.h; path = ../../MGSplitViewController/Classes/MGSplitViewAppDelegate.h; sourceTree = "<group>"; };
+		DEF0F25018740A1400116B61 /* MGSplitViewAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MGSplitViewAppDelegate.m; path = ../../MGSplitViewController/Classes/MGSplitViewAppDelegate.m; sourceTree = "<group>"; };
+		DEF0F25118740A1400116B61 /* MGSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MGSplitViewController.h; path = ../../MGSplitViewController/Classes/MGSplitViewController.h; sourceTree = "<group>"; };
+		DEF0F25218740A1400116B61 /* MGSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MGSplitViewController.m; path = ../../MGSplitViewController/Classes/MGSplitViewController.m; sourceTree = "<group>"; };
+		DEF0F25918740B3800116B61 /* SQUTabletSidebarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUTabletSidebarController.h; sourceTree = "<group>"; };
+		DEF0F25A18740B3800116B61 /* SQUTabletSidebarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUTabletSidebarController.m; sourceTree = "<group>"; };
+		DEF0F25C1874198B00116B61 /* SQUSidebarCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUSidebarCell.h; sourceTree = "<group>"; };
+		DEF0F25D1874198B00116B61 /* SQUSidebarCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUSidebarCell.m; sourceTree = "<group>"; };
 		DEF43B0117965B0D00190803 /* SQUGradeOverviewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUGradeOverviewController.h; sourceTree = "<group>"; };
 		DEF43B0217965B0D00190803 /* SQUGradeOverviewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUGradeOverviewController.m; sourceTree = "<group>"; };
 		DEF43B0417965B1F00190803 /* SQUGradeOverviewTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUGradeOverviewTableViewCell.h; sourceTree = "<group>"; };
@@ -367,35 +387,33 @@
 				DEF0F23C187378A700116B61 /* Certificate Bundles */,
 				DE0615D017874F73004B2877 /* QuickHAC.entitlements */,
 				DE0615D917890813004B2877 /* HAC Interface */,
-				DE0615D11787ACDA004B2877 /* Login UI */,
-				DEF43B0017965AAF00190803 /* Grade Display UI */,
-				DEF43B071797122400190803 /* Class Overview UI */,
-				DEFFDE85186E6A9D00E26423 /* Sidebar UI */,
-				DEF43B081797122E00190803 /* Settings UI */,
+				DEF0F25818740AFF00116B61 /* iPad UI */,
+				DEF0F25718740AE500116B61 /* iPhone UI */,
 				DEF0F1BA186EE4E100116B61 /* Miscellaneous UI */,
 				DECA57C817DFD96300156AFC /* CoreData */,
 				DE0615E717891E23004B2877 /* 3rd Party */,
 				DE06158B17874D0D004B2877 /* SQUAppDelegate.h */,
 				DE06158C17874D0D004B2877 /* SQUAppDelegate.m */,
 				DE06159117874D0D004B2877 /* Images.xcassets */,
+				DEF0F2491873FB6700116B61 /* iPad Resources */,
 				DE06158E17874D0D004B2877 /* QuickHAC.xcdatamodeld */,
-				DE06158317874D0D004B2877 /* Supporting Files */,
+				DE06158317874D0D004B2877 /* Miscellaneous Resources */,
+				DE06158817874D0D004B2877 /* main.m */,
+				DE06158A17874D0D004B2877 /* QuickHAC-Prefix.pch */,
 			);
 			path = QuickHAC;
 			sourceTree = "<group>";
 		};
-		DE06158317874D0D004B2877 /* Supporting Files */ = {
+		DE06158317874D0D004B2877 /* Miscellaneous Resources */ = {
 			isa = PBXGroup;
 			children = (
 				DEF0F23D1873797400116B61 /* DistrictCerts.bundle */,
 				DEF0F21B187156D000116B61 /* acknowledgements.rtf */,
 				DE06158417874D0D004B2877 /* QuickHAC-Info.plist */,
 				DE06158517874D0D004B2877 /* InfoPlist.strings */,
-				DE06158817874D0D004B2877 /* main.m */,
-				DE06158A17874D0D004B2877 /* QuickHAC-Prefix.pch */,
 				DEF0F23A1872C3AC00116B61 /* settings_defaults.plist */,
 			);
-			name = "Supporting Files";
+			name = "Miscellaneous Resources";
 			sourceTree = "<group>";
 		};
 		DE0615B317874F17004B2877 /* AFNetworking */ = {
@@ -426,7 +444,7 @@
 			path = ../../AFNetworking/AFNetworking;
 			sourceTree = "<group>";
 		};
-		DE0615D11787ACDA004B2877 /* Login UI */ = {
+		DE0615D11787ACDA004B2877 /* Login */ = {
 			isa = PBXGroup;
 			children = (
 				DE0615D61787ADFE004B2877 /* SQULoginViewController.h */,
@@ -434,7 +452,7 @@
 				DE7F51D4178C8B5E00A677CE /* SQULoginSchoolSelector.h */,
 				DE7F51D5178C8B5E00A677CE /* SQULoginSchoolSelector.m */,
 			);
-			name = "Login UI";
+			name = Login;
 			sourceTree = "<group>";
 		};
 		DE0615D917890813004B2877 /* HAC Interface */ = {
@@ -467,6 +485,7 @@
 		DE0615E717891E23004B2877 /* 3rd Party */ = {
 			isa = PBXGroup;
 			children = (
+				DEF0F24A18740A0200116B61 /* MGSplitViewController */,
 				DEF0F22618727EA700116B61 /* LTHPasscodeViewController */,
 				DEF0F1DE1870E60B00116B61 /* WYPopoverController */,
 				DEF0F1C2186EEB8000116B61 /* JMNoise */,
@@ -591,7 +610,53 @@
 			name = "Certificate Bundles";
 			sourceTree = "<group>";
 		};
-		DEF43B0017965AAF00190803 /* Grade Display UI */ = {
+		DEF0F2491873FB6700116B61 /* iPad Resources */ = {
+			isa = PBXGroup;
+			children = (
+				DEF0F2471873FB5C00116B61 /* login_background.jpg */,
+			);
+			name = "iPad Resources";
+			sourceTree = "<group>";
+		};
+		DEF0F24A18740A0200116B61 /* MGSplitViewController */ = {
+			isa = PBXGroup;
+			children = (
+				DEF0F24B18740A1400116B61 /* MGSplitCornersView.h */,
+				DEF0F24C18740A1400116B61 /* MGSplitCornersView.m */,
+				DEF0F24D18740A1400116B61 /* MGSplitDividerView.h */,
+				DEF0F24E18740A1400116B61 /* MGSplitDividerView.m */,
+				DEF0F24F18740A1400116B61 /* MGSplitViewAppDelegate.h */,
+				DEF0F25018740A1400116B61 /* MGSplitViewAppDelegate.m */,
+				DEF0F25118740A1400116B61 /* MGSplitViewController.h */,
+				DEF0F25218740A1400116B61 /* MGSplitViewController.m */,
+			);
+			name = MGSplitViewController;
+			sourceTree = "<group>";
+		};
+		DEF0F25718740AE500116B61 /* iPhone UI */ = {
+			isa = PBXGroup;
+			children = (
+				DE0615D11787ACDA004B2877 /* Login */,
+				DEF43B0017965AAF00190803 /* Grade Display */,
+				DEF43B071797122400190803 /* Class Overview */,
+				DEFFDE85186E6A9D00E26423 /* Sidebar */,
+				DEF43B081797122E00190803 /* Settings */,
+			);
+			name = "iPhone UI";
+			sourceTree = "<group>";
+		};
+		DEF0F25818740AFF00116B61 /* iPad UI */ = {
+			isa = PBXGroup;
+			children = (
+				DEF0F25918740B3800116B61 /* SQUTabletSidebarController.h */,
+				DEF0F25A18740B3800116B61 /* SQUTabletSidebarController.m */,
+				DEF0F25C1874198B00116B61 /* SQUSidebarCell.h */,
+				DEF0F25D1874198B00116B61 /* SQUSidebarCell.m */,
+			);
+			name = "iPad UI";
+			sourceTree = "<group>";
+		};
+		DEF43B0017965AAF00190803 /* Grade Display */ = {
 			isa = PBXGroup;
 			children = (
 				DEF43B0117965B0D00190803 /* SQUGradeOverviewController.h */,
@@ -599,10 +664,10 @@
 				DEF43B0417965B1F00190803 /* SQUGradeOverviewTableViewCell.h */,
 				DEF43B0517965B1F00190803 /* SQUGradeOverviewTableViewCell.m */,
 			);
-			name = "Grade Display UI";
+			name = "Grade Display";
 			sourceTree = "<group>";
 		};
-		DEF43B071797122400190803 /* Class Overview UI */ = {
+		DEF43B071797122400190803 /* Class Overview */ = {
 			isa = PBXGroup;
 			children = (
 				DEF0F1C9186F7D8F00116B61 /* SQUClassDetailController.h */,
@@ -612,10 +677,10 @@
 				DEF0F1E51870E78000116B61 /* SQUClassCycleChooserController.h */,
 				DEF0F1E61870E78000116B61 /* SQUClassCycleChooserController.m */,
 			);
-			name = "Class Overview UI";
+			name = "Class Overview";
 			sourceTree = "<group>";
 		};
-		DEF43B081797122E00190803 /* Settings UI */ = {
+		DEF43B081797122E00190803 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
 				DEF0F2131871300A00116B61 /* SQUSettingsViewController.h */,
@@ -627,7 +692,7 @@
 				DEF0F2441873E09400116B61 /* SQUSettingsGPAOptionsController.h */,
 				DEF0F2451873E09400116B61 /* SQUSettingsGPAOptionsController.m */,
 			);
-			name = "Settings UI";
+			name = Settings;
 			sourceTree = "<group>";
 		};
 		DEFFDE28186D8ED500E26423 /* District Subclasses */ = {
@@ -664,13 +729,13 @@
 			path = "../UIKit+AFNetworking";
 			sourceTree = "<group>";
 		};
-		DEFFDE85186E6A9D00E26423 /* Sidebar UI */ = {
+		DEFFDE85186E6A9D00E26423 /* Sidebar */ = {
 			isa = PBXGroup;
 			children = (
 				DEFFDE86186E6ABE00E26423 /* SQUSidebarController.h */,
 				DEFFDE87186E6ABE00E26423 /* SQUSidebarController.m */,
 			);
-			name = "Sidebar UI";
+			name = Sidebar;
 			sourceTree = "<group>";
 		};
 		DEFFDE8D186E782D00E26423 /* Products */ = {
@@ -814,6 +879,7 @@
 				DEF0F23218727EA700116B61 /* Localizable.strings in Resources */,
 				DEF0F23B1872C3AC00116B61 /* settings_defaults.plist in Resources */,
 				DE06158717874D0D004B2877 /* InfoPlist.strings in Resources */,
+				DEF0F2481873FB5D00116B61 /* login_background.jpg in Resources */,
 				DEF0F21C187156D000116B61 /* acknowledgements.rtf in Resources */,
 				DE0615E517891E0C004B2877 /* SVProgressHUD.bundle in Resources */,
 				DE06159217874D0D004B2877 /* Images.xcassets in Resources */,
@@ -858,12 +924,14 @@
 				DEFFDE5C186E270900E26423 /* UIImageView+AFNetworking.m in Sources */,
 				DEFFDE45186E26FC00E26423 /* AFURLRequestSerialization.m in Sources */,
 				DEFFDE44186E26FC00E26423 /* AFURLConnectionOperation.m in Sources */,
+				DEF0F25518740A1400116B61 /* MGSplitViewAppDelegate.m in Sources */,
 				DEFFDE59186E270900E26423 /* UIActivityIndicatorView+AFNetworking.m in Sources */,
 				DEF0F23318727EA700116B61 /* LTHNavigationViewController.m in Sources */,
 				DEF0F1ED187101A900116B61 /* SQUCategory.m in Sources */,
 				DE06158D17874D0D004B2877 /* SQUAppDelegate.m in Sources */,
 				DEFFDE5B186E270900E26423 /* UIButton+AFNetworking.m in Sources */,
 				DE7F51D6178C8B5E00A677CE /* SQULoginSchoolSelector.m in Sources */,
+				DEF0F25618740A1400116B61 /* MGSplitViewController.m in Sources */,
 				DEF0F1E31870E60B00116B61 /* WYPopoverController.m in Sources */,
 				DEFFDE47186E26FC00E26423 /* AFURLSessionManager.m in Sources */,
 				DE06158917874D0D004B2877 /* main.m in Sources */,
@@ -888,6 +956,7 @@
 				DEF0F1D7186FC7FA00116B61 /* SQUAssignment.m in Sources */,
 				DEF0F2461873E09400116B61 /* SQUSettingsGPAOptionsController.m in Sources */,
 				DE0615E617891E0C004B2877 /* SVProgressHUD.m in Sources */,
+				DEF0F25E1874198B00116B61 /* SQUSidebarCell.m in Sources */,
 				DEF43B0617965B1F00190803 /* SQUGradeOverviewTableViewCell.m in Sources */,
 				DEFFDE97186E85E300E26423 /* SQUGradeManager.m in Sources */,
 				DEFFDE41186E26FC00E26423 /* AFHTTPSessionManager.m in Sources */,
@@ -901,7 +970,10 @@
 				DE81CDCD186D2C6B00DC1CAB /* SQUGradeParser.m in Sources */,
 				DE35E9A9180614DF00F15F20 /* Lockbox.m in Sources */,
 				DEF0F2431873DC0600116B61 /* SQUSettingsGeneralController.m in Sources */,
+				DEF0F25318740A1400116B61 /* MGSplitCornersView.m in Sources */,
 				DEF0F1EA1870FB3B00116B61 /* SQUStudent.m in Sources */,
+				DEF0F25B18740B3800116B61 /* SQUTabletSidebarController.m in Sources */,
+				DEF0F25418740A1400116B61 /* MGSplitDividerView.m in Sources */,
 				DEF0F1DD1870E22800116B61 /* SQUCycle.m in Sources */,
 				DEFFDE42186E26FC00E26423 /* AFNetworkReachabilityManager.m in Sources */,
 				DEF0F2221871DB9800116B61 /* SQUSettingsStudents.m in Sources */,
@@ -1057,6 +1129,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1089,6 +1162,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

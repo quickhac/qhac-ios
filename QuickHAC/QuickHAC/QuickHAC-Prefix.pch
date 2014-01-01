@@ -10,6 +10,9 @@
 #warning "This project uses features only available in iOS SDK 3.0 and later."
 #endif
 
+// UI macros
+#define UIColorFromRGB(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
+
 // These macros let us check the system version
 #define SYSTEM_VERSION_EQUAL_TO(v)                  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedSame)
 #define SYSTEM_VERSION_GREATER_THAN(v)              ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedDescending)
@@ -17,7 +20,7 @@
 #define SYSTEM_VERSION_LESS_THAN(v)                 ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedAscending)
 #define SYSTEM_VERSION_LESS_THAN_OR_EQUAL_TO(v)     ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedDescending)
 
-// debugging
+// Debugging
 #ifdef DEBUG
 #import "TestFlight.h"
 #define NSLog(__FORMAT__, ...) TFLog((@"%s [Line %d] " __FORMAT__), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
@@ -31,5 +34,5 @@
     #import <SystemConfiguration/SystemConfiguration.h>
 #endif
 
-// this is what does magical things
+// This is what does magical things
 void MethodSwizzle(Class c, SEL origSEL, SEL overrideSEL);

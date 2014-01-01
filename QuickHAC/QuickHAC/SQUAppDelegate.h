@@ -14,6 +14,8 @@
 
 @class SQUGradeOverviewController;
 @class SQUSidebarController;
+@class MGSplitViewController;
+@class SQUTabletSidebarController;
 
 @interface SQUAppDelegate : UIResponder <UIApplicationDelegate, UIAlertViewDelegate, LTHPasscodeViewControllerDelegate> {
     UINavigationController *_navController;
@@ -23,6 +25,12 @@
 	SQUSidebarController *_sidebarController;
 	
 	PKRevealController *_drawerController;
+	
+	MGSplitViewController *_ipadSplitController;
+	
+	SQUTabletSidebarController *_ipadSidebar;
+	UINavigationController *_ipadSidebarWrapper;
+	UINavigationController *_ipadContentWrapper;
 }
 
 @property (strong, nonatomic) UIWindow *window;
