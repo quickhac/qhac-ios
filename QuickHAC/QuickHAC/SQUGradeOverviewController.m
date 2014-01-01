@@ -102,8 +102,12 @@
 	// Apply to nav item
 	self.navigationItem.titleView = _navbarTitle;
 	
-	// Reload table data and calculate GPA
+	// Reload table data
 	[self.tableView reloadData];
+}
+
+- (void) viewDidAppear:(BOOL) animated {
+	[super viewDidAppear:animated];
 	[self updateGPA];
 }
 

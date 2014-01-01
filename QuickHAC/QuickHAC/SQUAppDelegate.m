@@ -131,6 +131,10 @@ static SQUAppDelegate *sharedDelegate = nil;
 				SQULoginSchoolSelector *loginController = [[SQULoginSchoolSelector alloc] initWithStyle:UITableViewStyleGrouped];
 				[_navController presentViewController:[[UINavigationController alloc] initWithRootViewController:loginController] animated:NO completion:NULL];
 			} else { // We found a district, so log in so we may update grades
+				// Select district.
+				[[SQUDistrictManager sharedInstance] selectDistrictWithID:student.district.integerValue];
+				[[NSNotificationCenter defaultCenter] postNotificationName:SQUGradesDataUpdatedNotification object:nil];
+				
 				// Ask the current district instance to do a log in to validate we're still valid
 				[[SQUDistrictManager sharedInstance] performLoginRequestWithUser:username usingPassword:password andCallback:^(NSError *error, id returnData){
 					if(!error) {

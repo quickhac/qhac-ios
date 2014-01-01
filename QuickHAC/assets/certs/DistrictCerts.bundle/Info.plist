@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleVersion</key>
+	<string>1.0</string>
+	<key>included_certificates</key>
+	<array>
+		<dict>
+			<key>district_id</key>
+			<integer>1</integer>
+			<key>certs</key>
+			<array>
+				<string>rrisd</string>
+				<string>rrisd_gradebook</string>
+			</array>
+		</dict>
+		<dict>
+			<key>district_id</key>
+			<integer>2</integer>
+			<key>accept_any</key>
+			<true/>
+			<key>certs</key>
+			<array>
+				<string>aisd</string>
+			</array>
+		</dict>
+	</array>
+</dict>
+</plist>

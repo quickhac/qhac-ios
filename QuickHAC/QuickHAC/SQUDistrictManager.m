@@ -138,8 +138,17 @@ static SQUDistrictManager *_sharedInstance = nil;
  */
 - (void) sendGETRequestToURL:(NSURL *) url withParameters:(NSDictionary *) params andSuccessBlock:(void (^)(AFHTTPRequestOperation *operation, id responseObject)) success andFailureBlock:(void (^)(AFHTTPRequestOperation *operation, NSError *error)) failure {
 	AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-	manager.securityPolicy.allowInvalidCertificates = YES;
 	manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+	
+	// Load the district's SSL certs, if it has one.
+	NSArray *certs = [_currentDistrict districtSSLCertData];
+	
+	if(certs == nil) {
+		manager.securityPolicy.allowInvalidCertificates = YES;
+	} else if(certs.count != 0) {
+		manager.securityPolicy.SSLPinningMode = AFSSLPinningModeCertificate;
+		[manager.securityPolicy setPinnedCertificates:certs];
+	}
 	
 	[manager GET:[url absoluteString] parameters:params success:success failure:failure];
 }
@@ -150,8 +159,18 @@ static SQUDistrictManager *_sharedInstance = nil;
  */
 - (void) sendPOSTRequestToURL:(NSURL *) url withParameters:(NSDictionary *) params andSuccessBlock:(void (^)(AFHTTPRequestOperation *operation, id responseObject)) success andFailureBlock:(void (^)(AFHTTPRequestOperation *operation, NSError *error)) failure {
 	AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-	manager.securityPolicy.allowInvalidCertificates = YES;
 	manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+	
+	// Load the district's SSL certs, if it has one.
+	NSArray *certs = [_currentDistrict districtSSLCertData];
+	
+	if(certs.count == 1 && [certs[0] integerValue] == 0) {
+		manager.securityPolicy.allowInvalidCertificates = YES;
+	} else if(certs.count != 0) {
+		manager.securityPolicy.SSLPinningMode = AFSSLPinningModeCertificate;
+		[manager.securityPolicy setPinnedCertificates:certs];
+	}
+	
 	[manager POST:[url absoluteString] parameters:params success:success failure:failure];
 }
 

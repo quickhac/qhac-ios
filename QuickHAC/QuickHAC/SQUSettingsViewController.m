@@ -8,8 +8,12 @@
 
 #import "SQUSettingsStudents.h"
 #import "LTHPasscodeViewController.h"
-#import "SQUSettingsViewController.h"
 #import "Testflight.h"
+#import "SQUCoreData.h"
+#import "SQUGradeManager.h"
+#import "SQUDistrictManager.h"
+#import "SQUSettingsGeneralController.h"
+#import "SQUSettingsViewController.h"
 
 #import <QuickDialog.h>
 #import <PKRevealController.h>
@@ -102,6 +106,13 @@
 	switch(indexPath.section) {
 		case 0:
 			switch(indexPath.row) {
+				case 0: {
+					SQUSettingsGeneralController *generalSettings = [[SQUSettingsGeneralController alloc] init];
+					[self.navigationController pushViewController:generalSettings animated:YES];
+					
+					break;
+				}
+					
 				// Students
 				case 1: {
 					SQUSettingsStudents *setting = [[SQUSettingsStudents alloc] initWithStyle:UITableViewStyleGrouped];

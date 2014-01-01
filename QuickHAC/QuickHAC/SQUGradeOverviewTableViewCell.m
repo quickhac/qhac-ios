@@ -89,8 +89,7 @@ static NSUInteger SQUGradeOverviewTableViewCellWidth[2] = {115, 112};
 		// Create Semester Average heads
 		_semesterHeads = [NSMutableArray new];
 		_cycleHeads = [NSMutableArray new];
-		
-		
+
 		for(NSUInteger i = 0; i < 2; i++) {
 			NSString *alignment = (i == 0) ? kCAAlignmentLeft : kCAAlignmentRight;
 			
@@ -125,11 +124,10 @@ static NSUInteger SQUGradeOverviewTableViewCellWidth[2] = {115, 112};
 			[_backgroundLayer addSublayer:semesterHead];
 		}
 		
-		// Add semester seperator
 		_semesterSeperator = [CAGradientLayer layer];
 		_semesterSeperator.frame = CGRectMake((_backgroundLayer.frame.size.width / 2) + 6, 32, 1, _backgroundLayer.frame.size.height - 40);
 		_semesterSeperator.backgroundColor = [UIColor colorWithWhite:0.85 alpha:1.0].CGColor;
-		
+				
 		// Add sublayers
 		[_backgroundLayer addSublayer:_semesterSeperator];
         [_backgroundLayer addSublayer:_courseTitle];
@@ -185,9 +183,11 @@ static NSUInteger SQUGradeOverviewTableViewCellWidth[2] = {115, 112};
 		CATextLayer *semesterHead = _semesterHeads[i];
 		
 		if(semester.average.integerValue == -1) {
-			semesterHead.string = [NSString stringWithFormat:NSLocalizedString(@"Semester %u: N/A", nil), i + 1];
+			semesterHead.string = [NSString stringWithFormat:NSLocalizedString(@"Semester %u: -", nil), i + 1];
+			semesterHead.foregroundColor = [UIColor lightGrayColor].CGColor;
 		} else {
 			semesterHead.string = [NSString stringWithFormat:NSLocalizedString(@"Semester %u: %u", nil), i + 1, semester.average.unsignedIntegerValue];
+			semesterHead.foregroundColor = [UIColor blackColor].CGColor;
 		}
 		
 		for(NSUInteger j = 0; j < 4; j++) {
@@ -196,19 +196,24 @@ static NSUInteger SQUGradeOverviewTableViewCellWidth[2] = {115, 112};
 			// Exam grade
 			if(j == 3) {
 				if(semester.examGrade.integerValue == -1) {
-					cycleHead.string = [NSString stringWithFormat:NSLocalizedString(@"Exam %u: N/A", nil), i + 1];
+					cycleHead.string = [NSString stringWithFormat:NSLocalizedString(@"Exam %u: -", nil), i + 1];
+					cycleHead.foregroundColor = [UIColor lightGrayColor].CGColor;
 				} else if(!semester.examIsExempt.boolValue) {
 					cycleHead.string = [NSString stringWithFormat:NSLocalizedString(@"Exam %u: %u", nil), i + 1, semester.examGrade.unsignedIntegerValue];
+					cycleHead.foregroundColor = [UIColor blackColor].CGColor;
 				} else {
 					cycleHead.string = [NSString stringWithFormat:NSLocalizedString(@"Exam %u: Exc", nil), i + 1];
+					cycleHead.foregroundColor = [UIColor blackColor].CGColor;
 				}
 			} else {
 				SQUCycle *cycle = _courseInfo.cycles[j + (i * 3)];
 				
 				if(cycle.average.unsignedIntegerValue == 0) {
-					cycleHead.string = [NSString stringWithFormat:NSLocalizedString(@"Cycle %u: N/A", nil), j + 1];
+					cycleHead.string = [NSString stringWithFormat:NSLocalizedString(@"Cycle %u: -", nil), j + 1];
+					cycleHead.foregroundColor = [UIColor lightGrayColor].CGColor;
 				} else {
 					cycleHead.string = [NSString stringWithFormat:NSLocalizedString(@"Cycle %u: %u", nil), j + 1, cycle.average.unsignedIntegerValue];
+					cycleHead.foregroundColor = [UIColor blackColor].CGColor;
 				}
 			}
 		}

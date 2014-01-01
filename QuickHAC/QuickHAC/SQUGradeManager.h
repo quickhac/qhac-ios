@@ -12,9 +12,8 @@
 #define SQUStudentsUpdatedNotification @"SQUStudentsUpdatedNotification"
 
 typedef enum {
-	kSQUGPAType4_0 = 0, // 4.0 scale (regular)
-	kSQUGPAType5_0 = 1, // 5.0 scale (AP) (default)
-	kSQUGPAType6_0 = 2, // 6.0 scale (IB)
+	kSQUGPATypeUnweighted = 0, // 4.0 scale (regular)
+	kSQUGPATypeWeighted = 1 // 5.0/6.0 scale, depending on district (default)
 } SQUGPAType;
 
 @class SQUStudent;

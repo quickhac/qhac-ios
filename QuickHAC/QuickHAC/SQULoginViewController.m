@@ -312,8 +312,13 @@
 						[SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"Done", nil)];
 						
 						// Restore old student state
-						[[SQUGradeManager sharedInstance] setStudent:oldStudent];
-						[[SQUDistrictManager sharedInstance] selectDistrictWithID:oldStudent.district.integerValue];
+						if(oldStudent) {
+							[[SQUGradeManager sharedInstance] setStudent:oldStudent];
+							[[SQUDistrictManager sharedInstance] selectDistrictWithID:oldStudent.district.integerValue];
+						} else {
+							// If this is the first student logged in, update grades UI
+							[[NSNotificationCenter defaultCenter] postNotificationName:SQUGradesDataUpdatedNotification object:nil];
+						}
 						
 						[[NSNotificationCenter defaultCenter] postNotificationName:SQUStudentsUpdatedNotification object:nil];
 						

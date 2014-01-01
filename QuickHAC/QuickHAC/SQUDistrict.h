@@ -49,6 +49,9 @@ typedef struct {
 // Cycle validation
 - (NSArray *) cyclesWithDataForCourse:(NSString *) courseCode;
 
+// Security
+- (NSArray *) districtSSLCertData;
+
 @end
 
 /**

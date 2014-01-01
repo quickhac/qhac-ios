@@ -470,7 +470,6 @@ static SQUGradeManager *_sharedInstance = nil;
 - (double) calculateGradePointForGrade:(double) grade andOffset:(double) offset isWeighted:(BOOL) weighted {
 	if(grade < 70.0) return 0.0;
 	
-	// unweighted
 	if(!weighted) {
 		return fmin((grade - 60.0) / 10.0, 4.0);
 	} else {
@@ -494,35 +493,25 @@ static SQUGradeManager *_sharedInstance = nil;
 	double offset, gradePoint;
 	double numProcessedCourses = 0.0;
 	double gpa = 0.0;
+	SQUSemester *dbSemester;
 	
 	for(SQUCourse *course in courses) {
 		// Ignore excluded courses
 		if(!course.isExcludedFromGPA.boolValue) {
-			SQUSemester *dbSemester = course.semesters[0];
-			
-			// If there's no grade, exclude it.
-			if(dbSemester.average.integerValue != -1) {
-				offset = (course.isHonours.boolValue) ? (type) : 0.0;
-				gradePoint = [self calculateGradePointForGrade:dbSemester.average.doubleValue andOffset:offset isWeighted:(type != 0)];
+			// Process each semester.
+			for(NSUInteger s = 0; s < course.semesters.count; s++) {
+				dbSemester = course.semesters[s];
 				
-				gpa += gradePoint;
-				
-				// Increment counter to get proper average
-				numProcessedCourses++;
-			}
-			
-			// Repeat for second semester.
-			dbSemester = course.semesters[1];
-			
-			// If there's no grade, exclude from GPA calculation
-			if(dbSemester.average.integerValue != -1) {
-				offset = (course.isHonours.boolValue) ? (type) : 0.0;
-				gradePoint = [self calculateGradePointForGrade:dbSemester.average.doubleValue andOffset:offset isWeighted:(type != 0)];
-				
-				gpa += gradePoint;
-				
-				// Increment counter to get proper average
-				numProcessedCourses++;
+				// Ignore a course if there's no grade for it.
+				if(dbSemester.average.integerValue != -1) {
+					offset = (course.isHonours.boolValue) ? (type) : 0.0;
+					gradePoint = [self calculateGradePointForGrade:dbSemester.average.doubleValue andOffset:offset isWeighted:(type != 0)];
+					
+					gpa += gradePoint;
+					
+					// Increment counter to get proper average
+					numProcessedCourses++;
+				}
 			}
 		}
 	}

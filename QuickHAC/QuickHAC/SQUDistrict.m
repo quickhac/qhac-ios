@@ -114,4 +114,58 @@
 	return nil;
 }
 
+/**
+ * Allows the code toonly accept requests that come from the server.
+ * @return The contents of a .cer file.
+ */
+- (NSArray *) districtSSLCertData {
+	NSBundle *certBundle = [[NSBundle alloc] initWithURL:[[NSBundle mainBundle] URLForResource:@"DistrictCerts" withExtension:@"bundle"]];
+	
+	NSDictionary *info = [certBundle infoDictionary];
+	NSDictionary *certInfo = nil;
+	NSData *certData;
+	
+	// Search through the array for an entry matching this district.
+	for(NSDictionary *cert in info[@"included_certificates"]) {
+		if([cert[@"district_id"] integerValue] == _district_id) {
+			certInfo = cert;
+			break;
+		}
+	}
+	
+	// If no data was found, exit.
+	if(!certInfo) return nil;
+	
+	if([certInfo[@"accept_any"] boolValue]) return nil;
+	
+	NSMutableArray *certs = [NSMutableArray new];
+	
+	// Load all specified certificates.
+	for(NSString *certName in certInfo[@"certs"]) {
+		NSURL *certURL = [certBundle URLForResource:certName withExtension:@"cer"];
+		if(certURL) {
+			certData = [NSData dataWithContentsOfURL:certURL];
+			[certs addObject:certData];
+		}
+	}
+	
+	// Load all root certificates.
+	NSArray *roots = [[NSFileManager defaultManager] contentsOfDirectoryAtURL:[certBundle URLForResource:@"roots" withExtension:nil] includingPropertiesForKeys:nil options:0 error:nil];
+	
+	for(NSURL *root in roots) {
+		certData = [NSData dataWithContentsOfURL:root];
+		
+		if(certData) {
+			[certs addObject:certData];
+		}
+	}
+	
+	// Return only if we found a cert
+	if(certs.count != 0) {
+		return [NSArray arrayWithArray:certs];
+	} else {
+		return nil;
+	}
+}
+
 @end
