@@ -11,11 +11,6 @@
 #define SQUGradesDataUpdatedNotification @"SQUGradesDataUpdatedNotification"
 #define SQUStudentsUpdatedNotification @"SQUStudentsUpdatedNotification"
 
-typedef enum {
-	kSQUGPATypeUnweighted = 0, // 4.0 scale (regular)
-	kSQUGPATypeWeighted = 1 // 5.0/6.0 scale, depending on district (default)
-} SQUGPAType;
-
 @class SQUStudent;
 @interface SQUGradeManager : NSObject {
 	SQUStudent *_student;
@@ -36,6 +31,6 @@ typedef enum {
 - (void) fetchNewCycleGradesFromServerForCourse:(NSString *) course withCycle:(NSUInteger) cycle andSemester:(NSUInteger) semester andDoneCallback:(void (^)(NSError *)) callback;
 - (void) updateCurrentStudentWithClassGrades:(NSDictionary *) classGrades forClass:(NSString *) class andCycle:(NSUInteger) numCycle andSemester:(NSUInteger) numSemester;
 
-- (NSNumber *) calculateGPAType:(SQUGPAType) type forCourses:(NSArray *) courses;
+- (NSNumber *) calculateGPAWeighted:(BOOL) weighted forCourses:(NSArray *) courses;
 
 @end

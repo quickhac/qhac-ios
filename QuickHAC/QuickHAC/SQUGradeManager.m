@@ -489,7 +489,7 @@ static SQUGradeManager *_sharedInstance = nil;
  * @param courses Array of SQUCourse objects to take into account.
  * @return A NSNumber object wrapping the float GPA value.
  */
-- (NSNumber *) calculateGPAType:(SQUGPAType) type forCourses:(NSArray *) courses {
+- (NSNumber *) calculateGPAWeighted:(BOOL) weighted forCourses:(NSArray *) courses {
 	double offset, gradePoint;
 	double numProcessedCourses = 0.0;
 	double gpa = 0.0;
@@ -504,8 +504,14 @@ static SQUGradeManager *_sharedInstance = nil;
 				
 				// Ignore a course if there's no grade for it.
 				if(dbSemester.average.integerValue != -1) {
-					offset = (course.isHonours.boolValue) ? (type) : 0.0;
-					gradePoint = [self calculateGradePointForGrade:dbSemester.average.doubleValue andOffset:offset isWeighted:(type != 0)];
+					// Weighted GPAs give honours grades a boost
+					if(weighted) {
+						offset = (course.isHonours.boolValue) ? 1.0 : 0.0;
+					} else {
+						offset = 0.0;
+					}
+					
+					gradePoint = [self calculateGradePointForGrade:dbSemester.average.doubleValue andOffset:offset isWeighted:weighted];
 					
 					gpa += gradePoint;
 					

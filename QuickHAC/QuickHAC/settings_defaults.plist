@@ -4,7 +4,7 @@
 <dict>
 	<key>gpa_type</key>
 	<integer>1</integer>
-	<key>gpa_precision</key>
-	<integer>4</integer>
+	<key>gpa_weighted</key>
+	<true/>
 </dict>
 </plist>

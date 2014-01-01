@@ -200,10 +200,10 @@
 	NSString *gpaFormatString = [NSString stringWithFormat:NSLocalizedString(@"GPA: %%.%uf", nil), [[NSUserDefaults standardUserDefaults] integerForKey:@"gpa_precision"]];
 	
 	// Get the type of GPA to calculate.
-	SQUGPAType gpaType = [[NSUserDefaults standardUserDefaults] integerForKey:@"gpa_type"];
+	BOOL gpaWeighted = [[NSUserDefaults standardUserDefaults] boolForKey:@"gpa_weighted"];
 	
 	// Calculate GPA
-	NSNumber *gpa = [[SQUGradeManager sharedInstance] calculateGPAType:gpaType forCourses:[SQUGradeManager sharedInstance].courses.array];
+	NSNumber *gpa = [[SQUGradeManager sharedInstance] calculateGPAWeighted:gpaWeighted forCourses:[SQUGradeManager sharedInstance].courses.array];
 	
 	_subtitleLayer.string = [NSString stringWithFormat:gpaFormatString, gpa.floatValue];
 }

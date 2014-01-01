@@ -39,7 +39,7 @@
 		__unsafe_unretained SQUCourse *tempCourse = course;
 		
 		toggle.onValueChanged = ^(QRootElement *root) {
-			tempCourse.isExcludedFromGPA = @(!tempToggle.boolValue);
+			tempCourse.isExcludedFromGPA = @(tempToggle.boolValue);
 			[[SQUAppDelegate sharedDelegate] saveContext];
 		};
 		
@@ -58,7 +58,7 @@
 		__unsafe_unretained SQUCourse *tempCourse = course;
 		
 		toggle.onValueChanged = ^(QRootElement *root) {
-			tempCourse.isExcludedFromGPA = @(!tempToggle.boolValue);
+			tempCourse.isExcludedFromGPA = @(tempToggle.boolValue);
 			[[SQUAppDelegate sharedDelegate] saveContext];
 		};
 		

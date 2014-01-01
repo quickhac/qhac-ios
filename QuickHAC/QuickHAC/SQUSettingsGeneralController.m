@@ -39,6 +39,7 @@
 	__unsafe_unretained QDecimalElement *tempPrecision = precision;
 	precision.onValueChanged = ^(QRootElement *root) {
 		[[NSUserDefaults standardUserDefaults] setInteger:tempPrecision.numberValue.integerValue forKey:@"gpa_precision"];
+		[[NSUserDefaults standardUserDefaults] synchronize];
 	};
 	
 	[section addElement:precision];
@@ -48,6 +49,7 @@
 	__unsafe_unretained QBooleanElement *tempWeighted = weighted;
 	weighted.onValueChanged = ^(QRootElement *root) {
 		[[NSUserDefaults standardUserDefaults] setBool:tempWeighted.boolValue forKey:@"gpa_weighted"];
+		[[NSUserDefaults standardUserDefaults] synchronize];
 	};
 	
 	[section addElement:weighted];
