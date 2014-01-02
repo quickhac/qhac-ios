@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>gpa_type</key>
-	<integer>1</integer>
+	<integer>0</integer>
 	<key>gpa_weighted</key>
 	<true/>
 </dict>

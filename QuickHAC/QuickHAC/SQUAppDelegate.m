@@ -7,20 +7,21 @@
 //
 
 #import "SQUSidebarController.h"
-#import "SQUAppDelegate.h"
 #import "SQULoginSchoolSelector.h"
 #import "SQUGradeOverviewController.h"
 #import "SQUDistrictManager.h"
 #import "SQUStudent.h"
 #import "SQUGradeManager.h"
-#import "NSManagedObjectModel+KCOrderedAccessorFix.h"
 #import "SQUTabletSidebarController.h"
-#import "MGSplitViewController.h"
+#import "SQUTabletLoginController.h"
+#import "SQUAppDelegate.h"
 
 #import "PKRevealController.h"
 #import "AFNetworkActivityIndicatorManager.h"
+#import "NSManagedObjectModel+KCOrderedAccessorFix.h"
 #import "SVProgressHUD.h"
 #import "Lockbox.h"
+#import "MGSplitViewController.h"
 #import "LTHPasscodeViewController.h"
 
 #ifdef DEBUG
@@ -121,6 +122,8 @@ static SQUAppDelegate *sharedDelegate = nil;
 			[_navController presentViewController:[[UINavigationController alloc] initWithRootViewController:loginController] animated:NO completion:NULL];
 		} else {
 			// iPad login UI
+			SQUTabletLoginController *loginController = [[SQUTabletLoginController alloc] init];
+			[_ipadSplitController presentViewController:[[UINavigationController alloc] initWithRootViewController:loginController] animated:NO completion:NULL];
 		}
     } else {
 		// Show the passcode lock, if passcode is enabled
@@ -151,6 +154,9 @@ static SQUAppDelegate *sharedDelegate = nil;
         
 		// This ensures we can see cached data while the new data is fetched
 		[[SQUGradeManager sharedInstance] setStudent:student];
+		
+		NSLog(@"Selected student: %@", student);
+		
 		[[NSNotificationCenter defaultCenter] postNotificationName:SQUGradesDataUpdatedNotification object:nil];
 		
 		// Validate the student object.

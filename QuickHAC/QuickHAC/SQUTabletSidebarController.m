@@ -3,7 +3,7 @@
 //  QuickHAC
 //
 //  Created by Tristan Seifert on 1/1/14.
-//  Copyright (c) 2014 Squee! Apps. All rights reserved.
+//  See README.MD for licensing and copyright information.
 //
 
 #import "SQUGradeManager.h"

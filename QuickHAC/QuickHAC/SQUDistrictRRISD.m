@@ -230,6 +230,28 @@
  */
 - (void) updateDistrictStateWithPostLoginData:(NSData *) data {
 	// NSLog(@"Login data: %@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
+	TFHpple *parser = [TFHpple hppleWithHTMLData:data];
+	NSArray *links = [parser searchWithXPathQuery:@"//*[@id='ctl00_plnMain_dgStudents']/tr/td/a"];
+	
+	// Parse the students in the table.
+	if(links.count != 0) {
+		if(_studentsOnAccount) {
+			[_studentsOnAccount removeAllObjects];
+		} else {
+			_studentsOnAccount = [NSMutableArray new];
+		}
+		
+		for(TFHppleElement *link in links) {
+			NSString *studentID = [link[@"href"] componentsSeparatedByString:@"="][1];
+			NSString *studentName = link.text;
+			
+			[_studentsOnAccount addObject:@{@"id":studentID, @"name":studentName}];
+		}
+	} else {
+		_studentsOnAccount = nil;
+	}
+	
+	_hasMultipleStudents = (links.count != 0);
 }
 
 /*

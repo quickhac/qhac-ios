@@ -9,7 +9,7 @@
 #import "SQUDistrict.h"
 
 @implementation SQUDistrict
-@synthesize name = _name, driver = _driver, examWeight = _examWeight, tableOffsets = _tableOffsets, district_id = _district_id, gpaOffset = _gpaOffset,  studentIDLength = _studentIDLength;
+@synthesize name = _name, driver = _driver, examWeight = _examWeight, tableOffsets = _tableOffsets, district_id = _district_id, gpaOffset = _gpaOffset,  studentIDLength = _studentIDLength, hasMultipleStudents = _hasMultipleStudents, studentsOnAccount = _studentsOnAccount;
 
 /**
  * Builds a request to run directly before the login to, for example, fetch some

@@ -71,6 +71,8 @@ typedef struct {
 	col_offsets_t _tableOffsets;
 	double _gpaOffset;
 	NSRange _studentIDLength;
+	BOOL _hasMultipleStudents;
+	NSMutableArray *_studentsOnAccount;
 }
 
 @property (readonly) NSString *driver;
@@ -80,5 +82,7 @@ typedef struct {
 @property (readonly) col_offsets_t tableOffsets;
 @property (readonly) double gpaOffset;
 @property (readonly) NSRange studentIDLength;
+@property (readonly) BOOL hasMultipleStudents;
+@property (readonly) NSMutableArray *studentsOnAccount;
 
 @end

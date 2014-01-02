@@ -1,0 +1,395 @@
+//
+//  SQUTabletLoginController.m
+//  QuickHAC
+//
+//  Created by Tristan Seifert on 1/1/14.
+//  See README.MD for licensing and copyright information.
+//
+
+#import "SQUDistrictManager.h"
+#import "SQUCoreData.h"
+#import "SQUAppDelegate.h"
+#import "SQUGradeManager.h"
+#import "SQUTabletLoginController.h"
+
+#import "SVProgressHUD.h"
+#import "Lockbox.h"
+
+#import <CoreText/CoreText.h>
+#import <QuartzCore/QuartzCore.h>
+
+@interface SQUTabletLoginController ()
+
+- (void) doLogin;
+- (BOOL) studentExistsWithID:(NSString *) dasID;
+- (BOOL) studentExistsWithUser:(NSString *) user;
+
+@end
+
+@implementation SQUTabletLoginController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+	
+	// Draw background view
+	UIImageView *backgroundView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 768, 1024)];
+	backgroundView.image = [UIImage imageNamed:@"login_background.jpg"];
+	backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+	[self.view addSubview:backgroundView];
+	
+	self.navigationController.navigationBarHidden = YES;
+	
+	// Login container box
+	_loginContainerBox = [[UIView alloc] initWithFrame:CGRectMake(171, 393, 425, 238)];
+	_loginContainerBox.autoresizingMask = UIViewAutoresizingFlexibleRightMargin |
+										 UIViewAutoresizingFlexibleTopMargin |
+										 UIViewAutoresizingFlexibleBottomMargin |
+										 UIViewAutoresizingFlexibleLeftMargin;
+	
+	// Rocket icon
+	UIImageView *icon = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 128, 128)];
+	icon.image = [UIImage imageNamed:@"icon_rocket_login"];
+	[_loginContainerBox addSubview:icon];
+	
+	// "Welcome to QuickHAC" text
+	UILabel *welcomeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 144, 132, 60)];
+	welcomeLabel.lineBreakMode = NSLineBreakByWordWrapping;
+	welcomeLabel.numberOfLines = 0;
+	welcomeLabel.textAlignment = NSTextAlignmentCenter;
+	
+	NSMutableAttributedString *welcomeText = [[NSMutableAttributedString alloc] initWithString:NSLocalizedString(@"Welcome to\nQuickHAC", nil) attributes:@{NSKernAttributeName:[NSNull null], NSForegroundColorAttributeName:UIColorFromRGB(0xECF0F1)}];
+	
+	/*
+	 * "Welcome to" is in HelveticaNeue-Medium, "Quick" in HelveticaNeue-UltraLight,
+	 * and "HAC" in HelveticaNeue-Bold.
+	 */
+	[welcomeText addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"HelveticaNeue-Medium" size:23.5] range:NSMakeRange(0, 10)];
+	[welcomeText addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"HelveticaNeue-Light" size:23.5] range:NSMakeRange(11, 5)];
+	[welcomeText addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"HelveticaNeue-Bold" size:23.5] range:NSMakeRange(16, 3)];
+	
+	welcomeLabel.attributedText = welcomeText;
+	
+	[_loginContainerBox addSubview:welcomeLabel];
+	
+	// Build the form container.
+	UIView *formContainer = [[UIView alloc] initWithFrame:CGRectMake(154, 48, 271, 147)];
+	formContainer.backgroundColor = UIColorFromRGB(0xECF0F1);
+	
+	// Set up the shadow for the form container.
+	formContainer.layer.shadowColor = [UIColor blackColor].CGColor;
+	formContainer.layer.shadowOpacity = 0.0625;
+	formContainer.layer.shadowRadius = 4.0;
+	formContainer.layer.shadowOffset = CGSizeMake(4.0, 4.0);
+	formContainer.layer.shadowPath = [UIBezierPath bezierPathWithRect:CGRectMake(0, -48, 271, 195)].CGPath;
+	
+	// Do NOT clip to bounds so the triangle and shadow will show up.
+	formContainer.clipsToBounds = NO;
+	[_loginContainerBox addSubview:formContainer];
+	
+	// Draw the little triangle
+	CGFloat triangleWidth = 16;
+	CGFloat triangleHeight = 32;
+	
+	CAShapeLayer *triangle = [CAShapeLayer layer];
+	triangle.frame = CGRectMake(-triangleWidth, 57, triangleWidth, triangleHeight);
+	triangle.fillColor = UIColorFromRGB(0xECF0F1).CGColor;
+	
+	CGMutablePathRef path = CGPathCreateMutable();
+	CGPathMoveToPoint(path, NULL, triangleWidth, 0);
+	CGPathAddLineToPoint(path, NULL, triangleWidth, triangleHeight);
+	CGPathAddLineToPoint(path, NULL, 0, triangleHeight/2);
+	CGPathAddLineToPoint(path, NULL, triangleWidth, 0);
+	CGPathCloseSubpath(path);
+	
+	triangle.path = path;
+	CGPathRelease(path);
+	
+	[formContainer.layer addSublayer:triangle];
+	
+	// District selector BG
+	UIView *districtSelectorContainer = [[UIView alloc] initWithFrame:CGRectMake(154, 0, 271, 48)];
+	CAGradientLayer *districtSelectorBG = [CAGradientLayer layer];
+	districtSelectorBG.frame = CGRectMake(0, 0, 271, 48);
+	districtSelectorBG.backgroundColor = [UIColor whiteColor].CGColor;
+	districtSelectorBG.opacity = 0.247059;
+	[districtSelectorContainer.layer addSublayer:districtSelectorBG];
+	[_loginContainerBox addSubview:districtSelectorContainer];
+	
+	// Chevron
+	UIButton *districtDownButton = [[UIButton alloc] initWithFrame:CGRectMake(223, 0, 48, 48)];
+	[districtDownButton setImage:[UIImage imageNamed:@"icon_chevron_down"] forState:UIControlStateNormal];
+	[districtDownButton addTarget:self action:@selector(showDistrictSelector:) forControlEvents:UIControlEventTouchUpInside];
+	[districtSelectorContainer addSubview:districtDownButton];
+	
+	// Label
+	_selectedDistrict = 0;
+	
+	_currentDistrictLabel = [CATextLayer layer];
+	_currentDistrictLabel.frame = CGRectMake(8, 15, 200, 32);
+	_currentDistrictLabel.alignmentMode = kCAAlignmentCenter;
+	_currentDistrictLabel.string = NSLocalizedString(@"Select District…", nil);
+	_currentDistrictLabel.font = (__bridge CFTypeRef)([UIFont fontWithName:@"HelveticaNeue-Medium" size:16.0]);
+	_currentDistrictLabel.fontSize = 17.0;
+	[districtSelectorContainer.layer addSublayer:_currentDistrictLabel];
+	
+	// Add username/password fields
+	_userField = [[UITextField alloc] initWithFrame:CGRectMake(16, 16, 239, 48)];
+	_userField.borderStyle = UITextBorderStyleNone;
+	_userField.placeholder = NSLocalizedString(@"HAC Username", nil);
+	_userField.rightViewMode = UITextFieldViewModeAlways;
+	_userField.delegate = self;
+	_passField.returnKeyType = UIReturnKeyNext;
+	[formContainer addSubview:_userField];
+	
+	// Add user icon to username field.
+	UIImageView *userIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_person"]];
+	userIcon.frame = CGRectMake(0, 0, 24, 24);
+	_userField.rightView = userIcon;
+	
+	// Create password field
+	_passField = [[UITextField alloc] initWithFrame:CGRectMake(16, 74, 239, 48)];
+	_passField.secureTextEntry = YES;
+	_passField.borderStyle = UITextBorderStyleNone;
+	_passField.placeholder = NSLocalizedString(@"HAC Password", nil);
+	_passField.rightViewMode = UITextFieldViewModeAlways;
+	_passField.delegate = self;
+	_passField.returnKeyType = UIReturnKeyDone;
+	[formContainer addSubview:_passField];
+	
+	// Add key icon to username field.
+	UIImageView *keyIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_key"]];
+	keyIcon.frame = CGRectMake(0, 0, 24, 24);
+	_passField.rightView = keyIcon;
+	
+	// Add "Forgot Password?" button.
+	UIButton *lostPasswordButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    
+    NSMutableAttributedString *lostPasswordTitle = [[NSMutableAttributedString alloc] initWithString:NSLocalizedString(@"Lost your password?", nil) attributes:nil];
+    [lostPasswordTitle addAttribute:(__bridge NSString *) kCTUnderlineStyleAttributeName value:[NSNumber numberWithInteger:kCTUnderlineStyleSingle] range:NSMakeRange(0, lostPasswordTitle.length)];
+    [lostPasswordTitle addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"HelveticaNeue-Light" size:13.0] range:NSMakeRange(0, lostPasswordTitle.length)];
+    [lostPasswordTitle addAttribute:NSForegroundColorAttributeName value:UIColorFromRGB(0x95A5A6) range:NSMakeRange(0, lostPasswordTitle.length)];
+    [lostPasswordButton setAttributedTitle:lostPasswordTitle forState:UIControlStateNormal];
+    lostPasswordButton.frame = CGRectMake(16, 124, 239, 18);
+    lostPasswordButton.titleLabel.textAlignment = NSTextAlignmentCenter;
+    [formContainer addSubview:lostPasswordButton];
+	
+	// Add login container to root.
+	[self.view addSubview:_loginContainerBox];
+	
+	_shouldDoSlide = YES;
+}
+
+#pragma mark - Text field delegate
+- (void) textFieldDidBeginEditing:(UITextField *) textField {
+	if(!_shouldDoSlide || _isSlidUp) return;
+	
+    // Move login form upwards
+	[UIView animateWithDuration:0.25 delay:0 options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseInOut animations:^{
+		CGRect frame = _loginContainerBox.frame;
+		frame.origin.y -= 140;
+		_loginContainerBox.frame = frame;
+		_isSlidUp = YES;
+    } completion:^(BOOL finished) { }];
+}
+
+- (void) textFieldDidEndEditing:(UITextField *) textField {
+	if(!_shouldDoSlide || !_isSlidUp) return;
+	
+    // Move login form downwards
+	[UIView animateWithDuration:0.25 delay:0 options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseInOut animations:^{
+		CGRect frame = _loginContainerBox.frame;
+		frame.origin.y += 140;
+		_loginContainerBox.frame = frame;
+		_isSlidUp = NO;
+    } completion:^(BOOL finished) { }];
+}
+
+- (BOOL) textFieldShouldReturn:(UITextField *) textField {
+	if(textField == _userField) {
+		_shouldDoSlide = NO;
+		[_passField becomeFirstResponder];
+		_shouldDoSlide = YES;
+	} else if(textField == _passField) {
+		_shouldDoSlide = YES;
+		[_passField resignFirstResponder];
+
+		[self doLogin];
+	}
+	return YES;
+}
+
+#pragma mark - Login
+- (void) doLogin {
+	if(!_district) {
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"No District Selected", nil) message:NSLocalizedString(@"You need to select a district before you can log in.\n\nTap the arrow at the top of the form to bring up a list of supported districts.", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
+		[alert show];
+		return;
+	}
+	
+	BOOL couldSelectDistrict = [[SQUDistrictManager sharedInstance] selectDistrictWithID:_district.district_id];
+	
+	if(!couldSelectDistrict) {
+		NSLog(@"District somehow vanished");
+		return;
+	}
+	
+	[SVProgressHUD showProgress:-1 status:NSLocalizedString(@"Logging In…", nil) maskType:SVProgressHUDMaskTypeGradient];
+	
+	// This block is called for every student that we must add.
+	void (^addStudent)(NSDictionary *student) = ^(NSDictionary *student) {
+		if(student) {
+			NSString *studentID = student[@"id"];
+			NSString *studentName = student[@"name"];
+			
+			if([self studentExistsWithID:studentID]) {
+				UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Student Exists", nil) message:NSLocalizedString(@"The student already exists.", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
+				[alert show];
+			} else {
+				NSManagedObjectContext *context = [[SQUAppDelegate sharedDelegate] managedObjectContext];
+				SQUStudent *studentInfo = [NSEntityDescription insertNewObjectForEntityForName:@"SQUStudent" inManagedObjectContext:context];
+				
+				// Set up student ID and district to database
+				studentInfo.student_id = studentID;
+				studentInfo.district = [NSNumber numberWithInteger:_district.district_id];
+				studentInfo.hacUsername = _userField.text;
+				studentInfo.name = studentName;
+			}
+		} else {
+			// Single student account
+			if([self studentExistsWithUser:_userField.text]) {
+				UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Student Exists", nil) message:NSLocalizedString(@"The student already exists.", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
+				[alert show];
+			} else {
+				NSManagedObjectContext *context = [[SQUAppDelegate sharedDelegate] managedObjectContext];
+				SQUStudent *studentInfo = [NSEntityDescription insertNewObjectForEntityForName:@"SQUStudent" inManagedObjectContext:context];
+				
+				// Set up student ID and district to database
+				studentInfo.student_id = @"";
+				studentInfo.district = [NSNumber numberWithInteger:_district.district_id];
+				studentInfo.hacUsername = _userField.text;
+				
+				[[SQUGradeManager sharedInstance] setStudent:studentInfo];
+			}
+		}
+	};
+	
+	// Do a login request for the user
+	[[SQUDistrictManager sharedInstance] performLoginRequestWithUser:_userField.text usingPassword:_passField.text andCallback:^(NSError *error, id returnData) {
+		if(!error) {
+			if(!returnData) {
+				[SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Invalid Credentials", nil)];
+			} else {
+				// Store username/password in keychain
+				[Lockbox setString:_passField.text forKey:_userField.text];
+				
+				// Add to database
+				if([SQUDistrictManager sharedInstance].currentDistrict.hasMultipleStudents) {
+					for(NSDictionary *student in [SQUDistrictManager sharedInstance].currentDistrict.studentsOnAccount) {
+						addStudent(student);
+					}
+				} else {
+					addStudent(nil);
+				}
+				
+				// Save database.
+				[[SQUAppDelegate sharedDelegate] saveContext];
+				
+				// If there's only one student, dismiss the view controller.
+				if(![SQUDistrictManager sharedInstance].currentDistrict.hasMultipleStudents) {
+					[SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"Done", nil)];
+					[self dismissViewControllerAnimated:YES completion:NO];
+				} else {
+					// Bring up a student selection screen.
+					// [SVProgressHUD showProgress:-1 status:NSLocalizedString(@"Updating Grades", nil) maskType:SVProgressHUDMaskTypeGradient];
+				}
+				// Fetch grades
+				/*[[SQUGradeManager sharedInstance] fetchNewClassGradesFromServerWithDoneCallback:^(NSError *error) {
+				 if(!error) {
+				 [SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"Done", nil)];
+				 
+				 [[NSNotificationCenter defaultCenter] postNotificationName:SQUGradesDataUpdatedNotification object:nil];
+				 [[NSNotificationCenter defaultCenter] postNotificationName:SQUStudentsUpdatedNotification object:nil];
+				 
+				 // Dismiss login view
+				 [self dismissViewControllerAnimated:YES completion:NO];
+				 } else {
+				 [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Error", nil)];
+				 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Fetching Grades", nil) message:error.localizedDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
+				 [alert show];
+				 }
+				 }];*/
+				
+			}
+		} else {
+			// Login error
+			[SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Error", nil)];
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Logging In", nil) message:error.localizedDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
+			[alert show];
+		}
+	}];
+}
+
+#pragma mark - DB Interfacing
+- (BOOL) studentExistsWithID:(NSString *) dasID {
+	NSError *error = nil;
+	NSFetchRequest *request = [[NSFetchRequest alloc] init];
+	NSEntityDescription *entity = [NSEntityDescription entityForName:@"SQUStudent" inManagedObjectContext:[SQUAppDelegate sharedDelegate].managedObjectContext];
+	[request setEntity:entity];
+	
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(student_id == %@)", dasID];
+	[request setPredicate:predicate];
+	
+	return ([[SQUAppDelegate sharedDelegate].managedObjectContext countForFetchRequest:request error:&error] != 0);
+}
+
+- (BOOL) studentExistsWithUser:(NSString *) user {
+	NSError *error = nil;
+	NSFetchRequest *request = [[NSFetchRequest alloc] init];
+	NSEntityDescription *entity = [NSEntityDescription entityForName:@"SQUStudent" inManagedObjectContext:[SQUAppDelegate sharedDelegate].managedObjectContext];
+	[request setEntity:entity];
+	
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(hacUsername == %@)", user];
+	[request setPredicate:predicate];
+	
+	return ([[SQUAppDelegate sharedDelegate].managedObjectContext countForFetchRequest:request error:&error] != 0);
+}
+
+#pragma mark - District selection
+- (void) showDistrictSelector:(id) sender {
+	UIPickerView *picker = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 0, 320, 216)];
+	picker.dataSource = self;
+	picker.delegate = self;
+	[picker selectRow:_selectedDistrict inComponent:0 animated:NO];
+	
+	UIViewController *controller = [[UIViewController alloc] init];
+	controller.view = picker;
+	controller.preferredContentSize = CGSizeMake(320, 216);
+	
+	_changeDistrictPopover = [[UIPopoverController alloc] initWithContentViewController:controller];
+	[_changeDistrictPopover presentPopoverFromRect:CGRectMake(0, - 8, 48, 48) inView:sender permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
+}
+
+- (NSInteger) numberOfComponentsInPickerView:(UIPickerView *) pickerView {
+	return 1;
+}
+
+- (NSInteger) pickerView:(UIPickerView *) pickerView numberOfRowsInComponent:(NSInteger) component {
+	return [[SQUDistrictManager sharedInstance] loadedDistricts].count;
+}
+
+- (NSString *) pickerView:(UIPickerView *) pickerView titleForRow:(NSInteger) row forComponent:(NSInteger) component {
+	return [(SQUDistrict *) [[SQUDistrictManager sharedInstance] loadedDistricts][row] name];
+}
+
+- (void) pickerView:(UIPickerView *) pickerView didSelectRow:(NSInteger) row inComponent:(NSInteger) component {
+	_selectedDistrict = row;
+	_district = [[SQUDistrictManager sharedInstance] loadedDistricts][row];
+	_currentDistrictLabel.string = [(SQUDistrict *) [[SQUDistrictManager sharedInstance] loadedDistricts][_selectedDistrict] name];
+}
+
+#pragma mark - Miscellaneous UI
+- (UIStatusBarStyle) preferredStatusBarStyle{
+    return UIStatusBarStyleLightContent;
+}
+
+@end
