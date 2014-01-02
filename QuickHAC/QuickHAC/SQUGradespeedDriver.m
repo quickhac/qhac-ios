@@ -1,21 +1,18 @@
 //
-//  SQUGradeParser.m
+//  SQUGradespeedDriver.m
 //  QuickHAC
 //
-//  Interfaces with the GradeParser object in qhac-common's library to parse the
-//	data returned by HAC into something usable.
-//
-//  Created by Tristan Seifert on 12/26/13.
+//  Created by Tristan Seifert on 1/2/14.
 //  See README.MD for licensing and copyright information.
 //
 
-#import <JavaScriptCore/JavaScriptCore.h>
+#import "SQUDistrict.h"
+#import "SQUGradeManager.h"
+#import "SQUGradespeedDriver.h"
 
 #import "TFHpple.h"
-#import "SQUGradeParser.h"
-#import "SQUDistrict.h"
-#import "SQUDistrict.h"
 
+#pragma mark HTML parser additions
 // Category on TFHppleElement for table
 @interface TFHppleElement (TableSupport)
 - (NSString *) getColumnContentsWithClass:(NSString *) class;
@@ -30,48 +27,25 @@
 }
 @end
 
-static SQUGradeParser *_sharedInstance = nil;
-
-@implementation SQUGradeParser
-
-#pragma mark - Singleton
-+ (SQUGradeParser *) sharedInstance {
-    @synchronized (self) {
-        if (_sharedInstance == nil) {
-            _sharedInstance = [[self alloc] init];
-        }
-    }
-    
-    return _sharedInstance;
-}
-
-+ (id) allocWithZone:(NSZone *) zone {
-    @synchronized(self) {
-        if (_sharedInstance == nil) {
-            _sharedInstance = [super allocWithZone:zone];
-            return _sharedInstance;
-        }
-    }
-    
-    return nil;
-}
-
-- (id) copyWithZone:(NSZone *) zone {
-    return self;
+#pragma mark - Driver init
+@implementation SQUGradespeedDriver
++ (void) load {
+	[[SQUGradeManager sharedInstance] registerDriver:NSClassFromString(@"SQUGradespeedDriver")];
 }
 
 - (id) init {
-    @synchronized(self) {
-        if(self = [super init]) {
-			_gradespeedDateFormatter = [NSDateFormatter new];
-			[_gradespeedDateFormatter setDateFormat:@"MMM-dd"];
-        }
-		      
-        return self;
-    }
+	self = [super init];
+	
+	if(self) {
+		_identifier = @"gradespeed";
+		_gradespeedDateFormatter = [NSDateFormatter new];
+		[_gradespeedDateFormatter setDateFormat:@"MMM-dd"];
+	}
+	
+	return self;
 }
 
-#pragma mark - Course average parsing
+#pragma mark - Helper methods
 - (NSDictionary *) parseCycleWithDistrict:(SQUDistrict *) district andCell:(TFHppleElement *) cell andIndex:(NSUInteger) index {
 	// Try to find a link inside the cell
 	NSArray *links = [cell childrenWithTagName:@"a"];
@@ -178,7 +152,7 @@ static SQUGradeParser *_sharedInstance = nil;
 - (NSDictionary *) parseCourseWithDistrict:(SQUDistrict *) district andTableRow:(TFHppleElement *) row andSemesterParams:(semester_params_t) semParams {
 	NSMutableDictionary *dict = [NSMutableDictionary new];
 	NSMutableArray *semesters = [NSMutableArray new];
-
+	
 	// Get cells and teacher cell
 	NSArray *cells = [row childrenWithTagName:@"td"];
 	TFHppleElement *teacherLink = [[row childrenWithClassName:@"TeacherNameCell"][0] children][0];
@@ -260,10 +234,6 @@ static SQUGradeParser *_sharedInstance = nil;
 		// Do same for number of cycles
 		cyc = [[cycleCellString componentsSeparatedByString:@" "][1] integerValue] / sem;
 		
-		// Bounds checking
-		NSAssert(sem < 3, @"Too many semesters, calculated %u", sem);
-		NSAssert(cyc < 5, @"Too many grading cycles per semester, calculated %u", cyc);
-	
 		semester_params_t semesterParams = {
 			.semesters = sem,
 			.cyclesPerSemester = cyc
@@ -429,7 +399,7 @@ static SQUGradeParser *_sharedInstance = nil;
 	
 	NSData *htmlData = [string dataUsingEncoding:NSUTF8StringEncoding];
 	TFHpple *parser = [TFHpple hppleWithHTMLData:htmlData];
-
+	
 #ifndef DEBUG
 	@try {
 #endif

@@ -9,7 +9,6 @@
 #import <QuartzCore/QuartzCore.h>
 
 #import "SQUGradeOverviewTableViewCell.h"
-#import "SQUGradeParser.h"
 #import "SQUCoreData.h"
 #import "SQUDistrictManager.h"
 #import "SQUGradeManager.h"

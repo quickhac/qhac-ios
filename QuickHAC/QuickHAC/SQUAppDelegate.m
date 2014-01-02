@@ -153,10 +153,7 @@ static SQUAppDelegate *sharedDelegate = nil;
 		studentID = student.student_id;
         
 		// This ensures we can see cached data while the new data is fetched
-		[[SQUGradeManager sharedInstance] setStudent:student];
-		
-		NSLog(@"Selected student: %@", student);
-		
+		[[SQUGradeManager sharedInstance] setStudent:student];		
 		[[NSNotificationCenter defaultCenter] postNotificationName:SQUGradesDataUpdatedNotification object:nil];
 		
 		// Validate the student object.

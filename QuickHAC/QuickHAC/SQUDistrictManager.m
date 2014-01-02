@@ -11,7 +11,6 @@
 #import "SQUDistrictManager.h"
 #import "SQUDistrict.h"
 #import "SQUGradeManager.h"
-#import "SQUGradeParser.h"
 #import "SQUCoreData.h"
 
 #import "AFNetworking.h"
@@ -72,6 +71,7 @@ static SQUDistrictManager *_sharedInstance = nil;
 		NSUInteger index = [_loadedDistricts indexOfObject:district];
 		
 		SQUDistrict *districtInitialised = [[district alloc] init];
+		[districtInitialised districtWasSelected:districtInitialised];
 		[_initialisedDistricts insertObject:districtInitialised atIndex:index];
 		
 		NSLog(@"Loaded district %@ (%@, using driver %@)",  district, districtInitialised.name, districtInitialised.driver);
@@ -265,6 +265,12 @@ static SQUDistrictManager *_sharedInstance = nil;
  * @param callback: Callback block to execute.
  */
 - (void) performDisambiguationRequestWithStudentID:(NSString *) sid andCallback:(SQUDistrictCallback) callback {
+	// Do not perform disambiguation if there is only a single student on the account.
+	if(!_currentDistrict.hasMultipleStudents) {
+		callback(nil, nil);
+		return;
+	}
+	
 	NSDictionary *disambiguationRequest = [_currentDistrict buildDisambiguationRequestWithStudentID:sid andUserData:nil];
 	
 	// Called if the request succeeds
@@ -308,10 +314,10 @@ static SQUDistrictManager *_sharedInstance = nil;
 	// Called if the request succeeds
 	void (^averagesSuccess)(AFHTTPRequestOperation *operation, id responseObject) = ^(AFHTTPRequestOperation *operation, id responseObject) {
 		NSString *string = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-		NSArray *averages = [[SQUGradeParser sharedInstance] parseAveragesForDistrict:_currentDistrict withString:string];
+		NSArray *averages = [[SQUGradeManager sharedInstance].currentDriver parseAveragesForDistrict:_currentDistrict withString:string];
 		
 		if(averages != nil) {
-			NSString *studentName = [[SQUGradeParser sharedInstance] getStudentNameForDistrict:_currentDistrict withString:string];
+			NSString *studentName = [[SQUGradeManager sharedInstance].currentDriver getStudentNameForDistrict:_currentDistrict withString:string];
 			[SQUGradeManager sharedInstance].student.name = studentName;
 			
 			[_currentDistrict updateDistrictStateWithClassGrades:averages];
@@ -319,7 +325,7 @@ static SQUDistrictManager *_sharedInstance = nil;
 			callback(nil, averages);
 		} else {
 			callback([NSError errorWithDomain:@"SQUDistrictManagerErrorDomain" code:kSQUDistrictManagerErrorInvalidDataReceived userInfo:@{@"localizedDescription" : NSLocalizedString(@"The gradebook returned invalid data.", nil)}], nil);
-			NSLog(@"Got screwy response from gradebook: %@", [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding]);
+			// NSLog(@"Got screwy response from gradebook: %@", [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding]);
 		}
 	};
 	
@@ -358,7 +364,7 @@ static SQUDistrictManager *_sharedInstance = nil;
 	
 	// Called if the request succeeds
 	void (^callbackSuccess)(AFHTTPRequestOperation *operation, id responseObject) = ^(AFHTTPRequestOperation *operation, id responseObject) {
-		NSDictionary *classGrades = [[SQUGradeParser sharedInstance] getClassGradesForDistrict:_currentDistrict withString:[[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding]];
+		NSDictionary *classGrades = [[SQUGradeManager sharedInstance].currentDriver getClassGradesForDistrict:_currentDistrict withString:[[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding]];
 		
 		if(classGrades != nil) {
 			callback(nil, classGrades);

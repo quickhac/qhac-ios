@@ -9,7 +9,6 @@
 #import <math.h>
 
 #import "SQUAppDelegate.h"
-#import "SQUGradeParser.h"
 #import "SQUDistrictManager.h"
 #import "SQUCoreData.h"
 #import "SQUGradeManager.h"
@@ -19,7 +18,7 @@
 static SQUGradeManager *_sharedInstance = nil;
 
 @implementation SQUGradeManager
-@synthesize student = _student;
+@synthesize student = _student, currentDriver = _currentDriver;
 
 #pragma mark - Singleton
 + (SQUGradeManager *) sharedInstance {
@@ -51,10 +50,53 @@ static SQUGradeManager *_sharedInstance = nil;
     @synchronized(self) {
         if(self = [super init]) {
 			_coreDataMOContext = [[SQUAppDelegate sharedDelegate] managedObjectContext];
+			_gradebookDrivers = [NSMutableArray new];
         }
 		
         return self;
     }
+}
+
+#pragma mark - Gradebook Driver management
+/**
+ * Registers a gradebook driver.
+ *
+ * @param driver: Class to register.
+ */
+- (void) registerDriver:(Class) driver {
+	SQUGradebookDriver *driverInitialised = [[driver alloc] init];
+	[_gradebookDrivers addObject:driverInitialised];
+	
+//	NSLog(@"Loaded gradebook driver %@ (%@)", driver, driverInitialised.identifier);
+}
+
+/**
+ * Returns an array of SQUGradebookDriver subclasses that have been registered.
+ *
+ * @return All drivers currently registered.
+ */
+- (NSArray *) loadedDrivers {
+	return [NSArray arrayWithArray:_gradebookDrivers];
+}
+
+/**
+ * Searches for a gradebook driver with the same identifier, and marks it as
+ * the selected one.
+ *
+ * @param driverID: String identifying the driver.
+ * @return YES on success, NO if not found.
+ */
+- (BOOL) selectDriverWithID:(NSString *) driverID {
+	for(SQUGradebookDriver *driver in _gradebookDrivers) {
+		if([driver.identifier isEqualToString:driverID]) {
+			// we found a matching driver, activate it
+			_currentDriver = driver;
+			return YES;
+		}
+	}
+	
+	NSLog(@"No gradebook driver matched ID '%@'", driverID);
+	return NO;
 }
 
 #pragma mark - Grade updating
@@ -76,7 +118,6 @@ static SQUGradeManager *_sharedInstance = nil;
 			[[SQUDistrictManager sharedInstance] performDisambiguationRequestWithStudentID:studentID andCallback:^(NSError *error, id returnData) {
 				if(!error) {
 					// We successfully selected this student, so update grades.
-					
 					[[SQUDistrictManager sharedInstance] performAveragesRequestWithCallback:^(NSError *error, id returnData) {
 						if(!error) {
 							[self updateCurrentStudentWithClassAverages:returnData];
@@ -141,7 +182,6 @@ static SQUGradeManager *_sharedInstance = nil;
 			[[SQUDistrictManager sharedInstance] performDisambiguationRequestWithStudentID:studentID andCallback:^(NSError *error, id returnData) {
 				if(!error) {
 					// We successfully selected this student, so update grades.
-					
 					[[SQUDistrictManager sharedInstance] performClassGradesRequestWithCourseCode:course andCycle:cycle inSemester:semester andCallback:^(NSError *error, id returnData) {
 						if(!error) {
 							NSDictionary *grades = (NSDictionary *) returnData;
@@ -252,9 +292,11 @@ static SQUGradeManager *_sharedInstance = nil;
  * Updates the database with the specified class averages.
  *
  * @param classAvgs Array containing info about the class averages, as output
- * by SQUGradeParser.
+ * by the gradebook drivers.
  */
 - (void) updateCurrentStudentWithClassAverages:(NSArray *) classAvgs {
+	_coreDataMOContext = [[SQUAppDelegate sharedDelegate] managedObjectContext];
+	
 	NSAssert(_student != NULL, @"Student may not be NULL");
 	NSAssert(classAvgs != NULL, @"Grades may not be NULL");
 	
@@ -381,12 +423,15 @@ static SQUGradeManager *_sharedInstance = nil;
  * Update assignments and grades for a course during a specific cycle in the
  * specified semester.
  *
- * @param classGrades Grades for a particular class, as output by SQUGradeParser.
+ * @param classGrades Grades for a particular class, as output by gradebook
+ * parsers.
  * @param class Class identifier of the class the grades belong to.
  * @param numCycle Cycle in which the grades are.
  * @param numSemester Semester in which the grades are.
  */
 - (void) updateCurrentStudentWithClassGrades:(NSDictionary *) classGrades forClass:(NSString *) class andCycle:(NSUInteger) numCycle andSemester:(NSUInteger) numSemester {
+	_coreDataMOContext = [[SQUAppDelegate sharedDelegate] managedObjectContext];
+	
 	NSUInteger cycleOffset = numCycle + (numSemester * 3);
 	SQUCourse *course = nil;
 	NSError *err = nil;

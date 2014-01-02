@@ -6,6 +6,8 @@
 //  See README.MD for licensing and copyright information.
 //
 
+#import "SQUGradebookDriver.h"
+
 #import <Foundation/Foundation.h>
 
 #define SQUGradesDataUpdatedNotification @"SQUGradesDataUpdatedNotification"
@@ -15,13 +17,21 @@
 @interface SQUGradeManager : NSObject {
 	SQUStudent *_student;
 	
+	NSMutableArray *_gradebookDrivers;
+	SQUGradebookDriver *_currentDriver;
+	
 	NSManagedObjectContext *_coreDataMOContext;
 }
 
 @property (nonatomic, readwrite, strong) SQUStudent *student;
+@property (nonatomic, readonly) SQUGradebookDriver *currentDriver;
 @property (nonatomic, readonly, getter = getCoursesForCurrentStudent) NSOrderedSet *courses;
 
 + (SQUGradeManager *) sharedInstance;
+
+- (void) registerDriver:(Class) driver;
+- (NSArray *) loadedDrivers;
+- (BOOL) selectDriverWithID:(NSString *) driverID;
 
 - (NSOrderedSet *) getCoursesForCurrentStudent;
 

@@ -24,6 +24,7 @@ typedef struct {
 /**
  * Required protocol for all district subclasses.
  */
+@class SQUDistrict;
 @protocol SQUDistrictProtocol <NSObject>
 
 @required
@@ -52,6 +53,9 @@ typedef struct {
 // Security
 - (NSArray *) districtSSLCertData;
 
+@optional
+- (void) districtWasSelected:(SQUDistrict *) district;
+
 @end
 
 /**
@@ -75,14 +79,31 @@ typedef struct {
 	NSMutableArray *_studentsOnAccount;
 }
 
+/// Gradebook driver in use by this district.
 @property (readonly) NSString *driver;
+
+/// Name of the district
 @property (readonly) NSString *name;
+
+/// Weight of an exam towards the semester average.
 @property (readonly) float examWeight;
+
+/// Unique numerical identifier for this district.
 @property (readonly) NSInteger district_id;
+
+/// Offsets in the gradebook table for certain data.
 @property (readonly) col_offsets_t tableOffsets;
+
+/// Offset for GPA.
 @property (readonly) double gpaOffset;
+
+/// Length of student ID.
 @property (readonly) NSRange studentIDLength;
+
+/// Indicator of if the account has more than one student associated with it.
 @property (readonly) BOOL hasMultipleStudents;
+
+/// If hasMultipleStudents is YES, this has some info on all students on the account.
 @property (readonly) NSMutableArray *studentsOnAccount;
 
 @end

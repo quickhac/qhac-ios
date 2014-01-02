@@ -6,6 +6,7 @@
 //  See README.MD for licensing and copyright information.
 //
 
+#import "SQUGradeManager.h"
 #import "SQUDistrict.h"
 
 @implementation SQUDistrict
@@ -166,6 +167,17 @@
 	} else {
 		return nil;
 	}
+}
+
+/**
+ * Callback from the District Manager™ to indicate that this district is now
+ * the selected district.
+ *
+ * @warning If overridden in a subclass, it must call this method on its 
+ * superclass.
+ */
+- (void) districtWasSelected:(SQUDistrict *) district {
+	[[SQUGradeManager sharedInstance] selectDriverWithID:district.driver];
 }
 
 @end

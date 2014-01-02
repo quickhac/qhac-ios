@@ -273,6 +273,23 @@
 	} else {
 		NSLog(@"WARNING: Login did not get good data, disambiguation may fail");
 	}
+	
+	// Try to parse the select elements
+	NSArray *studentSelector = [parser searchWithXPathQuery:@"//*[@id='_ctl0_ddlStudents']/option"];
+	_hasMultipleStudents = !(studentSelector.count == 0);
+	
+	// Create dictionary
+	if(_studentsOnAccount) {
+		[_studentsOnAccount removeAllObjects];
+	} else {
+		_studentsOnAccount = [NSMutableArray new];
+	}
+	
+	if(_hasMultipleStudents) {
+		for(TFHppleElement *option in studentSelector) {
+			[_studentsOnAccount addObject:@{@"id":option[@"value"], @"name":option.text}];
+		}
+	}
 }
 
 /*
