@@ -318,7 +318,10 @@ static SQUDistrictManager *_sharedInstance = nil;
 		
 		if(averages != nil) {
 			NSString *studentName = [[SQUGradeManager sharedInstance].currentDriver getStudentNameForDistrict:_currentDistrict withString:string];
+			NSString *studentSchool = [[SQUGradeManager sharedInstance].currentDriver getStudentSchoolForDistrict:_currentDistrict withString:string];
+			
 			[SQUGradeManager sharedInstance].student.name = studentName;
+			[SQUGradeManager sharedInstance].student.school = studentSchool;
 			
 			[_currentDistrict updateDistrictStateWithClassGrades:averages];
 

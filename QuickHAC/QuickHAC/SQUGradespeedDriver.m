@@ -63,7 +63,6 @@
 	
 	// Use a regex to get the URL hash
 	NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"\\?data=([\\w\\d%]*)" options:NSRegularExpressionCaseInsensitive error:nil];
-	
 	NSRange range = [[regex firstMatchInString:gradeLinkURL options:0 range:NSMakeRange(0, gradeLinkURL.length)] rangeAtIndex:1];
 	
 	NSMutableDictionary *returnValue = [NSMutableDictionary new];
@@ -488,6 +487,34 @@
 	if(matches.count != 0) {
 		TFHppleElement *studentName = matches[0];
 		return studentName.text;
+	}
+	
+	return @"";
+}
+
+/**
+ * @param district: District to use for parsing.
+ * @param string: Gradebook HTML.
+ * @return School attended by the student.
+ */
+- (NSString *) getStudentSchoolForDistrict:(SQUDistrict *) district withString:(NSString *) string {
+	NSData *htmlData = [string dataUsingEncoding:NSUTF8StringEncoding];
+	TFHpple *parser = [TFHpple hppleWithHTMLData:htmlData];
+	NSArray *matches = [parser searchWithXPathQuery:@"//*[@id='_ctl0_tdMainContent']/div"];
+	
+	if(matches.count != 0) {
+		TFHppleElement *header = matches[0];
+		
+		// Find text inside parenthesis
+		NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"\\((.*?)\\)" options:NSRegularExpressionCaseInsensitive error:nil];
+		NSRange range = [[regex firstMatchInString:header.text options:0 range:NSMakeRange(0, header.text.length)] rangeAtIndex:1];
+		
+		// Make sure the range is valid before trying to use it
+		if(!NSEqualRanges(range, NSMakeRange(NSNotFound, 0))) {
+			return [header.text substringWithRange:range];
+		} else {
+			return @"";
+		}
 	}
 	
 	return @"";

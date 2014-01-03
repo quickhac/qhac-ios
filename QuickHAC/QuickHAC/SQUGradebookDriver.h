@@ -38,6 +38,12 @@
  * @return Student's name.
  */
 - (NSString *) getStudentNameForDistrict:(SQUDistrict *) district withString:(NSString *) string;
+/**
+ * @param district: District to use for parsing.
+ * @param string: Gradebook HTML.
+ * @return School attended by the student.
+ */
+- (NSString *) getStudentSchoolForDistrict:(SQUDistrict *) district withString:(NSString *) string;
 
 @end
 

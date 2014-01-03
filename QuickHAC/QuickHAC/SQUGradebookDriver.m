@@ -26,4 +26,9 @@
 	return nil;
 }
 
+- (NSString *) getStudentSchoolForDistrict:(SQUDistrict *) district withString:(NSString *) string {
+	NSLog(@"%s(%i) %s: SQUGradebookDriver method not overridden or no subclass used", __FILE__, __LINE__, __func__);
+	return nil;	
+}
+
 @end
