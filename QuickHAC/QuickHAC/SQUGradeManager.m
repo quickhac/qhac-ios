@@ -359,7 +359,7 @@ static SQUGradeManager *_sharedInstance = nil;
 				[course addCyclesObject:cycle];
 			}
 			
-			NSLog(@"Created %i cycles in course %@.", course.cycles.count, course.courseCode);
+			// NSLog(@"Created %i cycles in course %@.", course.cycles.count, course.courseCode);
 		}
 		
 		// Check which cycles have data available

@@ -28,6 +28,7 @@
 		DE2843DE18760E3D0000756C /* SQUGradebookDriver.m in Sources */ = {isa = PBXBuildFile; fileRef = DE2843DD18760E3D0000756C /* SQUGradebookDriver.m */; };
 		DE2843E118760FD80000756C /* SQUGradespeedDriver.m in Sources */ = {isa = PBXBuildFile; fileRef = DE2843E018760FD80000756C /* SQUGradespeedDriver.m */; };
 		DE2843E618764FD10000756C /* SQUStudent.m in Sources */ = {isa = PBXBuildFile; fileRef = DE2843E518764FD10000756C /* SQUStudent.m */; };
+		DE2843EA18766E840000756C /* SQULoginStudentPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = DE2843E918766E840000756C /* SQULoginStudentPicker.m */; };
 		DE35E9A9180614DF00F15F20 /* Lockbox.m in Sources */ = {isa = PBXBuildFile; fileRef = DE35E9A8180614DF00F15F20 /* Lockbox.m */; };
 		DE35E9AB18061F8100F15F20 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE35E9AA18061F8100F15F20 /* Security.framework */; };
 		DE7B4E85186EB0F3008079CC /* NSManagedObjectModel+KCOrderedAccessorFix.m in Sources */ = {isa = PBXBuildFile; fileRef = DE7B4E84186EB0F3008079CC /* NSManagedObjectModel+KCOrderedAccessorFix.m */; };
@@ -174,6 +175,8 @@
 		DE2843E018760FD80000756C /* SQUGradespeedDriver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUGradespeedDriver.m; sourceTree = "<group>"; };
 		DE2843E418764FD10000756C /* SQUStudent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUStudent.h; sourceTree = "<group>"; };
 		DE2843E518764FD10000756C /* SQUStudent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUStudent.m; sourceTree = "<group>"; };
+		DE2843E818766E840000756C /* SQULoginStudentPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQULoginStudentPicker.h; sourceTree = "<group>"; };
+		DE2843E918766E840000756C /* SQULoginStudentPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQULoginStudentPicker.m; sourceTree = "<group>"; };
 		DE35E9A7180614DF00F15F20 /* Lockbox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Lockbox.h; path = ../../Lockbox/Lockbox.h; sourceTree = "<group>"; };
 		DE35E9A8180614DF00F15F20 /* Lockbox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Lockbox.m; path = ../../Lockbox/Lockbox.m; sourceTree = "<group>"; };
 		DE35E9AA18061F8100F15F20 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -393,6 +396,7 @@
 				DEF0F23C187378A700116B61 /* Certificate Bundles */,
 				DE0615D017874F73004B2877 /* QuickHAC.entitlements */,
 				DE0615D917890813004B2877 /* HAC Interface */,
+				DE2843E718766E330000756C /* Universal UI */,
 				DEF0F25818740AFF00116B61 /* iPad UI */,
 				DEF0F25718740AE500116B61 /* iPhone UI */,
 				DEF0F1BA186EE4E100116B61 /* Miscellaneous UI */,
@@ -528,6 +532,15 @@
 				DEFFDE28186D8ED500E26423 /* District Subclasses */,
 			);
 			name = "District Suppot";
+			sourceTree = "<group>";
+		};
+		DE2843E718766E330000756C /* Universal UI */ = {
+			isa = PBXGroup;
+			children = (
+				DE2843E818766E840000756C /* SQULoginStudentPicker.h */,
+				DE2843E918766E840000756C /* SQULoginStudentPicker.m */,
+			);
+			name = "Universal UI";
 			sourceTree = "<group>";
 		};
 		DE35E9A61806147900F15F20 /* Lockbox (Keychain) */ = {
@@ -1005,6 +1018,7 @@
 				DEF0F1CB186F7D8F00116B61 /* SQUClassDetailController.m in Sources */,
 				DE0615D81787ADFE004B2877 /* SQULoginViewController.m in Sources */,
 				DE2843DE18760E3D0000756C /* SQUGradebookDriver.m in Sources */,
+				DE2843EA18766E840000756C /* SQULoginStudentPicker.m in Sources */,
 				DEF0F23518727EA700116B61 /* SFHFKeychainUtils.m in Sources */,
 				DEF0F1D7186FC7FA00116B61 /* SQUAssignment.m in Sources */,
 				DEF0F2461873E09400116B61 /* SQUSettingsGPAOptionsController.m in Sources */,

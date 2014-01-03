@@ -6,13 +6,15 @@
 //  See README.MD for licensing and copyright information.
 //
 
+#import "SQULoginStudentPicker.h"
+
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
 #import <CoreText/CoreText.h>
 
 @class SQUDistrict;
 
-@interface SQULoginViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate> {
+@interface SQULoginViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, SQULoginStudentPickerDelegate> {
     UITableView *_authFieldTable;
     
     BOOL _tableMovedAlready;
@@ -20,7 +22,7 @@
     CALayer *_qLogo;
     CATextLayer *_qText;
     
-    UITextField *_emailField;
+    UITextField *_usernameField;
     UITextField *_passField;
     
     UIButton *_loginButton;
@@ -32,6 +34,9 @@
     SQUDistrict *_district;
     
     UIView *_selectedTableTextField;
+	
+	NSMutableArray *_students;
+	void (^_studentLoginFunction)(void);
 }
 
 @property (nonatomic) SQUDistrict *district;

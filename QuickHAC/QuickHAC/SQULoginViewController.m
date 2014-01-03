@@ -133,7 +133,7 @@
         
         _textView.placeholder = NSLocalizedString(@"Username", @"login view controller placeholder");
         
-        _emailField = _textView;
+        _usernameField = _textView;
     } else if(indexPath.row == 1) {
         _textView.secureTextEntry = YES;
         _textView.returnKeyType = UIReturnKeyDone;
@@ -209,7 +209,7 @@
 
 #pragma mark - Authentication
 - (void) performAuthentication:(id) sender {
-    if(_emailField.text.length == 0) {
+    if(_usernameField.text.length == 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Invalid Username", nil) message:NSLocalizedString(@"Please enter a valid username.", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
         [alert show];
         
@@ -224,7 +224,7 @@
 	// Do a login
     [SVProgressHUD showProgress:-1 status:NSLocalizedString(@"Logging In…", nil) maskType:SVProgressHUDMaskTypeGradient];
     
-	NSMutableArray *students = [NSMutableArray new];
+	_students = [NSMutableArray new];
 	
 	// This block is called for every student that we must add.
 	void (^addStudent)(NSDictionary *student) = ^(NSDictionary *student) {
@@ -232,57 +232,54 @@
 			NSString *studentID = student[@"id"];
 			NSString *studentName = student[@"name"];
 			
-			if([self studentExistsWithID:studentID]) {
-				UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Student Exists", nil) message:NSLocalizedString(@"The student already exists.", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
-				[alert show];
-			} else {
+			if(![self studentExistsWithID:studentID]) {
 				NSManagedObjectContext *context = [[SQUAppDelegate sharedDelegate] managedObjectContext];
 				SQUStudent *studentInfo = [NSEntityDescription insertNewObjectForEntityForName:@"SQUStudent" inManagedObjectContext:context];
 				
 				// Set up student ID and district to database
 				studentInfo.student_id = studentID;
 				studentInfo.district = [NSNumber numberWithInteger:_district.district_id];
-				studentInfo.hacUsername = _emailField.text;
+				studentInfo.hacUsername = _usernameField.text;
 				studentInfo.name = studentName;
 				
-				[students addObject:studentInfo];
+				[_students addObject:studentInfo];
 				
 				[[SQUGradeManager sharedInstance] setStudent:studentInfo];
 			}
 		} else {
 			// Single student account
-			if([self studentExistsWithUser:_emailField.text]) {
-				UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Student Exists", nil) message:NSLocalizedString(@"The student already exists.", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
-				[alert show];
-			} else {
+			if(![self studentExistsWithUser:_usernameField.text]) {
 				NSManagedObjectContext *context = [[SQUAppDelegate sharedDelegate] managedObjectContext];
 				SQUStudent *studentInfo = [NSEntityDescription insertNewObjectForEntityForName:@"SQUStudent" inManagedObjectContext:context];
 				
 				// Set up student ID and district to database
 				studentInfo.student_id = nil;
 				studentInfo.district = [NSNumber numberWithInteger:_district.district_id];
-				studentInfo.hacUsername = _emailField.text;
+				studentInfo.hacUsername = _usernameField.text;
 				
-				[students addObject:studentInfo];
+				[_students addObject:studentInfo];
 				
 				[[SQUGradeManager sharedInstance] setStudent:studentInfo];
 			}
 		}
 	};
 	
+	// Set district so login may occurr
+	[[SQUDistrictManager sharedInstance] selectDistrictWithID:_district.district_id];
+	
 	// Ask the current district instance to do a log in
-	[[SQUDistrictManager sharedInstance] performLoginRequestWithUser:_emailField.text usingPassword:_passField.text andCallback:^(NSError *error, id returnData){
+	[[SQUDistrictManager sharedInstance] performLoginRequestWithUser:_usernameField.text usingPassword:_passField.text andCallback:^(NSError *error, id returnData){
 		if(!error) {
 			if(!returnData) {
 				[SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Wrong Credentials", nil)];
 			} else {
 				[SVProgressHUD showProgress:-1 status:NSLocalizedString(@"Adding students", nil) maskType:SVProgressHUDMaskTypeGradient];
 				// Store the username's password in the keychain
-				[Lockbox setString:_passField.text forKey:_emailField.text];
+				[Lockbox setString:_passField.text forKey:_usernameField.text];
 
 				// Back up the old student as we need a temporary switch to retrieve data
 				SQUStudent *oldStudent = [SQUGradeManager sharedInstance].student;
-				NSUInteger selectedStudent = [[NSUserDefaults standardUserDefaults] integerForKey:@"selectedStudent"];
+				__unsafe_unretained __block SQULoginViewController *self_unsafe = self;
 				
 				// If the account is single-student, add the student.
 				if(![SQUDistrictManager sharedInstance].currentDistrict.hasMultipleStudents) {
@@ -293,55 +290,68 @@
 					}
 				}
 				
-				// Set student and district class to fetch grades
-				[[SQUDistrictManager sharedInstance] selectDistrictWithID:_district.district_id];
+				if(_students.count == 0) {
+					UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"No Students", nil) message:[NSString stringWithFormat:NSLocalizedString(@"All students on the account '%@' have already been added to QuickHAC.\nUse the sidebar to switch between them.", nil), _usernameField.text] delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
+					[alert show];
+					[SVProgressHUD dismiss];
+					
+					[self dismissViewControllerAnimated:YES completion:NULL];
+					return;
+				}
 				
 				// Save the database.
 				[[SQUAppDelegate sharedDelegate] saveContext];
 				
-				// Update grades
-				[SVProgressHUD showProgress:-1 status:NSLocalizedString(@"Updating Grades", nil) maskType:SVProgressHUDMaskTypeGradient];
-				
-				[[SQUGradeManager sharedInstance] fetchNewClassGradesFromServerWithDoneCallback:^(NSError *error) {
-					if(!error) {
-						[SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"Done", nil)];
-						
-						// Restore old student state
-						if(oldStudent) {
-							[[SQUGradeManager sharedInstance] setStudent:oldStudent];
-							[[SQUDistrictManager sharedInstance] selectDistrictWithID:oldStudent.district.integerValue];
-						} else {
-							// If this is the first student logged in, update grades UI
+				_studentLoginFunction = ^{
+					// Update grades
+					[SVProgressHUD showProgress:-1 status:NSLocalizedString(@"Updating Grades", nil) maskType:SVProgressHUDMaskTypeGradient];
+					
+					// Fetch grades
+					[[SQUGradeManager sharedInstance] fetchNewClassGradesFromServerWithDoneCallback:^(NSError *error) {
+						if(!error) {
+							[SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"Done", nil)];
+							
+							// Restore old student state
+							if(oldStudent) {
+								[[SQUGradeManager sharedInstance] setStudent:oldStudent];
+								[[SQUDistrictManager sharedInstance] selectDistrictWithID:oldStudent.district.integerValue];
+							}
+							
 							[[NSNotificationCenter defaultCenter] postNotificationName:SQUGradesDataUpdatedNotification object:nil];
+							[[NSNotificationCenter defaultCenter] postNotificationName:SQUStudentsUpdatedNotification object:nil];
 							
-							// Set the default student
-							NSError *error = nil;
-							NSFetchRequest *request = [[NSFetchRequest alloc] init];
-							NSEntityDescription *entity = [NSEntityDescription entityForName:@"SQUStudent" inManagedObjectContext:[SQUAppDelegate sharedDelegate].managedObjectContext];
-							[request setEntity:entity];
-							NSUInteger numberOfStudents = [[SQUAppDelegate sharedDelegate].managedObjectContext countForFetchRequest:request error:&error];
+							// Dismiss login view
+							[self_unsafe dismissViewControllerAnimated:YES completion:NO];
+						} else {
+							// Delete students added to the DB
+							for(SQUStudent *studentToDelete in _students) {
+								[[SQUAppDelegate sharedDelegate].managedObjectContext deleteObject:studentToDelete];
+							}
+							[[SQUAppDelegate sharedDelegate] saveContext];
 							
-							[[NSUserDefaults standardUserDefaults] setInteger:numberOfStudents-1 forKey:@"selectedStudent"];
-							[[NSUserDefaults standardUserDefaults] synchronize];
+							[SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Error", nil)];
+							
+							UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Fetching Grades", nil) message:error.localizedDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
+							[alert show];
 						}
-						
-						[[NSNotificationCenter defaultCenter] postNotificationName:SQUStudentsUpdatedNotification object:nil];
-						
-						// Dismiss login view
-						[self dismissViewControllerAnimated:YES completion:NO];
-					} else {
-						// Delete students added to the DB
-						for(SQUStudent *studentToDelete in students) {
-							[[SQUAppDelegate sharedDelegate].managedObjectContext delete:studentToDelete];
-						}
-						[[SQUAppDelegate sharedDelegate] saveContext];
-						
-						[SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Error", nil)];
-						
-						UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Fetching Grades", nil) message:error.localizedDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
-						[alert show];
-					}
-				}];
+					}];
+				};
+				
+				
+				// Bring up a student selector if multistudent account and no students yet
+				if([SQUDistrictManager sharedInstance].currentDistrict.hasMultipleStudents && !oldStudent) {
+					[SVProgressHUD dismiss];
+					
+					SQULoginStudentPicker *picker = [[SQULoginStudentPicker alloc] initWithStyle:UITableViewStyleGrouped];
+					picker.students = _students;
+					picker.delegate = self;
+					[self.navigationController pushViewController:picker animated:YES];
+				} else if(![SQUDistrictManager sharedInstance].currentDistrict.hasMultipleStudents && !oldStudent) {
+					_studentLoginFunction();
+				} else {
+					// If students already exist, don't show a picker
+					[self dismissViewControllerAnimated:YES completion:NULL];
+				}
 			}
 		} else {
             [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Error", nil)];
@@ -386,5 +396,52 @@
 	return ([[SQUAppDelegate sharedDelegate].managedObjectContext countForFetchRequest:request error:&error] != 0);
 }
 
+#pragma mark - Student selector
+- (void) studentPickerCancelled:(SQULoginStudentPicker *) picker {
+	// Delete students added to the DB
+	for(SQUStudent *studentToDelete in _students) {
+		[[SQUAppDelegate sharedDelegate].managedObjectContext deleteObject:studentToDelete];
+	}
+	[[SQUAppDelegate sharedDelegate] saveContext];
+	
+	[self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void) studentPickerDidSelect:(SQULoginStudentPicker *) picker withStudent:(SQUStudent *) student {
+	[[SQUGradeManager sharedInstance] setStudent:student];
+	
+	// Check which index this student is in the database.
+	NSUInteger selectedStudent;
+	
+	NSError *error = nil;
+	NSFetchRequest *request = [[NSFetchRequest alloc] init];
+	NSEntityDescription *entity = [NSEntityDescription entityForName:@"SQUStudent" inManagedObjectContext:[SQUAppDelegate sharedDelegate].managedObjectContext];
+	[request setEntity:entity];
+	
+	NSArray *students = [[SQUAppDelegate sharedDelegate].managedObjectContext executeFetchRequest:request error:&error];
+	if(error) {
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Database Error", nil) message:error.localizedDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
+		[alert show];
+		return;
+	}
+	
+	selectedStudent = [students indexOfObject:student];
+	
+	if(selectedStudent != NSNotFound) {
+		// Only update selection if there's no other students in the database
+		if(students.count == _students.count) {
+			[[NSUserDefaults standardUserDefaults] setInteger:selectedStudent forKey:@"selectedStudent"];
+			[[NSUserDefaults standardUserDefaults] synchronize];
+		}
+	} else {
+		NSLog(@"student %@ is fucked man", student);
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Database Error", nil) message:NSLocalizedString(@"Something happened.", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
+		[alert show];
+		return;
+	}
+	
+	// Log in with this student.
+	_studentLoginFunction();
+}
 
 @end
