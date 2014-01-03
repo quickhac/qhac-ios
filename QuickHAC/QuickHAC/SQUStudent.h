@@ -2,8 +2,8 @@
 //  SQUStudent.h
 //  QuickHAC
 //
-//  Created by Tristan Seifert on 12/29/13.
-//  Copyright (c) 2013 Squee! Apps. All rights reserved.
+//  Created by Tristan Seifert on 1/2/14.
+//  See README.MD for licensing and copyright information.
 //
 
 #import <Foundation/Foundation.h>
@@ -13,13 +13,14 @@
 
 @interface SQUStudent : NSManagedObject
 
+@property (nonatomic, retain) NSNumber * cyclesPerSemester;
 @property (nonatomic, retain) NSNumber * district;
 @property (nonatomic, retain) NSString * hacUsername;
-@property (nonatomic, retain) NSString * name;
-@property (nonatomic, retain) NSString * student_id;
 @property (nonatomic, retain) NSDate * lastAveragesUpdate;
-@property (nonatomic, retain) NSNumber * cyclesPerSemester;
+@property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSNumber * numSemesters;
+@property (nonatomic, retain) NSString * student_id;
+@property (nonatomic, retain) NSString * school;
 @property (nonatomic, retain) NSOrderedSet *courses;
 @end
 

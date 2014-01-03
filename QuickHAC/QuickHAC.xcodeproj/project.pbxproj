@@ -27,6 +27,7 @@
 		DE0615E617891E0C004B2877 /* SVProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0615E417891E0C004B2877 /* SVProgressHUD.m */; };
 		DE2843DE18760E3D0000756C /* SQUGradebookDriver.m in Sources */ = {isa = PBXBuildFile; fileRef = DE2843DD18760E3D0000756C /* SQUGradebookDriver.m */; };
 		DE2843E118760FD80000756C /* SQUGradespeedDriver.m in Sources */ = {isa = PBXBuildFile; fileRef = DE2843E018760FD80000756C /* SQUGradespeedDriver.m */; };
+		DE2843E618764FD10000756C /* SQUStudent.m in Sources */ = {isa = PBXBuildFile; fileRef = DE2843E518764FD10000756C /* SQUStudent.m */; };
 		DE35E9A9180614DF00F15F20 /* Lockbox.m in Sources */ = {isa = PBXBuildFile; fileRef = DE35E9A8180614DF00F15F20 /* Lockbox.m */; };
 		DE35E9AB18061F8100F15F20 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE35E9AA18061F8100F15F20 /* Security.framework */; };
 		DE7B4E85186EB0F3008079CC /* NSManagedObjectModel+KCOrderedAccessorFix.m in Sources */ = {isa = PBXBuildFile; fileRef = DE7B4E84186EB0F3008079CC /* NSManagedObjectModel+KCOrderedAccessorFix.m */; };
@@ -48,7 +49,6 @@
 		DEF0F1E31870E60B00116B61 /* WYPopoverController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F1E01870E60B00116B61 /* WYPopoverController.m */; };
 		DEF0F1E41870E60B00116B61 /* WYStoryboardPopoverSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F1E21870E60B00116B61 /* WYStoryboardPopoverSegue.m */; };
 		DEF0F1E71870E78000116B61 /* SQUClassCycleChooserController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F1E61870E78000116B61 /* SQUClassCycleChooserController.m */; };
-		DEF0F1EA1870FB3B00116B61 /* SQUStudent.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F1E91870FB3B00116B61 /* SQUStudent.m */; };
 		DEF0F1ED187101A900116B61 /* SQUCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F1EC187101A900116B61 /* SQUCategory.m */; };
 		DEF0F21218712DC700116B61 /* libQuickDialog.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DEF0F20F18712DB300116B61 /* libQuickDialog.a */; };
 		DEF0F2151871300A00116B61 /* SQUSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F2141871300A00116B61 /* SQUSettingsViewController.m */; };
@@ -172,6 +172,8 @@
 		DE2843DD18760E3D0000756C /* SQUGradebookDriver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUGradebookDriver.m; sourceTree = "<group>"; };
 		DE2843DF18760FD80000756C /* SQUGradespeedDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUGradespeedDriver.h; sourceTree = "<group>"; };
 		DE2843E018760FD80000756C /* SQUGradespeedDriver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUGradespeedDriver.m; sourceTree = "<group>"; };
+		DE2843E418764FD10000756C /* SQUStudent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUStudent.h; sourceTree = "<group>"; };
+		DE2843E518764FD10000756C /* SQUStudent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUStudent.m; sourceTree = "<group>"; };
 		DE35E9A7180614DF00F15F20 /* Lockbox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Lockbox.h; path = ../../Lockbox/Lockbox.h; sourceTree = "<group>"; };
 		DE35E9A8180614DF00F15F20 /* Lockbox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Lockbox.m; path = ../../Lockbox/Lockbox.m; sourceTree = "<group>"; };
 		DE35E9AA18061F8100F15F20 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -212,8 +214,6 @@
 		DEF0F1E21870E60B00116B61 /* WYStoryboardPopoverSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WYStoryboardPopoverSegue.m; sourceTree = "<group>"; };
 		DEF0F1E51870E78000116B61 /* SQUClassCycleChooserController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUClassCycleChooserController.h; sourceTree = "<group>"; };
 		DEF0F1E61870E78000116B61 /* SQUClassCycleChooserController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUClassCycleChooserController.m; sourceTree = "<group>"; };
-		DEF0F1E81870FB3B00116B61 /* SQUStudent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUStudent.h; sourceTree = "<group>"; };
-		DEF0F1E91870FB3B00116B61 /* SQUStudent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUStudent.m; sourceTree = "<group>"; };
 		DEF0F1EB187101A900116B61 /* SQUCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUCategory.h; sourceTree = "<group>"; };
 		DEF0F1EC187101A900116B61 /* SQUCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUCategory.m; sourceTree = "<group>"; };
 		DEF0F2031871287300116B61 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
@@ -564,10 +564,10 @@
 		DECA57C817DFD96300156AFC /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
+				DE2843E418764FD10000756C /* SQUStudent.h */,
+				DE2843E518764FD10000756C /* SQUStudent.m */,
 				DEF0F1EB187101A900116B61 /* SQUCategory.h */,
 				DEF0F1EC187101A900116B61 /* SQUCategory.m */,
-				DEF0F1E81870FB3B00116B61 /* SQUStudent.h */,
-				DEF0F1E91870FB3B00116B61 /* SQUStudent.m */,
 				DEF0F1DB1870E22800116B61 /* SQUCycle.h */,
 				DEF0F1DC1870E22800116B61 /* SQUCycle.m */,
 				DEF0F1D5186FC7FA00116B61 /* SQUAssignment.h */,
@@ -975,6 +975,7 @@
 				DEFFDE45186E26FC00E26423 /* AFURLRequestSerialization.m in Sources */,
 				DEFFDE44186E26FC00E26423 /* AFURLConnectionOperation.m in Sources */,
 				DE2843E118760FD80000756C /* SQUGradespeedDriver.m in Sources */,
+				DE2843E618764FD10000756C /* SQUStudent.m in Sources */,
 				DEF0F25518740A1400116B61 /* MGSplitViewAppDelegate.m in Sources */,
 				DEFFDE59186E270900E26423 /* UIActivityIndicatorView+AFNetworking.m in Sources */,
 				DEF0F23318727EA700116B61 /* LTHNavigationViewController.m in Sources */,
@@ -1023,7 +1024,6 @@
 				DE35E9A9180614DF00F15F20 /* Lockbox.m in Sources */,
 				DEF0F2431873DC0600116B61 /* SQUSettingsGeneralController.m in Sources */,
 				DEF0F25318740A1400116B61 /* MGSplitCornersView.m in Sources */,
-				DEF0F1EA1870FB3B00116B61 /* SQUStudent.m in Sources */,
 				DEF0F25B18740B3800116B61 /* SQUTabletSidebarController.m in Sources */,
 				DEF0F25418740A1400116B61 /* MGSplitDividerView.m in Sources */,
 				DEF0F1DD1870E22800116B61 /* SQUCycle.m in Sources */,

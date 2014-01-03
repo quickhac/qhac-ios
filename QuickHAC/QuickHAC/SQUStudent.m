@@ -2,8 +2,8 @@
 //  SQUStudent.m
 //  QuickHAC
 //
-//  Created by Tristan Seifert on 12/29/13.
-//  Copyright (c) 2013 Squee! Apps. All rights reserved.
+//  Created by Tristan Seifert on 1/2/14.
+//  See README.MD for licensing and copyright information.
 //
 
 #import "SQUStudent.h"
@@ -12,13 +12,14 @@
 
 @implementation SQUStudent
 
+@dynamic cyclesPerSemester;
 @dynamic district;
 @dynamic hacUsername;
-@dynamic name;
-@dynamic student_id;
 @dynamic lastAveragesUpdate;
-@dynamic cyclesPerSemester;
+@dynamic name;
 @dynamic numSemesters;
+@dynamic student_id;
+@dynamic school;
 @dynamic courses;
 
 @end

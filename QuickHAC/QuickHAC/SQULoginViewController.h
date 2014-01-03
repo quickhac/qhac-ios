@@ -22,7 +22,6 @@
     
     UITextField *_emailField;
     UITextField *_passField;
-    UITextField *_sidField;
     
     UIButton *_loginButton;
     UIView *_loginButtonContainer;

@@ -54,15 +54,16 @@
         <attribute name="lastAveragesUpdate" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" indexed="YES" spotlightIndexingEnabled="YES" syncable="YES"/>
         <attribute name="numSemesters" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="school" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="student_id" attributeType="String" syncable="YES"/>
         <relationship name="courses" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="SQUCourse" inverseName="student" inverseEntity="SQUCourse" syncable="YES"/>
     </entity>
     <elements>
-        <element name="SQUAssignment" positionX="-3654" positionY="648" width="128" height="28"/>
-        <element name="SQUCategory" positionX="-3834" positionY="648" width="128" height="28"/>
-        <element name="SQUCourse" positionX="-3996" positionY="360" width="128" height="193"/>
-        <element name="SQUCycle" positionX="-3834" positionY="360" width="128" height="28"/>
-        <element name="SQUSemester" positionX="-3998" positionY="648" width="128" height="118"/>
-        <element name="SQUStudent" positionX="-4160" positionY="360" width="128" height="163"/>
+        <element name="SQUAssignment" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="SQUCategory" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="SQUCourse" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="SQUCycle" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="SQUSemester" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="SQUStudent" positionX="0" positionY="0" width="0" height="0"/>
     </elements>
 </model>
