@@ -241,8 +241,6 @@ static SQUAppDelegate *sharedDelegate = nil;
  * have changed.
  */
 - (void) application:(UIApplication *) application didReceiveRemoteNotification:(NSDictionary *) userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult)) completionHandler {
-    NSLog(@"Remote Notification userInfo is %@", userInfo);
-	
 	if([userInfo[@"aps"][@"content-available"] integerValue] == 1) {
 		// Determine the student to get, based on the "c" key
 		NSString *studentInfo = userInfo[@"c"];
@@ -253,37 +251,47 @@ static SQUAppDelegate *sharedDelegate = nil;
 			return;
 		}
 		
+		// Set up a CoreData
+		NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+		NSEntityDescription *entity = [NSEntityDescription entityForName:@"SQUStudent" inManagedObjectContext:_managedObjectContext];
+		[fetchRequest setEntity:entity];
+		
 		// go by ID number
 		if([split[0] isEqualToString:@"i"]) {
-			NSLog(@"ID: %@", split[1]);
+			NSPredicate *predicate = [NSPredicate predicateWithFormat:@"student_id LIKE[c] %@", split[1]];
+			[fetchRequest setPredicate:predicate];
 		} else if([split[0] isEqualToString:@"u"]) {
-			NSLog(@"Username: %@", split[1]);
+			NSPredicate *predicate = [NSPredicate predicateWithFormat:@"hacUsername LIKE[c] %@", split[1]];
+			[fetchRequest setPredicate:predicate];
 		} else {
 			completionHandler(UIBackgroundFetchResultFailed);
 			return;
 		}
 		
+		// Back up state
+		SQUStudent *prevStudent = [SQUGradeManager sharedInstance].student;
+		
+		void (^obama)(void) = ^{
+			[[SQUGradeManager sharedInstance] setStudent:prevStudent];
+			[[SQUDistrictManager sharedInstance] selectDistrictWithID:prevStudent.district.integerValue];
+		};
+		
 		// Fetch students
 		NSError *db_err = nil;
-		
-		NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-		NSEntityDescription *entity = [NSEntityDescription entityForName:@"SQUStudent" inManagedObjectContext:_managedObjectContext];
-		[fetchRequest setEntity:entity];
 		NSArray *students = [_managedObjectContext executeFetchRequest:fetchRequest error:&db_err];
 		
 		// Validate we have students
 		if(students.count > 0) {
 			// Select student
-			NSUInteger selectedStudent = [[NSUserDefaults standardUserDefaults] integerForKey:@"selectedStudent"];
-			SQUStudent *student = students[selectedStudent];
+			SQUStudent *student = students[0];
 			
 			// Fetch username/pw from keychain
-			NSString *username, *password, *studentID;
+			NSString *username, *password;
 			
 			username = student.hacUsername;
 			password = [Lockbox stringForKey:username];
-			studentID = student.student_id;
 			
+			[[SQUGradeManager sharedInstance] setStudent:student];
 			[[SQUDistrictManager sharedInstance] selectDistrictWithID:student.district.integerValue];
 			
 			// Log in
@@ -291,62 +299,81 @@ static SQUAppDelegate *sharedDelegate = nil;
 				if(!error) {
 					if(!returnData) {
 						[SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Wrong Credentials", nil)];
+						NSLog(@"Login Error !!!");
+						obama();
 						completionHandler(UIBackgroundFetchResultFailed);
 					} else {
+						NSLog(@"Login success !!!");
 						// Login succeeded, so we can do a fetch of grades.
 						[[SQUGradeManager sharedInstance] fetchNewClassGradesFromServerWithDoneCallback:^(NSError *err) {
-							[[NSNotificationCenter defaultCenter] postNotificationName:SQUGradesDataUpdatedNotification object:nil];
-							NSMutableArray *changes = [NSMutableArray new];
-							
-							// Go through each course to see if it has changed
-							for(SQUCourse *course in student.courses) {
-								// Check the cycles for change.
-								for(SQUCycle *cycle in course.cycles) {
-									if(cycle.changedSinceLastFetch.boolValue) {
-										SQUGradeChangeDirection change = [SQUUIHelpers getGradeChange:cycle.preChangeGrade.floatValue toNew:cycle.average.floatValue];
-										[changes addObject:@{@"classTitle":course.title, @"average":cycle.average, @"cycle":cycle.cycleIndex, @"change":@(change)}];
+							if(!err) {
+								[[NSNotificationCenter defaultCenter] postNotificationName:SQUGradesDataUpdatedNotification object:nil];
+								NSMutableArray *changes = [NSMutableArray new];
+								
+								// Go through each course to see if it has changed
+								for(SQUCourse *course in student.courses) {
+									// Check the cycles for change.
+									for(SQUCycle *cycle in course.cycles) {
+										if(cycle.changedSinceLastFetch.boolValue) {
+											SQUGradeChangeDirection change = [SQUUIHelpers getGradeChange:cycle.preChangeGrade.floatValue toNew:cycle.average.floatValue];
+											[changes addObject:@{@"classTitle":course.title, @"average":cycle.average, @"cycle":cycle.cycleIndex, @"change":@(change)}];
+										}
 									}
 								}
-							}
-							
-							// Queue local notifications.
-							for(NSDictionary *change in changes) {
-								SQUGradeChangeDirection changeDir = [change[@"change"] integerValue];
-								NSString *alertText = nil;
 								
-								if(changeDir == kSQUGradeChangeRaised) {
-									alertText = [NSString stringWithFormat:NSLocalizedString(@"Your average in %@ increased to %ul points.", @"notification grade raised"), change[@"classTitle"], [change[@"average"] unsignedIntegerValue]];
-								} else if(changeDir == kSQUGradeChangeLowered) {
-									alertText = [NSString stringWithFormat:NSLocalizedString(@"Your average in %@ increased to %ul points.", @"notification grade raised"), change[@"classTitle"], [change[@"average"] unsignedIntegerValue]];
+								NSLog(@"Changes: %@", changes);
+								
+								// Queue local notifications.
+								for(NSDictionary *change in changes) {
+									SQUGradeChangeDirection changeDir = [change[@"change"] integerValue];
+									NSString *alertText = nil;
+									
+									if(changeDir == kSQUGradeChangeRaised) {
+										alertText = [NSString stringWithFormat:NSLocalizedString(@"Your average in %@ increased to %ul points.", @"notification grade raised"), change[@"classTitle"], [change[@"average"] unsignedIntegerValue]];
+									} else if(changeDir == kSQUGradeChangeLowered) {
+										alertText = [NSString stringWithFormat:NSLocalizedString(@"Your average in %@ increased to %ul points.", @"notification grade raised"), change[@"classTitle"], [change[@"average"] unsignedIntegerValue]];
+									} else {
+										alertText = [NSString stringWithFormat:NSLocalizedString(@"Your average in %@ stayed at %ul points.", @"notification grade raised"), change[@"classTitle"], [change[@"average"] unsignedIntegerValue]];
+									}
+									
+									// Create the notification.
+									UILocalNotification *notif = [[UILocalNotification alloc] init];
+									notif.alertBody = alertText;
+									notif.alertAction = NSLocalizedString(@"view grades", @"notification alert action");
+									notif.soundName = UILocalNotificationDefaultSoundName;
+									
+									/*
+									 * We omit fireDate on the above notification as we ask
+									 * the app delegate to immediatley present a notification,
+									 * which ignores the fireDate property.
+									 */
+									[[UIApplication sharedApplication] presentLocalNotificationNow:notif];
 								}
 								
-								// Create the notification.
-								UILocalNotification *notif = [[UILocalNotification alloc] init];
-								notif.alertBody = alertText;
-								notif.alertAction = NSLocalizedString(@"view grades", @"notification alert action");
-								notif.soundName = UILocalNotificationDefaultSoundName;
-								
-								/*
-								 * We omit fireDate on the above notification as we ask
-								 * the app delegate to immediatley present a notification,
-								 * which ignores the fireDate property.
-								 */
-								[[UIApplication sharedApplication] presentLocalNotificationNow:notif];
+								// Run completion handler.
+								obama();
+								completionHandler((changes.count == 0) ? UIBackgroundFetchResultNoData : UIBackgroundFetchResultNewData);
+							} else {
+								[SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Error", nil)];
+								obama();
+								NSLog(@"An error of some sort: %@", err);
+								completionHandler(UIBackgroundFetchResultFailed);
 							}
-							
-							// Run completion handler.
-							completionHandler((changes.count == 0) ? UIBackgroundFetchResultNoData : UIBackgroundFetchResultNewData);
 						}];
 					}
 				} else {
 					[SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Error", nil)];
+					obama();
+					NSLog(@"An error of some sort: %@", error);
 					completionHandler(UIBackgroundFetchResultFailed);
 				}
 			}];
 			
+			obama();
 			completionHandler(UIBackgroundFetchResultNewData);
 		} else {
 			NSLog(@"Got remote notification to fetch more data, but no students!");
+			obama();
 			completionHandler(UIBackgroundFetchResultNoData);
 		}
 	} else {

@@ -43,6 +43,8 @@
 		DE81CDD8186D517800DC1CAB /* TFHppleElement.m in Sources */ = {isa = PBXBuildFile; fileRef = DE81CDD4186D517800DC1CAB /* TFHppleElement.m */; };
 		DE81CDD9186D517800DC1CAB /* XPathQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = DE81CDD6186D517800DC1CAB /* XPathQuery.m */; };
 		DE81CDDC186D538000DC1CAB /* libxml2.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DE81CDDA186D518C00DC1CAB /* libxml2.2.dylib */; };
+		DEAE4699187807AB008DAE0C /* NSURL+RequestParams.m in Sources */ = {isa = PBXBuildFile; fileRef = DEAE4698187807AB008DAE0C /* NSURL+RequestParams.m */; };
+		DECEA57F1877FF8900C3D2FC /* NSMutableURLRequest+POSTGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = DECEA57E1877FF8900C3D2FC /* NSMutableURLRequest+POSTGenerator.m */; };
 		DEF0F1B9186EE05400116B61 /* SQUCourse.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F1B8186EE05400116B61 /* SQUCourse.m */; };
 		DEF0F1BD186EE52B00116B61 /* UIColor+SQUColourUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F1BC186EE52B00116B61 /* UIColor+SQUColourUtilities.m */; };
 		DEF0F1BF186EEA6500116B61 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DEF0F1BE186EEA6400116B61 /* CoreImage.framework */; };
@@ -207,7 +209,11 @@
 		DE81CDD5186D517800DC1CAB /* XPathQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XPathQuery.h; path = ../../hpple/XPathQuery.h; sourceTree = "<group>"; };
 		DE81CDD6186D517800DC1CAB /* XPathQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = XPathQuery.m; path = ../../hpple/XPathQuery.m; sourceTree = "<group>"; };
 		DE81CDDA186D518C00DC1CAB /* libxml2.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.2.dylib; path = usr/lib/libxml2.2.dylib; sourceTree = SDKROOT; };
+		DEAE4697187807AB008DAE0C /* NSURL+RequestParams.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+RequestParams.h"; sourceTree = "<group>"; };
+		DEAE4698187807AB008DAE0C /* NSURL+RequestParams.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+RequestParams.m"; sourceTree = "<group>"; };
 		DECA57D517DFD9D400156AFC /* SQUCoreData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SQUCoreData.h; sourceTree = "<group>"; };
+		DECEA57D1877FF8900C3D2FC /* NSMutableURLRequest+POSTGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableURLRequest+POSTGenerator.h"; sourceTree = "<group>"; };
+		DECEA57E1877FF8900C3D2FC /* NSMutableURLRequest+POSTGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableURLRequest+POSTGenerator.m"; sourceTree = "<group>"; };
 		DEF0F1B7186EE05400116B61 /* SQUCourse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUCourse.h; sourceTree = "<group>"; };
 		DEF0F1B8186EE05400116B61 /* SQUCourse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUCourse.m; sourceTree = "<group>"; };
 		DEF0F1BB186EE52B00116B61 /* UIColor+SQUColourUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+SQUColourUtilities.h"; sourceTree = "<group>"; };
@@ -404,8 +410,8 @@
 		DE06158217874D0C004B2877 /* QuickHAC */ = {
 			isa = PBXGroup;
 			children = (
-				DEF0F23C187378A700116B61 /* Certificate Bundles */,
 				DE0615D017874F73004B2877 /* QuickHAC.entitlements */,
+				DE2844041877E7010000756C /* Push Notifications */,
 				DE0615D917890813004B2877 /* HAC Interface */,
 				DE2843E718766E330000756C /* Universal UI */,
 				DEF0F25818740AFF00116B61 /* iPad UI */,
@@ -479,6 +485,7 @@
 		DE0615D917890813004B2877 /* HAC Interface */ = {
 			isa = PBXGroup;
 			children = (
+				DECEA57B1877FF6C00C3D2FC /* Misc Networking */,
 				DE2843E2187611580000756C /* Gradebook Support */,
 				DE2843E31876115F0000756C /* District Suppot */,
 			);
@@ -571,6 +578,13 @@
 			path = TestFlightSDK2.1.3;
 			sourceTree = SOURCE_ROOT;
 		};
+		DE2844041877E7010000756C /* Push Notifications */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "Push Notifications";
+			sourceTree = "<group>";
+		};
 		DE35E9A61806147900F15F20 /* Lockbox (Keychain) */ = {
 			isa = PBXGroup;
 			children = (
@@ -620,6 +634,17 @@
 				DECA57D517DFD9D400156AFC /* SQUCoreData.h */,
 			);
 			name = CoreData;
+			sourceTree = "<group>";
+		};
+		DECEA57B1877FF6C00C3D2FC /* Misc Networking */ = {
+			isa = PBXGroup;
+			children = (
+				DECEA57D1877FF8900C3D2FC /* NSMutableURLRequest+POSTGenerator.h */,
+				DECEA57E1877FF8900C3D2FC /* NSMutableURLRequest+POSTGenerator.m */,
+				DEAE4697187807AB008DAE0C /* NSURL+RequestParams.h */,
+				DEAE4698187807AB008DAE0C /* NSURL+RequestParams.m */,
+			);
+			name = "Misc Networking";
 			sourceTree = "<group>";
 		};
 		DEF0F1BA186EE4E100116B61 /* Miscellaneous UI */ = {
@@ -674,13 +699,6 @@
 			);
 			name = LTHPasscodeViewController;
 			path = ../../LTHPasscodeViewController/LTHPasscodeViewController;
-			sourceTree = "<group>";
-		};
-		DEF0F23C187378A700116B61 /* Certificate Bundles */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = "Certificate Bundles";
 			sourceTree = "<group>";
 		};
 		DEF0F2491873FB6700116B61 /* iPad Resources */ = {
@@ -1030,6 +1048,7 @@
 				DEF0F1E31870E60B00116B61 /* WYPopoverController.m in Sources */,
 				DEFFDE47186E26FC00E26423 /* AFURLSessionManager.m in Sources */,
 				DE06158917874D0D004B2877 /* main.m in Sources */,
+				DECEA57F1877FF8900C3D2FC /* NSMutableURLRequest+POSTGenerator.m in Sources */,
 				DEFFDE24186D881E00E26423 /* SQUDistrict.m in Sources */,
 				DEFFDE43186E26FC00E26423 /* AFSecurityPolicy.m in Sources */,
 				DEFFDE5D186E270900E26423 /* UIProgressView+AFNetworking.m in Sources */,
@@ -1054,6 +1073,7 @@
 				DEF0F1D7186FC7FA00116B61 /* SQUAssignment.m in Sources */,
 				DEF0F2461873E09400116B61 /* SQUSettingsGPAOptionsController.m in Sources */,
 				DE0615E617891E0C004B2877 /* SVProgressHUD.m in Sources */,
+				DEAE4699187807AB008DAE0C /* NSURL+RequestParams.m in Sources */,
 				DEF0F25E1874198B00116B61 /* SQUSidebarCell.m in Sources */,
 				DEF43B0617965B1F00190803 /* SQUGradeOverviewTableViewCell.m in Sources */,
 				DEFFDE97186E85E300E26423 /* SQUGradeManager.m in Sources */,

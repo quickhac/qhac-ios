@@ -8,10 +8,12 @@
 //  See README.MD for licensing and copyright information.
 //
 
-#import "SQUDistrictManager.h"
 #import "SQUDistrict.h"
 #import "SQUGradeManager.h"
 #import "SQUCoreData.h"
+#import "NSURL+RequestParams.h"
+#import "NSMutableURLRequest+POSTGenerator.h"
+#import "SQUDistrictManager.h"
 
 #import "AFNetworking.h"
 
@@ -125,40 +127,53 @@ static SQUDistrictManager *_sharedInstance = nil;
 }
 
 #pragma mark - Request helper methods
-/*
- * These methods accept invalid SSL certificates, because AISD and RRISD
- * cannot seem to get SSL right. This may be changed in the future so
- * they instead compare against an included SSL certificate rather than
- * accepting any arbitrary certificate.
+/**
+ * This does nothing more than shoving data in a temporary file since iOS is a
+ * cockmunch with background upload requests.
  */
+- (NSURL *) createRequestTempFileForIOSToBeHappy:(NSData *) data {
+	// Create a temporary file name
+	NSString *tempFileTemplate =  [NSTemporaryDirectory() stringByAppendingPathComponent:@"qhac_request.XXXXXX"];
+	const char *tempFileTemplateCString = [tempFileTemplate fileSystemRepresentation];
+	char *tempFileNameCString = (char *) malloc(strlen(tempFileTemplateCString) + 1);
+	strcpy(tempFileNameCString, tempFileTemplateCString);
+	
+	// Open file descriptor and add random
+	int fileDescriptor = mkstemp(tempFileNameCString);
+
+	// Handle error
+	if (fileDescriptor == -1) {
+		return nil;
+	}
+
+	NSString *tempFilePath =[[NSFileManager defaultManager] stringWithFileSystemRepresentation:tempFileNameCString length:strlen(tempFileNameCString)];
+	
+	// Clean up
+	free(tempFileNameCString);
+	close(fileDescriptor);
+	
+	// Write to the file
+	[data writeToFile:tempFilePath atomically:YES];
+	
+	return [NSURL fileURLWithPath:tempFilePath];
+}
 
 /**
  * Creates a GET request with the specified URL, parameters, and success and
  * failure callback blocks.
  */
-- (void) sendGETRequestToURL:(NSURL *) url withParameters:(NSDictionary *) params andSuccessBlock:(void (^)(AFHTTPRequestOperation *operation, id responseObject)) success andFailureBlock:(void (^)(AFHTTPRequestOperation *operation, NSError *error)) failure {
-	AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-	manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+- (void) sendGETRequestToURL:(NSURL *) url withParameters:(NSDictionary *) params andSuccessBlock:(void (^)(NSURLResponse *operation, id responseObject)) success andFailureBlock:(void (^)(NSURLResponse *operation, NSError *error)) failure {
+	BOOL isInbackground = ([UIApplication sharedApplication].applicationState == UIApplicationStateBackground);
+	NSError *error = nil;
 	
-	// Load the district's SSL certs, if it has one.
-	NSArray *certs = [_currentDistrict districtSSLCertData];
-	
-	if(certs == nil) {
-		manager.securityPolicy.allowInvalidCertificates = YES;
-	} else if(certs.count != 0) {
-		manager.securityPolicy.SSLPinningMode = AFSSLPinningModeCertificate;
-		[manager.securityPolicy setPinnedCertificates:certs];
+	// Create the session manager
+	AFHTTPSessionManager *manager;
+	if(isInbackground) {
+		manager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:[NSURLSessionConfiguration backgroundSessionConfiguration:@"co.squee.quickhac.background_request"]];
+	} else {
+		manager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
 	}
 	
-	[manager GET:[url absoluteString] parameters:params success:success failure:failure];
-}
-
-/**
- * Creates a POST request with the specified URL, parameters, and success and
- * failure callback blocks.
- */
-- (void) sendPOSTRequestToURL:(NSURL *) url withParameters:(NSDictionary *) params andSuccessBlock:(void (^)(AFHTTPRequestOperation *operation, id responseObject)) success andFailureBlock:(void (^)(AFHTTPRequestOperation *operation, NSError *error)) failure {
-	AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
 	manager.responseSerializer = [AFHTTPResponseSerializer serializer];
 	
 	// Load the district's SSL certs, if it has one.
@@ -171,7 +186,84 @@ static SQUDistrictManager *_sharedInstance = nil;
 		[manager.securityPolicy setPinnedCertificates:certs];
 	}
 	
-	[manager POST:[url absoluteString] parameters:params success:success failure:failure];
+	// Prepare the request.
+	NSURL *paramURL = [url URLByAppendingQuery:params];
+    NSMutableURLRequest *request = [[AFHTTPRequestSerializer serializer] requestWithMethod:@"GET" URLString:[paramURL absoluteString] parameters:nil error:&error];
+	
+	if(error) {
+		NSLog(@"GET create error: %@", error);
+		return;
+	}
+	
+	// Shove data into a temp file
+	NSURL *tempFile = [self createRequestTempFileForIOSToBeHappy:[NSData new]];
+	
+	// Send off a request.
+	NSURLSessionUploadTask *task = [manager uploadTaskWithRequest:request fromFile:tempFile progress:nil completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
+		NSLog(@"GET complete");
+		
+		if(error) {
+			failure(response, error);
+		} else {
+			success(response, responseObject);
+		}
+		
+		[[NSFileManager defaultManager] removeItemAtURL:tempFile error:nil];
+	}];
+	
+	[task resume];
+}
+
+/**
+ * Creates a POST request with the specified URL, parameters, and success and
+ * failure callback blocks.
+ */
+- (void) sendPOSTRequestToURL:(NSURL *) url withParameters:(NSDictionary *) params andSuccessBlock:(void (^)(NSURLResponse *operation, id responseObject)) success andFailureBlock:(void (^)(NSURLResponse *operation, NSError *error)) failure {
+	BOOL isInbackground = ([UIApplication sharedApplication].applicationState == UIApplicationStateBackground);
+	NSError *error = nil;
+	
+	// Create the session manager
+	AFHTTPSessionManager *manager;
+	if(isInbackground) {
+		manager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:[NSURLSessionConfiguration backgroundSessionConfiguration:@"co.squee.quickhac.background_request"]];
+	} else {
+		manager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+	}
+	
+	manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+	
+	// Load the district's SSL certs, if it has one.
+	NSArray *certs = [_currentDistrict districtSSLCertData];
+	
+	if(certs.count == 1 && [certs[0] integerValue] == 0) {
+		manager.securityPolicy.allowInvalidCertificates = YES;
+	} else if(certs.count != 0) {
+		manager.securityPolicy.SSLPinningMode = AFSSLPinningModeCertificate;
+		[manager.securityPolicy setPinnedCertificates:certs];
+	}
+	
+	// Prepare the request.
+    NSMutableURLRequest *request = [[AFHTTPRequestSerializer serializer] requestWithMethod:@"POST" URLString:[url absoluteString] parameters:params error:nil];
+	
+	if(error) {
+		NSLog(@"POST create error: %@", error);
+		return;
+	}
+	
+	// Shove data into a temp file
+	NSURL *tempFile = [self createRequestTempFileForIOSToBeHappy:[[NSMutableURLRequest encodeFormPostParameters:params] dataUsingEncoding:NSUTF8StringEncoding]];
+	
+	// Send off a request.
+	NSURLSessionUploadTask *task = [manager uploadTaskWithRequest:request fromFile:tempFile progress:nil completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
+		if(error) {
+			failure(response, error);
+		} else {
+			success(response, responseObject);
+		}
+		
+		[[NSFileManager defaultManager] removeItemAtURL:tempFile error:nil];
+	}];
+	[task resume];
 }
 
 #pragma mark - District interfacing
@@ -180,11 +272,11 @@ static SQUDistrictManager *_sharedInstance = nil;
  */
 - (void) performActualLoginRequestWithUser:(NSString *) username usingPassword:(NSString *) password andCallback:(SQUDistrictCallback) callback {
 	NSDictionary *loginRequest = [_currentDistrict buildLoginRequestWithUser:username usingPassword:password andUserData:nil];
-	
+	NSLog(@"Actual login");
 	NSURL *url = loginRequest[@"request"][@"URL"];
 	
 	// Called on success of the operation (200 OK)
-	void (^loginSuccess)(AFHTTPRequestOperation *operation, id responseObject) = ^(AFHTTPRequestOperation *operation, id responseObject) {		
+	void (^loginSuccess)(NSURLResponse*operation, id responseObject) = ^(NSURLResponse*operation, id responseObject) {		
 		[_currentDistrict updateDistrictStateWithPostLoginData:responseObject];
 		
 		// The server accepted our request, now check if the request succeeded
@@ -201,11 +293,14 @@ static SQUDistrictManager *_sharedInstance = nil;
 	};
 	
 	// Called if the request fails for some reason (500, network error, etc)
-	void (^loginFailure)(AFHTTPRequestOperation *operation, NSError *error) = ^(AFHTTPRequestOperation *operation, NSError *error) {
+	void (^loginFailure)(NSURLResponse*operation, NSError *error) = ^(NSURLResponse*operation, NSError *error) {
 		callback(error, nil);
 	};
 	
-	// We only support POST requests for security reasons
+	/*
+	 * If any gradebook software out there does a login using GET, they're a
+	 * bunch of fuckwits and should die in a fire.
+	 */
 	if([loginRequest[@"request"][@"method"] isEqualToString:@"POST"]) {
 		[self sendPOSTRequestToURL:url withParameters:loginRequest[@"params"] andSuccessBlock:loginSuccess andFailureBlock:loginFailure];
 	} else {
@@ -226,10 +321,12 @@ static SQUDistrictManager *_sharedInstance = nil;
 	// Perform the pre-login request, if it's a thing
 	NSDictionary *preLogin = [_currentDistrict buildPreLoginRequestWithUserData:nil];
 	
+	NSLog(@"PreLogin");
+	
 	// Support districts that don't require a pre-login request
 	if(preLogin) {
 		// Called if the pre-login succeeds
-		void (^preLoginSuccess)(AFHTTPRequestOperation *operation, id responseObject) = ^(AFHTTPRequestOperation *operation, id responseObject) {
+		void (^preLoginSuccess)(NSURLResponse*operation, id responseObject) = ^(NSURLResponse*operation, id responseObject) {
 			[_currentDistrict updateDistrictStateWithPreLoginData:(NSData *) responseObject];
 			
 			// Perform the actual login, as the pre log-in request was success
@@ -237,7 +334,7 @@ static SQUDistrictManager *_sharedInstance = nil;
 		};
 		
 		// Called on server error
-		void (^preLoginFailure)(AFHTTPRequestOperation *operation, NSError *error) = ^(AFHTTPRequestOperation *operation, NSError *error) {
+		void (^preLoginFailure)(NSURLResponse*operation, NSError *error) = ^(NSURLResponse*operation, NSError *error) {
 			callback(error, nil);
 			NSLog(@"Pre log-in error: %@", error);
 		};
@@ -267,14 +364,17 @@ static SQUDistrictManager *_sharedInstance = nil;
 - (void) performDisambiguationRequestWithStudentID:(NSString *) sid andCallback:(SQUDistrictCallback) callback {
 	// Do not perform disambiguation if there is only a single student on the account.
 	if(!_currentDistrict.hasMultipleStudents) {
+		NSLog(@"Ignoring disambiguation request");
 		callback(nil, nil);
 		return;
 	}
 	
+	NSLog(@"Disambiguate ID %@", sid);
+	
 	NSDictionary *disambiguationRequest = [_currentDistrict buildDisambiguationRequestWithStudentID:sid andUserData:nil];
 	
 	// Called if the request succeeds
-	void (^disambiguateSuccess)(AFHTTPRequestOperation *operation, id responseObject) = ^(AFHTTPRequestOperation *operation, id responseObject) {
+	void (^disambiguateSuccess)(NSURLResponse*operation, id responseObject) = ^(NSURLResponse*operation, id responseObject) {
 		
 		if([_currentDistrict didDisambiguationSucceedWithLoginData:responseObject]) {
 			callback(nil, responseObject);
@@ -284,7 +384,7 @@ static SQUDistrictManager *_sharedInstance = nil;
 	};
 	
 	// Called on server error
-	void (^disambiguateFailure)(AFHTTPRequestOperation *operation, NSError *error) = ^(AFHTTPRequestOperation *operation, NSError *error) {
+	void (^disambiguateFailure)(NSURLResponse*operation, NSError *error) = ^(NSURLResponse*operation, NSError *error) {
 		callback(error, nil);
 		NSLog(@"Disambiguation error: %@", error);
 	};
@@ -310,9 +410,10 @@ static SQUDistrictManager *_sharedInstance = nil;
  */
 - (void) performAveragesRequestWithCallback:(SQUDistrictCallback) callback {
 	NSDictionary *avgRequest = [_currentDistrict buildAveragesRequestWithUserData:nil];
+	NSLog(@"Averages request");
 	
 	// Called if the request succeeds
-	void (^averagesSuccess)(AFHTTPRequestOperation *operation, id responseObject) = ^(AFHTTPRequestOperation *operation, id responseObject) {
+	void (^averagesSuccess)(NSURLResponse*operation, id responseObject) = ^(NSURLResponse*operation, id responseObject) {
 		NSString *string = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
 		NSArray *averages = [[SQUGradeManager sharedInstance].currentDriver parseAveragesForDistrict:_currentDistrict withString:string];
 		
@@ -322,6 +423,8 @@ static SQUDistrictManager *_sharedInstance = nil;
 			
 			[SQUGradeManager sharedInstance].student.name = studentName;
 			[SQUGradeManager sharedInstance].student.school = studentSchool;
+			
+			NSLog(@"Got avg data");
 			
 			[_currentDistrict updateDistrictStateWithClassGrades:averages];
 
@@ -333,7 +436,7 @@ static SQUDistrictManager *_sharedInstance = nil;
 	};
 	
 	// Called on server error
-	void (^averagesFailure)(AFHTTPRequestOperation *operation, NSError *error) = ^(AFHTTPRequestOperation *operation, NSError *error) {
+	void (^averagesFailure)(NSURLResponse*operation, NSError *error) = ^(NSURLResponse*operation, NSError *error) {
 		callback(error, nil);
 		NSLog(@"Averages error: %@", error);
 	};
@@ -366,7 +469,7 @@ static SQUDistrictManager *_sharedInstance = nil;
 	}
 	
 	// Called if the request succeeds
-	void (^callbackSuccess)(AFHTTPRequestOperation *operation, id responseObject) = ^(AFHTTPRequestOperation *operation, id responseObject) {
+	void (^callbackSuccess)(NSURLResponse*operation, id responseObject) = ^(NSURLResponse*operation, id responseObject) {
 		NSDictionary *classGrades = [[SQUGradeManager sharedInstance].currentDriver getClassGradesForDistrict:_currentDistrict withString:[[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding]];
 		
 		if(classGrades != nil) {
@@ -377,7 +480,7 @@ static SQUDistrictManager *_sharedInstance = nil;
 	};
 	
 	// Called on server error
-	void (^callbackFailure)(AFHTTPRequestOperation *operation, NSError *error) = ^(AFHTTPRequestOperation *operation, NSError *error) {
+	void (^callbackFailure)(NSURLResponse*operation, NSError *error) = ^(NSURLResponse*operation, NSError *error) {
 		callback(error, nil);
 		NSLog(@"Class grade fetching error: %@", error);
 	};
