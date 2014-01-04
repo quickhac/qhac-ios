@@ -2,7 +2,7 @@
 //  SQUCycle.m
 //  QuickHAC
 //
-//  Created by Tristan Seifert on 12/29/13.
+//  Created by Tristan Seifert on 1/3/14.
 //  See README.MD for licensing and copyright information.
 //
 
@@ -15,9 +15,11 @@
 
 @dynamic average;
 @dynamic cycleIndex;
+@dynamic dataAvailableInGradebook;
 @dynamic last_updated;
 @dynamic semester;
-@dynamic dataAvailableInGradebook;
+@dynamic changedSinceLastFetch;
+@dynamic preChangeGrade;
 @dynamic categories;
 @dynamic course;
 

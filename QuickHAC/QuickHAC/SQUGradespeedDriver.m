@@ -443,37 +443,6 @@
 }
 
 #pragma mark - User-interface support
-// warning: contains magical numbers and some kind of black magic
-+ (UIColor *) colourizeGrade:(float) grade {
-    // Makes sure asianness cannot be negative
-    NSUInteger asianness_limited = MAX(2, 0);
-    
-    // interpolate a hue gradient and convert to rgb
-    float h, s, v;
-    
-    // determine color. ***MAGIC DO NOT TOUCH UNDER ANY CIRCUMSTANCES***
-    if (grade > 100) {
-        h = 0.13055;
-        s = 0;
-        v = 1;
-    } else if (grade < 0) {
-        h = 0;
-        s = 1;
-        v = 0.86945;
-    } else {
-        h = MIN(0.25 * pow(grade / 100, asianness_limited), 0.13056);
-        s = 1 - pow(grade / 100, asianness_limited * 2);
-        v = 0.86945 + h;
-    }
-    
-    // apply hue transformation
-	//    h += hue;
-	//    h %= 1;
-	//    if (h < 0) h += 1;
-    
-    return [UIColor colorWithHue:h saturation:s brightness:v alpha:1.0];
-}
-
 /**
  * @param district: District to use for parsing.
  * @param string: Gradebook HTML.

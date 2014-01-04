@@ -2,7 +2,7 @@
 //  SQUSemester.m
 //  QuickHAC
 //
-//  Created by Tristan Seifert on 12/28/13.
+//  Created by Tristan Seifert on 1/3/14.
 //  See README.MD for licensing and copyright information.
 //
 
@@ -12,10 +12,12 @@
 
 @implementation SQUSemester
 
+@dynamic average;
 @dynamic examGrade;
 @dynamic examIsExempt;
 @dynamic semester;
-@dynamic average;
+@dynamic changedSinceLastFetch;
+@dynamic preChangeGrade;
 @dynamic course;
 
 @end

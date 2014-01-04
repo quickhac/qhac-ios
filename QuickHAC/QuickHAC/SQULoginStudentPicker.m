@@ -3,7 +3,7 @@
 //  QuickHAC
 //
 //  Created by Tristan Seifert on 1/2/14.
-//  Copyright (c) 2014 Squee! Apps. All rights reserved.
+//  See README.MD for licensing and copyright information.
 //
 
 #import "SQUCoreData.h"
@@ -21,6 +21,8 @@
     if (self) {
         [self.tableView registerClass:NSClassFromString(@"UITableViewCell") forCellReuseIdentifier:@"StudentSelectorCell"];
 		self.title = NSLocalizedString(@"Select Student", nil);
+		
+		self.navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
 		
 		UIBarButtonItem *cancel = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelPicker:)];
 		self.navigationItem.leftBarButtonItem = cancel;

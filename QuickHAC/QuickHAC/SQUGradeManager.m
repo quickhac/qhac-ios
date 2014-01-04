@@ -251,7 +251,15 @@ static SQUGradeManager *_sharedInstance = nil;
  * Updates a specific cycle with information.
  */
 - (void) updateCycle:(SQUCycle *) cycle withCycleInfo:(NSDictionary *) dict {
-	cycle.average = [NSNumber numberWithInteger:[dict[@"average"] integerValue]];
+	// Set a flag if this grade changed
+	if(cycle.average.floatValue != [dict[@"average"] floatValue]) {
+		cycle.changedSinceLastFetch = @(YES);
+		cycle.preChangeGrade = cycle.average;
+	} else {
+		cycle.changedSinceLastFetch = @(NO);
+	}
+	
+	cycle.average = @([dict[@"average"] floatValue]);
 	cycle.last_updated = [NSDate new];
 	cycle.average = dict[@"average"];
 }
@@ -393,6 +401,14 @@ static SQUGradeManager *_sharedInstance = nil;
 				[course addSemestersObject:dbSemester];
 			} else {
 				dbSemester = course.semesters[[semester[@"index"] integerValue]];
+			}
+			
+			// Set a flag if this grade changed
+			if(dbSemester.average.floatValue != [semester[@"semesterAverage"] floatValue]) {
+				dbSemester.changedSinceLastFetch = @(YES);
+				dbSemester.preChangeGrade = dbSemester.average;
+			} else {
+				dbSemester.changedSinceLastFetch = @(NO);
 			}
 			
 			dbSemester.examIsExempt = semester[@"examIsExempt"];

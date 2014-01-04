@@ -10,7 +10,15 @@
 
 @interface SQUSidebarCell : UITableViewCell {
 	UILabel *_gradeLabel;
+	
+	UIImage *_icon;
+	UIImage *_iconSelected;
 }
+
+/// Icon displayed on left of cell.
+@property (nonatomic) UIImage *icon;
+/// Selected icon
+@property (nonatomic) UIImage *iconSelected;
 
 - (void) setGrade:(float) grade;
 

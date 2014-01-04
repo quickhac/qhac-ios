@@ -161,7 +161,6 @@
     NSIndexPath *path;
     
     if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
-        //        NSLog(@"%@", textField.superview.superview.superview);
         path = [_authFieldTable indexPathForCell:(UITableViewCell*)textField.superview.superview.superview];
     } else {
         path = [_authFieldTable indexPathForCell:(UITableViewCell*)textField.superview.superview];

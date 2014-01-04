@@ -10,10 +10,11 @@
 #import "SQULoginSchoolSelector.h"
 #import "SQUGradeOverviewController.h"
 #import "SQUDistrictManager.h"
-#import "SQUStudent.h"
+#import "SQUCoreData.h"
 #import "SQUGradeManager.h"
 #import "SQUTabletSidebarController.h"
 #import "SQUTabletLoginController.h"
+#import "SQUUIHelpers.h"
 #import "SQUAppDelegate.h"
 
 #import "PKRevealController.h"
@@ -103,6 +104,13 @@ static SQUAppDelegate *sharedDelegate = nil;
 		[_ipadSplitController setSplitPosition:_ipadSplitController.splitPosition + 1];
 	}
 	
+	// TODO: Check if user enabled push
+	if(true) {
+		[[UIApplication sharedApplication] registerForRemoteNotificationTypes:UIRemoteNotificationTypeBadge|
+		 UIRemoteNotificationTypeSound|
+		 UIRemoteNotificationTypeAlert];
+	}
+	
 	// Set up automagical network indicator management
 	[[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
 	
@@ -134,7 +142,7 @@ static SQUAppDelegate *sharedDelegate = nil;
 		
 		NSUInteger selectedStudent = [[NSUserDefaults standardUserDefaults] integerForKey:@"selectedStudent"];
 		
-		// Ensure that
+		// Ensure that the index is in bounds
 		if(selectedStudent > students.count) {
 			selectedStudent = 0;
 			[[NSUserDefaults standardUserDefaults] setInteger:selectedStudent forKey:@"selectedStudent"];
@@ -142,7 +150,6 @@ static SQUAppDelegate *sharedDelegate = nil;
 			[[NSUserDefaults standardUserDefaults] setInteger:selectedStudent forKey:@"selectedStudent"];
 		}
 		
-		// Select first student
         SQUStudent *student = students[selectedStudent];
         
         // Fetch username/pw from keychain
@@ -174,7 +181,7 @@ static SQUAppDelegate *sharedDelegate = nil;
 				[[NSNotificationCenter defaultCenter] postNotificationName:SQUGradesDataUpdatedNotification object:nil];
 				
 				// Ask the current district instance to do a log in to validate we're still valid
-				[[SQUDistrictManager sharedInstance] performLoginRequestWithUser:username usingPassword:password andCallback:^(NSError *error, id returnData){
+				[[SQUDistrictManager sharedInstance] performLoginRequestWithUser:username usingPassword:password andCallback:^(NSError *error, id returnData) {
 					if(!error) {
 						if(!returnData) {
 							[SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Wrong Credentials", nil)];
@@ -215,6 +222,136 @@ static SQUAppDelegate *sharedDelegate = nil;
 - (void) applicationWillTerminate:(UIApplication *) application {
     // Saves changes in the application's managed object context before the application terminates.
     [self saveContext];
+}
+
+#pragma mark - Push Notifications
+- (void) application:(UIApplication *) application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *) deviceToken {
+	NSLog(@"Got registered for token: %@", deviceToken);
+}
+
+- (void) application:(UIApplication *) application didFailToRegisterForRemoteNotificationsWithError:(NSError *) error {
+	NSLog(@"Registration error: %@", error);
+}
+
+// {"key":"302696248015a91d0be31cf1d557d8908b366a0c8eecd7acb7c096d8c46760fb","apns_content_available":1,"custom":"i,112840"}
+
+/*
+ * This method is called when we receive a push notification from the server,
+ * presumeably in response to getting a notification that indicates that grades
+ * have changed.
+ */
+- (void) application:(UIApplication *) application didReceiveRemoteNotification:(NSDictionary *) userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult)) completionHandler {
+    NSLog(@"Remote Notification userInfo is %@", userInfo);
+	
+	if([userInfo[@"aps"][@"content-available"] integerValue] == 1) {
+		// Determine the student to get, based on the "c" key
+		NSString *studentInfo = userInfo[@"c"];
+		NSArray *split = [studentInfo componentsSeparatedByString:@","];
+		
+		if(split.count == 0) {
+			completionHandler(UIBackgroundFetchResultFailed);
+			return;
+		}
+		
+		// go by ID number
+		if([split[0] isEqualToString:@"i"]) {
+			NSLog(@"ID: %@", split[1]);
+		} else if([split[0] isEqualToString:@"u"]) {
+			NSLog(@"Username: %@", split[1]);
+		} else {
+			completionHandler(UIBackgroundFetchResultFailed);
+			return;
+		}
+		
+		// Fetch students
+		NSError *db_err = nil;
+		
+		NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+		NSEntityDescription *entity = [NSEntityDescription entityForName:@"SQUStudent" inManagedObjectContext:_managedObjectContext];
+		[fetchRequest setEntity:entity];
+		NSArray *students = [_managedObjectContext executeFetchRequest:fetchRequest error:&db_err];
+		
+		// Validate we have students
+		if(students.count > 0) {
+			// Select student
+			NSUInteger selectedStudent = [[NSUserDefaults standardUserDefaults] integerForKey:@"selectedStudent"];
+			SQUStudent *student = students[selectedStudent];
+			
+			// Fetch username/pw from keychain
+			NSString *username, *password, *studentID;
+			
+			username = student.hacUsername;
+			password = [Lockbox stringForKey:username];
+			studentID = student.student_id;
+			
+			[[SQUDistrictManager sharedInstance] selectDistrictWithID:student.district.integerValue];
+			
+			// Log in
+			[[SQUDistrictManager sharedInstance] performLoginRequestWithUser:username usingPassword:password andCallback:^(NSError *error, id returnData) {
+				if(!error) {
+					if(!returnData) {
+						[SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Wrong Credentials", nil)];
+						completionHandler(UIBackgroundFetchResultFailed);
+					} else {
+						// Login succeeded, so we can do a fetch of grades.
+						[[SQUGradeManager sharedInstance] fetchNewClassGradesFromServerWithDoneCallback:^(NSError *err) {
+							[[NSNotificationCenter defaultCenter] postNotificationName:SQUGradesDataUpdatedNotification object:nil];
+							NSMutableArray *changes = [NSMutableArray new];
+							
+							// Go through each course to see if it has changed
+							for(SQUCourse *course in student.courses) {
+								// Check the cycles for change.
+								for(SQUCycle *cycle in course.cycles) {
+									if(cycle.changedSinceLastFetch.boolValue) {
+										SQUGradeChangeDirection change = [SQUUIHelpers getGradeChange:cycle.preChangeGrade.floatValue toNew:cycle.average.floatValue];
+										[changes addObject:@{@"classTitle":course.title, @"average":cycle.average, @"cycle":cycle.cycleIndex, @"change":@(change)}];
+									}
+								}
+							}
+							
+							// Queue local notifications.
+							for(NSDictionary *change in changes) {
+								SQUGradeChangeDirection changeDir = [change[@"change"] integerValue];
+								NSString *alertText = nil;
+								
+								if(changeDir == kSQUGradeChangeRaised) {
+									alertText = [NSString stringWithFormat:NSLocalizedString(@"Your average in %@ increased to %ul points.", @"notification grade raised"), change[@"classTitle"], [change[@"average"] unsignedIntegerValue]];
+								} else if(changeDir == kSQUGradeChangeLowered) {
+									alertText = [NSString stringWithFormat:NSLocalizedString(@"Your average in %@ increased to %ul points.", @"notification grade raised"), change[@"classTitle"], [change[@"average"] unsignedIntegerValue]];
+								}
+								
+								// Create the notification.
+								UILocalNotification *notif = [[UILocalNotification alloc] init];
+								notif.alertBody = alertText;
+								notif.alertAction = NSLocalizedString(@"view grades", @"notification alert action");
+								notif.soundName = UILocalNotificationDefaultSoundName;
+								
+								/*
+								 * We omit fireDate on the above notification as we ask
+								 * the app delegate to immediatley present a notification,
+								 * which ignores the fireDate property.
+								 */
+								[[UIApplication sharedApplication] presentLocalNotificationNow:notif];
+							}
+							
+							// Run completion handler.
+							completionHandler((changes.count == 0) ? UIBackgroundFetchResultNoData : UIBackgroundFetchResultNewData);
+						}];
+					}
+				} else {
+					[SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Error", nil)];
+					completionHandler(UIBackgroundFetchResultFailed);
+				}
+			}];
+			
+			completionHandler(UIBackgroundFetchResultNewData);
+		} else {
+			NSLog(@"Got remote notification to fetch more data, but no students!");
+			completionHandler(UIBackgroundFetchResultNoData);
+		}
+	} else {
+		completionHandler(UIBackgroundFetchResultNoData);
+	}
 }
 
 #pragma mark - CoreData Stack

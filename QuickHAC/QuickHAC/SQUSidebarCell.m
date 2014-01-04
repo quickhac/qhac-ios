@@ -9,6 +9,7 @@
 #import "SQUSidebarCell.h"
 
 @implementation SQUSidebarCell
+@synthesize icon = _icon, iconSelected = _iconSelected;
 
 - (id) initWithStyle:(UITableViewCellStyle) style reuseIdentifier:(NSString *) reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
@@ -28,10 +29,14 @@
 		self.backgroundColor = UIColorFromRGB(0xECF0F1);
 		self.textLabel.textColor = UIColorFromRGB(0x3498DB);
 		_gradeLabel.textColor = UIColorFromRGB(0x3498DB);
+		
+		self.imageView.image = _iconSelected;
 	} else {
 		self.backgroundColor = UIColorFromRGB(0x4E5758);
 		self.textLabel.textColor = UIColorFromRGB(0xECF0F1);
 		_gradeLabel.textColor = UIColorFromRGB(0xECF0F1);
+		
+		self.imageView.image = _icon;
 	}
 }
 

@@ -195,15 +195,14 @@
  */
 - (void) updateGPA {
 	// Take GPA precision preference into account
-	NSString *gpaFormatString = [NSString stringWithFormat:NSLocalizedString(@"GPA: %%.%uf", nil), [[NSUserDefaults standardUserDefaults] integerForKey:@"gpa_precision"]];
-	
-	// Get the type of GPA to calculate.
-	BOOL gpaWeighted = [[NSUserDefaults standardUserDefaults] boolForKey:@"gpa_weighted"];
+	NSInteger precision = [[NSUserDefaults standardUserDefaults] integerForKey:@"gpa_precision"];
+	NSString *gpaFormatString = [NSString stringWithFormat:NSLocalizedString(@"GPA: %%.%1$uf/%%.%1$uf", nil), precision];
 	
 	// Calculate GPA
-	NSNumber *gpa = [[SQUGradeManager sharedInstance] calculateGPAWeighted:gpaWeighted forCourses:[SQUGradeManager sharedInstance].courses.array];
+	NSNumber *gpaUnweighted = [[SQUGradeManager sharedInstance] calculateGPAWeighted:NO forCourses:[SQUGradeManager sharedInstance].courses.array];
+	NSNumber *gpaWeighted = [[SQUGradeManager sharedInstance] calculateGPAWeighted:YES forCourses:[SQUGradeManager sharedInstance].courses.array];
 	
-	_subtitleLayer.string = [NSString stringWithFormat:gpaFormatString, gpa.floatValue];
+	_subtitleLayer.string = [NSString stringWithFormat:gpaFormatString, gpaUnweighted.floatValue, gpaWeighted.floatValue];
 }
 
 @end

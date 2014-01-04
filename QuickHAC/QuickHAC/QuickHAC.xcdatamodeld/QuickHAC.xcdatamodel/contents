@@ -33,17 +33,21 @@
     </entity>
     <entity name="SQUCycle" representedClassName="SQUCycle" syncable="YES">
         <attribute name="average" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="changedSinceLastFetch" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="cycleIndex" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="dataAvailableInGradebook" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="last_updated" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="preChangeGrade" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="semester" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <relationship name="categories" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="SQUCategory" inverseName="cycle" inverseEntity="SQUCategory" syncable="YES"/>
         <relationship name="course" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SQUCourse" inverseName="cycles" inverseEntity="SQUCourse" syncable="YES"/>
     </entity>
     <entity name="SQUSemester" representedClassName="SQUSemester" syncable="YES">
         <attribute name="average" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="changedSinceLastFetch" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="examGrade" optional="YES" attributeType="Float" defaultValueString="-1" syncable="YES"/>
         <attribute name="examIsExempt" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="preChangeGrade" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="semester" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <relationship name="course" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SQUCourse" inverseName="semesters" inverseEntity="SQUCourse" syncable="YES"/>
     </entity>
