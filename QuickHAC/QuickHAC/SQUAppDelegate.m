@@ -15,6 +15,7 @@
 #import "SQUTabletSidebarController.h"
 #import "SQUTabletLoginController.h"
 #import "SQUUIHelpers.h"
+#import "SQUPushHandler.h"
 #import "SQUAppDelegate.h"
 
 #import "PKRevealController.h"
@@ -109,6 +110,7 @@ static SQUAppDelegate *sharedDelegate = nil;
 		[[UIApplication sharedApplication] registerForRemoteNotificationTypes:UIRemoteNotificationTypeBadge|
 		 UIRemoteNotificationTypeSound|
 		 UIRemoteNotificationTypeAlert];
+		[[SQUPushHandler sharedInstance] initialisePush];
 	}
 	
 	// Set up automagical network indicator management
@@ -226,7 +228,7 @@ static SQUAppDelegate *sharedDelegate = nil;
 
 #pragma mark - Push Notifications
 - (void) application:(UIApplication *) application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *) deviceToken {
-	NSLog(@"Got registered for token: %@", deviceToken);
+	[[SQUPushHandler sharedInstance] registerWithPushToken:deviceToken];
 }
 
 - (void) application:(UIApplication *) application didFailToRegisterForRemoteNotificationsWithError:(NSError *) error {

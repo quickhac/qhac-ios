@@ -29,7 +29,6 @@
 		DE2843E118760FD80000756C /* SQUGradespeedDriver.m in Sources */ = {isa = PBXBuildFile; fileRef = DE2843E018760FD80000756C /* SQUGradespeedDriver.m */; };
 		DE2843E618764FD10000756C /* SQUStudent.m in Sources */ = {isa = PBXBuildFile; fileRef = DE2843E518764FD10000756C /* SQUStudent.m */; };
 		DE2843EA18766E840000756C /* SQULoginStudentPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = DE2843E918766E840000756C /* SQULoginStudentPicker.m */; };
-		DE2843F218768D510000756C /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DE2843EC18768D510000756C /* libTestFlight.a */; };
 		DE2843F318768D530000756C /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = DE2843ED18768D510000756C /* README.md */; };
 		DE2843F418768D530000756C /* release_notes.md in Resources */ = {isa = PBXBuildFile; fileRef = DE2843EE18768D510000756C /* release_notes.md */; };
 		DE2843F7187743DA0000756C /* SQUUIHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = DE2843F6187743DA0000756C /* SQUUIHelpers.m */; };
@@ -44,6 +43,9 @@
 		DE81CDD9186D517800DC1CAB /* XPathQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = DE81CDD6186D517800DC1CAB /* XPathQuery.m */; };
 		DE81CDDC186D538000DC1CAB /* libxml2.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DE81CDDA186D518C00DC1CAB /* libxml2.2.dylib */; };
 		DEAE4699187807AB008DAE0C /* NSURL+RequestParams.m in Sources */ = {isa = PBXBuildFile; fileRef = DEAE4698187807AB008DAE0C /* NSURL+RequestParams.m */; };
+		DEBA3D0F1878EECC003C209B /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DE2843EC18768D510000756C /* libTestFlight.a */; };
+		DEBA3D121878FA04003C209B /* NSData+SQUAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = DEBA3D111878FA04003C209B /* NSData+SQUAdditions.m */; };
+		DEC5954818783D69004F4BA4 /* SQUPushHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = DEC5954718783D69004F4BA4 /* SQUPushHandler.m */; };
 		DECEA57F1877FF8900C3D2FC /* NSMutableURLRequest+POSTGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = DECEA57E1877FF8900C3D2FC /* NSMutableURLRequest+POSTGenerator.m */; };
 		DEF0F1B9186EE05400116B61 /* SQUCourse.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F1B8186EE05400116B61 /* SQUCourse.m */; };
 		DEF0F1BD186EE52B00116B61 /* UIColor+SQUColourUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F1BC186EE52B00116B61 /* UIColor+SQUColourUtilities.m */; };
@@ -211,6 +213,10 @@
 		DE81CDDA186D518C00DC1CAB /* libxml2.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.2.dylib; path = usr/lib/libxml2.2.dylib; sourceTree = SDKROOT; };
 		DEAE4697187807AB008DAE0C /* NSURL+RequestParams.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+RequestParams.h"; sourceTree = "<group>"; };
 		DEAE4698187807AB008DAE0C /* NSURL+RequestParams.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+RequestParams.m"; sourceTree = "<group>"; };
+		DEBA3D101878FA04003C209B /* NSData+SQUAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+SQUAdditions.h"; sourceTree = "<group>"; };
+		DEBA3D111878FA04003C209B /* NSData+SQUAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+SQUAdditions.m"; sourceTree = "<group>"; };
+		DEC5954618783D69004F4BA4 /* SQUPushHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUPushHandler.h; sourceTree = "<group>"; };
+		DEC5954718783D69004F4BA4 /* SQUPushHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUPushHandler.m; sourceTree = "<group>"; };
 		DECA57D517DFD9D400156AFC /* SQUCoreData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SQUCoreData.h; sourceTree = "<group>"; };
 		DECEA57D1877FF8900C3D2FC /* NSMutableURLRequest+POSTGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableURLRequest+POSTGenerator.h"; sourceTree = "<group>"; };
 		DECEA57E1877FF8900C3D2FC /* NSMutableURLRequest+POSTGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableURLRequest+POSTGenerator.m"; sourceTree = "<group>"; };
@@ -335,12 +341,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				DEF0F2391872901C00116B61 /* libz.dylib in Frameworks */,
-				DE2843F218768D510000756C /* libTestFlight.a in Frameworks */,
 				DEF0F21218712DC700116B61 /* libQuickDialog.a in Frameworks */,
 				DEF0F1C1186EEA6900116B61 /* QuartzCore.framework in Frameworks */,
 				DEF0F1BF186EEA6500116B61 /* CoreImage.framework in Frameworks */,
 				DEFFDE94186E784E00E26423 /* libPKRevealController.a in Frameworks */,
 				DE81CDDC186D538000DC1CAB /* libxml2.2.dylib in Frameworks */,
+				DEBA3D0F1878EECC003C209B /* libTestFlight.a in Frameworks */,
 				DE35E9AB18061F8100F15F20 /* Security.framework in Frameworks */,
 				DE0615D51787AD50004B2877 /* MobileCoreServices.framework in Frameworks */,
 				DE0615D31787AD3E004B2877 /* SystemConfiguration.framework in Frameworks */,
@@ -411,6 +417,7 @@
 			isa = PBXGroup;
 			children = (
 				DE0615D017874F73004B2877 /* QuickHAC.entitlements */,
+				DECEA57B1877FF6C00C3D2FC /* Miscellaneous Categories */,
 				DE2844041877E7010000756C /* Push Notifications */,
 				DE0615D917890813004B2877 /* HAC Interface */,
 				DE2843E718766E330000756C /* Universal UI */,
@@ -485,7 +492,6 @@
 		DE0615D917890813004B2877 /* HAC Interface */ = {
 			isa = PBXGroup;
 			children = (
-				DECEA57B1877FF6C00C3D2FC /* Misc Networking */,
 				DE2843E2187611580000756C /* Gradebook Support */,
 				DE2843E31876115F0000756C /* District Suppot */,
 			);
@@ -581,6 +587,8 @@
 		DE2844041877E7010000756C /* Push Notifications */ = {
 			isa = PBXGroup;
 			children = (
+				DEC5954618783D69004F4BA4 /* SQUPushHandler.h */,
+				DEC5954718783D69004F4BA4 /* SQUPushHandler.m */,
 			);
 			name = "Push Notifications";
 			sourceTree = "<group>";
@@ -636,15 +644,17 @@
 			name = CoreData;
 			sourceTree = "<group>";
 		};
-		DECEA57B1877FF6C00C3D2FC /* Misc Networking */ = {
+		DECEA57B1877FF6C00C3D2FC /* Miscellaneous Categories */ = {
 			isa = PBXGroup;
 			children = (
 				DECEA57D1877FF8900C3D2FC /* NSMutableURLRequest+POSTGenerator.h */,
 				DECEA57E1877FF8900C3D2FC /* NSMutableURLRequest+POSTGenerator.m */,
 				DEAE4697187807AB008DAE0C /* NSURL+RequestParams.h */,
 				DEAE4698187807AB008DAE0C /* NSURL+RequestParams.m */,
+				DEBA3D101878FA04003C209B /* NSData+SQUAdditions.h */,
+				DEBA3D111878FA04003C209B /* NSData+SQUAdditions.m */,
 			);
-			name = "Misc Networking";
+			name = "Miscellaneous Categories";
 			sourceTree = "<group>";
 		};
 		DEF0F1BA186EE4E100116B61 /* Miscellaneous UI */ = {
@@ -1073,6 +1083,7 @@
 				DEF0F1D7186FC7FA00116B61 /* SQUAssignment.m in Sources */,
 				DEF0F2461873E09400116B61 /* SQUSettingsGPAOptionsController.m in Sources */,
 				DE0615E617891E0C004B2877 /* SVProgressHUD.m in Sources */,
+				DEC5954818783D69004F4BA4 /* SQUPushHandler.m in Sources */,
 				DEAE4699187807AB008DAE0C /* NSURL+RequestParams.m in Sources */,
 				DEF0F25E1874198B00116B61 /* SQUSidebarCell.m in Sources */,
 				DEF43B0617965B1F00190803 /* SQUGradeOverviewTableViewCell.m in Sources */,
@@ -1090,6 +1101,7 @@
 				DE35E9A9180614DF00F15F20 /* Lockbox.m in Sources */,
 				DEF0F2431873DC0600116B61 /* SQUSettingsGeneralController.m in Sources */,
 				DEF0F25318740A1400116B61 /* MGSplitCornersView.m in Sources */,
+				DEBA3D121878FA04003C209B /* NSData+SQUAdditions.m in Sources */,
 				DEF0F25B18740B3800116B61 /* SQUTabletSidebarController.m in Sources */,
 				DEF0F25418740A1400116B61 /* MGSplitDividerView.m in Sources */,
 				DEFFDE42186E26FC00E26423 /* AFNetworkReachabilityManager.m in Sources */,
@@ -1242,6 +1254,7 @@
 					"$(inherited)",
 					"/Users/tristanseifert/quickhac-ios/TestFlightSDK2.1.3",
 					"/Users/tristanseifert/quickhac-ios/QuickHAC/TestFlightSDK2.1.3",
+					"/Users/tristanseifert/QuickHAC/quickhac-ios/QuickHAC/TestFlightSDK2.1.3",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1275,6 +1288,7 @@
 					"$(inherited)",
 					"/Users/tristanseifert/quickhac-ios/TestFlightSDK2.1.3",
 					"/Users/tristanseifert/quickhac-ios/QuickHAC/TestFlightSDK2.1.3",
+					"/Users/tristanseifert/QuickHAC/quickhac-ios/QuickHAC/TestFlightSDK2.1.3",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";

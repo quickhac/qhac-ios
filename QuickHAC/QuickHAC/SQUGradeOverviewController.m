@@ -12,12 +12,13 @@
 #import <CoreImage/CoreImage.h>
 #import <QuartzCore/QuartzCore.h>
 
-#import "SQUGradeOverviewController.h"
 #import "SQUGradeOverviewTableViewCell.h"
 #import "SQUAppDelegate.h"
 #import "SQUCoreData.h"
+#import "SQUPushHandler.h"
 #import "SQUGradeManager.h"
 #import "SQUSidebarController.h"
+#import "SQUGradeOverviewController.h"
 
 #import "UIViewController+PKRevealController.h"
 #import "PKRevealController.h"
@@ -43,7 +44,10 @@
 										style:UIBarButtonItemStyleBordered
 										target:self
 										action:@selector(openSidebar:)];
-        [self.navigationItem setLeftBarButtonItem:showSidebar];
+		self.navigationItem.leftBarButtonItem = showSidebar;
+		
+		UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"Push" style:UIBarButtonItemStyleDone target:self action:@selector(testPush:)];
+		self.navigationItem.rightBarButtonItem = item;
 		
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateTableNotification:) name:SQUGradesDataUpdatedNotification object:nil];
 		
@@ -52,6 +56,11 @@
     }
 	
     return self;
+}
+
+// Test action for push notifications
+- (void) testPush:(id) sender {
+	[[SQUPushHandler sharedInstance] registerWithPushToken:nil];
 }
 
 - (void) viewDidLoad {
