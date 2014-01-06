@@ -352,7 +352,7 @@ static SQUGradeManager *_sharedInstance = nil;
 
 			// Generate empty cycle objects
 			NSUInteger numCycles = ([class[@"semesters"] count]) * ([class[@"semesters"][0][@"cycles"] count]);
-			NSUInteger cyclesPerSemester = [class[@"semesters"][0] count];
+			NSUInteger cyclesPerSemester = [class[@"semesters"][0][@"cycles"] count];
 			
 			_student.cyclesPerSemester = @(cyclesPerSemester);
 			_student.numSemesters = @([class[@"semesters"] count]);

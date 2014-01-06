@@ -345,7 +345,7 @@
 					picker.delegate = self;
 					[self.navigationController pushViewController:picker animated:YES];
 				} else if(![SQUDistrictManager sharedInstance].currentDistrict.hasMultipleStudents && !oldStudent) {
-					[[NSUserDefaults standardUserDefaults] setInteger:@0 forKey:@"selectedStudent"];
+					[[NSUserDefaults standardUserDefaults] setInteger:0 forKey:@"selectedStudent"];
 					[[NSUserDefaults standardUserDefaults] synchronize];
 					
 					[[SQUGradeManager sharedInstance] setStudent:_students[0]];

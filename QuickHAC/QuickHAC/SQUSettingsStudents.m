@@ -106,7 +106,7 @@
 			cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"District: %@", nil), district.name];			
 		}
 		
-		NSUInteger selectedStudent = [[NSUserDefaults standardUserDefaults] integerForKey:@"selectedStudent"];
+		NSInteger selectedStudent = [[NSUserDefaults standardUserDefaults] integerForKey:@"selectedStudent"];
 		
 		// Always show the check if there's only a single student
 		if(indexPath.row == selectedStudent || _students.count == 1) {
@@ -145,7 +145,7 @@
 
 - (void) tableView:(UITableView *) tableView commitEditingStyle:(UITableViewCellEditingStyle) editingStyle forRowAtIndexPath:(NSIndexPath *) indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-		NSUInteger selectedStudent = [[NSUserDefaults standardUserDefaults] integerForKey:@"selectedStudent"];
+		NSInteger selectedStudent = [[NSUserDefaults standardUserDefaults] integerForKey:@"selectedStudent"];
 		
 		if(indexPath.row == selectedStudent) {
 			[[NSUserDefaults standardUserDefaults] setInteger:selectedStudent forKey:@"selectedStudent"];
@@ -177,7 +177,7 @@
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	
 	if(indexPath.section == 0) {
-		NSUInteger selectedStudent = [[NSUserDefaults standardUserDefaults] integerForKey:@"selectedStudent"];
+		NSInteger selectedStudent = [[NSUserDefaults standardUserDefaults] integerForKey:@"selectedStudent"];
 		
 		// Update selection if we're not tapping the same cell as selected
 		if(indexPath.row != selectedStudent) {

@@ -176,7 +176,34 @@ static NSUInteger SQUGradeOverviewTableViewCellWidth[2] = {115, 112};
     _periodTitle.string = [NSString stringWithFormat:NSLocalizedString(@"Period %u", nil), period];
     _courseTitle.string = _courseInfo.title;
 	
-	for(NSUInteger i = 0; i < 2; i++) {
+	// Add only the cycle heads we need
+	if(_courseInfo.semesters.count != 1) {
+		for(CATextLayer *layer in _semesterHeads) {
+			[_backgroundLayer addSublayer:layer];
+		}
+		
+		for(CATextLayer *layer in _cycleHeads) {
+			[_backgroundLayer addSublayer:layer];
+		}
+	} else { // We need cycles 1-4
+		// Remove semester heads
+		for(CATextLayer *layer in _semesterHeads) {
+			[layer removeFromSuperlayer];
+		}
+		
+		// Remove other cycle's labels
+		for(CATextLayer *layer in _cycleHeads) {
+			[layer removeFromSuperlayer];
+		}
+		
+		// Add cycles 1-4 labels
+		for(NSUInteger i = 0; i < 4; i++) {
+			[_backgroundLayer addSublayer:_cycleHeads[i]];
+		}
+	}
+	
+	// Generate something for each semester
+	for(NSUInteger i = 0; i < _courseInfo.semesters.count; i++) {
 		SQUSemester *semester = _courseInfo.semesters[i];
 		
 		CATextLayer *semesterHead = _semesterHeads[i];
@@ -189,23 +216,39 @@ static NSUInteger SQUGradeOverviewTableViewCellWidth[2] = {115, 112};
 			semesterHead.foregroundColor = [UIColor blackColor].CGColor;
 		}
 		
-		for(NSUInteger j = 0; j < 4; j++) {
-			CATextLayer *cycleHead = _cycleHeads[j + (i * 4)];
-			
-			// Exam grade
-			if(j == 3) {
-				if(semester.examGrade.integerValue == -1) {
-					cycleHead.string = [NSString stringWithFormat:NSLocalizedString(@"Exam %u: -", nil), i + 1];
-					cycleHead.foregroundColor = [UIColor lightGrayColor].CGColor;
-				} else if(!semester.examIsExempt.boolValue) {
-					cycleHead.string = [NSString stringWithFormat:NSLocalizedString(@"Exam %u: %u", nil), i + 1, semester.examGrade.unsignedIntegerValue];
-					cycleHead.foregroundColor = [UIColor blackColor].CGColor;
+		if(_courseInfo.semesters.count != 1) {
+			for(NSUInteger j = 0; j < 4; j++) {
+				CATextLayer *cycleHead = _cycleHeads[j + (i * 4)];
+				
+				// Exam grade
+				if(j == 3) {
+					if(semester.examGrade.integerValue == -1) {
+						cycleHead.string = [NSString stringWithFormat:NSLocalizedString(@"Exam %u: -", nil), i + 1];
+						cycleHead.foregroundColor = [UIColor lightGrayColor].CGColor;
+					} else if(!semester.examIsExempt.boolValue) {
+						cycleHead.string = [NSString stringWithFormat:NSLocalizedString(@"Exam %u: %u", nil), i + 1, semester.examGrade.unsignedIntegerValue];
+						cycleHead.foregroundColor = [UIColor blackColor].CGColor;
+					} else {
+						cycleHead.string = [NSString stringWithFormat:NSLocalizedString(@"Exam %u: Exc", nil), i + 1];
+						cycleHead.foregroundColor = [UIColor blackColor].CGColor;
+					}
 				} else {
-					cycleHead.string = [NSString stringWithFormat:NSLocalizedString(@"Exam %u: Exc", nil), i + 1];
-					cycleHead.foregroundColor = [UIColor blackColor].CGColor;
+					SQUCycle *cycle = _courseInfo.cycles[j + (i * 3)];
+					
+					if(cycle.average.unsignedIntegerValue == 0) {
+						cycleHead.string = [NSString stringWithFormat:NSLocalizedString(@"Cycle %u: -", nil), j + 1];
+						cycleHead.foregroundColor = [UIColor lightGrayColor].CGColor;
+					} else {
+						cycleHead.string = [NSString stringWithFormat:NSLocalizedString(@"Cycle %u: %u", nil), j + 1, cycle.average.unsignedIntegerValue];
+						cycleHead.foregroundColor = [UIColor blackColor].CGColor;
+					}
 				}
-			} else {
-				SQUCycle *cycle = _courseInfo.cycles[j + (i * 3)];
+			}
+		} else {
+			// Elementary students
+			for(NSUInteger j = 0; j < 4; j++) {
+				CATextLayer *cycleHead = _cycleHeads[j];
+				SQUCycle *cycle = _courseInfo.cycles[j];
 				
 				if(cycle.average.unsignedIntegerValue == 0) {
 					cycleHead.string = [NSString stringWithFormat:NSLocalizedString(@"Cycle %u: -", nil), j + 1];
@@ -216,6 +259,13 @@ static NSUInteger SQUGradeOverviewTableViewCellWidth[2] = {115, 112};
 				}
 			}
 		}
+	}
+	
+	// Remove the seperator as needed (if there's only one semester)
+	if(_courseInfo.semesters.count == 1) {
+		[_semesterSeperator removeFromSuperlayer];
+	} else {
+		[_backgroundLayer addSublayer:_semesterSeperator];
 	}
 }
 

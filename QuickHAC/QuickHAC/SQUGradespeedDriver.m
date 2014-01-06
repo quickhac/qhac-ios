@@ -84,44 +84,48 @@
 	NSMutableArray *cycles = [NSMutableArray new];
 	NSMutableDictionary *returnValue = [NSMutableDictionary new];
 	
+	NSInteger examGrade = -1, semesterAverage = -1;
+	BOOL examIsExempt = NO;
+	
 	// Parse cycles
 	for (NSUInteger i = 0; i < semParams.cyclesPerSemester; i++) {
 		cycles[i] = [self parseCycleWithDistrict:district andCell:cells[i] andIndex:i];
 	}
 	
-	// Parse exam grade
-	NSInteger examGrade = -1;
-	BOOL examIsExempt = NO;
-	
-	TFHppleElement *exam = cells[semParams.cyclesPerSemester];
-	
-	// Check if we have children (exam grades are wrapped in a <span>)
-	if(exam.hasChildren) {
-		exam = exam.children[0];
+	// Elementary students don't have exams or semester averages
+	if(semParams.cyclesPerSemester != 4) {
+		// Parse exam grade
+		TFHppleElement *exam = cells[semParams.cyclesPerSemester];
 		
-		if([exam.text isEqualToString:@"EX"] || [exam.text isEqualToString:@"Exc"]) {
-			examIsExempt = YES;
-		} else if(exam.text != nil) {
-			examGrade = [exam.text integerValue];
+		// Check if we have children (exam grades are wrapped in a <span>)
+		if(exam.hasChildren) {
+			exam = exam.children[0];
+			
+			if([exam.text isEqualToString:@"EX"] || [exam.text isEqualToString:@"Exc"]) {
+				examIsExempt = YES;
+			} else if(exam.text != nil) {
+				examGrade = [exam.text integerValue];
+			}
 		}
-	}
-	
-	// Parse semester average
-	NSInteger semesterAverage = -1;
-	TFHppleElement *semAvgCell = cells[semParams.cyclesPerSemester+1];
-	
-	// Semester averages are wrapped in a <span> as well
-	if(semAvgCell.hasChildren) {
-		semAvgCell = semAvgCell.children[0];
 		
-		if(semAvgCell.text != nil) {
-			semesterAverage = [semAvgCell.text integerValue];
+		// Parse semester average
+		TFHppleElement *semAvgCell = cells[semParams.cyclesPerSemester+1];
+		
+		// Semester averages are wrapped in a <span> as well
+		if(semAvgCell.hasChildren) {
+			semAvgCell = semAvgCell.children[0];
+			
+			if(semAvgCell.text != nil) {
+				semesterAverage = [semAvgCell.text integerValue];
+			}
 		}
+	} else {
+		examGrade = semesterAverage = -2;
 	}
 	
 	// Produce return value
-	returnValue[@"index"] = [NSNumber numberWithUnsignedInteger:semester];
 	returnValue[@"cycles"] = cycles;
+	returnValue[@"index"] = [NSNumber numberWithUnsignedInteger:semester];
 	returnValue[@"examIsExempt"] = [NSNumber numberWithBool:examIsExempt];
 	returnValue[@"examGrade"] = [NSNumber numberWithInteger:examGrade];
 	returnValue[@"semesterAverage"] = [NSNumber numberWithInteger:semesterAverage];
@@ -148,6 +152,9 @@
 	return nil;
 }
 
+/**
+ * Processes a row of the overall gradebook, i.e. a class.
+ */
 - (NSDictionary *) parseCourseWithDistrict:(SQUDistrict *) district andTableRow:(TFHppleElement *) row andSemesterParams:(semester_params_t) semParams {
 	NSMutableDictionary *dict = [NSMutableDictionary new];
 	NSMutableArray *semesters = [NSMutableArray new];
@@ -156,17 +163,31 @@
 	NSArray *cells = [row childrenWithTagName:@"td"];
 	TFHppleElement *teacherLink = [[row childrenWithClassName:@"TeacherNameCell"][0] children][0];
 	
-	// Build a list of cells in a semester
-	for (NSUInteger i = 0; i < semParams.semesters; i++) {
+	// If we detect 4 cycles/semester
+	if(semParams.cyclesPerSemester != 4) {
+		// Build a list of cells in a semester
+		for (NSUInteger i = 0; i < semParams.semesters; i++) {
+			NSMutableArray *semesterCells = [NSMutableArray new];
+			NSUInteger cellOffset = district.tableOffsets.grades + (i * (semParams.cyclesPerSemester + 2));
+			
+			for(NSUInteger j = 0; j < semParams.cyclesPerSemester + 2; j++) {
+				semesterCells[j] = cells[cellOffset + j];
+			}
+			
+			// Get information for this semester.
+			semesters[i] = [self parseSemesterWithDistrict:district andSemesterCells:semesterCells andSemester:i andSemesterParams:semParams];
+		}
+	} else {
+		// Process the student as an elementary student.
 		NSMutableArray *semesterCells = [NSMutableArray new];
-		NSUInteger cellOffset = district.tableOffsets.grades + (i * (semParams.cyclesPerSemester + 2));
+		NSUInteger cellOffset = district.tableOffsets.grades;
 		
-		for(NSUInteger j = 0; j < semParams.cyclesPerSemester + 2; j++) {
+		for(NSUInteger j = 0; j < semParams.cyclesPerSemester; j++) {
 			semesterCells[j] = cells[cellOffset + j];
 		}
 		
 		// Get information for this semester.
-		semesters[i] = [self parseSemesterWithDistrict:district andSemesterCells:semesterCells andSemester:i andSemesterParams:semParams];
+		semesters[0] = [self parseSemesterWithDistrict:district andSemesterCells:semesterCells andSemester:0 andSemesterParams:semParams];
 	}
 	
 	NSString *courseCode = [self getCourseNumberForDistrict:district andCells:cells];
@@ -176,7 +197,7 @@
 	dict[@"teacherName"] = [teacherLink text];
 	dict[@"teacherEmail"] = [teacherLink[@"href"] substringFromIndex:7];
 	dict[@"semesters"] = semesters;
-	
+
 	/*
 	 * If the class doesn't have a course code we could extract, because there
 	 * is no grades entered for it, we must ignore it.
@@ -237,6 +258,12 @@
 			.semesters = sem,
 			.cyclesPerSemester = cyc
 		};
+		
+		// Treat elementary schools as 1 semester with 4 cycles
+		if(sem > cyc) {
+			semesterParams.semesters = 1;
+			semesterParams.cyclesPerSemester = sem;
+		}
 		
 		// Iterate the rows
 		for (TFHppleElement *row in rows) {
