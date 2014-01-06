@@ -99,14 +99,25 @@
 		SQUDistrict *district = [[SQUDistrictManager sharedInstance] districtWithID:student.district.integerValue];
 		
 		cell.textLabel.text = student.name;
-		cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Student ID: %@ — %@", nil), student.student_id, district.name];
+		
+		if(student.student_id) {
+			cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Student ID: %@ — %@", nil), student.student_id, district.name];
+		} else {
+			cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"District: %@", nil), district.name];			
+		}
 		
 		NSUInteger selectedStudent = [[NSUserDefaults standardUserDefaults] integerForKey:@"selectedStudent"];
 		
-		if(indexPath.row == selectedStudent) {
+		// Always show the check if there's only a single student
+		if(indexPath.row == selectedStudent || _students.count == 1) {
 			cell.accessoryType = UITableViewCellAccessoryCheckmark;
 		} else {
 			cell.accessoryType = UITableViewCellAccessoryNone;
+		}
+		
+		// Disable selection if there's only one student
+		if(_students.count == 1) {
+			cell.selectionStyle = UITableViewCellSelectionStyleNone;
 		}
 	} else if(indexPath.section == 1) {
 		// "Add New…" button

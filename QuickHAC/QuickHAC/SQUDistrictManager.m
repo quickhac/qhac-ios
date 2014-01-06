@@ -57,15 +57,8 @@ static SQUDistrictManager *_sharedInstance = nil;
 			
 			_HTTPManager = [AFHTTPRequestOperationManager manager];
 			_HTTPManager.responseSerializer = [AFHTTPResponseSerializer serializer];
-			
-			// Set up reachability so we can gracefully fail requests w/o network
-			[[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:
-			 ^(AFNetworkReachabilityStatus status) {
-				 NSLog(@"Reachability: %@", AFStringFromNetworkReachabilityStatus(status));
-			}];
         }
 		
-        
         return self;
     }
 }
