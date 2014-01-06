@@ -20,7 +20,7 @@
         <relationship name="cycle" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SQUCycle" inverseName="categories" inverseEntity="SQUCycle" syncable="YES"/>
     </entity>
     <entity name="SQUCourse" representedClassName="SQUCourse" syncable="YES">
-        <attribute name="courseCode" attributeType="String" syncable="YES"/>
+        <attribute name="courseCode" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="isExcludedFromGPA" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="isHonours" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="period" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>

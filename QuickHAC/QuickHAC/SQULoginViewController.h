@@ -40,5 +40,6 @@
 }
 
 @property (nonatomic) SQUDistrict *district;
+@property (nonatomic, readwrite) NSMutableArray *students;
 
 @end

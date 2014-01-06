@@ -27,6 +27,7 @@
 @end
 
 @implementation SQUTabletLoginController
+@synthesize students = _students;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -353,7 +354,7 @@
 							[self_unsafe dismissViewControllerAnimated:YES completion:NO];
 						} else {
 							// Delete students added to the DB
-							for(SQUStudent *studentToDelete in _students) {
+							for(SQUStudent *studentToDelete in self_unsafe.students) {
 								[[SQUAppDelegate sharedDelegate].managedObjectContext deleteObject:studentToDelete];
 							}
 							

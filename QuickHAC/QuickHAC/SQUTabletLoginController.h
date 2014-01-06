@@ -28,4 +28,6 @@
 	void (^_studentLoginFunction)(void);
 }
 
+@property (nonatomic, readwrite) NSMutableArray *students;
+
 @end

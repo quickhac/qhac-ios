@@ -175,6 +175,21 @@
 	SQUCourse *course = (SQUCourse *) notif.userInfo[@"course"];
 	
 	if(course) {
+		NSUInteger numCyclesAvailable = 0;
+		
+		for(SQUCycle *cycle in course.cycles) {
+			if(cycle.dataAvailableInGradebook.boolValue) {
+				numCyclesAvailable++;
+			}
+		}
+		
+		// Display a message if this cycle has no information
+		if(!numCyclesAvailable) {
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"No Grades Available", nil) message:[NSString stringWithFormat:NSLocalizedString(@"There is no data available in the gradebook for the course %@.\nPlease check again later, or consult %@.", @"no cycles with data alert"), course.title, course.teacher_name] delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
+			[alert show];
+			return;
+		}
+		
 		NSUInteger index = [[[SQUGradeManager sharedInstance] getCoursesForCurrentStudent] indexOfObject:course];
 		
 		selectedItem = [NSIndexPath indexPathForRow:index inSection:1];

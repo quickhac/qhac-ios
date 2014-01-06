@@ -197,18 +197,20 @@
 	dict[@"teacherName"] = [teacherLink text];
 	dict[@"teacherEmail"] = [teacherLink[@"href"] substringFromIndex:7];
 	dict[@"semesters"] = semesters;
-
-	/*
-	 * If the class doesn't have a course code we could extract, because there
-	 * is no grades entered for it, we must ignore it.
-	 */
+	
+	// Put an empty string in the dictionary if there's no course code
 	if(courseCode) {
 		dict[@"courseNum"] = courseCode;
-		return dict;
 	} else {
-		NSLog(@"Couldn't find course code for course %@, ignoring it", dict[@"title"]);
-		return nil;
+		// Ignore advisory periods
+		if([dict[@"title"] rangeOfString:@"ADVISORY"].location != NSNotFound) {
+			return nil;
+		}
+		
+		dict[@"courseNum"] = @"";
 	}
+
+	return dict;
 }
 
 /**

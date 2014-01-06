@@ -198,19 +198,21 @@
 	}
 	
 	for(NSDictionary *class in grades) {
-		NSMutableArray *semesterArray = [NSMutableArray new];
-		
-		for(NSDictionary *semester in class[@"semesters"]) {
-			NSMutableArray *cycleArray = [NSMutableArray new];
+		if(class[@"courseNum"]) {
+			NSMutableArray *semesterArray = [NSMutableArray new];
 			
-			for(NSDictionary *cycle in semester[@"cycles"]) {
-				[cycleArray addObject:cycle[@"urlHash"]];
+			for(NSDictionary *semester in class[@"semesters"]) {
+				NSMutableArray *cycleArray = [NSMutableArray new];
+				
+				for(NSDictionary *cycle in semester[@"cycles"]) {
+					[cycleArray addObject:cycle[@"urlHash"]];
+				}
+				
+				[semesterArray addObject:cycleArray];
 			}
 			
-			[semesterArray addObject:cycleArray];
+			_classToHashMap[class[@"courseNum"]] = semesterArray;
 		}
-		
-		_classToHashMap[class[@"courseNum"]] = semesterArray;
 	}
 }
 
@@ -351,7 +353,6 @@
 	// Try to find the course in the map
 	NSArray *semesterArray = _classToHashMap[courseCode];
 	if(!semesterArray) {
-		NSLog(@"Could not find course %@ in cycle -> hash map", courseCode);
 		return nil;
 	}
 	

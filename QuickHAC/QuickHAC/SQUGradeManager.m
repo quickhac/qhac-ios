@@ -236,15 +236,53 @@ static SQUGradeManager *_sharedInstance = nil;
 #pragma mark - Database interfacing
 /**
  * Checks if the student has a course entry for the specified course.
+ *
+ * This checks through both the course code and the course title.
  */
 - (BOOL) classEntryExists:(NSDictionary *) class {
-	for(SQUCourse *course in _student.courses) {
-		if([course.courseCode isEqualToString:class[@"courseNum"]]) {
-			return YES;
-		}
-	}
+	NSError *err = nil;
+	
+	NSFetchRequest *request = [[NSFetchRequest alloc] init];
+	NSEntityDescription *entity =
+	[NSEntityDescription entityForName:@"SQUCourse" inManagedObjectContext:_coreDataMOContext];
+	[request setEntity:entity];
+	
+	// Search by title OR course number, and current student
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"((courseCode == %@) OR (title LIKE[c] %@)) AND (student = %@)", class[@"courseNum"], class[@"title"], _student];
+	[request setPredicate:predicate];
+	
+	NSUInteger count = [_coreDataMOContext countForFetchRequest:request error:&err];
+	
+	if(count != 0) return YES;
 	
 	return NO;
+}
+
+/**
+ * Attempts to find a course entity in the database for the specified course.
+ *
+ * @param class A dictionary describing the course.
+ * @return Pointer to the SQUCourse object, or nil.
+ */
+- (SQUCourse *) courseEntryForClass:(NSDictionary *) class {
+	NSError *err = nil;
+	
+	NSFetchRequest *request = [[NSFetchRequest alloc] init];
+	NSEntityDescription *entity =
+	[NSEntityDescription entityForName:@"SQUCourse" inManagedObjectContext:_coreDataMOContext];
+	[request setEntity:entity];
+	
+	// Search by title OR course number, and current student
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"((courseCode == %@) OR (title LIKE[c] %@)) AND (student = %@)", class[@"courseNum"], class[@"title"], _student];
+	[request setPredicate:predicate];
+	
+	NSArray *matches = [_coreDataMOContext executeFetchRequest:request error:&err];
+	
+	if(matches.count != 0) {
+		return matches[0];
+	} else {
+		return nil;
+	}
 }
 
 /**
@@ -316,18 +354,15 @@ static SQUGradeManager *_sharedInstance = nil;
 		SQUCourse *course;
 		
 		if([self classEntryExists:class]) {
-			// Go through courses on the student record to find course ID
-			for(SQUCourse *aCourse in _student.courses) {
-				if([aCourse.courseCode isEqualToString:class[@"courseNum"]]) {
-					course = aCourse;
-				}
-			}
-			
+			course = [self courseEntryForClass:class];
 			NSAssert(course != NULL, @"Course supposedly exists but we can't find it");
 		} else {
 			// We need to create a new course entry.
 			course = [NSEntityDescription insertNewObjectForEntityForName:@"SQUCourse" inManagedObjectContext:_coreDataMOContext];
-			course.courseCode = class[@"courseNum"];
+			if([class[@"courseNum"] length] > 0) {
+				course.courseCode = class[@"courseNum"];
+			}
+			
 			course.title = class[@"title"];
 			course.teacher_name = class[@"teacherName"];
 			course.teacher_email = class[@"teacherEmail"];
@@ -368,6 +403,14 @@ static SQUGradeManager *_sharedInstance = nil;
 			}
 			
 			// NSLog(@"Created %i cycles in course %@.", course.cycles.count, course.courseCode);
+		}
+		
+		// If the course code is nil, try to find it
+		if(!course.courseCode) {
+			NSLog(@"Could not find course code for `%@`", course.title);
+			if([class[@"courseNum"] length] > 0) {
+				course.courseCode = class[@"courseNum"];
+			}
 		}
 		
 		// Check which cycles have data available
