@@ -14,7 +14,6 @@
 @class WYPopoverController;
 
 @interface SQUClassDetailController : UITableViewController <SQUClassCycleChooserControllerDelegate> {
-	NSDateFormatter *_refreshDateFormatter;
 	SQUCourse *_course;
 	
 	NSUInteger _displayCycle;

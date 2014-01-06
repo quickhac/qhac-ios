@@ -12,6 +12,8 @@
 #import <CoreImage/CoreImage.h>
 #import <QuartzCore/QuartzCore.h>
 
+#import "NSDate+RelativeDate.h"
+
 #import "SQUGradeOverviewTableViewCell.h"
 #import "SQUAppDelegate.h"
 #import "SQUCoreData.h"
@@ -50,9 +52,6 @@
 		self.navigationItem.rightBarButtonItem = item;*/
 		
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateTableNotification:) name:SQUGradesDataUpdatedNotification object:nil];
-		
-		_refreshDateFormatter = [[NSDateFormatter alloc] init];
-		[_refreshDateFormatter setDateFormat:@"MMM d, h:mm a"];
     }
 	
     return self;
@@ -70,14 +69,12 @@
     UIRefreshControl *refresher = [[UIRefreshControl alloc] init];
     [refresher addTarget:self action:@selector(reloadData:)
         forControlEvents:UIControlEventValueChanged];
-	
-	NSString *lastUpdated = [NSString stringWithFormat:NSLocalizedString(@"Last Updated on %@", nil), [_refreshDateFormatter stringFromDate:[SQUGradeManager sharedInstance].student.lastAveragesUpdate]];
-	refresher.attributedTitle = [[NSAttributedString alloc] initWithString:lastUpdated];
 
-    self.refreshControl = refresher;
+	refresher.attributedTitle = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"Updated %@", @"relative date grades refresh control"), [[SQUGradeManager sharedInstance].student.lastAveragesUpdate relativeDate]]];
 	
 	// iOS 7 is stupid and draws the referesh control behind the table's BG view
-	self.refreshControl.layer.zPosition = self.tableView.backgroundView.layer.zPosition + 1;
+	refresher.layer.zPosition = self.tableView.backgroundView.layer.zPosition + 1;
+    self.refreshControl = refresher;
 	
 	// Blurry navbar
 	self.navigationController.navigationBar.translucent = YES;
@@ -110,6 +107,9 @@
 	
 	// Apply to nav item
 	self.navigationItem.titleView = _navbarTitle;
+	
+	// Show relative date
+	self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"Updated %@", @"relative date grades refresh control"), [[SQUGradeManager sharedInstance].student.lastAveragesUpdate relativeDate]]];
 	
 	// Reload table data
 	[self.tableView reloadData];
@@ -179,14 +179,11 @@
 			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Updating Grades", nil) message:error.localizedDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
             [alert show];
 		} else {
-			NSLog(@"Grades Refreshed");
 			[self.tableView reloadData];
 		}
 		
 		// End refreshing
-		NSDate *date = [NSDate date];
-		NSString *lastUpdated = [NSString stringWithFormat:NSLocalizedString(@"Last Updated on %@", nil), [_refreshDateFormatter stringFromDate:date]];
-		control.attributedTitle = [[NSAttributedString alloc] initWithString:lastUpdated];
+		control.attributedTitle = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"Updated %@", @"relative date grades refresh control"), [[NSDate date] relativeDate]]];
 		
 		[control endRefreshing];
 	}];
@@ -196,8 +193,7 @@
 - (void) updateTableNotification:(NSNotification *) notif {
 	[self.tableView reloadData];
 	
-	NSString *lastUpdated = [NSString stringWithFormat:NSLocalizedString(@"Last Updated on %@", nil), [_refreshDateFormatter stringFromDate:[SQUGradeManager sharedInstance].student.lastAveragesUpdate]];
-	self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:lastUpdated];
+	self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"Updated %@", @"relative date grades refresh control"), [[SQUGradeManager sharedInstance].student.lastAveragesUpdate relativeDate]]];
 	
 	// Update GPA display
 	[self updateGPA];

@@ -8,9 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SQUGradeOverviewController : UITableViewController {
-	NSDateFormatter *_refreshDateFormatter;
-	
+@interface SQUGradeOverviewController : UITableViewController {	
 	// Navbar title view
 	UIView *_navbarTitle;
 	CATextLayer *_titleLayer;

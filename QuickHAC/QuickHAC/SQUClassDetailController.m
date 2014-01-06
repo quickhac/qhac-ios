@@ -6,6 +6,7 @@
 //  See README.MD for licensing and copyright information.
 //
 
+#import "NSDate+RelativeDate.h"
 #import "SQUClassDetailController.h"
 #import "SQUCoreData.h"
 #import "SQUGradeManager.h"
@@ -52,9 +53,6 @@
 											  action:@selector(openCyclesSwitcher:)];
 		[self.navigationItem setRightBarButtonItem:showCycleSwitcher];
 		
-		_refreshDateFormatter = [[NSDateFormatter alloc] init];
-		[_refreshDateFormatter setDateFormat:@"MMM d, h:mm a"];
-		
 		if([[NSUserDefaults standardUserDefaults] objectForKey:@"selectedCycle"] == nil) {
 			_displayCycle = 0;
 		} else {
@@ -73,8 +71,6 @@
     [refresher addTarget:self action:@selector(reloadData:)
         forControlEvents:UIControlEventValueChanged];
 	
-	NSString *lastUpdated = [NSString stringWithFormat:NSLocalizedString(@"Last Updated on %@", @"class detail pull to refresh"), [_refreshDateFormatter stringFromDate:_currentCycle.last_updated]];
-	refresher.attributedTitle = [[NSAttributedString alloc] initWithString:lastUpdated];
     self.refreshControl = refresher;
 	
 	// iOS 7 is stupid and draws the referesh control behind the table's BG view
@@ -117,6 +113,9 @@
 	
 	// Apply to nav item
 	self.navigationItem.titleView = _navbarTitle;
+	
+	// Update relative date
+	self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"Updated %@", @"relative date grades refresh control"), [_currentCycle.last_updated relativeDate]]];
 }
 
 #pragma mark - Table view data source
@@ -159,8 +158,7 @@
 	
 	_currentCycle = _course.cycles[_displayCycle];
 	
-	NSString *lastUpdated = [NSString stringWithFormat:NSLocalizedString(@"Last Updated on %@", @"class detail pull to refresh"), [_refreshDateFormatter stringFromDate:_currentCycle.last_updated]];
-	self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:lastUpdated];
+	self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"Updated %@", @"relative date grades refresh control"), [_currentCycle.last_updated relativeDate]]];
 	
 	[self.tableView reloadData];
 }
@@ -250,8 +248,7 @@
 			
 			[self.refreshControl endRefreshing];
 			
-			NSString *lastUpdated = [NSString stringWithFormat:NSLocalizedString(@"Last Updated on %@", @"class detail pull to refresh"), [_refreshDateFormatter stringFromDate:_currentCycle.last_updated]];
-			self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:lastUpdated];
+			self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"Updated %@", @"relative date grades refresh control"), [_currentCycle.last_updated relativeDate]]];
 			
 			[[NSUserDefaults standardUserDefaults] setInteger:_displayCycle forKey:@"selectedCycle"];
 		}];

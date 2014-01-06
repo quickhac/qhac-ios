@@ -97,7 +97,6 @@ static SQUAppDelegate *sharedDelegate = nil;
 	}
 	
     _window.backgroundColor = UIColorFromRGB(0xECF0F1);
-    [_window makeKeyAndVisible];
     
     if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
 		// Hack for an MGSplitViewController bug
@@ -135,6 +134,8 @@ static SQUAppDelegate *sharedDelegate = nil;
 			SQUTabletLoginController *loginController = [[SQUTabletLoginController alloc] init];
 			[_ipadSplitController presentViewController:[[UINavigationController alloc] initWithRootViewController:loginController] animated:NO completion:NULL];
 		}
+
+		[_window makeKeyAndVisible];
     } else {
 		// Show the passcode lock, if passcode is enabled
 /*		if([[NSUserDefaults standardUserDefaults] boolForKey:@"passcodeEnabled"]) {
@@ -164,6 +165,8 @@ static SQUAppDelegate *sharedDelegate = nil;
 		// This ensures we can see cached data while the new data is fetched
 		[[SQUGradeManager sharedInstance] setStudent:student];		
 		[[NSNotificationCenter defaultCenter] postNotificationName:SQUGradesDataUpdatedNotification object:nil];
+		
+		[_window makeKeyAndVisible];
 		
 		// Validate the student object.
 		dispatch_async(dispatch_get_main_queue(), ^{

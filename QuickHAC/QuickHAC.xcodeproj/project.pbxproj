@@ -35,6 +35,8 @@
 		DE2844031877ABCC0000756C /* SQUSemester.m in Sources */ = {isa = PBXBuildFile; fileRef = DE2844021877ABCC0000756C /* SQUSemester.m */; };
 		DE35E9A9180614DF00F15F20 /* Lockbox.m in Sources */ = {isa = PBXBuildFile; fileRef = DE35E9A8180614DF00F15F20 /* Lockbox.m */; };
 		DE35E9AB18061F8100F15F20 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE35E9AA18061F8100F15F20 /* Security.framework */; };
+		DE3AC657187B5A37007540A9 /* NSDate+RelativeDate.m in Sources */ = {isa = PBXBuildFile; fileRef = DE3AC656187B5A37007540A9 /* NSDate+RelativeDate.m */; };
+		DE3AC65C187B63D3007540A9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = DE3AC65A187B63D3007540A9 /* Localizable.strings */; };
 		DE72EBB9187A102B006F6F1A /* SQUEmptyView.m in Sources */ = {isa = PBXBuildFile; fileRef = DE72EBB8187A102B006F6F1A /* SQUEmptyView.m */; };
 		DE7B4E85186EB0F3008079CC /* NSManagedObjectModel+KCOrderedAccessorFix.m in Sources */ = {isa = PBXBuildFile; fileRef = DE7B4E84186EB0F3008079CC /* NSManagedObjectModel+KCOrderedAccessorFix.m */; };
 		DE7F51D6178C8B5E00A677CE /* SQULoginSchoolSelector.m in Sources */ = {isa = PBXBuildFile; fileRef = DE7F51D5178C8B5E00A677CE /* SQULoginSchoolSelector.m */; };
@@ -198,6 +200,9 @@
 		DE35E9A7180614DF00F15F20 /* Lockbox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Lockbox.h; path = ../../Lockbox/Lockbox.h; sourceTree = "<group>"; };
 		DE35E9A8180614DF00F15F20 /* Lockbox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Lockbox.m; path = ../../Lockbox/Lockbox.m; sourceTree = "<group>"; };
 		DE35E9AA18061F8100F15F20 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		DE3AC655187B5A37007540A9 /* NSDate+RelativeDate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+RelativeDate.h"; sourceTree = "<group>"; };
+		DE3AC656187B5A37007540A9 /* NSDate+RelativeDate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+RelativeDate.m"; sourceTree = "<group>"; };
+		DE3AC65B187B63D3007540A9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		DE72EBB7187A102B006F6F1A /* SQUEmptyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUEmptyView.h; sourceTree = "<group>"; };
 		DE72EBB8187A102B006F6F1A /* SQUEmptyView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUEmptyView.m; sourceTree = "<group>"; };
 		DE7B4E83186EB0F3008079CC /* NSManagedObjectModel+KCOrderedAccessorFix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSManagedObjectModel+KCOrderedAccessorFix.h"; path = "../../KCOrderedAccessorFix/NSManagedObjectModel+KCOrderedAccessorFix.h"; sourceTree = "<group>"; };
@@ -221,7 +226,7 @@
 		DECA57D517DFD9D400156AFC /* SQUCoreData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SQUCoreData.h; sourceTree = "<group>"; };
 		DECEA57D1877FF8900C3D2FC /* NSMutableURLRequest+POSTGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableURLRequest+POSTGenerator.h"; sourceTree = "<group>"; };
 		DECEA57E1877FF8900C3D2FC /* NSMutableURLRequest+POSTGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableURLRequest+POSTGenerator.m"; sourceTree = "<group>"; };
-		DECFF3C6187B42D5007AFE6D /* QuickHAC CoreData Beta 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "QuickHAC CoreData Beta 2.xcdatamodel"; sourceTree = "<group>"; };
+		DECFF3C6187B42D5007AFE6D /* QuickHAC CoreData Beta 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "QuickHAC CoreData Beta 2.xcdatamodel"; sourceTree = "<group>"; };
 		DECFF3C8187B444B007AFE6D /* SQUCycle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUCycle.h; sourceTree = "<group>"; };
 		DECFF3C9187B444B007AFE6D /* SQUCycle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUCycle.m; sourceTree = "<group>"; };
 		DEF0F1B7186EE05400116B61 /* SQUCourse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUCourse.h; sourceTree = "<group>"; };
@@ -449,6 +454,7 @@
 				DEF0F21B187156D000116B61 /* acknowledgements.rtf */,
 				DE06158417874D0D004B2877 /* QuickHAC-Info.plist */,
 				DE06158517874D0D004B2877 /* InfoPlist.strings */,
+				DE3AC65A187B63D3007540A9 /* Localizable.strings */,
 				DEF0F23A1872C3AC00116B61 /* settings_defaults.plist */,
 			);
 			name = "Miscellaneous Resources";
@@ -657,6 +663,8 @@
 				DEAE4698187807AB008DAE0C /* NSURL+RequestParams.m */,
 				DEBA3D101878FA04003C209B /* NSData+SQUAdditions.h */,
 				DEBA3D111878FA04003C209B /* NSData+SQUAdditions.m */,
+				DE3AC655187B5A37007540A9 /* NSDate+RelativeDate.h */,
+				DE3AC656187B5A37007540A9 /* NSDate+RelativeDate.m */,
 			);
 			name = "Miscellaneous Categories";
 			sourceTree = "<group>";
@@ -1003,6 +1011,7 @@
 			files = (
 				DEF0F23218727EA700116B61 /* Localizable.strings in Resources */,
 				DEF0F23B1872C3AC00116B61 /* settings_defaults.plist in Resources */,
+				DE3AC65C187B63D3007540A9 /* Localizable.strings in Resources */,
 				DE06158717874D0D004B2877 /* InfoPlist.strings in Resources */,
 				DEF0F2481873FB5D00116B61 /* login_background.jpg in Resources */,
 				DE2843F418768D530000756C /* release_notes.md in Resources */,
@@ -1049,6 +1058,7 @@
 				DEF0F1CE186F7D9E00116B61 /* SQUClassDetailCell.m in Sources */,
 				DEF0F1E41870E60B00116B61 /* WYStoryboardPopoverSegue.m in Sources */,
 				DEFFDE5C186E270900E26423 /* UIImageView+AFNetworking.m in Sources */,
+				DE3AC657187B5A37007540A9 /* NSDate+RelativeDate.m in Sources */,
 				DEFFDE45186E26FC00E26423 /* AFURLRequestSerialization.m in Sources */,
 				DEFFDE44186E26FC00E26423 /* AFURLConnectionOperation.m in Sources */,
 				DE2843E118760FD80000756C /* SQUGradespeedDriver.m in Sources */,
@@ -1153,6 +1163,14 @@
 				DE06158617874D0D004B2877 /* en */,
 			);
 			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		DE3AC65A187B63D3007540A9 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DE3AC65B187B63D3007540A9 /* en */,
+			);
+			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 		DEF0F22718727EA700116B61 /* Localizable.strings */ = {
