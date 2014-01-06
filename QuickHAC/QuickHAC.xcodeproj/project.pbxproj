@@ -32,7 +32,6 @@
 		DE2843F318768D530000756C /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = DE2843ED18768D510000756C /* README.md */; };
 		DE2843F418768D530000756C /* release_notes.md in Resources */ = {isa = PBXBuildFile; fileRef = DE2843EE18768D510000756C /* release_notes.md */; };
 		DE2843F7187743DA0000756C /* SQUUIHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = DE2843F6187743DA0000756C /* SQUUIHelpers.m */; };
-		DE2844001877ABCB0000756C /* SQUCycle.m in Sources */ = {isa = PBXBuildFile; fileRef = DE2843FF1877ABCB0000756C /* SQUCycle.m */; };
 		DE2844031877ABCC0000756C /* SQUSemester.m in Sources */ = {isa = PBXBuildFile; fileRef = DE2844021877ABCC0000756C /* SQUSemester.m */; };
 		DE35E9A9180614DF00F15F20 /* Lockbox.m in Sources */ = {isa = PBXBuildFile; fileRef = DE35E9A8180614DF00F15F20 /* Lockbox.m */; };
 		DE35E9AB18061F8100F15F20 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE35E9AA18061F8100F15F20 /* Security.framework */; };
@@ -48,6 +47,7 @@
 		DEBA3D121878FA04003C209B /* NSData+SQUAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = DEBA3D111878FA04003C209B /* NSData+SQUAdditions.m */; };
 		DEC5954818783D69004F4BA4 /* SQUPushHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = DEC5954718783D69004F4BA4 /* SQUPushHandler.m */; };
 		DECEA57F1877FF8900C3D2FC /* NSMutableURLRequest+POSTGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = DECEA57E1877FF8900C3D2FC /* NSMutableURLRequest+POSTGenerator.m */; };
+		DECFF3CA187B444B007AFE6D /* SQUCycle.m in Sources */ = {isa = PBXBuildFile; fileRef = DECFF3C9187B444B007AFE6D /* SQUCycle.m */; };
 		DEF0F1B9186EE05400116B61 /* SQUCourse.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F1B8186EE05400116B61 /* SQUCourse.m */; };
 		DEF0F1BD186EE52B00116B61 /* UIColor+SQUColourUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F1BC186EE52B00116B61 /* UIColor+SQUColourUtilities.m */; };
 		DEF0F1BF186EEA6500116B61 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DEF0F1BE186EEA6400116B61 /* CoreImage.framework */; };
@@ -193,8 +193,6 @@
 		DE2843F118768D510000756C /* TestFlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestFlight.h; sourceTree = "<group>"; };
 		DE2843F5187743DA0000756C /* SQUUIHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUUIHelpers.h; sourceTree = "<group>"; };
 		DE2843F6187743DA0000756C /* SQUUIHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUUIHelpers.m; sourceTree = "<group>"; };
-		DE2843FE1877ABCB0000756C /* SQUCycle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUCycle.h; sourceTree = "<group>"; };
-		DE2843FF1877ABCB0000756C /* SQUCycle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUCycle.m; sourceTree = "<group>"; };
 		DE2844011877ABCC0000756C /* SQUSemester.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUSemester.h; sourceTree = "<group>"; };
 		DE2844021877ABCC0000756C /* SQUSemester.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUSemester.m; sourceTree = "<group>"; };
 		DE35E9A7180614DF00F15F20 /* Lockbox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Lockbox.h; path = ../../Lockbox/Lockbox.h; sourceTree = "<group>"; };
@@ -223,6 +221,9 @@
 		DECA57D517DFD9D400156AFC /* SQUCoreData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SQUCoreData.h; sourceTree = "<group>"; };
 		DECEA57D1877FF8900C3D2FC /* NSMutableURLRequest+POSTGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableURLRequest+POSTGenerator.h"; sourceTree = "<group>"; };
 		DECEA57E1877FF8900C3D2FC /* NSMutableURLRequest+POSTGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableURLRequest+POSTGenerator.m"; sourceTree = "<group>"; };
+		DECFF3C6187B42D5007AFE6D /* QuickHAC CoreData Beta 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "QuickHAC CoreData Beta 2.xcdatamodel"; sourceTree = "<group>"; };
+		DECFF3C8187B444B007AFE6D /* SQUCycle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUCycle.h; sourceTree = "<group>"; };
+		DECFF3C9187B444B007AFE6D /* SQUCycle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUCycle.m; sourceTree = "<group>"; };
 		DEF0F1B7186EE05400116B61 /* SQUCourse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUCourse.h; sourceTree = "<group>"; };
 		DEF0F1B8186EE05400116B61 /* SQUCourse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUCourse.m; sourceTree = "<group>"; };
 		DEF0F1BB186EE52B00116B61 /* UIColor+SQUColourUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+SQUColourUtilities.h"; sourceTree = "<group>"; };
@@ -630,10 +631,10 @@
 		DECA57C817DFD96300156AFC /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
+				DECFF3C8187B444B007AFE6D /* SQUCycle.h */,
+				DECFF3C9187B444B007AFE6D /* SQUCycle.m */,
 				DE2844011877ABCC0000756C /* SQUSemester.h */,
 				DE2844021877ABCC0000756C /* SQUSemester.m */,
-				DE2843FE1877ABCB0000756C /* SQUCycle.h */,
-				DE2843FF1877ABCB0000756C /* SQUCycle.m */,
 				DE2843E418764FD10000756C /* SQUStudent.h */,
 				DE2843E518764FD10000756C /* SQUStudent.m */,
 				DEF0F1EB187101A900116B61 /* SQUCategory.h */,
@@ -1072,7 +1073,6 @@
 				DE2844031877ABCC0000756C /* SQUSemester.m in Sources */,
 				DE81CDD7186D517800DC1CAB /* TFHpple.m in Sources */,
 				DEF0F1B9186EE05400116B61 /* SQUCourse.m in Sources */,
-				DE2844001877ABCB0000756C /* SQUCycle.m in Sources */,
 				DEF0F1BD186EE52B00116B61 /* UIColor+SQUColourUtilities.m in Sources */,
 				DEF0F23418727EA700116B61 /* LTHPasscodeViewController.m in Sources */,
 				DE81CDD9186D517800DC1CAB /* XPathQuery.m in Sources */,
@@ -1082,6 +1082,7 @@
 				DEF0F1C5186EEB9500116B61 /* UIView+JMNoise.m in Sources */,
 				DEFFDE5E186E270900E26423 /* UIWebView+AFNetworking.m in Sources */,
 				DEF0F1CB186F7D8F00116B61 /* SQUClassDetailController.m in Sources */,
+				DECFF3CA187B444B007AFE6D /* SQUCycle.m in Sources */,
 				DE0615D81787ADFE004B2877 /* SQULoginViewController.m in Sources */,
 				DE2843DE18760E3D0000756C /* SQUGradebookDriver.m in Sources */,
 				DE2843EA18766E840000756C /* SQULoginStudentPicker.m in Sources */,
@@ -1380,9 +1381,10 @@
 		DE06158E17874D0D004B2877 /* QuickHAC.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				DECFF3C6187B42D5007AFE6D /* QuickHAC CoreData Beta 2.xcdatamodel */,
 				DE06158F17874D0D004B2877 /* QuickHAC.xcdatamodel */,
 			);
-			currentVersion = DE06158F17874D0D004B2877 /* QuickHAC.xcdatamodel */;
+			currentVersion = DECFF3C6187B42D5007AFE6D /* QuickHAC CoreData Beta 2.xcdatamodel */;
 			path = QuickHAC.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

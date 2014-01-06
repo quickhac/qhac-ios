@@ -74,6 +74,10 @@
 		returnValue[@"urlHash"] = @"";
 	}
 	
+	if(average == 0 && returnValue[@"urlHash"]) {
+		returnValue[@"letterGrade"] = [cell.children[0] text];
+	}
+	
 	returnValue[@"index"] = [NSNumber numberWithUnsignedInteger:index];
 	returnValue[@"average"] = [NSNumber numberWithUnsignedInteger:average];
 	
@@ -202,8 +206,10 @@
 	if(courseCode) {
 		dict[@"courseNum"] = courseCode;
 	} else {
-		// Ignore advisory periods
+		// Ignore known non-graded periods
 		if([dict[@"title"] rangeOfString:@"ADVISORY"].location != NSNotFound) {
+			return nil;
+		} else if([dict[@"title"] rangeOfString:@"Homeroom"].location != NSNotFound) {
 			return nil;
 		}
 		

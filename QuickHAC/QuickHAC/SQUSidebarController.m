@@ -195,8 +195,6 @@
 		selectedItem = [NSIndexPath indexPathForRow:index inSection:1];
 		[self.tableView selectRowAtIndexPath:selectedItem animated:YES scrollPosition:UITableViewScrollPositionNone];
 		
-		NSLog(@"Showing course index %u", index);
-		
 		SQUClassDetailController *controller = [[SQUClassDetailController alloc] initWithCourse:course];
 		UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
 		

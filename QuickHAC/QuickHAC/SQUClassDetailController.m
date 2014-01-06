@@ -131,7 +131,11 @@
 }
 
 - (CGFloat) tableView:(UITableView *) tableView heightForRowAtIndexPath:(NSIndexPath *) indexPath {
-	return [SQUClassDetailCell cellHeightForCategory:_currentCycle.categories[indexPath.row]] + 8;
+	if((indexPath.row + 1) != _currentCycle.categories.count) {
+		return [SQUClassDetailCell cellHeightForCategory:_currentCycle.categories[indexPath.row]] + 8;
+	} else {
+		return [SQUClassDetailCell cellHeightForCategory:_currentCycle.categories[indexPath.row]] + 24;
+	}
 }
 
 - (UITableViewCell *) tableView:(UITableView *) tableView cellForRowAtIndexPath:(NSIndexPath *) indexPath {

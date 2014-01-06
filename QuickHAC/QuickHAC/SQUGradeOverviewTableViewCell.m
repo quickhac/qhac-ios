@@ -250,12 +250,18 @@ static NSUInteger SQUGradeOverviewTableViewCellWidth[2] = {115, 112};
 				CATextLayer *cycleHead = _cycleHeads[j];
 				SQUCycle *cycle = _courseInfo.cycles[j];
 				
-				if(cycle.average.unsignedIntegerValue == 0) {
-					cycleHead.string = [NSString stringWithFormat:NSLocalizedString(@"Cycle %u: -", nil), j + 1];
-					cycleHead.foregroundColor = [UIColor lightGrayColor].CGColor;
-				} else {
+				if(cycle.average.unsignedIntegerValue != 0 && !cycle.usesLetterGrades.boolValue) {
+					// Does NOT use letter grade, has a grade inputted
 					cycleHead.string = [NSString stringWithFormat:NSLocalizedString(@"Cycle %u: %u", nil), j + 1, cycle.average.unsignedIntegerValue];
 					cycleHead.foregroundColor = [UIColor blackColor].CGColor;
+				}  else if(cycle.letterGrade.length != 0 && cycle.usesLetterGrades.boolValue) {
+					// Uses letter grade, has grade inputted
+					cycleHead.string = [NSString stringWithFormat:NSLocalizedString(@"Cycle %u: %@", @"letter grades"), j + 1, cycle.letterGrade];
+					cycleHead.foregroundColor = [UIColor blackColor].CGColor;
+				} else {
+					// Either letter grade or numerical grade but not entered
+					cycleHead.string = [NSString stringWithFormat:NSLocalizedString(@"Cycle %u: -", nil), j + 1];
+					cycleHead.foregroundColor = [UIColor lightGrayColor].CGColor;
 				}
 			}
 		}

@@ -2,7 +2,7 @@
 //  SQUCycle.h
 //  QuickHAC
 //
-//  Created by Tristan Seifert on 1/3/14.
+//  Created by Tristan Seifert on 1/6/14.
 //  See README.MD for licensing and copyright information.
 //
 
@@ -14,12 +14,14 @@
 @interface SQUCycle : NSManagedObject
 
 @property (nonatomic, retain) NSNumber * average;
+@property (nonatomic, retain) NSNumber * changedSinceLastFetch;
 @property (nonatomic, retain) NSNumber * cycleIndex;
 @property (nonatomic, retain) NSNumber * dataAvailableInGradebook;
 @property (nonatomic, retain) NSDate * last_updated;
-@property (nonatomic, retain) NSNumber * semester;
-@property (nonatomic, retain) NSNumber * changedSinceLastFetch;
 @property (nonatomic, retain) NSNumber * preChangeGrade;
+@property (nonatomic, retain) NSNumber * semester;
+@property (nonatomic, retain) NSNumber * usesLetterGrades;
+@property (nonatomic, retain) NSString * letterGrade;
 @property (nonatomic, retain) NSOrderedSet *categories;
 @property (nonatomic, retain) SQUCourse *course;
 @end

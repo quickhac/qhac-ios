@@ -122,7 +122,11 @@
 
 #pragma mark - Table view data source
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return SQUGradeOverviewCellHeight + 8;
+	if((indexPath.row + 1) != [[SQUGradeManager sharedInstance] getCoursesForCurrentStudent].count) {
+		return SQUGradeOverviewCellHeight + 8;
+	} else {
+		return SQUGradeOverviewCellHeight + 24;
+	}
 }
 
 - (NSInteger) numberOfSectionsInTableView:(UITableView *) tableView {
@@ -203,6 +207,13 @@
  * Updates the GPA display.
  */
 - (void) updateGPA {
+	// Hide GPA for elementary students
+	if([[SQUGradeManager sharedInstance].student.school rangeOfString:@"Elementary"].location != NSNotFound) {
+		self.navigationItem.titleView = nil;
+	} else {
+		self.navigationItem.titleView = _navbarTitle;
+	}
+	
 	// Take GPA precision preference into account
 	NSInteger precision = [[NSUserDefaults standardUserDefaults] integerForKey:@"gpa_precision"];
 	NSString *gpaFormatString = [NSString stringWithFormat:NSLocalizedString(@"GPA: %%.%1$uf/%%.%1$uf", nil), precision];

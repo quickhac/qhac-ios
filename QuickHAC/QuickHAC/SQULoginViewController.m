@@ -335,7 +335,6 @@
 					}];
 				};
 				
-				
 				// Bring up a student selector if multistudent account and no students yet
 				if([SQUDistrictManager sharedInstance].currentDistrict.hasMultipleStudents && !oldStudent) {
 					[SVProgressHUD dismiss];

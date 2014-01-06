@@ -297,9 +297,16 @@ static SQUGradeManager *_sharedInstance = nil;
 		cycle.changedSinceLastFetch = @(NO);
 	}
 	
-	cycle.average = @([dict[@"average"] floatValue]);
 	cycle.last_updated = [NSDate new];
 	cycle.average = dict[@"average"];
+	
+	// Apply the letter grade, if applicable.
+	if(dict[@"letterGrade"]) {
+		cycle.usesLetterGrades = @YES;
+		cycle.letterGrade = dict[@"letterGrade"];
+	} else {
+		cycle.usesLetterGrades = @NO;
+	}
 }
 
 #pragma mark - Database updates

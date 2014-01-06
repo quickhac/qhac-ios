@@ -84,7 +84,7 @@ static NSUInteger SQUClassDetailRowTextOffset = 4;
         _noGradesText.foregroundColor = [UIColor blackColor].CGColor;
         _noGradesText.font = (__bridge CFTypeRef) [UIFont fontWithName:@"HelveticaNeue-Light" size:15.0f];
         _noGradesText.fontSize = 15.0f;
-		_noGradesText.string = NSLocalizedString(@"No Grades in Category", @"class detail");
+		_noGradesText.string = NSLocalizedString(@"No Assignments in This Category", @"class detail");
 		_noGradesText.alignmentMode = kCAAlignmentCenter;
 		
 		// Prepare row headers
@@ -237,7 +237,7 @@ static NSUInteger SQUClassDetailRowTextOffset = 4;
 				assignmentValueString = [NSString stringWithFormat:NSLocalizedString(@"%u/%u", @"assignment grade in table not out of 100"), assignment.pts_earned.unsignedIntegerValue, assignment.pts_possible.unsignedIntegerValue];
 			}
 		} else {
-			assignmentValueString = NSLocalizedString(@"", @"shown with empty grade in category table");
+			assignmentValueString = NSLocalizedString(@" ", @"shown with empty grade in category table");
 		}
 		
 		// Text to put on labels
