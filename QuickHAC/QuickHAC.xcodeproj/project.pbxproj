@@ -36,6 +36,7 @@
 		DE2844031877ABCC0000756C /* SQUSemester.m in Sources */ = {isa = PBXBuildFile; fileRef = DE2844021877ABCC0000756C /* SQUSemester.m */; };
 		DE35E9A9180614DF00F15F20 /* Lockbox.m in Sources */ = {isa = PBXBuildFile; fileRef = DE35E9A8180614DF00F15F20 /* Lockbox.m */; };
 		DE35E9AB18061F8100F15F20 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE35E9AA18061F8100F15F20 /* Security.framework */; };
+		DE72EBB9187A102B006F6F1A /* SQUEmptyView.m in Sources */ = {isa = PBXBuildFile; fileRef = DE72EBB8187A102B006F6F1A /* SQUEmptyView.m */; };
 		DE7B4E85186EB0F3008079CC /* NSManagedObjectModel+KCOrderedAccessorFix.m in Sources */ = {isa = PBXBuildFile; fileRef = DE7B4E84186EB0F3008079CC /* NSManagedObjectModel+KCOrderedAccessorFix.m */; };
 		DE7F51D6178C8B5E00A677CE /* SQULoginSchoolSelector.m in Sources */ = {isa = PBXBuildFile; fileRef = DE7F51D5178C8B5E00A677CE /* SQULoginSchoolSelector.m */; };
 		DE81CDD7186D517800DC1CAB /* TFHpple.m in Sources */ = {isa = PBXBuildFile; fileRef = DE81CDD2186D517800DC1CAB /* TFHpple.m */; };
@@ -199,6 +200,8 @@
 		DE35E9A7180614DF00F15F20 /* Lockbox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Lockbox.h; path = ../../Lockbox/Lockbox.h; sourceTree = "<group>"; };
 		DE35E9A8180614DF00F15F20 /* Lockbox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Lockbox.m; path = ../../Lockbox/Lockbox.m; sourceTree = "<group>"; };
 		DE35E9AA18061F8100F15F20 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		DE72EBB7187A102B006F6F1A /* SQUEmptyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUEmptyView.h; sourceTree = "<group>"; };
+		DE72EBB8187A102B006F6F1A /* SQUEmptyView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUEmptyView.m; sourceTree = "<group>"; };
 		DE7B4E83186EB0F3008079CC /* NSManagedObjectModel+KCOrderedAccessorFix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSManagedObjectModel+KCOrderedAccessorFix.h"; path = "../../KCOrderedAccessorFix/NSManagedObjectModel+KCOrderedAccessorFix.h"; sourceTree = "<group>"; };
 		DE7B4E84186EB0F3008079CC /* NSManagedObjectModel+KCOrderedAccessorFix.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSManagedObjectModel+KCOrderedAccessorFix.m"; path = "../../KCOrderedAccessorFix/NSManagedObjectModel+KCOrderedAccessorFix.m"; sourceTree = "<group>"; };
 		DE7F51D4178C8B5E00A677CE /* SQULoginSchoolSelector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQULoginSchoolSelector.h; sourceTree = "<group>"; };
@@ -662,6 +665,8 @@
 			children = (
 				DEF0F1BB186EE52B00116B61 /* UIColor+SQUColourUtilities.h */,
 				DEF0F1BC186EE52B00116B61 /* UIColor+SQUColourUtilities.m */,
+				DE72EBB7187A102B006F6F1A /* SQUEmptyView.h */,
+				DE72EBB8187A102B006F6F1A /* SQUEmptyView.m */,
 			);
 			name = "Miscellaneous UI";
 			sourceTree = "<group>";
@@ -1049,6 +1054,7 @@
 				DE2843E618764FD10000756C /* SQUStudent.m in Sources */,
 				DEF0F25518740A1400116B61 /* MGSplitViewAppDelegate.m in Sources */,
 				DEFFDE59186E270900E26423 /* UIActivityIndicatorView+AFNetworking.m in Sources */,
+				DE72EBB9187A102B006F6F1A /* SQUEmptyView.m in Sources */,
 				DEF0F23318727EA700116B61 /* LTHNavigationViewController.m in Sources */,
 				DEF0F1ED187101A900116B61 /* SQUCategory.m in Sources */,
 				DE06158D17874D0D004B2877 /* SQUAppDelegate.m in Sources */,

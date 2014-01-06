@@ -44,16 +44,6 @@
 	
 	[section addElement:precision];
 	
-	__block QBooleanElement *weighted = [[QBooleanElement alloc] initWithTitle:NSLocalizedString(@"Weighted", nil) BoolValue:[[NSUserDefaults standardUserDefaults] boolForKey:@"gpa_weighted"]];
-	
-	__unsafe_unretained QBooleanElement *tempWeighted = weighted;
-	weighted.onValueChanged = ^(QRootElement *root) {
-		[[NSUserDefaults standardUserDefaults] setBool:tempWeighted.boolValue forKey:@"gpa_weighted"];
-		[[NSUserDefaults standardUserDefaults] synchronize];
-	};
-	
-	[section addElement:weighted];
-	
 	QButtonElement *button = [[QButtonElement alloc] initWithTitle:NSLocalizedString(@"Manage Courses…", nil)];
 	button.onSelected = ^{
 		SQUSettingsGPAOptionsController *controller = [[SQUSettingsGPAOptionsController alloc] init];

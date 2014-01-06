@@ -106,7 +106,7 @@ static SQUAppDelegate *sharedDelegate = nil;
 	}
 	
 	// TODO: Check if user enabled push
-	if(true) {
+	if(false) {
 		[[UIApplication sharedApplication] registerForRemoteNotificationTypes:UIRemoteNotificationTypeBadge|
 		 UIRemoteNotificationTypeSound|
 		 UIRemoteNotificationTypeAlert];

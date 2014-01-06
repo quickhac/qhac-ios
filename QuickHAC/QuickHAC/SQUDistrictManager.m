@@ -54,6 +54,15 @@ static SQUDistrictManager *_sharedInstance = nil;
         if(self = [super init]) {
 			_loadedDistricts = [NSMutableArray new];
 			_initialisedDistricts = [NSMutableArray new];
+			
+			_HTTPManager = [AFHTTPRequestOperationManager manager];
+			_HTTPManager.responseSerializer = [AFHTTPResponseSerializer serializer];
+			
+			// Set up reachability so we can gracefully fail requests w/o network
+			[[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:
+			 ^(AFNetworkReachabilityStatus status) {
+				 NSLog(@"Reachability: %@", AFStringFromNetworkReachabilityStatus(status));
+			}];
         }
 		
         
@@ -78,7 +87,7 @@ static SQUDistrictManager *_sharedInstance = nil;
 		
 		// NSLog(@"Loaded district %@ (%@, using driver %@)",  district, districtInitialised.name, districtInitialised.driver);
 	} else {
-		NSLog(@"Tried to load %@, but %@ does not conform to SQUDistrictProtocol.", district, NSStringFromClass(district));
+		NSLog(@"Tried to load district %@, but %@ does not conform to SQUDistrictProtocol.", district, NSStringFromClass(district));
 	}
 }
 
@@ -102,12 +111,39 @@ static SQUDistrictManager *_sharedInstance = nil;
 	for(SQUDistrict *district in _initialisedDistricts) {
 		if(district.district_id == districtID) {
 			// we found the district, activate it
-			_currentDistrict = district;
+			self.currentDistrict = district;
+			
 			return YES;
 		}
 	}
 	
 	return NO;
+}
+
+/**
+ * Setter for _currentDistrict.
+ */
+- (void) setCurrentDistrict:(SQUDistrict *) currentDistrict {
+	_currentDistrict = currentDistrict;
+	
+	// Load the district's SSL certs, if they are specified.
+	NSArray *certs = [currentDistrict districtSSLCertData];
+	
+	// If there's no certs, panic
+	if((certs.count == 1 && [certs[0] integerValue] == 0) || !certs) {
+		_HTTPManager.securityPolicy.SSLPinningMode = AFSSLPinningModeNone;
+		_HTTPManager.securityPolicy.allowInvalidCertificates = YES;
+		_HTTPManager.securityPolicy.pinnedCertificates = nil;
+		
+		NSLog(@"SECURITY POLICY CHANGED: Accepts invalid certs (%@)", currentDistrict.name);
+	} else if(certs.count != 0) {
+		_HTTPManager.securityPolicy.allowInvalidCertificates = NO;
+		_HTTPManager.securityPolicy.SSLPinningMode = AFSSLPinningModeCertificate;
+		
+		[_HTTPManager.securityPolicy setPinnedCertificates:certs];
+		
+		NSLog(@"SECURITY POLICY CHANGED: Rejects invalid certs (%@)", currentDistrict.name);
+	}
 }
 
 /**
@@ -132,20 +168,7 @@ static SQUDistrictManager *_sharedInstance = nil;
  * failure callback blocks.
  */
 - (void) sendGETRequestToURL:(NSURL *) url withParameters:(NSDictionary *) params andSuccessBlock:(void (^)(AFHTTPRequestOperation *operation, id responseObject)) success andFailureBlock:(void (^)(AFHTTPRequestOperation *operation, NSError *error)) failure {
-	AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-	manager.responseSerializer = [AFHTTPResponseSerializer serializer];
-	
-	// Load the district's SSL certs, if it has one.
-	NSArray *certs = [_currentDistrict districtSSLCertData];
-	
-	if(certs == nil) {
-		manager.securityPolicy.allowInvalidCertificates = YES;
-	} else if(certs.count != 0) {
-		manager.securityPolicy.SSLPinningMode = AFSSLPinningModeCertificate;
-		[manager.securityPolicy setPinnedCertificates:certs];
-	}
-	
-	[manager GET:[url absoluteString] parameters:params success:success failure:failure];
+	[_HTTPManager GET:[url absoluteString] parameters:params success:success failure:failure];
 }
 
 /**
@@ -153,20 +176,7 @@ static SQUDistrictManager *_sharedInstance = nil;
  * failure callback blocks.
  */
 - (void) sendPOSTRequestToURL:(NSURL *) url withParameters:(NSDictionary *) params andSuccessBlock:(void (^)(AFHTTPRequestOperation *operation, id responseObject)) success andFailureBlock:(void (^)(AFHTTPRequestOperation *operation, NSError *error)) failure {
-	AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-	manager.responseSerializer = [AFHTTPResponseSerializer serializer];
-	
-	// Load the district's SSL certs, if it has one.
-	NSArray *certs = [_currentDistrict districtSSLCertData];
-	
-	if(certs.count == 1 && [certs[0] integerValue] == 0) {
-		manager.securityPolicy.allowInvalidCertificates = YES;
-	} else if(certs.count != 0) {
-		manager.securityPolicy.SSLPinningMode = AFSSLPinningModeCertificate;
-		[manager.securityPolicy setPinnedCertificates:certs];
-	}
-	
-	[manager POST:[url absoluteString] parameters:params success:success failure:failure];
+	[_HTTPManager POST:[url absoluteString] parameters:params success:success failure:failure];
 }
 
 #pragma mark - District interfacing

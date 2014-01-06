@@ -53,6 +53,9 @@ typedef struct {
 // Security
 - (NSArray *) districtSSLCertData;
 
+// Capability determination
+- (BOOL) districtSupportsAttendance;
+
 @optional
 - (void) districtWasSelected:(SQUDistrict *) district;
 

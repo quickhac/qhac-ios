@@ -15,17 +15,18 @@
 
 typedef void (^ SQUDistrictCallback)(NSError *error, id returnData);
 
+@class AFHTTPRequestOperationManager;
+
 @interface SQUDistrictManager : NSObject {
-@public
-	
-@private
 	NSMutableArray *_loadedDistricts;
 	NSMutableArray *_initialisedDistricts;
 	
 	SQUDistrict *_currentDistrict;
+	
+	AFHTTPRequestOperationManager *_HTTPManager;
 }
 
-@property (nonatomic, readwrite) SQUDistrict *currentDistrict;
+@property (nonatomic, readwrite, setter = setCurrentDistrict:) SQUDistrict *currentDistrict;
 
 + (SQUDistrictManager *) sharedInstance;
 - (void) registerDistrict:(Class) district;

@@ -406,7 +406,7 @@ static SQUGradeManager *_sharedInstance = nil;
 			// Set a flag if this grade changed
 			if(!dbSemester.average.floatValue != [semester[@"semesterAverage"] floatValue]) {
 				dbSemester.changedSinceLastFetch = @(YES);
-				dbSemester.preChangeGrade = @(dbSemester.average.floatValue+2);
+				dbSemester.preChangeGrade = @(dbSemester.average.floatValue);
 			} else {
 				dbSemester.changedSinceLastFetch = @(NO);
 			}

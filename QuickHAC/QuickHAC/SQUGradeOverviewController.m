@@ -46,8 +46,8 @@
 										action:@selector(openSidebar:)];
 		self.navigationItem.leftBarButtonItem = showSidebar;
 		
-		UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"Push" style:UIBarButtonItemStyleDone target:self action:@selector(testPush:)];
-		self.navigationItem.rightBarButtonItem = item;
+		/*UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"Push" style:UIBarButtonItemStyleDone target:self action:@selector(testPush:)];
+		self.navigationItem.rightBarButtonItem = item;*/
 		
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateTableNotification:) name:SQUGradesDataUpdatedNotification object:nil];
 		

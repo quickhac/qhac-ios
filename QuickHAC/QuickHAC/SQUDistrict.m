@@ -136,7 +136,6 @@
 	
 	// If no data was found, exit.
 	if(!certInfo) return nil;
-	
 	if([certInfo[@"accept_any"] boolValue]) return nil;
 	
 	NSMutableArray *certs = [NSMutableArray new];
@@ -178,6 +177,16 @@
  */
 - (void) districtWasSelected:(SQUDistrict *) district {
 	[[SQUGradeManager sharedInstance] selectDriverWithID:district.driver];
+}
+
+/**
+ * Indicates whether the district supports fetching of attendance or not.
+ *
+ * @return Boolean indicating the above.
+ */
+- (BOOL) districtSupportsAttendance {
+	NSLog(@"%s(%i) %s: SQUDistrict method not overridden or no subclass used", __FILE__, __LINE__, __func__);
+	return NO;
 }
 
 @end

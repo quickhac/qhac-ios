@@ -14,6 +14,7 @@
 
 #import "UIView+JMNoise.h"
 #import "PKRevealController.h"
+#import "AFNetworking.h"
 #import "WYPopoverController.h"
 #import "SVProgressHUD.h"
 
@@ -165,6 +166,11 @@
 	// Update the title
 	_subtitleLayer.string = [NSString stringWithFormat:NSLocalizedString(@"Cycle %u", @"class info"), _displayCycle+1];
 	
+	// Update the refresh control
+	if(sender != self.refreshControl) {
+		[self.refreshControl beginRefreshing];
+	}
+	
 	// If the cycle has data, update table
 	if(_currentCycle.categories.count != 0) {
 		// Hide the HUD if the last request showed it
@@ -176,55 +182,76 @@
 		_iCanHazCompleteReload = NO;
 	} else {
 		_iCanHazCompleteReload = YES;
-		[SVProgressHUD showProgress:-1.0 status:NSLocalizedString(@"Updating Grades…", @"class detail HUD when loading grades for first time") maskType:SVProgressHUDMaskTypeGradient];
+		
+		// Only pop up the HUD if the network is up
+		if([AFNetworkReachabilityManager sharedManager].isReachable) {
+			[SVProgressHUD showProgress:-1.0 status:NSLocalizedString(@"Updating Grades…", @"class detail HUD when loading grades for first time") maskType:SVProgressHUDMaskTypeGradient];
+		}
 	}
 	
-	// Update course grades
-	[[SQUGradeManager sharedInstance] fetchNewCycleGradesFromServerForCourse:_course.courseCode withCycle:_displayCycle % 3 andSemester:_displayCycle / 3 andDoneCallback:^(NSError * error) {
-		if(!error) {
-			_currentCycle = _course.cycles[_displayCycle];
-			[self.tableView reloadData];
-			
-			if(_iCanHazCompleteReload) {
-				[SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"Grades Updated", @"class grades")];
-			}
+	// If we're not connected to the network, show a little message
+	if(![AFNetworkReachabilityManager sharedManager].isReachable) {
+		if(_iCanHazCompleteReload) {
+			// show the "no data available" view
+			NSLog(@"Show 'no data available' view!");
 		} else {
-			NSLog(@"Error updating course grades: %@", error);
-			
-			// Error 3000 indicates there's no data for this cycle
-			if(error.code == kSQUDistrictManagerErrorNoDataAvailable) {
-				// there is no data available for this cycle, try the previous cycle
-				if(_displayCycle != 0) {
-					_displayCycle--;
-					_currentCycle = _course.cycles[_displayCycle];
-					
-					[self reloadData:self];
-					return;
-				} else {
-					// Admit defeat, we got to cycle 1 and there's no data.
-					if(_iCanHazCompleteReload) {
-						[SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"Grades Updated", @"class grades")];
-					}
-					
-					[self.tableView reloadData];
-				}
-			} else {
-				UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Updating Grades", nil) message:error.localizedDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
-				[alert show];
-				
-				if(_iCanHazCompleteReload) {
-					[SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Error", @"class grades")];
-				}
-			}
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Not Connected", nil) message:NSLocalizedString(@"To refresh grades for this cycle, please connect to the Internet, or ensure that your connection can access the gradebook.", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
+			[alert show];
 		}
 		
+		// End refreshing, if the refresh control is refreshing
 		[self.refreshControl endRefreshing];
+	} else { // Connection exists, use it
+		// Hide "no data available" view if it's shown
+		NSLog(@"Hide 'no data available' view!");
 		
-		NSString *lastUpdated = [NSString stringWithFormat:NSLocalizedString(@"Last Updated on %@", @"class detail pull to refresh"), [_refreshDateFormatter stringFromDate:_currentCycle.last_updated]];
-		self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:lastUpdated];
-		
-		[[NSUserDefaults standardUserDefaults] setInteger:_displayCycle forKey:@"selectedCycle"];
-	}];
+		// Update course grades
+		[[SQUGradeManager sharedInstance] fetchNewCycleGradesFromServerForCourse:_course.courseCode withCycle:_displayCycle % 3 andSemester:_displayCycle / 3 andDoneCallback:^(NSError * error) {
+			if(!error) {
+				_currentCycle = _course.cycles[_displayCycle];
+				[self.tableView reloadData];
+				
+				if(_iCanHazCompleteReload) {
+					[SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"Grades Updated", @"class grades")];
+				}
+			} else {
+				NSLog(@"Error updating course grades: %@", error);
+				
+				// Error 3000 indicates there's no data for this cycle
+				if(error.code == kSQUDistrictManagerErrorNoDataAvailable) {
+					// there is no data available for this cycle, try the previous cycle
+					if(_displayCycle != 0) {
+						_displayCycle--;
+						_currentCycle = _course.cycles[_displayCycle];
+						
+						[self reloadData:self];
+						return;
+					} else {
+						// Admit defeat, we got to cycle 1 and there's no data.
+						if(_iCanHazCompleteReload) {
+							[SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"Grades Updated", @"class grades")];
+						}
+						
+						[self.tableView reloadData];
+					}
+				} else {
+					UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Updating Grades", nil) message:error.localizedDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
+					[alert show];
+					
+					if(_iCanHazCompleteReload) {
+						[SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Error", @"class grades")];
+					}
+				}
+			}
+			
+			[self.refreshControl endRefreshing];
+			
+			NSString *lastUpdated = [NSString stringWithFormat:NSLocalizedString(@"Last Updated on %@", @"class detail pull to refresh"), [_refreshDateFormatter stringFromDate:_currentCycle.last_updated]];
+			self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:lastUpdated];
+			
+			[[NSUserDefaults standardUserDefaults] setInteger:_displayCycle forKey:@"selectedCycle"];
+		}];
+	}
 }
 
 - (void) openSidebar:(id) sender {

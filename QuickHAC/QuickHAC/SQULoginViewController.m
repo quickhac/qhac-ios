@@ -84,9 +84,6 @@
                                               initWithTitle:NSLocalizedString(@"Log In", @"login screen")
                                               style:UIBarButtonItemStyleDone
                                               target:self action:@selector(loginBarButtonItemPressed:)];
-	
-	// Set up district interfacing
-	[SQUDistrictManager sharedInstance].currentDistrict = _district;
 }
 
 - (void) didReceiveMemoryWarning {
@@ -220,9 +217,11 @@
         return;
     }
 	
-	// Do a login
+	// Set up district interfacing
+	[SQUDistrictManager sharedInstance].currentDistrict = _district;
+	
+	// Set up some things
     [SVProgressHUD showProgress:-1 status:NSLocalizedString(@"Logging In…", nil) maskType:SVProgressHUDMaskTypeGradient];
-    
 	_students = [NSMutableArray new];
 	
 	// This block is called for every student that we must add.
@@ -349,7 +348,10 @@
 					_studentLoginFunction();
 				} else {
 					// If students already exist, don't show a picker
+					[SVProgressHUD dismiss];
 					[self dismissViewControllerAnimated:YES completion:NULL];
+					
+					[[NSNotificationCenter defaultCenter] postNotificationName:SQUStudentsUpdatedNotification object:nil];
 				}
 			}
 		} else {
