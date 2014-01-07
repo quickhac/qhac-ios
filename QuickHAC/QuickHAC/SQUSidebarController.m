@@ -36,6 +36,8 @@
 		
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(gradesUpdatedNotification:) name:SQUGradesDataUpdatedNotification object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showCourseOverviewNotification:) name:SQUSidebarControllerShowSidebarMessage object:nil];
+		
+		_lastSelection = [NSIndexPath indexPathForRow:0 inSection:0];
     }
     return self;
 }
@@ -133,17 +135,40 @@
 	
 	switch(indexPath.section) {
 		case 0:
+			_lastSelection = indexPath;
+			
 			[[self revealController] setFrontViewController:_overview.navigationController];
 			[[self revealController] resignPresentationModeEntirely:YES animated:YES completion:NULL];
 			break;
 			
 		case 1: {
 			SQUCourse *course = [SQUGradeManager sharedInstance].student.courses[indexPath.row];
+			
+			NSUInteger numCyclesAvailable = 0;
+			
+			for(SQUCycle *cycle in course.cycles) {
+				if(cycle.dataAvailableInGradebook.boolValue) {
+					numCyclesAvailable++;
+				}
+			}
+			
+			// Display a message if this cycle has no information
+			if(!numCyclesAvailable) {
+				UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"No Grades Available", nil) message:[NSString stringWithFormat:NSLocalizedString(@"There is no data available in the gradebook for the course %@.\nPlease check again later, or consult %@.", @"no cycles with data alert"), course.title, course.teacher_name] delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
+				[alert show];
+				
+				[tableView selectRowAtIndexPath:_lastSelection animated:NO scrollPosition:UITableViewScrollPositionNone];
+				return;
+			}
+			
 			[self showCourseOverviewForCourse:course];
+			_lastSelection = indexPath;
 			break;
 		}
 			
 		case 2: {
+			_lastSelection = indexPath;
+			
 			SQUSettingsViewController *settings = [[SQUSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
 			UINavigationController *navCtrlr = [[UINavigationController alloc] initWithRootViewController:settings];
 				

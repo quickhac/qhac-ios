@@ -18,6 +18,7 @@
 	NSIndexPath *selectedItem;
 	
 	SQUGradeOverviewController *_overview;
+	NSIndexPath *_lastSelection;
 }
 
 @property (nonatomic, readwrite, strong) SQUGradeOverviewController *overviewController;

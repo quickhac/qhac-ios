@@ -22,6 +22,7 @@ static NSUInteger SQUClassDetailSeparatorX = 18;
 static NSUInteger SQUClassDetailSeparatorWidth = 263;
 static NSUInteger SQUClassDetailRowHeight = 32;
 static NSUInteger SQUClassDetailRowTextOffset = 4;
+static NSUInteger SQUClassDetailTextZPosition = 5;
 
 - (id)initWithStyle:(UITableViewCellStyle) style reuseIdentifier:(NSString *) reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
@@ -252,6 +253,7 @@ static NSUInteger SQUClassDetailRowTextOffset = 4;
 			layer.foregroundColor = [UIColor blackColor].CGColor;
 			layer.font = (__bridge CFTypeRef) [UIFont systemFontOfSize:15.0f];
 			layer.fontSize = 15.0f;
+			layer.zPosition = SQUClassDetailTextZPosition;
 			
 			width = [_tableColumnWidths[c] floatValue];
 			layer.frame = CGRectMake(SQUClassDetailColX[c], y + SQUClassDetailRowTextOffset, SQUClassDetailColWidth[c], 18);
@@ -286,10 +288,11 @@ static NSUInteger SQUClassDetailRowTextOffset = 4;
 		x = 12;
 		
 //		if(i + 1 != _category.assignments.count) {
-			CAGradientLayer *layer = [CAGradientLayer layer];
-			layer.frame = CGRectMake(SQUClassDetailSeparatorX, y - 3, SQUClassDetailSeparatorWidth, 1);
-			layer.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1.0].CGColor;
-			[_rowSeparators addObject:layer];
+		CAGradientLayer *layer = [CAGradientLayer layer];
+		layer.frame = CGRectMake(SQUClassDetailSeparatorX, y - 3, SQUClassDetailSeparatorWidth, 1);
+		layer.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1.0].CGColor;
+		layer.zPosition = SQUClassDetailTextZPosition;
+		[_rowSeparators addObject:layer];
 //		}
 	}
 
@@ -334,7 +337,7 @@ static NSUInteger SQUClassDetailRowTextOffset = 4;
 	}
 }
 
-/*
+/**
  * Returns the height of the cell for a given category. Base height of the cell
  * is 50 pixels, with 32 pixels for the first assignment, then 20 for all
  * assignments thereafter
@@ -350,6 +353,61 @@ static NSUInteger SQUClassDetailRowTextOffset = 4;
 		height += SQUClassDetailRowHeight;
 		return height;
 	}
+}
+
+/**
+ * Method to handle tapping on an assignment column.
+ */
+- (void) touchesBegan:(NSSet *) touches withEvent:(UIEvent *) event {
+	[super touchesBegan:touches withEvent:event];
+	
+	// Remove any selection indicators that still are existent
+	if(_selectionLayer) {
+		[_selectionLayer removeFromSuperlayer];
+	}
+	
+	for (UITouch *touch in touches) {
+		CGPoint point = [touch locationInView:self];
+		
+		// First assignment at 65 pixels
+		if(point.y > 54) {
+			NSUInteger selectedRow = point.y - 54;
+			selectedRow /= SQUClassDetailRowHeight;
+			
+			// Ignore the assignment if it's the averages row
+			if(_category.assignments.count > selectedRow) {
+				// Show selection indicator (53 px add to account for 1st row)
+				CGFloat y = (selectedRow * SQUClassDetailRowHeight) + 53;
+				
+				_selectionLayer = [CAGradientLayer layer];
+				_selectionLayer.frame = CGRectMake(SQUClassDetailSeparatorX, y, SQUClassDetailSeparatorWidth, SQUClassDetailRowHeight);
+				_selectionLayer.colors = @[(id) UIColorFromRGB(0xF0F0F0).CGColor, (id) UIColorFromRGB(0xE0E0E0).CGColor];
+				_selectionLayer.zPosition = 0;
+				[_backgroundLayer addSublayer:_selectionLayer];
+				
+				// Update selection state, display assignment info
+				_selectedAssignment = _category.assignments[selectedRow];
+			}
+		}
+	}
+}
+
+/**
+ * Called when a touch event is cancelled, i.e. when the device goes to the home
+ * screen or the app is pre-empted by a phone call or somesuch event.
+ */
+- (void) touchesCancelled:(NSSet *) touches withEvent:(UIEvent *) event {
+	[super touchesCancelled:touches withEvent:event];
+	[_selectionLayer removeFromSuperlayer];
+}
+
+/**
+ * Called when a touch event ends, i.e. when the user lifts their finger. This
+ * is used to hide the selection indicator.
+ */
+- (void) touchesEnded:(NSSet *) touches withEvent:(UIEvent *) event {
+	[super touchesEnded:touches withEvent:event];
+	[_selectionLayer removeFromSuperlayer];
 }
 
 @end

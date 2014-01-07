@@ -10,7 +10,7 @@
 #import <QuartzCore/QuartzCore.h>
 
 
-@class SQUCategory;
+@class SQUCategory, SQUAssignment;
 @interface SQUClassDetailCell : UITableViewCell {
 	CALayer *_backgroundLayer;
     CAGradientLayer *_sideBar;
@@ -26,6 +26,9 @@
 	NSArray *_tableColumnWidths;
 	
 	NSMutableArray *_rowSeparators;
+	
+	CAGradientLayer *_selectionLayer;
+	SQUAssignment *_selectedAssignment;
 	
 	/*
 	 * Three columns: Name, due, grade
