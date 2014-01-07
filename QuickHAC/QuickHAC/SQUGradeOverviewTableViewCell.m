@@ -222,14 +222,14 @@ static NSUInteger SQUGradeOverviewTableViewCellWidth[2] = {115, 112};
 				
 				// Exam grade
 				if(j == 3) {
-					if(semester.examGrade.integerValue == -1) {
+					if(semester.examIsExempt.boolValue) {
+						cycleHead.string = [NSString stringWithFormat:NSLocalizedString(@"Exam %u: Exc", nil), i + 1];
+						cycleHead.foregroundColor = [UIColor blackColor].CGColor;
+					} else if(semester.examGrade.integerValue == -1) {
 						cycleHead.string = [NSString stringWithFormat:NSLocalizedString(@"Exam %u: -", nil), i + 1];
 						cycleHead.foregroundColor = [UIColor lightGrayColor].CGColor;
 					} else if(!semester.examIsExempt.boolValue) {
 						cycleHead.string = [NSString stringWithFormat:NSLocalizedString(@"Exam %u: %u", nil), i + 1, semester.examGrade.unsignedIntegerValue];
-						cycleHead.foregroundColor = [UIColor blackColor].CGColor;
-					} else {
-						cycleHead.string = [NSString stringWithFormat:NSLocalizedString(@"Exam %u: Exc", nil), i + 1];
 						cycleHead.foregroundColor = [UIColor blackColor].CGColor;
 					}
 				} else {
