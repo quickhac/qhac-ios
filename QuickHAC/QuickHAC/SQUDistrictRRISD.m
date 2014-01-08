@@ -356,6 +356,9 @@
  * Returns the grade point (between 6.0 and 0.0) for a floating-point average,
  * and taking into account if the course is an honours class or not.
  *
+ * With RRISD, honours courses are a 6.0 for a 100, and 5.0 for a 100 in non-
+ * honours courses.
+ *
  * @param grade The average, between 100 and 0 inclusive.
  * @param honours Whether the class is honours or not.
  * @return A floating-point grade point.
