@@ -9,6 +9,7 @@
 #import "TFHpple.h"
 #import "AFNetworking.h"
 
+#import "SQUCoreData.h"
 #import "SQUDistrictRRISD.h"
 #import "SQUDistrictManager.h"
 
@@ -351,6 +352,16 @@
 	}
 	
 	return result;
+}
+
+/**
+ * Calculates the weighted GPA for the specified courses.
+ *
+ * @param courses An array of SQUCourse objects.
+ * @return The weighted GPA as an NSNumber object.
+ */
+- (NSNumber *) weightedGPAWithCourses:(NSArray *) courses {
+	return @0;
 }
 
 @end

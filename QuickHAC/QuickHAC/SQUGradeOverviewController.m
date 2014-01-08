@@ -17,6 +17,7 @@
 #import "SQUGradeOverviewTableViewCell.h"
 #import "SQUAppDelegate.h"
 #import "SQUCoreData.h"
+#import "SQUDistrictManager.h"
 #import "SQUPushHandler.h"
 #import "SQUGradeManager.h"
 #import "SQUSidebarController.h"
@@ -215,8 +216,8 @@
 	NSString *gpaFormatString = [NSString stringWithFormat:NSLocalizedString(@"GPA: %%.%1$uf/%%.%1$uf", nil), precision];
 	
 	// Calculate GPA
-	NSNumber *gpaUnweighted = [[SQUGradeManager sharedInstance] calculateGPAWeighted:NO forCourses:[SQUGradeManager sharedInstance].courses.array];
-	NSNumber *gpaWeighted = [[SQUGradeManager sharedInstance] calculateGPAWeighted:YES forCourses:[SQUGradeManager sharedInstance].courses.array];
+	NSNumber *gpaUnweighted = [[SQUDistrictManager sharedInstance].currentDistrict unweightedGPAWithCourses:[SQUGradeManager sharedInstance].courses.array];
+	NSNumber *gpaWeighted = [[SQUDistrictManager sharedInstance].currentDistrict weightedGPAWithCourses:[SQUGradeManager sharedInstance].courses.array];
 	
 	_subtitleLayer.string = [NSString stringWithFormat:gpaFormatString, gpaUnweighted.floatValue, gpaWeighted.floatValue];
 }

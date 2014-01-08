@@ -466,12 +466,18 @@ static SQUGradeManager *_sharedInstance = nil;
 			dbSemester.semester = semester[@"index"];
 			dbSemester.average = semester[@"semesterAverage"];
 		}
-		
+
 /*		NSLog(@"Course entry for ID %@: %@", course.courseCode, course);
 		NSLog(@"Cycles for course %@: %i\n\tCycle 1:\n%@", course.courseCode, course.cycles.count, course.cycles[0]);
 		NSLog(@"Exams for course %@: %i\n\tExam 1:\n%@", course.courseCode, course.exams.count, course.exams[0]);*/
 	}
 	
+	// Sort the classes by the period code.
+	NSSortDescriptor *periodSort = [NSSortDescriptor sortDescriptorWithKey:@"period" ascending:YES];
+	[_student.courses sortedArrayUsingDescriptors:@[periodSort]];
+	_student.courses = [NSOrderedSet orderedSetWithArray:[_student.courses sortedArrayUsingDescriptors:@[periodSort]]];
+	
+	// Set "last updated" date
 	_student.lastAveragesUpdate = [NSDate new];
 	
 	// Write changes to the database.

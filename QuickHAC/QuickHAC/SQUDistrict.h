@@ -56,6 +56,10 @@ typedef struct {
 // Capability determination
 - (BOOL) districtSupportsAttendance;
 
+// GPA caclulaation
+- (NSNumber *) unweightedGPAWithCourses:(NSArray *) courses;
+- (NSNumber *) weightedGPAWithCourses:(NSArray *) courses;
+
 @optional
 - (void) districtWasSelected:(SQUDistrict *) district;
 

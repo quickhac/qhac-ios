@@ -7,6 +7,7 @@
 //
 
 #import "SQUGradeManager.h"
+#import "SQUCoreData.h"
 #import "SQUDistrict.h"
 
 @implementation SQUDistrict
@@ -187,6 +188,53 @@
 - (BOOL) districtSupportsAttendance {
 	NSLog(@"%s(%i) %s: SQUDistrict method not overridden or no subclass used", __FILE__, __LINE__, __func__);
 	return NO;
+}
+
+/**
+ * Calculates the unweighted GPA on a 4.0 scale for the specified courses.
+ *
+ * @param courses An array of SQUCourse objects.
+ * @return The unweighted GPA as an NSNumber object.
+ */
+- (NSNumber *) unweightedGPAWithCourses:(NSArray *) courses {
+	float gpa = 0;
+	float num_classes = 0;
+	
+	// Process all classes
+	for (SQUCourse *course in courses) {
+		// Process all semesters
+		for(NSUInteger i = 0; i < course.student.numSemesters.unsignedIntegerValue; i++) {
+			SQUSemester *semester = course.semesters[i];
+			
+			// Ignore a course if there's no grade for it.
+			if(semester.average.integerValue != -1) {
+				// Ignore grades below 70
+				if(semester.average.floatValue >= 70.0) {
+					gpa += fmin((semester.average.floatValue - 60.0) / 10.0, 4.0);
+				} else {
+					gpa += 0.0;
+				}
+				
+				num_classes++;
+			}
+		}
+	}
+	
+	// Divide by number of classes
+	gpa /= num_classes;
+	
+	return @(gpa);
+}
+
+/**
+ * Calculates the weighted GPA for the specified courses.
+ *
+ * @param courses An array of SQUCourse objects.
+ * @return The weighted GPA as an NSNumber object.
+ */
+- (NSNumber *) weightedGPAWithCourses:(NSArray *) courses {
+	NSLog(@"%s(%i) %s: SQUDistrict method not overridden or no subclass used", __FILE__, __LINE__, __func__);
+	return @0;
 }
 
 @end
