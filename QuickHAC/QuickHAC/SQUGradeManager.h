@@ -41,6 +41,4 @@
 - (void) fetchNewCycleGradesFromServerForCourse:(NSString *) course withCycle:(NSUInteger) cycle andSemester:(NSUInteger) semester andDoneCallback:(void (^)(NSError *)) callback;
 - (void) updateCurrentStudentWithClassGrades:(NSDictionary *) classGrades forClass:(NSString *) class andCycle:(NSUInteger) numCycle andSemester:(NSUInteger) numSemester;
 
-- (NSNumber *) calculateGPAWeighted:(BOOL) weighted forCourses:(NSArray *) courses;
-
 @end

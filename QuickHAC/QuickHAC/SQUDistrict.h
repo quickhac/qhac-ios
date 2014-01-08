@@ -80,7 +80,6 @@ typedef struct {
 	float _examWeight;
 	NSInteger _district_id;
 	col_offsets_t _tableOffsets;
-	double _gpaOffset;
 	NSRange _studentIDLength;
 	BOOL _hasMultipleStudents;
 	NSMutableArray *_studentsOnAccount;
@@ -100,9 +99,6 @@ typedef struct {
 
 /// Offsets in the gradebook table for certain data.
 @property (readonly) col_offsets_t tableOffsets;
-
-/// Offset for GPA.
-@property (readonly) double gpaOffset;
 
 /// Length of student ID.
 @property (readonly) NSRange studentIDLength;

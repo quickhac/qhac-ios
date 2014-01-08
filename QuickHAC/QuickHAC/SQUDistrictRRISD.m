@@ -39,8 +39,6 @@
 		
 		_district_id = 1;
 		
-		_gpaOffset = 50.0;
-		
 		_studentIDLength = NSMakeRange(6, 6);
 	}
 	
@@ -355,13 +353,61 @@
 }
 
 /**
+ * Returns the grade point (between 6.0 and 0.0) for a floating-point average,
+ * and taking into account if the course is an honours class or not.
+ *
+ * @param grade The average, between 100 and 0 inclusive.
+ * @param honours Whether the class is honours or not.
+ * @return A floating-point grade point.
+ */
+- (float) getGradePointForAverage:(float) average andHonours:(BOOL) honours {
+	if(average < 70) {
+		return 0.0;
+	}
+	
+	float gpa;
+	
+	// Calculate grade point
+	if(honours) {
+		gpa = (average - 40.0) / 10.0;
+	} else {
+		gpa = (average - 50.0) / 10.0;
+	}
+	
+	// Limit grade to be no less than 0.0
+	gpa = fmaxf(0, gpa);
+	
+	return gpa;
+}
+
+/**
  * Calculates the weighted GPA for the specified courses.
  *
  * @param courses An array of SQUCourse objects.
  * @return The weighted GPA as an NSNumber object.
  */
 - (NSNumber *) weightedGPAWithCourses:(NSArray *) courses {
-	return @0;
+	float gpa = 0;
+	float num_classes = 0;
+	
+	// Process all classes
+	for (SQUCourse *course in courses) {
+		// Process all semesters
+		for(NSUInteger i = 0; i < course.student.numSemesters.unsignedIntegerValue; i++) {
+			SQUSemester *semester = course.semesters[i];
+			
+			// Ignore a course if there's no grade for it.
+			if(semester.average.integerValue != -1) {
+				gpa += [self getGradePointForAverage:semester.average.floatValue andHonours:course.isHonours.boolValue];
+				num_classes++;
+			}
+		}
+	}
+	
+	// Divide by number of classes
+	gpa /= num_classes;
+	
+	return @(gpa);
 }
 
 @end

@@ -38,8 +38,6 @@
 		
 		_district_id = 2;
 		
-		_gpaOffset = 60.0;
-		
 		_studentIDLength = NSMakeRange(7, 8);
 	}
 	
