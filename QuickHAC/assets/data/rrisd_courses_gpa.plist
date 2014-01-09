@@ -1,0 +1,1359 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+	<dict>
+		<key>GPACourses</key>
+	<array>
+		<dict>
+			<key>courseCode</key>
+			<string>1112</string>
+			<key>courseTitle</key>
+			<string>English I</string>
+			<key>isHonours</key>
+			<bool>NO</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>1113</string>
+			<key>courseTitle</key>
+			<string>Pre-AP Eng I</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>1115</string>
+			<key>courseTitle</key>
+			<string>Tag Eng I</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>1117</string>
+			<key>courseTitle</key>
+			<string>English I-Ell</string>
+			<key>isHonours</key>
+			<bool>NO</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>1122</string>
+			<key>courseTitle</key>
+			<string>English II</string>
+			<key>isHonours</key>
+			<bool>NO</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>1123</string>
+			<key>courseTitle</key>
+			<string>Pre-AP Eng II</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>1125</string>
+			<key>courseTitle</key>
+			<string>Tag Eng II</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>1127</string>
+			<key>courseTitle</key>
+			<string>English II-Ell</string>
+			<key>isHonours</key>
+			<bool>NO</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>1132</string>
+			<key>courseTitle</key>
+			<string>English III</string>
+			<key>isHonours</key>
+			<bool>NO</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>1133</string>
+			<key>courseTitle</key>
+			<string>AP Eng III</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>1134</string>
+			<key>courseTitle</key>
+			<string>IB English Sl</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>1135</string>
+			<key>courseTitle</key>
+			<string>AP Tag Eng III</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>1136</string>
+			<key>courseTitle</key>
+			<string>IB Tag Eng Sl</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>1142</string>
+			<key>courseTitle</key>
+			<string>English IV</string>
+			<key>isHonours</key>
+			<bool>NO</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>1143</string>
+			<key>courseTitle</key>
+			<string>AP Eng IV</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>1144</string>
+			<key>courseTitle</key>
+			<string>IB English Hl</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>1145</string>
+			<key>courseTitle</key>
+			<string>AP Tag Eng IV</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>1147</string>
+			<key>courseTitle</key>
+			<string>IB Tag Eng Hl</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>1151</string>
+			<key>courseTitle</key>
+			<string>ESL-Level I</string>
+			<key>isHonours</key>
+			<bool>NO</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>1152</string>
+			<key>courseTitle</key>
+			<string>ESL-Level II</string>
+			<key>isHonours</key>
+			<bool>NO</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>1201</string>
+			<key>courseTitle</key>
+			<string>Eng I</string>
+			<key>isHonours</key>
+			<bool>NO</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>1202</string>
+			<key>courseTitle</key>
+			<string>Eng II</string>
+			<key>isHonours</key>
+			<bool>NO</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>1203</string>
+			<key>courseTitle</key>
+			<string>Eng III</string>
+			<key>isHonours</key>
+			<bool>NO</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>1204</string>
+			<key>courseTitle</key>
+			<string>Eng IV</string>
+			<key>isHonours</key>
+			<bool>NO</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>2100</string>
+			<key>courseTitle</key>
+			<string>W Geog</string>
+			<key>isHonours</key>
+			<bool>NO</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>2102</string>
+			<key>courseTitle</key>
+			<string>World Geography</string>
+			<key>isHonours</key>
+			<bool>NO</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>2103</string>
+			<key>courseTitle</key>
+			<string>Pre AP W Geog</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>2200</string>
+			<key>courseTitle</key>
+			<string>World History</string>
+			<key>isHonours</key>
+			<bool>NO</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>2202</string>
+			<key>courseTitle</key>
+			<string>World History</string>
+			<key>isHonours</key>
+			<bool>NO</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>2203</string>
+			<key>courseTitle</key>
+			<string>Pre AP W His</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>2204</string>
+			<key>courseTitle</key>
+			<string>Pre IB W Area S</string>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>2205</string>
+			<key>courseTitle</key>
+			<string>AP World Hist</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>2211</string>
+			<key>courseTitle</key>
+			<string>AP Human Geog</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>2330</string>
+			<key>courseTitle</key>
+			<string>US Hist</string>
+			<key>isHonours</key>
+			<bool>NO</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>2332</string>
+			<key>courseTitle</key>
+			<string>U S Hist Lz</string>
+			<key>isHonours</key>
+			<bool>NO</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>2334</string>
+			<key>courseTitle</key>
+			<string>AP US Hist</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>2335</string>
+			<key>courseTitle</key>
+			<string>Pre-Ib US Hist</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>2440</string>
+			<key>courseTitle</key>
+			<string>US Govt</string>
+			<key>isHonours</key>
+			<bool>NO</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>2442</string>
+			<key>courseTitle</key>
+			<string>Government</string>
+			<key>isHonours</key>
+			<bool>NO</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>2444</string>
+			<key>courseTitle</key>
+			<string>AP Govt/Politic</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>2503</string>
+			<key>courseTitle</key>
+			<string>AP Psychology</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>2505</string>
+			<key>courseTitle</key>
+			<string>IB Psychology</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>2554</string>
+			<key>courseTitle</key>
+			<string>AP Euro History</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>2555</string>
+			<key>courseTitle</key>
+			<string>IB Euro Hist Sl</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>2600</string>
+			<key>courseTitle</key>
+			<string>Economics</string>
+			<key>isHonours</key>
+			<bool>NO</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>2601</string>
+			<key>courseTitle</key>
+			<string>IB Economics</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>2602</string>
+			<key>courseTitle</key>
+			<string>Economics</string>
+			<key>isHonours</key>
+			<bool>NO</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>2604</string>
+			<key>courseTitle</key>
+			<string>AP Macro Econ</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>2610</string>
+			<key>courseTitle</key>
+			<string>IB W Area Studi</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>2615</string>
+			<key>courseTitle</key>
+			<string>IB Theo/Know-S</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>2616</string>
+			<key>courseTitle</key>
+			<string>IB Theo/Know -F</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>2692</string>
+			<key>courseTitle</key>
+			<string>Sp Topic Ss II</string>
+			<key>isHonours</key>
+			<bool>NO</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>2700</string>
+			<key>courseTitle</key>
+			<string>Sp Topics Ss</string>
+			<key>isHonours</key>
+			<bool>NO</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>3110</string>
+			<key>courseTitle</key>
+			<string>Algebra I</string>
+			<key>isHonours</key>
+			<bool>NO</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>3212</string>
+			<key>courseTitle</key>
+			<string>Algebra I</string>
+			<key>isHonours</key>
+			<bool>NO</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>3213</string>
+			<key>courseTitle</key>
+			<string>Alg I-Db</string>
+			<key>isHonours</key>
+			<bool>NO</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>3221</string>
+			<key>courseTitle</key>
+			<string>Math Modeling</string>
+			<key>isHonours</key>
+			<bool>NO</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>3222</string>
+			<key>courseTitle</key>
+			<string>Algebra II</string>
+			<key>isHonours</key>
+			<bool>NO</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>3223</string>
+			<key>courseTitle</key>
+			<string>Pre-AP Alg II</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>3225</string>
+			<key>courseTitle</key>
+			<string>Tag Alg II</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>3312</string>
+			<key>courseTitle</key>
+			<string>Geometry</string>
+			<key>isHonours</key>
+			<bool>NO</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>3313</string>
+			<key>courseTitle</key>
+			<string>Pre-AP Geometry</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>3315</string>
+			<key>courseTitle</key>
+			<string>Tag Geometry</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>3330</string>
+			<key>courseTitle</key>
+			<string>Geometry</string>
+			<key>isHonours</key>
+			<bool>NO</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>3608</string>
+			<key>courseTitle</key>
+			<string>AP Statistics</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>3609</string>
+			<key>courseTitle</key>
+			<string>Precalculus</string>
+			<key>isHonours</key>
+			<bool>NO</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>3610</string>
+			<key>courseTitle</key>
+			<string>Pre-AP Precal</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>3611</string>
+			<key>courseTitle</key>
+			<string>Tag Preapprecal</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>3613</string>
+			<key>courseTitle</key>
+			<string>Tag Preibprecal</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>3614</string>
+			<key>courseTitle</key>
+			<string>AP Cal AB</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>3615</string>
+			<key>courseTitle</key>
+			<string>Tag AP Calc BC</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>3616</string>
+			<key>courseTitle</key>
+			<string>Tag Ib Calc BC</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>3617</string>
+			<key>courseTitle</key>
+			<string>AP Calculus BC</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>3619</string>
+			<key>courseTitle</key>
+			<string>IB Math Methods</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>3620</string>
+			<key>courseTitle</key>
+			<string>IB Pre-Calculus</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>3621</string>
+			<key>courseTitle</key>
+			<string>IB Math Studies</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>3622</string>
+			<key>courseTitle</key>
+			<string>IB Calculus Sl</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>3623</string>
+			<key>courseTitle</key>
+			<string>IB Calculus BC</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>3624</string>
+			<key>courseTitle</key>
+			<string>Ind Study-Chaos</string>
+			<key>isHonours</key>
+			<bool>NO</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>3625</string>
+			<key>courseTitle</key>
+			<string>Ind. St. Statistics</string>
+			<key>isHonours</key>
+			<bool>NO</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>3626</string>
+			<key>courseTitle</key>
+			<string>IB Hl Math</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>3628</string>
+			<key>courseTitle</key>
+			<string>IB Ma Standards</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>3629</string>
+			<key>courseTitle</key>
+			<string>IB Math Studies</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>3636</string>
+			<key>courseTitle</key>
+			<string>Adv Quant. Reasoning</string>
+			<key>isHonours</key>
+			<bool>NO</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>3922</string>
+			<key>courseTitle</key>
+			<string>AP Comp Sci</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>3923</string>
+			<key>courseTitle</key>
+			<string>IB Comp Sci I</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>3933</string>
+			<key>courseTitle</key>
+			<string>IB Comp Sci Hl</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>4011</string>
+			<key>courseTitle</key>
+			<string>Biology</string>
+			<key>isHonours</key>
+			<bool>NO</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>4012</string>
+			<key>courseTitle</key>
+			<string>Pre-AP Biology</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>4110</string>
+			<key>courseTitle</key>
+			<string>Bio</string>
+			<key>isHonours</key>
+			<bool>NO</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>4121</string>
+			<key>courseTitle</key>
+			<string>IPC</string>
+			<key>isHonours</key>
+			<bool>NO</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>4125</string>
+			<key>courseTitle</key>
+			<string>IB Biology Hl</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>4132</string>
+			<key>courseTitle</key>
+			<string>Chemistry</string>
+			<key>isHonours</key>
+			<bool>NO</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>4133</string>
+			<key>courseTitle</key>
+			<string>Pre-AP Chemistry</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>4134</string>
+			<key>courseTitle</key>
+			<string>Tag P-AP Chem</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>4238</string>
+			<key>courseTitle</key>
+			<string>IB Chemistry II</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>4241</string>
+			<key>courseTitle</key>
+			<string>Physics</string>
+			<key>isHonours</key>
+			<bool>NO</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>4242</string>
+			<key>courseTitle</key>
+			<string>Pre-AP Physics</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>4313</string>
+			<key>courseTitle</key>
+			<string>AP Biology</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>4314</string>
+			<key>courseTitle</key>
+			<string>IB Biology Sl</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>4315</string>
+			<key>courseTitle</key>
+			<string>Tag Pap Biology</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>4334</string>
+			<key>courseTitle</key>
+			<string>AP Chemistry</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>4335</string>
+			<key>courseTitle</key>
+			<string>IB Chemistry I</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>4343</string>
+			<key>courseTitle</key>
+			<string>AP Physics B</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>4344</string>
+			<key>courseTitle</key>
+			<string>IB Physics Sl</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>4345</string>
+			<key>courseTitle</key>
+			<string>AP Physics C</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>4346</string>
+			<key>courseTitle</key>
+			<string>IB Physics Hl</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>4347</string>
+			<key>courseTitle</key>
+			<string>Tag Pap Physics</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>4352</string>
+			<key>courseTitle</key>
+			<string>Pre-IB Sci I</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>4353</string>
+			<key>courseTitle</key>
+			<string>Pre-IB Sci II</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>4404</string>
+			<key>courseTitle</key>
+			<string>Aquatic Sci</string>
+			<key>isHonours</key>
+			<bool>NO</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>4405</string>
+			<key>courseTitle</key>
+			<string>Environ Systems</string>
+			<key>isHonours</key>
+			<bool>NO</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>4406</string>
+			<key>courseTitle</key>
+			<string>Aquatic Science</string>
+			<key>isHonours</key>
+			<bool>NO</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>4407</string>
+			<key>courseTitle</key>
+			<string>AP Env Sc/Sy</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>4510</string>
+			<key>courseTitle</key>
+			<string>Astronomy</string>
+			<key>isHonours</key>
+			<bool>NO</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>5332</string>
+			<key>courseTitle</key>
+			<string>Adv Animal Sci</string>
+			<key>isHonours</key>
+			<bool>NO</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>5424</string>
+			<key>courseTitle</key>
+			<string>Prin Of Tech I</string>
+			<key>isHonours</key>
+			<bool>NO</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>5620</string>
+			<key>courseTitle</key>
+			<string>SRD Chem/Forensics</string>
+			<key>isHonours</key>
+			<bool>NO</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>5621</string>
+			<key>courseTitle</key>
+			<string>Anat/Physio Hum</string>
+			<key>isHonours</key>
+			<bool>NO</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>5622</string>
+			<key>courseTitle</key>
+			<string>Med Microbio</string>
+			<key>isHonours</key>
+			<bool>NO</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>5623</string>
+			<key>courseTitle</key>
+			<string>Pathophysiology</string>
+			<key>isHonours</key>
+			<bool>NO</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>5645</string>
+			<key>courseTitle</key>
+			<string>Adv Biotech</string>
+			<key>isHonours</key>
+			<bool>NO</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>3932</string>
+			<key>courseTitle</key>
+			<string>AP Computer Science</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>8112</string>
+			<key>courseTitle</key>
+			<string>French I</string>
+			<key>isHonours</key>
+			<bool>NO</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>8122</string>
+			<key>courseTitle</key>
+			<string>French II</string>
+			<key>isHonours</key>
+			<bool>NO</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>8124</string>
+			<key>courseTitle</key>
+			<string>P-AP French II</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>8132</string>
+			<key>courseTitle</key>
+			<string>Pre-AP French 3</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>8133</string>
+			<key>courseTitle</key>
+			<string>French III</string>
+			<key>isHonours</key>
+			<bool>NO</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>8144</string>
+			<key>courseTitle</key>
+			<string>AP French IV</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>8145</string>
+			<key>courseTitle</key>
+			<string>AP French Lang</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>8148</string>
+			<key>courseTitle</key>
+			<string>IB French IV-Sl</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>8149</string>
+			<key>courseTitle</key>
+			<string>IB French V-Hl</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>8212</string>
+			<key>courseTitle</key>
+			<string>German I</string>
+			<key>isHonours</key>
+			<bool>NO</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>8222</string>
+			<key>courseTitle</key>
+			<string>German II</string>
+			<key>isHonours</key>
+			<bool>NO</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>8224</string>
+			<key>courseTitle</key>
+			<string>P-AP German II</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>8231</string>
+			<key>courseTitle</key>
+			<string>German III</string>
+			<key>isHonours</key>
+			<bool>NO</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>8232</string>
+			<key>courseTitle</key>
+			<string>Pre-AP German 3</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>8234</string>
+			<key>courseTitle</key>
+			<string>AP German IV</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>8237</string>
+			<key>courseTitle</key>
+			<string>IB German Sl</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>8238</string>
+			<key>courseTitle</key>
+			<string>IB German Hl</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>8312</string>
+			<key>courseTitle</key>
+			<string>Latin I</string>
+			<key>isHonours</key>
+			<bool>NO</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>8322</string>
+			<key>courseTitle</key>
+			<string>Latin II</string>
+			<key>isHonours</key>
+			<bool>NO</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>8323</string>
+			<key>courseTitle</key>
+			<string>P-AP Latin II</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>8344</string>
+			<key>courseTitle</key>
+			<string>Pre AP Latin 3</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>8345</string>
+			<key>courseTitle</key>
+			<string>AP Latin</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>8347</string>
+			<key>courseTitle</key>
+			<string>IB Latin IV</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>8348</string>
+			<key>courseTitle</key>
+			<string>IB Latin Hl</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>8351</string>
+			<key>courseTitle</key>
+			<string>Pre AP/IB Latin III</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>8412</string>
+			<key>courseTitle</key>
+			<string>Spanish I</string>
+			<key>isHonours</key>
+			<bool>NO</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>8422</string>
+			<key>courseTitle</key>
+			<string>Spanish II</string>
+			<key>isHonours</key>
+			<bool>NO</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>8424</string>
+			<key>courseTitle</key>
+			<string>IB Span IV Sl</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>8425</string>
+			<key>courseTitle</key>
+			<string>IB Spanish Hl</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>8427</string>
+			<key>courseTitle</key>
+			<string>P-AP Spanish II</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>8431</string>
+			<key>courseTitle</key>
+			<string>Spanish III</string>
+			<key>isHonours</key>
+			<bool>NO</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>8432</string>
+			<key>courseTitle</key>
+			<string>Pre-AP Span III</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>8442</string>
+			<key>courseTitle</key>
+			<string>Spanish IV</string>
+			<key>isHonours</key>
+			<bool>NO</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>8445</string>
+			<key>courseTitle</key>
+			<string>AP Span Lang</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>8447</string>
+			<key>courseTitle</key>
+			<string>AP Span Lit</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>8551</string>
+			<key>courseTitle</key>
+			<string>Sign Lang I</string>
+			<key>isHonours</key>
+			<bool>NO</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>8552</string>
+			<key>courseTitle</key>
+			<string>Sign Lang II</string>
+			<key>isHonours</key>
+			<bool>NO</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>8553</string>
+			<key>courseTitle</key>
+			<string>Sign Lang III</string>
+			<key>isHonours</key>
+			<bool>NO</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>8554</string>
+			<key>courseTitle</key>
+			<string>Sign Lang IV</string>
+			<key>isHonours</key>
+			<bool>NO</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>8610</string>
+			<key>courseTitle</key>
+			<string>Chinese I</string>
+			<key>isHonours</key>
+			<bool>NO</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>8611</string>
+			<key>courseTitle</key>
+			<string>Chinese II</string>
+			<key>isHonours</key>
+			<bool>NO</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>8612</string>
+			<key>courseTitle</key>
+			<string>Chinese III</string>
+			<key>isHonours</key>
+			<bool>NO</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>8614</string>
+			<key>courseTitle</key>
+			<string>Pr AP Chinese 3</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>8644</string>
+			<key>courseTitle</key>
+			<string>P-AP Chinese II</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>8645</string>
+			<key>courseTitle</key>
+			<string>AP Chinese La</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+		<dict>
+			<key>courseCode</key>
+			<string>8648</string>
+			<key>courseTitle</key>
+			<string>IB Chin IV-Sl</string>
+			<key>isHonours</key>
+			<bool>YES</bool>
+		</dict>
+	</array>
+	</dict>
+</plist>

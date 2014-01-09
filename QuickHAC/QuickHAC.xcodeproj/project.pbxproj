@@ -270,7 +270,6 @@
 		DEF0F22F18727EA700116B61 /* ro */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ro; path = ro.lproj/Localizable.strings; sourceTree = "<group>"; };
 		DEF0F23018727EA700116B61 /* SFHFKeychainUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFHFKeychainUtils.h; sourceTree = "<group>"; };
 		DEF0F23118727EA700116B61 /* SFHFKeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFHFKeychainUtils.m; sourceTree = "<group>"; };
-		DEF0F23618728FAC00116B61 /* libTestFlight.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libTestFlight.a; path = ../TestFlightSDK2.1.3/libTestFlight.a; sourceTree = "<group>"; };
 		DEF0F2381872901C00116B61 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		DEF0F23A1872C3AC00116B61 /* settings_defaults.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = settings_defaults.plist; sourceTree = "<group>"; };
 		DEF0F23D1873797400116B61 /* DistrictCerts.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = DistrictCerts.bundle; path = assets/certs/DistrictCerts.bundle; sourceTree = SOURCE_ROOT; };
@@ -404,7 +403,6 @@
 			isa = PBXGroup;
 			children = (
 				DEF0F2381872901C00116B61 /* libz.dylib */,
-				DEF0F23618728FAC00116B61 /* libTestFlight.a */,
 				DEF0F2031871287300116B61 /* MessageUI.framework */,
 				DEF0F1C0186EEA6900116B61 /* QuartzCore.framework */,
 				DEF0F1BE186EEA6400116B61 /* CoreImage.framework */,
