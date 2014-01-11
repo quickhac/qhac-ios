@@ -352,6 +352,54 @@
 	return result;
 }
 
+
+/**
+ * Calculates the unweighted GPA on a 4.0 scale for the specified courses.
+ *
+ * The GPA is approximated using the formula y = .1255x - 7.8467
+ *
+ * @param courses An array of SQUCourse objects.
+ * @return The unweighted GPA as an NSNumber object.
+ */
+- (NSNumber *) unweightedGPAWithCourses:(NSArray *) courses {
+	float gpa = 0;
+	float num_classes = 0;
+	
+	// Process all classes
+	for (SQUCourse *course in courses) {
+		// Process all semesters
+		for(NSUInteger i = 0; i < course.student.numSemesters.unsignedIntegerValue; i++) {
+			SQUSemester *semester = course.semesters[i];
+			
+			// Ignore a course if there's no grade for it.
+			if(semester.average.integerValue != -1) {
+				// Ignore grades below 70
+				if(semester.average.floatValue >= 70.0) {
+					//gpa += fmin((semester.average.floatValue - 60.0) / 10.0, 4.0);
+					// gpa += (.1255 * (semester.average.floatValue)) - 7.8467;
+					if(semester.average.floatValue > 90) {
+						gpa += 4.0;
+					} else if(semester.average.floatValue < 90 && semester.average.floatValue >= 80) {
+						gpa += 3.0;
+					} else if(semester.average.floatValue < 80 && semester.average.floatValue < 74) {
+						gpa += 2.0;
+					} else if(semester.average.floatValue <= 74) {
+						gpa += 1.0;
+					}
+				}
+				
+				num_classes++;
+			}
+		}
+	}
+	
+	// Divide by number of classes
+	gpa /= num_classes;
+	
+	return @(gpa);
+}
+
+
 /**
  * Returns the grade point (between 6.0 and 0.0) for a floating-point average,
  * and taking into account if the course is an honours class or not.

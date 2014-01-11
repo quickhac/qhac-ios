@@ -128,14 +128,14 @@ static SQUDistrictManager *_sharedInstance = nil;
 		_HTTPManager.securityPolicy.allowInvalidCertificates = YES;
 		_HTTPManager.securityPolicy.pinnedCertificates = nil;
 		
-		NSLog(@"SECURITY POLICY CHANGED: Accepts invalid certs (%@)", currentDistrict.name);
+		// NSLog(@"SECURITY POLICY CHANGED: Accepts invalid certs (%@)", currentDistrict.name);
 	} else if(certs.count != 0) {
 		_HTTPManager.securityPolicy.allowInvalidCertificates = NO;
 		_HTTPManager.securityPolicy.SSLPinningMode = AFSSLPinningModeCertificate;
 		
 		[_HTTPManager.securityPolicy setPinnedCertificates:certs];
 		
-		NSLog(@"SECURITY POLICY CHANGED: Rejects invalid certs (%@)", currentDistrict.name);
+		// NSLog(@"SECURITY POLICY CHANGED: Rejects invalid certs (%@)", currentDistrict.name);
 	}
 }
 

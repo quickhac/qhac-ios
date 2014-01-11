@@ -2,23 +2,41 @@
 //  SQUSidebarCell.m
 //  QuickHAC
 //
-//  Created by Tristan Seifert on 1/1/14.
+//  Created by Tristan Seifert on 1/11/14.
 //  See README.MD for licensing and copyright information.
 //
 
 #import "SQUSidebarCell.h"
 
 @implementation SQUSidebarCell
-@synthesize icon = _icon, iconSelected = _iconSelected;
+@synthesize titleText = _text;
 
 - (id) initWithStyle:(UITableViewCellStyle) style reuseIdentifier:(NSString *) reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-    if (self) {
-        _gradeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 48, 36)];
-		_gradeLabel.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:17.0];
-		_gradeLabel.text = @"100";
-		_gradeLabel.textAlignment = NSTextAlignmentRight;
+    
+	if (self) {
+		// Suppress default selection
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
+		self.backgroundColor = UIColorFromRGB(0x363636);
+		
+		// Set up our own text rendering
+		CGRect frame = self.frame;
+		frame.origin = CGPointMake(15, 11);
+		frame.size.height -= 10;
+		
+		_titleLayer = [CATextLayer layer];
+        _titleLayer.contentsScale = [UIScreen mainScreen].scale;
+        _titleLayer.foregroundColor = UIColorFromRGB(0xd6d6d6).CGColor;
+        _titleLayer.font = (__bridge CFTypeRef) [UIFont fontWithName:@"HelveticaNeue-Medium" size:17.0];
+        _titleLayer.fontSize = self.textLabel.font.pointSize;
+		_titleLayer.zPosition = 10;
+		_titleLayer.frame = frame;
+		_titleLayer.alignmentMode = kCAAlignmentLeft;
+		[self.layer addSublayer:_titleLayer];
+		
+		[self.textLabel removeFromSuperview];
     }
+	
     return self;
 }
 
@@ -26,32 +44,41 @@
     [super setSelected:selected animated:animated];
 
     if(selected) {
-		self.backgroundColor = UIColorFromRGB(0xECF0F1);
-		self.textLabel.textColor = UIColorFromRGB(0x3498DB);
-		_gradeLabel.textColor = UIColorFromRGB(0x3498DB);
+		_titleLayer.foregroundColor = UIColorFromRGB(0xd6d6d6).CGColor;
 		
-		self.imageView.image = _iconSelected;
+		// Create selection view
+		if(!_bgLayer) {
+			_bgLayer = [CALayer layer];
+			_bgLayer.cornerRadius = 4.0;
+			_bgLayer.backgroundColor = UIColorFromRGB(0x1e1e1e).CGColor;
+			_bgLayer.zPosition = 0;
+			_bgLayer.borderWidth = 1.0;
+			_bgLayer.borderColor = UIColorFromRGB(0x282828).CGColor;
+		}
+		
+		// Set up frame for the layer (6px from L/R, 4px top/bottom)
+		CGRect frame = self.frame;
+		frame.origin = CGPointMake(6, 4);
+		frame.size.width = 246;
+		frame.size.height -= 8;
+		_bgLayer.frame = frame;
+		
+		[self.layer addSublayer:_bgLayer];
 	} else {
-		self.backgroundColor = UIColorFromRGB(0x4E5758);
-		self.textLabel.textColor = UIColorFromRGB(0xECF0F1);
-		_gradeLabel.textColor = UIColorFromRGB(0xECF0F1);
+		_titleLayer.foregroundColor = UIColorFromRGB(0xd6d6d6).CGColor;
 		
-		self.imageView.image = _icon;
+		// Hide the selection indicator, if it is shown
+		if(_bgLayer) {
+			[_bgLayer removeFromSuperlayer];
+		}
 	}
 }
 
 /**
- * Updates the grade displayed in a badge on the right side of the cell.
- *
- * @param grade A floating-point number to show. Set to -1 to hide grades.
+ * Sets the string displayed on the title layer.
  */
-- (void) setGrade:(float) grade {
-	if(grade == -1) {
-		[self setAccessoryView:nil];
-	} else {
-		_gradeLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%.0f", @"grade average badge ipad"), grade];
-		[self setAccessoryView:_gradeLabel];
-	}
+- (void) setTitleText:(NSString *) text {
+	_titleLayer.string = (id) text;
 }
 
 @end

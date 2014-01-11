@@ -2,24 +2,21 @@
 //  SQUSidebarCell.h
 //  QuickHAC
 //
-//  Created by Tristan Seifert on 1/1/14.
+//  Created by Tristan Seifert on 1/11/14.
 //  See README.MD for licensing and copyright information.
 //
+
+
 
 #import <UIKit/UIKit.h>
 
 @interface SQUSidebarCell : UITableViewCell {
-	UILabel *_gradeLabel;
+	CALayer *_bgLayer;
+	CATextLayer *_titleLayer;
 	
-	UIImage *_icon;
-	UIImage *_iconSelected;
+	NSString *_text;
 }
 
-/// Icon displayed on left of cell.
-@property (nonatomic) UIImage *icon;
-/// Selected icon
-@property (nonatomic) UIImage *iconSelected;
-
-- (void) setGrade:(float) grade;
+@property (nonatomic, readwrite, setter = setTitleText:) NSString *titleText;
 
 @end

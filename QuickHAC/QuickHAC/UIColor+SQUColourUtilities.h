@@ -12,5 +12,6 @@
 
 - (UIColor *) darkerColor;
 - (UIColor *) lighterColor;
+- (UIImage *) imageFromColor;
 
 @end

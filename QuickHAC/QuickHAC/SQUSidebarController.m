@@ -11,6 +11,10 @@
 #import "SQUSidebarController.h"
 #import "SQUGradeManager.h"
 #import "SQUCoreData.h"
+#import "SQUSidebarCell.h"
+#import "SQUSidebarSwitcherButton.h"
+#import "UIColor+SQUColourUtilities.h"
+#import "SQUUserSwitcherView.h"
 #import "SQUAppDelegate.h"
 #import "SQUSettingsViewController.h"
 
@@ -23,16 +27,10 @@
 @implementation SQUSidebarController
 @synthesize overviewController = _overview;
 
-- (id) initWithStyle:(UITableViewStyle) style {
-    self = [super initWithStyle:style];
+- (id) init {
+    self = [super init];
     if (self) {
-		[self.tableView registerClass:NSClassFromString(@"UITableViewCell") forCellReuseIdentifier:@"SidebarCell"];
-		
-		UIImageView *backgroundImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"menu-background"]];
-		self.tableView.backgroundView = backgroundImageView;
-		
 		selectedItem =[NSIndexPath indexPathForRow:0 inSection:0];
-		[self.tableView selectRowAtIndexPath:selectedItem animated:NO scrollPosition:UITableViewScrollPositionTop];
 		
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(gradesUpdatedNotification:) name:SQUGradesDataUpdatedNotification object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showCourseOverviewNotification:) name:SQUSidebarControllerShowSidebarMessage object:nil];
@@ -45,8 +43,54 @@
 - (void) viewDidLoad {
     [super viewDidLoad];
 
-    // Uncomment the following line to preserve selection between presentations.
-    self.clearsSelectionOnViewWillAppear = NO;
+	self.navigationController.navigationBarHidden = YES;
+	self.edgesForExtendedLayout = UIRectEdgeNone;
+
+	// Set up new content view
+	self.view.backgroundColor = UIColorFromRGB(0x363636);
+	
+	// Set up table view
+	CGFloat screenHeight = [UIScreen mainScreen].bounds.size.height;
+	_tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 65, 260, screenHeight-65) style:UITableViewStylePlain];
+	[_tableView registerClass:NSClassFromString(@"SQUSidebarCell") forCellReuseIdentifier:@"SidebarCell"];
+	
+	_tableView.delegate = self;
+	_tableView.dataSource = self;
+	
+	_tableView.backgroundColor = UIColorFromRGB(0x363636);
+	_tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
+	_tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+	_tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, _tableView.bounds.size.width, 0.01f)];
+
+	[_tableView selectRowAtIndexPath:selectedItem animated:NO scrollPosition:UITableViewScrollPositionTop];
+	[self.view addSubview:_tableView];
+	
+	// Set up top view
+	_topView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 260, 64)];
+	_topView.backgroundColor = UIColorFromRGB(0x363636);
+	[self.view addSubview:_topView];
+	
+	// settings button: 60px
+	_settingsButton = [[UIButton alloc] initWithFrame:CGRectMake(200, 0, 60, 64)];
+	[_settingsButton setBackgroundImage:[UIColorFromRGB(0x363636) imageFromColor] forState:UIControlStateNormal];
+	[_settingsButton setBackgroundImage:[UIColorFromRGB(0x2b2b2b) imageFromColor] forState:UIControlStateSelected];
+	[_settingsButton setImage:[UIImage imageNamed:@"sidebar_gear"] forState:UIControlStateNormal];
+	[_settingsButton addTarget:self action:@selector(showSettings:) forControlEvents:UIControlEventTouchUpInside];
+	[_topView addSubview:_settingsButton];
+	
+	// account switcher button: 200px
+	_switcherButton = [[SQUSidebarSwitcherButton alloc] initWithFrame:CGRectMake(0, 0, 200, 64)];
+	[_switcherButton addTarget:self action:@selector(toggleSwitcher:) forControlEvents:UIControlEventTouchUpInside];
+	[_topView addSubview:_switcherButton];
+	
+	// Separator
+	UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(0, 64, 260, 1)];
+	separator.backgroundColor = UIColorFromRGB(0x262626);
+	[self.view addSubview:separator];
+	
+	separator = [[UIView alloc] initWithFrame:CGRectMake(_tableView.frame.size.width, 0, 1, self.view.frame.size.height)];
+	separator.backgroundColor = UIColorFromRGB(0x262626);
+	[self.view addSubview:separator];
 }
 
 - (void) didReceiveMemoryWarning {
@@ -57,7 +101,7 @@
 #pragma mark - Table view data source
 - (NSInteger) numberOfSectionsInTableView:(UITableView *) tableView {
     // Return the number of sections.
-    return 3;
+    return 2;
 }
 
 - (NSInteger) tableView:(UITableView *) tableView numberOfRowsInSection:(NSInteger) section {
@@ -71,10 +115,6 @@
 			return [SQUGradeManager sharedInstance].student.courses.count;
 			break;
 			
-		case 2:
-			return 1;
-			break;
-			
 		default:
 			return 0;
 			break;
@@ -83,27 +123,19 @@
 
 - (UITableViewCell *) tableView:(UITableView *) tableView cellForRowAtIndexPath:(NSIndexPath *) indexPath {
     static NSString *CellIdentifier = @"SidebarCell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-    cell.backgroundColor  = nil;
-	cell.backgroundView = nil;
-	
-	cell.textLabel.textColor = [UIColor whiteColor];
+    SQUSidebarCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
    
 	switch(indexPath.section) {
 		case 0:
-			cell.textLabel.text = NSLocalizedString(@"Overview", @"sidebar item");
+			cell.titleText = NSLocalizedString(@"Overview", @"sidebar item");
 			break;
 			
 		case 1: {
 			SQUCourse *course = [SQUGradeManager sharedInstance].student.courses[indexPath.row];
-			cell.textLabel.text = course.title;
+			cell.titleText = course.title;
 			
 			break;
 		}
-			
-		case 2:
-			cell.textLabel.text = NSLocalizedString(@"Settings", @"sidebar item");
-			break;
 			
 		default:
 			return 0;
@@ -117,10 +149,6 @@
 	switch(section) {	
 		case 1:
 			return NSLocalizedString(@"Courses", @"sidebar section header");
-			break;
-			
-		case 2:
-			return NSLocalizedString(@"Miscellaneous", @"sidebar section header");
 			break;
 			
 		default:
@@ -166,29 +194,76 @@
 			break;
 		}
 			
-		case 2: {
-			_lastSelection = indexPath;
-			
-			SQUSettingsViewController *settings = [[SQUSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
-			UINavigationController *navCtrlr = [[UINavigationController alloc] initWithRootViewController:settings];
-				
-			[[self revealController] setFrontViewController:navCtrlr];
-			[[self revealController] resignPresentationModeEntirely:YES animated:YES completion:NULL];
-			
-			break;
-		}
-			
 		default:
 			break;
 	}
 }
 
-#pragma mark - UI Integration
+#pragma mark - Button callbacks
+- (void) showSettings:(id) sender {
+	SQUSettingsViewController *settings = [[SQUSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
+	UINavigationController *navCtrlr = [[UINavigationController alloc] initWithRootViewController:settings];
+	[self presentViewController:navCtrlr animated:YES completion:NULL];
+}
+
+- (void) toggleSwitcher:(id) sender {
+	if(!_switcher) {
+		CGRect switcherFrame = _tableView.frame;
+		switcherFrame.size.height += 32;
+		switcherFrame.origin.y = -switcherFrame.size.height + _topView.frame.size.height - 32;
+		
+		_switcher = [[SQUUserSwitcherView alloc] initWithFrame:switcherFrame];
+		[self.view insertSubview:_switcher belowSubview:_topView];
+	}
+	
+	// Set up bounce animation
+	CAKeyframeAnimation *animation = [CAKeyframeAnimation animationWithKeyPath:@"position.y"];
+	animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
+	animation.duration = 0.2;
+	
+	CGRect switcherFrame = _tableView.frame;
+	
+	// Show switcher
+	if(_switcherButton.toggled) {
+		CGFloat finalPoint = 32+(switcherFrame.size.height/2);
+		
+		// Add keyframes
+		int steps = 100;
+		NSMutableArray *values = [NSMutableArray arrayWithCapacity:steps];
+		double value = 0;
+		float e = 2.71;
+		for (int t = 0; t < steps; t++) {
+			// 32 is the bouncyness coefficient, in pixels
+			value = 32 * pow(e, -0.055*t) * cos(0.08*t) + finalPoint;
+			[values addObject:@(value)];
+		}
+		
+		animation.values = values;
+		
+		// UIView animation slides down, CAAnimation does bounce
+		[UIView animateWithDuration:0.2 animations:^{
+			CGRect newFrame = switcherFrame;
+			newFrame.origin.y = _tableView.frame.origin.y-32;
+			_switcher.frame = newFrame;
+		} completion:^(BOOL finished) {
+			// do bounce
+			[_switcher.layer addAnimation:animation forKey:nil];
+		}];
+	} else {
+		[UIView animateWithDuration:0.4 animations:^{
+			CGRect newFrame = switcherFrame;
+			newFrame.origin.y = -switcherFrame.size.height + _topView.frame.size.height - 32;
+			_switcher.frame = newFrame;
+		}];
+	}
+}
+
+#pragma mark - Notifications
 - (void) gradesUpdatedNotification:(NSNotification *) notif {
-	[self.tableView reloadData];
+	[_tableView reloadData];
 	
 	if(selectedItem) {
-		[self.tableView selectRowAtIndexPath:selectedItem animated:YES scrollPosition:UITableViewScrollPositionNone];
+		[_tableView selectRowAtIndexPath:selectedItem animated:YES scrollPosition:UITableViewScrollPositionNone];
 	}
 }
 
@@ -218,7 +293,7 @@
 		NSUInteger index = [[[SQUGradeManager sharedInstance] getCoursesForCurrentStudent] indexOfObject:course];
 		
 		selectedItem = [NSIndexPath indexPathForRow:index inSection:1];
-		[self.tableView selectRowAtIndexPath:selectedItem animated:YES scrollPosition:UITableViewScrollPositionNone];
+		[_tableView selectRowAtIndexPath:selectedItem animated:YES scrollPosition:UITableViewScrollPositionNone];
 		
 		SQUClassDetailController *controller = [[SQUClassDetailController alloc] initWithCourse:course];
 		UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
@@ -237,7 +312,7 @@
 	NSUInteger index = [[[SQUGradeManager sharedInstance] getCoursesForCurrentStudent] indexOfObject:course];
 	
 	selectedItem = [NSIndexPath indexPathForRow:index inSection:1];
-	[self.tableView selectRowAtIndexPath:selectedItem animated:YES scrollPosition:UITableViewScrollPositionNone];
+	[_tableView selectRowAtIndexPath:selectedItem animated:YES scrollPosition:UITableViewScrollPositionNone];
 	
 	SQUClassDetailController *controller = [[SQUClassDetailController alloc] initWithCourse:course];
 	UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];

@@ -61,7 +61,7 @@ static SQUAppDelegate *sharedDelegate = nil;
 		_navController = [[UINavigationController alloc] initWithRootViewController:_rootViewController];
 		
 		// Set up sidebar menu
-		_sidebarController = [[SQUSidebarController alloc] initWithStyle:UITableViewStylePlain];
+		_sidebarController = [[SQUSidebarController alloc] init];
 		_sidebarNavController = [[UINavigationController alloc] initWithRootViewController:_sidebarController];
 		
 		_sidebarController.overviewController = _rootViewController;

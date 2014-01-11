@@ -40,10 +40,9 @@
 - (void) viewDidLoad {
 	// Add the sidebar button.
 	UIBarButtonItem *showSidebar = [[UIBarButtonItem alloc]
-									initWithImage:[UIImage imageNamed:@"RevealSidebarIcon"]
-									style:UIBarButtonItemStyleBordered
+									initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
 									target:self
-									action:@selector(openSidebar:)];
+									action:@selector(closeModal:)];
 	[self.navigationItem setLeftBarButtonItem:showSidebar];
 }
 
@@ -193,14 +192,6 @@
 #pragma mark - UI callbacks
 - (void) closeModal:(id) sender {
 	[self dismissViewControllerAnimated:YES completion:NULL];
-}
-
-- (void) openSidebar:(id) sender {
-	if([self revealController].state == PKRevealControllerShowsFrontViewController) {
-		[[self revealController] showViewController:[self revealController].leftViewController];
-	} else {
-		[[self revealController] resignPresentationModeEntirely:YES animated:YES completion:NULL];
-	}
 }
 
 #pragma mark - Passcode alert

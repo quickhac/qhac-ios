@@ -3,12 +3,12 @@
     {
       "idiom" : "universal",
       "scale" : "1x",
-      "filename" : "menu-background.png"
+      "filename" : "light_settings_gear.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "menu-background@2x.png"
+      "filename" : "light_settings_gear@2x.png"
     }
   ],
   "info" : {

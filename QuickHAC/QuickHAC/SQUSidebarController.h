@@ -11,14 +11,22 @@
 @class SQUCourse;
 @class SQUGradeOverviewController;
 @class SQUSettingsViewController;
+@class SQUSidebarSwitcherButton;
+@class SQUUserSwitcherView;
 
 #define SQUSidebarControllerShowSidebarMessage @"SQUSidebarControllerShowSidebarMessage"
 
-@interface SQUSidebarController : UITableViewController {
+@interface SQUSidebarController : UIViewController <UITableViewDataSource, UITableViewDelegate> {
 	NSIndexPath *selectedItem;
 	
 	SQUGradeOverviewController *_overview;
 	NSIndexPath *_lastSelection;
+	
+	UIView *_topView;
+	SQUSidebarSwitcherButton *_switcherButton;
+	UIButton *_settingsButton;
+	UITableView *_tableView;
+	SQUUserSwitcherView *_switcher;
 }
 
 @property (nonatomic, readwrite, strong) SQUGradeOverviewController *overviewController;

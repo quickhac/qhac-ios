@@ -7,7 +7,7 @@
 //
 
 #import "SQUCoreData.h"
-#import "SQUSidebarCell.h"
+#import "SQUTabletSidebarCell.h"
 #import "SQUGradeManager.h"
 #import "SQUTabletSidebarController.h"
 
@@ -20,7 +20,7 @@
 - (id) initWithStyle:(UITableViewStyle) style {
     self = [super initWithStyle:style];
     if (self) {
-        [self.tableView registerClass:NSClassFromString(@"SQUSidebarCell") forCellReuseIdentifier:@"SidebarCell"];
+        [self.tableView registerClass:NSClassFromString(@"SQUTabletSidebarCell") forCellReuseIdentifier:@"TabletSidebarCell"];
 		
 		self.title = NSLocalizedString(@"QuickHAC", nil);
 		self.tableView.backgroundColor = UIColorFromRGB(0x4E5758);
@@ -79,7 +79,7 @@
 }
 
 - (UITableViewCell *) tableView:(UITableView *) tableView cellForRowAtIndexPath:(NSIndexPath *) indexPath {
-    SQUSidebarCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SidebarCell" forIndexPath:indexPath];
+    SQUTabletSidebarCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TabletSidebarCell" forIndexPath:indexPath];
 	cell.selectionStyle = UITableViewCellSelectionStyleNone;
 	
 	[cell setGrade:-1];

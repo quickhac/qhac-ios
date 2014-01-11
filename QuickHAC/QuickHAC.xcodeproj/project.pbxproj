@@ -37,6 +37,10 @@
 		DE35E9AB18061F8100F15F20 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE35E9AA18061F8100F15F20 /* Security.framework */; };
 		DE3AC657187B5A37007540A9 /* NSDate+RelativeDate.m in Sources */ = {isa = PBXBuildFile; fileRef = DE3AC656187B5A37007540A9 /* NSDate+RelativeDate.m */; };
 		DE3AC65C187B63D3007540A9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = DE3AC65A187B63D3007540A9 /* Localizable.strings */; };
+		DE485DD81881CEE800B215C6 /* SQUSidebarSwitcherButton.m in Sources */ = {isa = PBXBuildFile; fileRef = DE485DD71881CEE800B215C6 /* SQUSidebarSwitcherButton.m */; };
+		DE485DDB1881D67500B215C6 /* default_avatar.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DE485DDA1881D67500B215C6 /* default_avatar.jpg */; };
+		DE485DDE1881EACA00B215C6 /* SQUUserSwitcherView.m in Sources */ = {isa = PBXBuildFile; fileRef = DE485DDD1881EACA00B215C6 /* SQUUserSwitcherView.m */; };
+		DE485DE31881FAC700B215C6 /* SQUUserSwitcherCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DE485DE21881FAC700B215C6 /* SQUUserSwitcherCell.m */; };
 		DE72EBB9187A102B006F6F1A /* SQUEmptyView.m in Sources */ = {isa = PBXBuildFile; fileRef = DE72EBB8187A102B006F6F1A /* SQUEmptyView.m */; };
 		DE7B4E85186EB0F3008079CC /* NSManagedObjectModel+KCOrderedAccessorFix.m in Sources */ = {isa = PBXBuildFile; fileRef = DE7B4E84186EB0F3008079CC /* NSManagedObjectModel+KCOrderedAccessorFix.m */; };
 		DE7F51D6178C8B5E00A677CE /* SQULoginSchoolSelector.m in Sources */ = {isa = PBXBuildFile; fileRef = DE7F51D5178C8B5E00A677CE /* SQULoginSchoolSelector.m */; };
@@ -44,6 +48,9 @@
 		DE81CDD8186D517800DC1CAB /* TFHppleElement.m in Sources */ = {isa = PBXBuildFile; fileRef = DE81CDD4186D517800DC1CAB /* TFHppleElement.m */; };
 		DE81CDD9186D517800DC1CAB /* XPathQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = DE81CDD6186D517800DC1CAB /* XPathQuery.m */; };
 		DE81CDDC186D538000DC1CAB /* libxml2.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DE81CDDA186D518C00DC1CAB /* libxml2.2.dylib */; };
+		DE883187188119F8002244F5 /* login_background.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DE883186188119F8002244F5 /* login_background.jpg */; };
+		DE88318B18811F6B002244F5 /* SQUSidebarCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DE88318A18811F6B002244F5 /* SQUSidebarCell.m */; };
+		DE88318E18812092002244F5 /* SQUTabletSidebarCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DE88318D18812092002244F5 /* SQUTabletSidebarCell.m */; };
 		DEAE4699187807AB008DAE0C /* NSURL+RequestParams.m in Sources */ = {isa = PBXBuildFile; fileRef = DEAE4698187807AB008DAE0C /* NSURL+RequestParams.m */; };
 		DEBA3D0F1878EECC003C209B /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DE2843EC18768D510000756C /* libTestFlight.a */; };
 		DEBA3D121878FA04003C209B /* NSData+SQUAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = DEBA3D111878FA04003C209B /* NSData+SQUAdditions.m */; };
@@ -76,13 +83,11 @@
 		DEF0F23E1873797400116B61 /* DistrictCerts.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DEF0F23D1873797400116B61 /* DistrictCerts.bundle */; };
 		DEF0F2431873DC0600116B61 /* SQUSettingsGeneralController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F2421873DC0600116B61 /* SQUSettingsGeneralController.m */; };
 		DEF0F2461873E09400116B61 /* SQUSettingsGPAOptionsController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F2451873E09400116B61 /* SQUSettingsGPAOptionsController.m */; };
-		DEF0F2481873FB5D00116B61 /* login_background.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DEF0F2471873FB5C00116B61 /* login_background.jpg */; };
 		DEF0F25318740A1400116B61 /* MGSplitCornersView.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F24C18740A1400116B61 /* MGSplitCornersView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DEF0F25418740A1400116B61 /* MGSplitDividerView.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F24E18740A1400116B61 /* MGSplitDividerView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DEF0F25518740A1400116B61 /* MGSplitViewAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F25018740A1400116B61 /* MGSplitViewAppDelegate.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DEF0F25618740A1400116B61 /* MGSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F25218740A1400116B61 /* MGSplitViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DEF0F25B18740B3800116B61 /* SQUTabletSidebarController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F25A18740B3800116B61 /* SQUTabletSidebarController.m */; };
-		DEF0F25E1874198B00116B61 /* SQUSidebarCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F25D1874198B00116B61 /* SQUSidebarCell.m */; };
 		DEF0F26318743B7E00116B61 /* SQUTabletLoginController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F26218743B7E00116B61 /* SQUTabletLoginController.m */; };
 		DEF43B0317965B0D00190803 /* SQUGradeOverviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF43B0217965B0D00190803 /* SQUGradeOverviewController.m */; };
 		DEF43B0617965B1F00190803 /* SQUGradeOverviewTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF43B0517965B1F00190803 /* SQUGradeOverviewTableViewCell.m */; };
@@ -203,6 +208,13 @@
 		DE3AC655187B5A37007540A9 /* NSDate+RelativeDate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+RelativeDate.h"; sourceTree = "<group>"; };
 		DE3AC656187B5A37007540A9 /* NSDate+RelativeDate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+RelativeDate.m"; sourceTree = "<group>"; };
 		DE3AC65B187B63D3007540A9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		DE485DD61881CEE700B215C6 /* SQUSidebarSwitcherButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUSidebarSwitcherButton.h; sourceTree = "<group>"; };
+		DE485DD71881CEE800B215C6 /* SQUSidebarSwitcherButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUSidebarSwitcherButton.m; sourceTree = "<group>"; };
+		DE485DDA1881D67500B215C6 /* default_avatar.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = default_avatar.jpg; path = "assets/sidebar UI/default_avatar.jpg"; sourceTree = SOURCE_ROOT; };
+		DE485DDC1881EACA00B215C6 /* SQUUserSwitcherView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUUserSwitcherView.h; sourceTree = "<group>"; };
+		DE485DDD1881EACA00B215C6 /* SQUUserSwitcherView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUUserSwitcherView.m; sourceTree = "<group>"; };
+		DE485DE11881FAC700B215C6 /* SQUUserSwitcherCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUUserSwitcherCell.h; sourceTree = "<group>"; };
+		DE485DE21881FAC700B215C6 /* SQUUserSwitcherCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUUserSwitcherCell.m; sourceTree = "<group>"; };
 		DE72EBB7187A102B006F6F1A /* SQUEmptyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUEmptyView.h; sourceTree = "<group>"; };
 		DE72EBB8187A102B006F6F1A /* SQUEmptyView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUEmptyView.m; sourceTree = "<group>"; };
 		DE7B4E83186EB0F3008079CC /* NSManagedObjectModel+KCOrderedAccessorFix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSManagedObjectModel+KCOrderedAccessorFix.h"; path = "../../KCOrderedAccessorFix/NSManagedObjectModel+KCOrderedAccessorFix.h"; sourceTree = "<group>"; };
@@ -217,6 +229,11 @@
 		DE81CDD5186D517800DC1CAB /* XPathQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XPathQuery.h; path = ../../hpple/XPathQuery.h; sourceTree = "<group>"; };
 		DE81CDD6186D517800DC1CAB /* XPathQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = XPathQuery.m; path = ../../hpple/XPathQuery.m; sourceTree = "<group>"; };
 		DE81CDDA186D518C00DC1CAB /* libxml2.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.2.dylib; path = usr/lib/libxml2.2.dylib; sourceTree = SDKROOT; };
+		DE883186188119F8002244F5 /* login_background.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = login_background.jpg; path = assets/miscellaneous/login_background.jpg; sourceTree = SOURCE_ROOT; };
+		DE88318918811F6A002244F5 /* SQUSidebarCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUSidebarCell.h; sourceTree = "<group>"; };
+		DE88318A18811F6B002244F5 /* SQUSidebarCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUSidebarCell.m; sourceTree = "<group>"; };
+		DE88318C18812092002244F5 /* SQUTabletSidebarCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUTabletSidebarCell.h; sourceTree = "<group>"; };
+		DE88318D18812092002244F5 /* SQUTabletSidebarCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUTabletSidebarCell.m; sourceTree = "<group>"; };
 		DEAE4697187807AB008DAE0C /* NSURL+RequestParams.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+RequestParams.h"; sourceTree = "<group>"; };
 		DEAE4698187807AB008DAE0C /* NSURL+RequestParams.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+RequestParams.m"; sourceTree = "<group>"; };
 		DEBA3D101878FA04003C209B /* NSData+SQUAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+SQUAdditions.h"; sourceTree = "<group>"; };
@@ -277,7 +294,6 @@
 		DEF0F2421873DC0600116B61 /* SQUSettingsGeneralController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUSettingsGeneralController.m; sourceTree = "<group>"; };
 		DEF0F2441873E09400116B61 /* SQUSettingsGPAOptionsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUSettingsGPAOptionsController.h; sourceTree = "<group>"; };
 		DEF0F2451873E09400116B61 /* SQUSettingsGPAOptionsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUSettingsGPAOptionsController.m; sourceTree = "<group>"; };
-		DEF0F2471873FB5C00116B61 /* login_background.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = login_background.jpg; path = assets/iPad/login_background.jpg; sourceTree = SOURCE_ROOT; };
 		DEF0F24B18740A1400116B61 /* MGSplitCornersView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MGSplitCornersView.h; path = ../../MGSplitViewController/Classes/MGSplitCornersView.h; sourceTree = "<group>"; };
 		DEF0F24C18740A1400116B61 /* MGSplitCornersView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MGSplitCornersView.m; path = ../../MGSplitViewController/Classes/MGSplitCornersView.m; sourceTree = "<group>"; };
 		DEF0F24D18740A1400116B61 /* MGSplitDividerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MGSplitDividerView.h; path = ../../MGSplitViewController/Classes/MGSplitDividerView.h; sourceTree = "<group>"; };
@@ -288,8 +304,6 @@
 		DEF0F25218740A1400116B61 /* MGSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MGSplitViewController.m; path = ../../MGSplitViewController/Classes/MGSplitViewController.m; sourceTree = "<group>"; };
 		DEF0F25918740B3800116B61 /* SQUTabletSidebarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUTabletSidebarController.h; sourceTree = "<group>"; };
 		DEF0F25A18740B3800116B61 /* SQUTabletSidebarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUTabletSidebarController.m; sourceTree = "<group>"; };
-		DEF0F25C1874198B00116B61 /* SQUSidebarCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUSidebarCell.h; sourceTree = "<group>"; };
-		DEF0F25D1874198B00116B61 /* SQUSidebarCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUSidebarCell.m; sourceTree = "<group>"; };
 		DEF0F26118743B7E00116B61 /* SQUTabletLoginController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUTabletLoginController.h; sourceTree = "<group>"; };
 		DEF0F26218743B7E00116B61 /* SQUTabletLoginController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUTabletLoginController.m; sourceTree = "<group>"; };
 		DEF43B0117965B0D00190803 /* SQUGradeOverviewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUGradeOverviewController.h; sourceTree = "<group>"; };
@@ -435,6 +449,7 @@
 				DE0615E717891E23004B2877 /* 3rd Party */,
 				DE06158B17874D0D004B2877 /* SQUAppDelegate.h */,
 				DE06158C17874D0D004B2877 /* SQUAppDelegate.m */,
+				DE485DDA1881D67500B215C6 /* default_avatar.jpg */,
 				DE06159117874D0D004B2877 /* Images.xcassets */,
 				DEF0F2491873FB6700116B61 /* iPad Resources */,
 				DE06158E17874D0D004B2877 /* QuickHAC.xcdatamodeld */,
@@ -610,6 +625,19 @@
 			name = "Lockbox (Keychain)";
 			sourceTree = "<group>";
 		};
+		DE485DE51881FB3000B215C6 /* User Switcher */ = {
+			isa = PBXGroup;
+			children = (
+				DE485DD61881CEE700B215C6 /* SQUSidebarSwitcherButton.h */,
+				DE485DD71881CEE800B215C6 /* SQUSidebarSwitcherButton.m */,
+				DE485DDC1881EACA00B215C6 /* SQUUserSwitcherView.h */,
+				DE485DDD1881EACA00B215C6 /* SQUUserSwitcherView.m */,
+				DE485DE11881FAC700B215C6 /* SQUUserSwitcherCell.h */,
+				DE485DE21881FAC700B215C6 /* SQUUserSwitcherCell.m */,
+			);
+			name = "User Switcher";
+			sourceTree = "<group>";
+		};
 		DE7B4E82186EB0CB008079CC /* KCOrderedAccessorFix */ = {
 			isa = PBXGroup;
 			children = (
@@ -726,7 +754,7 @@
 		DEF0F2491873FB6700116B61 /* iPad Resources */ = {
 			isa = PBXGroup;
 			children = (
-				DEF0F2471873FB5C00116B61 /* login_background.jpg */,
+				DE883186188119F8002244F5 /* login_background.jpg */,
 			);
 			name = "iPad Resources";
 			sourceTree = "<group>";
@@ -753,6 +781,7 @@
 				DEF43B0017965AAF00190803 /* Grade Display */,
 				DEF43B071797122400190803 /* Class Overview */,
 				DEFFDE85186E6A9D00E26423 /* Sidebar */,
+				DE485DE51881FB3000B215C6 /* User Switcher */,
 				DEF43B081797122E00190803 /* Settings */,
 			);
 			name = "iPhone UI";
@@ -781,8 +810,8 @@
 			children = (
 				DEF0F25918740B3800116B61 /* SQUTabletSidebarController.h */,
 				DEF0F25A18740B3800116B61 /* SQUTabletSidebarController.m */,
-				DEF0F25C1874198B00116B61 /* SQUSidebarCell.h */,
-				DEF0F25D1874198B00116B61 /* SQUSidebarCell.m */,
+				DE88318C18812092002244F5 /* SQUTabletSidebarCell.h */,
+				DE88318D18812092002244F5 /* SQUTabletSidebarCell.m */,
 			);
 			name = Sidebar;
 			sourceTree = "<group>";
@@ -865,6 +894,8 @@
 			children = (
 				DEFFDE86186E6ABE00E26423 /* SQUSidebarController.h */,
 				DEFFDE87186E6ABE00E26423 /* SQUSidebarController.m */,
+				DE88318918811F6A002244F5 /* SQUSidebarCell.h */,
+				DE88318A18811F6B002244F5 /* SQUSidebarCell.m */,
 			);
 			name = Sidebar;
 			sourceTree = "<group>";
@@ -1007,11 +1038,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DE485DDB1881D67500B215C6 /* default_avatar.jpg in Resources */,
 				DEF0F23218727EA700116B61 /* Localizable.strings in Resources */,
 				DEF0F23B1872C3AC00116B61 /* settings_defaults.plist in Resources */,
+				DE883187188119F8002244F5 /* login_background.jpg in Resources */,
 				DE3AC65C187B63D3007540A9 /* Localizable.strings in Resources */,
 				DE06158717874D0D004B2877 /* InfoPlist.strings in Resources */,
-				DEF0F2481873FB5D00116B61 /* login_background.jpg in Resources */,
 				DE2843F418768D530000756C /* release_notes.md in Resources */,
 				DEF0F21C187156D000116B61 /* acknowledgements.rtf in Resources */,
 				DE0615E517891E0C004B2877 /* SVProgressHUD.bundle in Resources */,
@@ -1058,6 +1090,7 @@
 				DEFFDE5C186E270900E26423 /* UIImageView+AFNetworking.m in Sources */,
 				DE3AC657187B5A37007540A9 /* NSDate+RelativeDate.m in Sources */,
 				DEFFDE45186E26FC00E26423 /* AFURLRequestSerialization.m in Sources */,
+				DE88318B18811F6B002244F5 /* SQUSidebarCell.m in Sources */,
 				DEFFDE44186E26FC00E26423 /* AFURLConnectionOperation.m in Sources */,
 				DE2843E118760FD80000756C /* SQUGradespeedDriver.m in Sources */,
 				DE2843E618764FD10000756C /* SQUStudent.m in Sources */,
@@ -1078,6 +1111,7 @@
 				DEFFDE43186E26FC00E26423 /* AFSecurityPolicy.m in Sources */,
 				DEFFDE5D186E270900E26423 /* UIProgressView+AFNetworking.m in Sources */,
 				DEFFDE3F186E26FC00E26423 /* AFHTTPRequestOperation.m in Sources */,
+				DE88318E18812092002244F5 /* SQUTabletSidebarCell.m in Sources */,
 				DE2844031877ABCC0000756C /* SQUSemester.m in Sources */,
 				DE81CDD7186D517800DC1CAB /* TFHpple.m in Sources */,
 				DEF0F1B9186EE05400116B61 /* SQUCourse.m in Sources */,
@@ -1087,12 +1121,14 @@
 				DEFFDE27186D8C5F00E26423 /* SQUDistrictManager.m in Sources */,
 				DEFFDE58186E270900E26423 /* AFNetworkActivityIndicatorManager.m in Sources */,
 				DEF0F2251871EEAD00116B61 /* SQUDistrictAISD.m in Sources */,
+				DE485DE31881FAC700B215C6 /* SQUUserSwitcherCell.m in Sources */,
 				DEF0F1C5186EEB9500116B61 /* UIView+JMNoise.m in Sources */,
 				DEFFDE5E186E270900E26423 /* UIWebView+AFNetworking.m in Sources */,
 				DEF0F1CB186F7D8F00116B61 /* SQUClassDetailController.m in Sources */,
 				DECFF3CA187B444B007AFE6D /* SQUCycle.m in Sources */,
 				DE0615D81787ADFE004B2877 /* SQULoginViewController.m in Sources */,
 				DE2843DE18760E3D0000756C /* SQUGradebookDriver.m in Sources */,
+				DE485DD81881CEE800B215C6 /* SQUSidebarSwitcherButton.m in Sources */,
 				DE2843EA18766E840000756C /* SQULoginStudentPicker.m in Sources */,
 				DEF0F23518727EA700116B61 /* SFHFKeychainUtils.m in Sources */,
 				DEF0F1D7186FC7FA00116B61 /* SQUAssignment.m in Sources */,
@@ -1100,11 +1136,11 @@
 				DE0615E617891E0C004B2877 /* SVProgressHUD.m in Sources */,
 				DEC5954818783D69004F4BA4 /* SQUPushHandler.m in Sources */,
 				DEAE4699187807AB008DAE0C /* NSURL+RequestParams.m in Sources */,
-				DEF0F25E1874198B00116B61 /* SQUSidebarCell.m in Sources */,
 				DEF43B0617965B1F00190803 /* SQUGradeOverviewTableViewCell.m in Sources */,
 				DEFFDE97186E85E300E26423 /* SQUGradeManager.m in Sources */,
 				DE2843F7187743DA0000756C /* SQUUIHelpers.m in Sources */,
 				DEFFDE41186E26FC00E26423 /* AFHTTPSessionManager.m in Sources */,
+				DE485DDE1881EACA00B215C6 /* SQUUserSwitcherView.m in Sources */,
 				DEF0F1E71870E78000116B61 /* SQUClassCycleChooserController.m in Sources */,
 				DEF43B0317965B0D00190803 /* SQUGradeOverviewController.m in Sources */,
 				DEF0F26318743B7E00116B61 /* SQUTabletLoginController.m in Sources */,
@@ -1282,7 +1318,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1316,7 +1352,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
