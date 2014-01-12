@@ -74,11 +74,17 @@ static SQUAppDelegate *sharedDelegate = nil;
 		
 		// Set up UIWindow
 		_window.rootViewController = _drawerController;
+		
+		// UI control theming
+		/*[[UINavigationBar appearance] setBackgroundColor:UIColorFromRGB(0x41a2da)];
+		[[UINavigationBar appearance] setTitleTextAttributes:@{
+															   NSForegroundColorAttributeName: UIColorFromRGB(0xffffff),
+															   NSFontAttributeName: [UIFont fontWithName:@"Helvetica Neue-Medium" size:0.0],
+															   }];*/
 	} else {
 		// Set up iPad UI
 		_ipadSidebar = [[SQUTabletSidebarController alloc] initWithStyle:UITableViewStyleGrouped];
 		_ipadSidebarWrapper = [[UINavigationController alloc] initWithRootViewController:_ipadSidebar];
-		
 		_ipadContentWrapper = [[UINavigationController alloc] initWithRootViewController:nil];
 		
 		// Initialise split view

@@ -9,23 +9,23 @@
 #import <UIKit/UIKit.h>
 #import <CoreGraphics/CoreGraphics.h>
 
-#define SQUGradeOverviewCellHeight 150.0
+#define SQUGradeOverviewCellHeight 212.0
 
 @class SQUCourse;
 @interface SQUGradeOverviewTableViewCell : UITableViewCell {
     // public properties
     SQUCourse *_courseInfo;
     
-@private
-	NSMutableArray *_semesterHeads;
-	NSMutableArray *_cycleHeads;
-	
+@private	
 	CALayer *_backgroundLayer;
-    CAGradientLayer *_sideBar;
 	
-	CAGradientLayer *_semesterSeperator;
     CATextLayer *_courseTitle;
     CATextLayer *_periodTitle;
+	CATextLayer *_currentAverageLabel;
+	
+	NSMutableArray *_headers;
+	NSMutableArray *_cells;
+	NSMutableArray *_shades;
 }
 
 @property (nonatomic) SQUCourse *courseInfo;
