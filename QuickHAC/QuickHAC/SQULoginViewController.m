@@ -240,6 +240,21 @@
 				studentInfo.hacUsername = _usernameField.text;
 				studentInfo.name = studentName;
 				
+				// Convert to display name
+				NSArray *components = [studentName componentsSeparatedByString:@", "];
+				if(components.count == 2) {
+					NSString *firstName = components[1];
+					components = [firstName componentsSeparatedByString:@" "];
+					
+					if(components.count == 0) {
+						studentInfo.display_name = firstName;
+					} else {
+						studentInfo.display_name = components[0];
+					}
+				} else {
+					studentInfo.display_name = studentName;
+				}
+				
 				[_students addObject:studentInfo];
 				
 				[[SQUGradeManager sharedInstance] setStudent:studentInfo];

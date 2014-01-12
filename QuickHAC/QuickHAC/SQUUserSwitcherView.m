@@ -11,7 +11,12 @@
 #import "SQUAppDelegate.h"
 #import "SQUUserSwitcherCell.h"
 #import "SQUGradeManager.h"
+#import "SQUDistrictManager.h"
+#import "SQULoginSchoolSelector.h"
 #import "SQUUserSwitcherView.h"
+
+#import "SVProgressHUD.h"
+#import "Lockbox.h"
 
 @implementation SQUUserSwitcherView
 
@@ -19,9 +24,6 @@
     self = [super initWithFrame:frame];
     
 	if (self) {
-		[self updateStudents:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateStudents:) name:SQUStudentsUpdatedNotification object:nil];
-		
 		self.backgroundColor = UIColorFromRGB(0x262626);
 		
 		// Grid layout
@@ -33,7 +35,6 @@
 		CGRect gridFrame = frame;
 		gridFrame.origin.y = 0;
 		gridFrame.size.height -= 45;
-		NSLog(@"Grid frame: %@", NSStringFromCGRect(gridFrame));
 		
 		// Grid
 		_grid = [[UICollectionView alloc] initWithFrame:gridFrame collectionViewLayout:_gridLayout];
@@ -41,6 +42,7 @@
 		_grid.backgroundColor = UIColorFromRGB(0x363636);
 		_grid.delegate = self;
 		_grid.dataSource = self;
+		_grid.allowsSelection = YES;
 		_grid.contentInset = UIEdgeInsetsMake(37, 5, 5, 5); // top left bottom right
 		_grid.scrollIndicatorInsets = UIEdgeInsetsMake(32, 0, 0, 0);
 		[self addSubview:_grid];
@@ -52,6 +54,10 @@
 		[_logoutButton setBackgroundImage:[UIColorFromRGB(0x2b2b2b) imageFromColor] forState:UIControlStateSelected];
 		[_logoutButton setTitle:NSLocalizedString(@"Log Out", nil) forState:UIControlStateNormal];
 		[self addSubview:_logoutButton];
+		
+		// Subscribe to notifications
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateStudents:) name:SQUStudentsUpdatedNotification object:nil];
+		[self updateStudents:nil];
     }
 	
     return self;
@@ -59,22 +65,39 @@
 
 #pragma mark - Data handling
 - (void) updateStudents:(id) ignored {
-	// Fetch students objects from DB
-	NSManagedObjectContext *context = [[SQUAppDelegate sharedDelegate] managedObjectContext];
-	NSError *db_err = nil;
-	
-	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-	NSEntityDescription *entity = [NSEntityDescription entityForName:@"SQUStudent" inManagedObjectContext:context];
-	[fetchRequest setEntity:entity];
-	_students = [NSMutableArray arrayWithArray:[context executeFetchRequest:fetchRequest error:&db_err]];
-	
-	if(db_err) {
-		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Database Error", nil) message:db_err.localizedDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
-		[alert show];
-		return;
+	// Update students data only if "ignored" is nil
+	if(!ignored) {
+		// Fetch students objects from DB
+		NSManagedObjectContext *context = [[SQUAppDelegate sharedDelegate] managedObjectContext];
+		NSError *db_err = nil;
+		
+		NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+		NSEntityDescription *entity = [NSEntityDescription entityForName:@"SQUStudent" inManagedObjectContext:context];
+		[fetchRequest setEntity:entity];
+		_students = [NSMutableArray arrayWithArray:[context executeFetchRequest:fetchRequest error:&db_err]];
+		
+		if(db_err) {
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Database Error", nil) message:db_err.localizedDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
+			[alert show];
+			return;
+		}
+		
+		[_grid reloadData];
 	}
 	
-	[_grid reloadData];
+	// Update selection
+	NSInteger selectedStudent = [[NSUserDefaults standardUserDefaults] integerForKey:@"selectedStudent"];
+	[_grid selectItemAtIndexPath:[NSIndexPath indexPathForItem:selectedStudent inSection:0] animated:NO scrollPosition:UICollectionViewScrollPositionTop];
+}
+
+- (void) showStudentAdder {
+	SQULoginSchoolSelector *loginController = [[SQULoginSchoolSelector alloc] initWithStyle:UITableViewStyleGrouped];
+	loginController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(dismissModal:)];
+	[[SQUAppDelegate sharedDelegate].window.rootViewController presentViewController:[[UINavigationController alloc] initWithRootViewController:loginController] animated:YES completion:NULL];
+}
+
+- (void) dismissModal:(id) sender {
+	[[SQUAppDelegate sharedDelegate].window.rootViewController dismissViewControllerAnimated:YES completion:NULL];
 }
 
 #pragma mark - Grid view
@@ -89,7 +112,7 @@
 	if(indexPath.row == _students.count) {
 		cell.showsSelection = NO;
 		
-		[cell setTitle:NSLocalizedString(@"Add Account", nil)];
+		[cell setTitle:NSLocalizedString(@"Add Student", nil)];
 		[cell setSubTitle:nil];
 		[cell setImage:[UIImage imageNamed:@"switcher_add"]];
 	} else {
@@ -97,25 +120,88 @@
 		
 		SQUStudent *student = _students[indexPath.row];
 		
-		[cell setTitle:student.name];
-		[cell setSubTitle:@"student ID or district"];
+		if(student.student_id) {
+			[cell setSubTitle:[NSString stringWithFormat:NSLocalizedString(@"ID: %@", @"student selector"), student.student_id]];
+		} else {
+			[cell setSubTitle:student.school];
+		}
+		
+		[cell setTitle:student.display_name];
 		[cell setImage:[UIImage imageNamed:@"default_avatar.jpg"]];
 	}
 	
 	return cell;
 }
 
-- (BOOL) collectionView:(UICollectionView *) collectionView shouldHighlightItemAtIndexPath:(NSIndexPath *) indexPath {
-	// Prevent selection of the "add students" button
-	if(indexPath.row == _students.count) {
-		return NO;
-	}
-	
-	return YES;
-}
-
-- (void) collectionView:(UICollectionView *) collectionView didHighlightItemAtIndexPath:(NSIndexPath *) indexPath {
+- (void) collectionView:(UICollectionView *) collectionView didSelectItemAtIndexPath:(NSIndexPath *) indexPath {
 	NSLog(@"Selected row %u", indexPath.row);
+	
+//	 [collectionView reloadItemsAtIndexPaths:@[indexPath]];
+	
+	if(indexPath.row == _students.count) {
+		[self showStudentAdder];
+		[self performSelectorOnMainThread:@selector(updateStudents:) withObject:collectionView waitUntilDone:NO];
+	} else {
+		NSInteger selectedStudent = indexPath.row;
+		
+		[[NSUserDefaults standardUserDefaults] setInteger:selectedStudent forKey:@"selectedStudent"];
+		SQUStudent *student = _students[selectedStudent];
+		[[SQUGradeManager sharedInstance] setStudent:student];
+		[[SQUDistrictManager sharedInstance] selectDistrictWithID:student.district.integerValue];
+		[[NSNotificationCenter defaultCenter] postNotificationName:SQUGradesDataUpdatedNotification object:nil];
+		[[NSUserDefaults standardUserDefaults] synchronize];
+		
+		// Load grades, if required
+		if(!student.lastAveragesUpdate) {
+			[SVProgressHUD showProgress:-1 status:NSLocalizedString(@"Changing Student…", nil) maskType:SVProgressHUDMaskTypeGradient];
+			
+			// We also have to log in again and disambiguate
+			NSString *username, *password, *studentID;
+			
+			username = student.hacUsername;
+			password = [Lockbox stringForKey:username];
+			studentID = student.student_id;
+			
+			// Log in
+			[[SQUDistrictManager sharedInstance] performLoginRequestWithUser:username usingPassword:password andCallback:^(NSError *error, id returnData){
+				if(!error) {
+					if(!returnData) {
+						[SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Wrong Credentials", nil)];
+						
+						// Tell the user what happened
+						UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Authenticating", nil) message:NSLocalizedString(@"Your username or password were rejected by HAC. Please update your password, if it was changed, and try again.", nil) delegate:self cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:NSLocalizedString(@"Settings", nil), nil];
+						alert.tag = kSQUAlertChangePassword;
+						[alert show];
+					} else {
+						// Login succeeded, so we can do a fetch of grades.
+						[SVProgressHUD showProgress:-1 status:NSLocalizedString(@"Updating Grades…", nil) maskType:SVProgressHUDMaskTypeGradient];
+						
+						[[SQUGradeManager sharedInstance] fetchNewClassGradesFromServerWithDoneCallback:^(NSError *err) {
+							[SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"Done", nil)];
+							[[NSNotificationCenter defaultCenter] postNotificationName:SQUGradesDataUpdatedNotification object:nil];
+							
+							// Display error
+							if(err) {
+								UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Updating Grades", nil) message:err.localizedDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
+								[alert show];
+								
+								[_grid selectItemAtIndexPath:_lastSelection animated:NO scrollPosition:UICollectionViewScrollPositionTop];
+							} else {
+								_lastSelection = indexPath;
+							}
+						}];
+					}
+				} else {
+					[SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Error", nil)];
+					
+					UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Authenticating", nil) message:error.localizedDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
+					[alert show];
+				}
+			}];
+		} else {
+			_lastSelection = indexPath;
+		}
+	}
 }
 
 @end

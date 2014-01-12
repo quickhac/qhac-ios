@@ -323,6 +323,21 @@ static SQUDistrictManager *_sharedInstance = nil;
 			[SQUGradeManager sharedInstance].student.name = studentName;
 			[SQUGradeManager sharedInstance].student.school = studentSchool;
 			
+			// Get display name
+			NSArray *components = [studentName componentsSeparatedByString:@", "];
+			if(components.count == 2) {
+				NSString *firstName = components[1];
+				components = [firstName componentsSeparatedByString:@" "];
+				
+				if(components.count == 0) {
+					[SQUGradeManager sharedInstance].student.display_name = firstName;
+				} else {
+					[SQUGradeManager sharedInstance].student.display_name = components[0];
+				}
+			} else {
+				[SQUGradeManager sharedInstance].student.display_name = studentName;
+			}
+			
 			[_currentDistrict updateDistrictStateWithClassGrades:averages];
 
 			callback(nil, averages);

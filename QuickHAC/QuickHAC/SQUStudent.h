@@ -2,7 +2,7 @@
 //  SQUStudent.h
 //  QuickHAC
 //
-//  Created by Tristan Seifert on 1/2/14.
+//  Created by Tristan Seifert on 1/11/14.
 //  See README.MD for licensing and copyright information.
 //
 
@@ -19,8 +19,10 @@
 @property (nonatomic, retain) NSDate * lastAveragesUpdate;
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSNumber * numSemesters;
-@property (nonatomic, retain) NSString * student_id;
 @property (nonatomic, retain) NSString * school;
+@property (nonatomic, retain) NSString * student_id;
+@property (nonatomic, retain) NSString * avatar_path;
+@property (nonatomic, retain) NSString * display_name;
 @property (nonatomic, retain) NSOrderedSet *courses;
 @end
 

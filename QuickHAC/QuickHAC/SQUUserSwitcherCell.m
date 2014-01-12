@@ -22,14 +22,7 @@
 		_image.frame = CGRectMake(kSQUUserSwitcherCellSelectionThickness, kSQUUserSwitcherCellSelectionThickness, imageWidth, imageWidth);
 		_image.cornerRadius = 5;
 		_image.masksToBounds = YES;
-		[self.layer addSublayer:_image];
-		
-		// Selection indicator
-		_highlight = [CAGradientLayer layer];
-		_highlight.frame = CGRectMake(0, 0, kSQUUserSwitcherCellWidth, kSQUUserSwitcherCellWidth);
-		_highlight.backgroundColor = UIColorFromRGB(0x0d63d6).CGColor;
-		_highlight.cornerRadius = _image.cornerRadius;
-		_highlight.masksToBounds = YES;
+		[self.contentView.layer addSublayer:_image];
 		
 		// Title and subtitle
 		_title = [CATextLayer layer];
@@ -41,7 +34,7 @@
         _title.fontSize = 14;
 		_title.alignmentMode = kCAAlignmentCenter;
 		
-		[self.layer addSublayer:_title];
+		[self.contentView.layer addSublayer:_title];
 		
 		// Subtitle
 		_subtitle = [CATextLayer layer];
@@ -53,22 +46,18 @@
         _subtitle.fontSize = 11;
 		_subtitle.alignmentMode = kCAAlignmentCenter;
 		
-		[self.layer addSublayer:_subtitle];
+		[self.contentView.layer addSublayer:_subtitle];
+		
+		// Prepare selection background
+		_showsSelection = YES;
+		self.selectedBackgroundView = [[UIView alloc] initWithFrame:self.contentView.frame];
+		self.selectedBackgroundView.layer.frame = CGRectMake(0, 0, kSQUUserSwitcherCellWidth, kSQUUserSwitcherCellWidth);
+		self.selectedBackgroundView.layer.backgroundColor = UIColorFromRGB(0x0d63d6).CGColor;
+		self.selectedBackgroundView.layer.cornerRadius = _image.cornerRadius*2;
+		self.selectedBackgroundView.layer.masksToBounds = YES;
     }
 	
     return self;
-}
-
-- (void) setSelected:(BOOL) selected {
-    [super setSelected:selected];
-	
-	if(_showsSelection) {
-		if(selected) {
-			[self.layer insertSublayer:_highlight below:_image];
-		} else {
-			[_highlight removeFromSuperlayer];
-		}
-	}
 }
 
 #pragma mark - Setters
@@ -98,6 +87,20 @@
  */
 - (void) setBadgeCount:(NSUInteger) count {
 	_badgeCount = count;
+}
+
+- (void) setShowsSelection:(BOOL) showsSelection {
+	_showsSelection = showsSelection;
+	
+	if(!_showsSelection) {
+		self.selectedBackgroundView = nil;
+	} else {
+		self.selectedBackgroundView = [[UIView alloc] initWithFrame:self.contentView.frame];
+		self.selectedBackgroundView.layer.frame = CGRectMake(0, 0, kSQUUserSwitcherCellWidth, kSQUUserSwitcherCellWidth);
+		self.selectedBackgroundView.layer.backgroundColor = UIColorFromRGB(0x0d63d6).CGColor;
+		self.selectedBackgroundView.layer.cornerRadius = _image.cornerRadius*2;
+		self.selectedBackgroundView.layer.masksToBounds = YES;
+	}
 }
 
 @end

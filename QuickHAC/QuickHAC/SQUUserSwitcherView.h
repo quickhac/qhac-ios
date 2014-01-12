@@ -14,6 +14,10 @@
 	UIButton *_logoutButton;
 	
 	NSMutableArray *_students;
+	
+	NSIndexPath *_lastSelection;
 }
+
+- (void) updateStudents:(id) ignored;
 
 @end

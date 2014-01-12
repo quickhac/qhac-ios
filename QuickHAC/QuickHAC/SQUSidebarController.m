@@ -216,6 +216,9 @@
 		[self.view insertSubview:_switcher belowSubview:_topView];
 	}
 	
+	// Update switcher's data
+	[_switcher updateStudents:nil];
+	
 	// Set up bounce animation
 	CAKeyframeAnimation *animation = [CAKeyframeAnimation animationWithKeyPath:@"position.y"];
 	animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];

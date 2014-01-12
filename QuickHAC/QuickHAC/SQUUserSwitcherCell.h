@@ -14,7 +14,6 @@
 
 @interface SQUUserSwitcherCell : UICollectionViewCell {
 	CALayer *_image;
-	CAGradientLayer *_highlight;
 	CATextLayer *_title;
 	CATextLayer *_subtitle;
 	
@@ -25,7 +24,7 @@
 	NSUInteger _badgeCount;
 }
 
-@property (nonatomic) BOOL showsSelection;
+@property (nonatomic, setter = setShowsSelection:) BOOL showsSelection;
 
 - (void) setTitle:(NSString *) title;
 - (void) setSubTitle:(NSString *) title;

@@ -2,7 +2,7 @@
 //  SQUStudent.m
 //  QuickHAC
 //
-//  Created by Tristan Seifert on 1/2/14.
+//  Created by Tristan Seifert on 1/11/14.
 //  See README.MD for licensing and copyright information.
 //
 
@@ -18,8 +18,10 @@
 @dynamic lastAveragesUpdate;
 @dynamic name;
 @dynamic numSemesters;
-@dynamic student_id;
 @dynamic school;
+@dynamic student_id;
+@dynamic avatar_path;
+@dynamic display_name;
 @dynamic courses;
 
 @end

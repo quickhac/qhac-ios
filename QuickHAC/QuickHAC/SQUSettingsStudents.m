@@ -190,6 +190,7 @@
 			
 			[SVProgressHUD showProgress:-1 status:NSLocalizedString(@"Changing Student…", nil) maskType:SVProgressHUDMaskTypeGradient];
 			
+			[[NSUserDefaults standardUserDefaults] setInteger:indexPath.row forKey:@"selectedStudent"];
 			// Update internal state to reflect new student
 			SQUStudent *student = _students[selectedStudent];
 			[[SQUGradeManager sharedInstance] setStudent:student];

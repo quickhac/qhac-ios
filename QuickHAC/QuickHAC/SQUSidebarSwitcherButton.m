@@ -13,6 +13,8 @@
 //  See README.MD for licensing and copyright information.
 //
 
+#import "SQUGradeManager.h"
+#import "SQUCoreData.h"
 #import "UIColor+SQUColourUtilities.h"
 #import "SQUSidebarSwitcherButton.h"
 
@@ -39,7 +41,7 @@
 		_titleLayer.contentsScale = [UIScreen mainScreen].scale;
 		_titleLayer.string = @"Title.";
 		_titleLayer.foregroundColor = UIColorFromRGB(0xd6d6d6).CGColor;
-		_titleLayer.frame = CGRectMake(48, 17, self.frame.size.width - 58, 22);
+		_titleLayer.frame = CGRectMake(48, 17, self.frame.size.width - 60, 22);
         _titleLayer.font = (__bridge CFTypeRef) [UIFont fontWithName:@"HelveticaNeue-Medium" size:17.0];
         _titleLayer.fontSize = 16;
 		
@@ -50,20 +52,35 @@
 		_subtitleLayer.contentsScale = [UIScreen mainScreen].scale;
 		_subtitleLayer.string = @"Subtitle!";
 		_subtitleLayer.foregroundColor = [UIColor lightGrayColor].CGColor;
-		_subtitleLayer.frame = CGRectMake(48, 35, self.frame.size.width - 58, 22);
+		_subtitleLayer.frame = CGRectMake(48, 35, self.frame.size.width - 60, 22);
         _subtitleLayer.font = (__bridge CFTypeRef) [UIFont fontWithName:@"HelveticaNeue-Light" size:17.0];
         _subtitleLayer.fontSize = 12;
 		
 		[self.layer addSublayer:_subtitleLayer];
+		
+		// Register for notifications
+		[self updateWithStudentData:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateWithStudentData:) name:SQUGradesDataUpdatedNotification object:nil];
     }
 	
     return self;
 }
 
+- (void) updateWithStudentData:(id) ignored {
+	SQUStudent *current = [SQUGradeManager sharedInstance].student;
+	[self setTitle:current.display_name];
+	
+	if(current.student_id) {
+		[self setSubtitle:[NSString stringWithFormat:NSLocalizedString(@"ID: %@", @"student selector"), current.student_id]];
+	} else {
+		[self setSubtitle:current.school];
+	}
+}
+
 - (void) layoutSubviews {
 	[super layoutSubviews];
 	
-	// Fix image view (16 pt away from right side of button)
+	// Fix image view position (16 pt away from right side of button)
 	CGRect frame = self.imageView.frame;
 	frame.origin.x = self.frame.size.width - frame.size.width - 16;
 	self.imageView.frame = frame;
@@ -75,7 +92,7 @@
 }
 
 - (void) setSubtitle:(NSString *) subtitle {
-	_titleLayer.string = subtitle;
+	_subtitleLayer.string = subtitle;
 }
 
 #pragma mark - Button action
