@@ -74,7 +74,6 @@
         _currentAverageLabel.font = (__bridge CFTypeRef) [UIFont fontWithName:@"HelveticaNeue-UltraLight" size:15.0f];
         _currentAverageLabel.fontSize = 36;
 		_currentAverageLabel.alignmentMode = kCAAlignmentRight;
-		_currentAverageLabel.string = @"100";
         
 		// Period label
         _periodTitle = [CATextLayer layer];
@@ -308,6 +307,18 @@
 		[_backgroundLayer addSublayer:layer];
 	} for (CALayer *layer in _cells) {
 		[_backgroundLayer addSublayer:layer];
+	}
+	
+	// Update average label
+	_currentAverageLabel.string = @"";
+	
+	for (NSUInteger i = 0; i < _courseInfo.semesters.count; i++) {
+		SQUSemester *semester = _courseInfo.semesters[i];
+		if(semester.average.integerValue != -1) {
+			_currentAverageLabel.string = [NSString stringWithFormat:
+										   NSLocalizedString(@"%u", nil),
+										   semester.average.unsignedIntegerValue];
+		}
 	}
 }
 
