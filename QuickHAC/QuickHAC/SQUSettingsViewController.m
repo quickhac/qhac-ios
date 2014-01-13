@@ -39,11 +39,11 @@
 
 - (void) viewDidLoad {
 	// Add the sidebar button.
-	UIBarButtonItem *showSidebar = [[UIBarButtonItem alloc]
-									initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+	UIBarButtonItem *doneButton = [[UIBarButtonItem alloc]
+									initWithBarButtonSystemItem:UIBarButtonSystemItemDone
 									target:self
 									action:@selector(closeModal:)];
-	[self.navigationItem setLeftBarButtonItem:showSidebar];
+	self.navigationItem.rightBarButtonItem = doneButton;
 }
 
 #pragma mark - Table view data source

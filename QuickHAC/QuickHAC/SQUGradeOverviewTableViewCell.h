@@ -25,6 +25,8 @@
     CATextLayer *_periodTitle;
 	CALayer *_periodCircle;
 	
+	CATextLayer *_noGradesAvailable;
+	
 	NSMutableArray *_headers;
 	NSMutableArray *_cells;
 	NSMutableArray *_shades;
@@ -33,5 +35,7 @@
 @property (nonatomic) SQUCourse *courseInfo;
 
 - (void) updateUI;
+
++ (CGFloat) cellHeightForCourse:(SQUCourse *) course;
 
 @end

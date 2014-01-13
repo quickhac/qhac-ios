@@ -2,7 +2,7 @@
 //  SQUCourse.h
 //  QuickHAC
 //
-//  Created by Tristan Seifert on 12/28/13.
+//  Created by Tristan Seifert on 1/13/14.
 //  See README.MD for licensing and copyright information.
 //
 
@@ -21,8 +21,8 @@
 @property (nonatomic, retain) NSString * teacher_name;
 @property (nonatomic, retain) NSString * title;
 @property (nonatomic, retain) NSOrderedSet *cycles;
-@property (nonatomic, retain) SQUStudent *student;
 @property (nonatomic, retain) NSOrderedSet *semesters;
+@property (nonatomic, retain) SQUStudent *student;
 @end
 
 @interface SQUCourse (CoreDataGeneratedAccessors)

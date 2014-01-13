@@ -2,7 +2,7 @@
 //  SQUCourse.m
 //  QuickHAC
 //
-//  Created by Tristan Seifert on 12/28/13.
+//  Created by Tristan Seifert on 1/13/14.
 //  See README.MD for licensing and copyright information.
 //
 
@@ -22,7 +22,7 @@
 @dynamic teacher_name;
 @dynamic title;
 @dynamic cycles;
-@dynamic student;
 @dynamic semesters;
+@dynamic student;
 
 @end

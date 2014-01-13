@@ -49,8 +49,32 @@
 										action:@selector(openSidebar:)];
 		self.navigationItem.leftBarButtonItem = showSidebar;
 		
-		/*UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"Push" style:UIBarButtonItemStyleDone target:self action:@selector(testPush:)];
-		self.navigationItem.rightBarButtonItem = item;*/
+		// Set up the title view container and title text
+		_navbarTitle = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 200, 44)];
+		
+		_titleLayer = [CATextLayer new];
+		_titleLayer.frame = CGRectMake(0, 4, 200, 28);
+		_titleLayer.font = (__bridge CFTypeRef)([UIFont fontWithName:@"HelveticaNeue-Medium" size:26.0]);
+		_titleLayer.fontSize = 17.0f;
+		_titleLayer.contentsScale = [UIScreen mainScreen].scale;
+		_titleLayer.foregroundColor = [UIColor blackColor].CGColor;
+		_titleLayer.string = NSLocalizedString(@"Overview", nil);
+		_titleLayer.alignmentMode = kCAAlignmentCenter;
+		
+		[_navbarTitle.layer addSublayer:_titleLayer];
+		
+		_subtitleLayer = [CATextLayer new];
+		_subtitleLayer.frame = CGRectMake(0, 25, 200, 28);
+		_subtitleLayer.font = (__bridge CFTypeRef)([UIFont fontWithName:@"HelveticaNeue-LightItalic" size:26.0]);
+		_subtitleLayer.fontSize = 12.0f;
+		_subtitleLayer.contentsScale = [UIScreen mainScreen].scale;
+		_subtitleLayer.foregroundColor = [UIColor lightGrayColor].CGColor;
+		_subtitleLayer.alignmentMode = kCAAlignmentCenter;
+		
+		[_navbarTitle.layer addSublayer:_subtitleLayer];
+		
+		// Apply to nav item
+		self.navigationItem.titleView = _navbarTitle;
 		
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateTableNotification:) name:SQUGradesDataUpdatedNotification object:nil];
     }
@@ -82,33 +106,6 @@
 }
 
 - (void) viewWillAppear:(BOOL) animated {
-	// Set up the title view container and title text
-	_navbarTitle = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 200, 44)];
-	
-	_titleLayer = [CATextLayer new];
-	_titleLayer.frame = CGRectMake(0, 4, 200, 28);
-	_titleLayer.font = (__bridge CFTypeRef)([UIFont fontWithName:@"HelveticaNeue-Medium" size:26.0]);
-	_titleLayer.fontSize = 17.0f;
-	_titleLayer.contentsScale = [UIScreen mainScreen].scale;
-	_titleLayer.foregroundColor = [UIColor blackColor].CGColor;
-	_titleLayer.string = NSLocalizedString(@"Overview", nil);
-	_titleLayer.alignmentMode = kCAAlignmentCenter;
-	
-	[_navbarTitle.layer addSublayer:_titleLayer];
-	
-	_subtitleLayer = [CATextLayer new];
-	_subtitleLayer.frame = CGRectMake(0, 25, 200, 28);
-	_subtitleLayer.font = (__bridge CFTypeRef)([UIFont fontWithName:@"HelveticaNeue-LightItalic" size:26.0]);
-	_subtitleLayer.fontSize = 12.0f;
-	_subtitleLayer.contentsScale = [UIScreen mainScreen].scale;
-	_subtitleLayer.foregroundColor = [UIColor lightGrayColor].CGColor;
-	_subtitleLayer.alignmentMode = kCAAlignmentCenter;
-	
-	[_navbarTitle.layer addSublayer:_subtitleLayer];
-	
-	// Apply to nav item
-	self.navigationItem.titleView = _navbarTitle;
-	
 	// Show relative date
 	self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"Updated %@", @"relative date grades refresh control"), [[SQUGradeManager sharedInstance].student.lastAveragesUpdate relativeDate]]];
 	
@@ -123,20 +120,21 @@
 
 #pragma mark - Table view data source
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	SQUCourse *course = [[[SQUGradeManager sharedInstance] getCoursesForCurrentStudent] objectAtIndex:indexPath.row];
+	CGFloat cellHeight = [SQUGradeOverviewTableViewCell cellHeightForCourse:course];
+	
 	if((indexPath.row + 1) != [[SQUGradeManager sharedInstance] getCoursesForCurrentStudent].count) {
-		return SQUGradeOverviewCellHeight + 8;
+		return cellHeight + 8;
 	} else {
-		return SQUGradeOverviewCellHeight + 24;
+		return cellHeight + 24;
 	}
 }
 
 - (NSInteger) numberOfSectionsInTableView:(UITableView *) tableView {
-    // Return the number of sections.
     return 1;
 }
 
 - (NSInteger) tableView:(UITableView *) tableView numberOfRowsInSection:(NSInteger) section {
-    // Return the number of rows in the section.
     return [[SQUGradeManager sharedInstance] getCoursesForCurrentStudent].count;
 }
 
@@ -216,8 +214,8 @@
 	NSString *gpaFormatString = [NSString stringWithFormat:NSLocalizedString(@"GPA: %%.%1$uf/%%.%1$uf", nil), precision];
 	
 	// Calculate GPA
-	NSNumber *gpaUnweighted = [[SQUDistrictManager sharedInstance].currentDistrict unweightedGPAWithCourses:[SQUGradeManager sharedInstance].courses.array];
-	NSNumber *gpaWeighted = [[SQUDistrictManager sharedInstance].currentDistrict weightedGPAWithCourses:[SQUGradeManager sharedInstance].courses.array];
+	NSNumber *gpaUnweighted = [[SQUDistrictManager sharedInstance].currentDistrict unweightedGPAWithCourses:[SQUGradeManager sharedInstance].student.courses.array];
+	NSNumber *gpaWeighted = [[SQUDistrictManager sharedInstance].currentDistrict weightedGPAWithCourses:[SQUGradeManager sharedInstance].student.courses.array];
 	
 	_subtitleLayer.string = [NSString stringWithFormat:gpaFormatString, gpaUnweighted.floatValue, gpaWeighted.floatValue];
 }

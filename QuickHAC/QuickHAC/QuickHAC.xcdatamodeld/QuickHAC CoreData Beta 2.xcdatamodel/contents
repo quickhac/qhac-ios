@@ -69,7 +69,7 @@
     <elements>
         <element name="SQUAssignment" positionX="286" positionY="-72" width="128" height="180"/>
         <element name="SQUCategory" positionX="108" positionY="-72" width="128" height="135"/>
-        <element name="SQUCourse" positionX="-279" positionY="-144" width="128" height="195"/>
+        <element name="SQUCourse" positionX="-279" positionY="-144" width="128" height="208"/>
         <element name="SQUCycle" positionX="-65" positionY="-144" width="128" height="210"/>
         <element name="SQUSemester" positionX="-65" positionY="90" width="128" height="150"/>
         <element name="SQUStudent" positionX="-531" positionY="-138" width="128" height="210"/>

@@ -157,7 +157,7 @@
 		[[NSNotificationCenter defaultCenter] postNotificationName:SQUGradesDataUpdatedNotification object:nil];
 		
 		// Load grades, if required
-		if(true) {
+		if(!student.lastAveragesUpdate) {
 			[SVProgressHUD showProgress:-1 status:NSLocalizedString(@"Changing Student…", nil) maskType:SVProgressHUDMaskTypeGradient];
 			
 			// We also have to log in again and disambiguate

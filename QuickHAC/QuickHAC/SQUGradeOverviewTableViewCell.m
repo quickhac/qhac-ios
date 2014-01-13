@@ -43,9 +43,10 @@
 		_backgroundLayer.borderWidth = 0.0;
 		_backgroundLayer.shadowColor = [UIColor blackColor].CGColor;
 		_backgroundLayer.shadowOpacity = 0.0625;
-		_backgroundLayer.shadowRadius = 1.0;
-		_backgroundLayer.cornerRadius = 1.0;
+		_backgroundLayer.shadowRadius = 2.0;
 		_backgroundLayer.shadowOffset = CGSizeMake(-8.0, -8.0);
+		_backgroundLayer.cornerRadius = 1.0;
+		_backgroundLayer.contentsScale = [UIScreen mainScreen].scale;
 		_backgroundLayer.masksToBounds = NO;
 		
 		UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:_backgroundLayer.frame cornerRadius:_backgroundLayer.cornerRadius];
@@ -161,16 +162,10 @@
 			
 			// Iterate for each cycle
 			for(NSUInteger i = 0; i < heads; i++) {
-				if(i < cycPerSem) {
-					// CYCLE 0 and whatnot
-					NSUInteger cyc = i+1;
-					cyc += (row * heads);
-					title = [NSString stringWithFormat:NSLocalizedString(@"Cycle %u", nil), cyc];
-				} else {
-					// Display either EXAM or AVERAGE
-					NSUInteger offset = i - cycPerSem;
-					title = semesterStrings[offset];
-				}
+				NSUInteger cyc = i+1;
+				cyc += (row * heads);
+				title = [NSString stringWithFormat:NSLocalizedString(@"Cycle %u", nil), cyc];
+
 				
 				frame = CGRectMake(x, y+14, width, 14);
 				CATextLayer *layer = [self makeRowHeaderWithString:title andFrame:frame];
@@ -189,16 +184,29 @@
 		CGFloat x = 0;
 		CGRect frame;
 		NSString *title;
+		CAGradientLayer *shade;
+		CATextLayer *semesterHeader;
 		
 		// Iterate through each semester
 		for (NSUInteger semester = 0; semester < _courseInfo.semesters.count; semester++) {
+			SQUSemester *sem = _courseInfo.semesters[semester];
 			x = 0;
+		
+			// Do not render the semester if it has no data
+			if(sem.average.integerValue == -1) goto end;
 			
 			// Iterate for each cycle plus two more
 			for(NSUInteger i = 0; i < heads; i++) {
-				NSUInteger cyc = i+1;
-				cyc += (semester * cycPerSem);
-				title = [NSString stringWithFormat:NSLocalizedString(@"Cycle %u", nil), cyc];
+				if(i < cycPerSem) {
+					// CYCLE 0 and whatnot
+					NSUInteger cyc = i+1;
+					cyc += (semester * cycPerSem);
+					title = [NSString stringWithFormat:NSLocalizedString(@"Cycle %u", nil), cyc];
+				} else {
+					// Display either EXAM or AVERAGE
+					NSUInteger offset = i - cycPerSem;
+					title = semesterStrings[offset];
+				}
 				
 				frame = CGRectMake(x, y+14, width, 14);
 				CATextLayer *layer = [self makeRowHeaderWithString:title andFrame:frame];
@@ -207,13 +215,13 @@
 			}
 			
 			// Draw "semester outlines"
-			CAGradientLayer *shade = [CAGradientLayer layer];
+			shade = [CAGradientLayer layer];
 			shade.frame = CGRectMake(x-(width*2), y, width*2, 75);
 			shade.backgroundColor = UIColorFromRGB(0xf2f2f2).CGColor;
 			[_shades addObject:shade];
 			
 			// Draw the "SEMESTER 1" title
-			CATextLayer *semesterHeader = [CATextLayer layer];
+			semesterHeader = [CATextLayer layer];
 			semesterHeader.contentsScale = [UIScreen mainScreen].scale;
 			semesterHeader.foregroundColor = [UIColor grayColor].CGColor;
 			CTFontRef ref = CTFontCreateWithName((CFStringRef)@"HelveticaNeue-Medium", 12, NULL);
@@ -226,6 +234,7 @@
 			[_headers addObject:semesterHeader];
 			
 			y += 75;
+		end: ;
 		}
 	}
 }
@@ -296,6 +305,8 @@
 			SQUSemester *sem = _courseInfo.semesters[semester];
 			x = 0;
 			
+			if(sem.average.integerValue == -1) goto end;
+			
 			// Iterate for each cycle plus two more
 			for(NSUInteger i = 0; i < heads; i++) {
 				CAGradientLayer *bg = [CAGradientLayer new];
@@ -352,14 +363,25 @@
 			}
 			
 			y += 75;
+		end: ;
 		}
 	}
 }
 
+/**
+ * Updates the user interface of the cell.
+ */
 - (void) updateUI {
 	NSUInteger period = _courseInfo.period.unsignedIntegerValue;
+	BOOL isElementary = (_courseInfo.semesters.count == 1);
+	
     _periodTitle.string = [NSString stringWithFormat:NSLocalizedString(@"%u", nil), period];
     _courseTitle.string = _courseInfo.title;
+	
+	// Update BG layer and shadow path
+	_backgroundLayer.frame = CGRectMake(10, 10, self.frame.size.width - 20, [SQUGradeOverviewTableViewCell cellHeightForCourse:_courseInfo] - 6);
+	UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:_backgroundLayer.frame cornerRadius:_backgroundLayer.cornerRadius];
+	_backgroundLayer.shadowPath = path.CGPath;
 	
 	// Get rid of all the currently existing layers
 	for (CALayer *layer in _cells) {
@@ -374,6 +396,10 @@
 	[_headers removeAllObjects];
 	[_shades removeAllObjects];
 	
+	if(_noGradesAvailable) {
+		[_noGradesAvailable removeFromSuperlayer];
+	}
+	
 	// Re-draw table
 	[self drawHeaders];
 	[self drawCells];
@@ -386,8 +412,7 @@
 		[_backgroundLayer addSublayer:layer];
 	}
 	
-	BOOL isElementary = (_courseInfo.semesters.count == 1);
-	
+	// Update the averages label
 	if(!isElementary) {
 		_currentAverageLabel.string = @"";
 		
@@ -406,6 +431,34 @@
 			}
 		}
 	}
+	
+	if(!isElementary) {
+		if([_courseInfo.semesters[0] average].integerValue == -1 &&
+		   [_courseInfo.semesters[1] average].integerValue == -1) {
+			goto drawNoGradesAvailable;
+		}
+	} else {
+		if([_courseInfo.cycles[0] letterGrade].length == 0) {
+			goto drawNoGradesAvailable;
+		}
+	}
+	
+	return;
+	
+	// Draw the no grades available text
+drawNoGradesAvailable: ;
+	if(!_noGradesAvailable) {
+		_noGradesAvailable = [CATextLayer layer];
+        _noGradesAvailable.frame = CGRectMake(0, 56+(75/4), _backgroundLayer.frame.size.width, 32);
+        _noGradesAvailable.contentsScale = [UIScreen mainScreen].scale;
+        _noGradesAvailable.foregroundColor = [UIColor blackColor].CGColor;
+		_noGradesAvailable.string = NSLocalizedString(@"No Grades Available For This Class", nil);
+        _noGradesAvailable.font = (__bridge CFTypeRef) [UIFont fontWithName:@"HelveticaNeue-Light" size:15.0f];
+        _noGradesAvailable.fontSize = 18.0f;
+		_noGradesAvailable.alignmentMode = kCAAlignmentCenter;
+	}
+	
+	[_backgroundLayer addSublayer:_noGradesAvailable];
 }
 
 - (UIColor *) colourizeGrade:(float) grade {
@@ -449,6 +502,22 @@
 							  @"F" : UIColorFromRGB(0xc0393b)};
 	
 	return colours[letter];
+}
+
++ (CGFloat) cellHeightForCourse:(SQUCourse *) course {
+	BOOL isElementary = (course.semesters.count == 1);
+	
+	if(isElementary) {
+		return SQUGradeOverviewCellHeight;
+	} else {
+		if([course.semesters[1] average].integerValue == -1) {
+			return SQUGradeOverviewCellHeight - 75;
+		} else if([course.semesters[0] average].integerValue == -1) {
+			return SQUGradeOverviewCellHeight - 75;
+		} else {
+			return SQUGradeOverviewCellHeight;
+		}
+	}
 }
 
 @end

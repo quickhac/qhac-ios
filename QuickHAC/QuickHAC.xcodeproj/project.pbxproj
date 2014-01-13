@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DE05E5A918846139008F89F5 /* SQUCourse.m in Sources */ = {isa = PBXBuildFile; fileRef = DE05E5A818846139008F89F5 /* SQUCourse.m */; };
 		DE06157B17874D0C004B2877 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE06157A17874D0C004B2877 /* Foundation.framework */; };
 		DE06157D17874D0C004B2877 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE06157C17874D0C004B2877 /* CoreGraphics.framework */; };
 		DE06157F17874D0C004B2877 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE06157E17874D0C004B2877 /* UIKit.framework */; };
@@ -57,7 +58,6 @@
 		DEC5954818783D69004F4BA4 /* SQUPushHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = DEC5954718783D69004F4BA4 /* SQUPushHandler.m */; };
 		DECEA57F1877FF8900C3D2FC /* NSMutableURLRequest+POSTGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = DECEA57E1877FF8900C3D2FC /* NSMutableURLRequest+POSTGenerator.m */; };
 		DECFF3CA187B444B007AFE6D /* SQUCycle.m in Sources */ = {isa = PBXBuildFile; fileRef = DECFF3C9187B444B007AFE6D /* SQUCycle.m */; };
-		DEF0F1B9186EE05400116B61 /* SQUCourse.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F1B8186EE05400116B61 /* SQUCourse.m */; };
 		DEF0F1BD186EE52B00116B61 /* UIColor+SQUColourUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F1BC186EE52B00116B61 /* UIColor+SQUColourUtilities.m */; };
 		DEF0F1BF186EEA6500116B61 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DEF0F1BE186EEA6400116B61 /* CoreImage.framework */; };
 		DEF0F1C1186EEA6900116B61 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DEF0F1C0186EEA6900116B61 /* QuartzCore.framework */; };
@@ -161,6 +161,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		DE05E5A718846139008F89F5 /* SQUCourse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUCourse.h; sourceTree = "<group>"; };
+		DE05E5A818846139008F89F5 /* SQUCourse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUCourse.m; sourceTree = "<group>"; };
 		DE06157717874D0C004B2877 /* QuickHAC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QuickHAC.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DE06157A17874D0C004B2877 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		DE06157C17874D0C004B2877 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -246,8 +248,6 @@
 		DECFF3C6187B42D5007AFE6D /* QuickHAC CoreData Beta 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "QuickHAC CoreData Beta 2.xcdatamodel"; sourceTree = "<group>"; };
 		DECFF3C8187B444B007AFE6D /* SQUCycle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUCycle.h; sourceTree = "<group>"; };
 		DECFF3C9187B444B007AFE6D /* SQUCycle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUCycle.m; sourceTree = "<group>"; };
-		DEF0F1B7186EE05400116B61 /* SQUCourse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUCourse.h; sourceTree = "<group>"; };
-		DEF0F1B8186EE05400116B61 /* SQUCourse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUCourse.m; sourceTree = "<group>"; };
 		DEF0F1BB186EE52B00116B61 /* UIColor+SQUColourUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+SQUColourUtilities.h"; sourceTree = "<group>"; };
 		DEF0F1BC186EE52B00116B61 /* UIColor+SQUColourUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+SQUColourUtilities.m"; sourceTree = "<group>"; };
 		DEF0F1BE186EEA6400116B61 /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
@@ -663,6 +663,8 @@
 		DECA57C817DFD96300156AFC /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
+				DE05E5A718846139008F89F5 /* SQUCourse.h */,
+				DE05E5A818846139008F89F5 /* SQUCourse.m */,
 				DECFF3C8187B444B007AFE6D /* SQUCycle.h */,
 				DECFF3C9187B444B007AFE6D /* SQUCycle.m */,
 				DE2844011877ABCC0000756C /* SQUSemester.h */,
@@ -673,8 +675,6 @@
 				DEF0F1EC187101A900116B61 /* SQUCategory.m */,
 				DEF0F1D5186FC7FA00116B61 /* SQUAssignment.h */,
 				DEF0F1D6186FC7FA00116B61 /* SQUAssignment.m */,
-				DEF0F1B7186EE05400116B61 /* SQUCourse.h */,
-				DEF0F1B8186EE05400116B61 /* SQUCourse.m */,
 				DECA57D517DFD9D400156AFC /* SQUCoreData.h */,
 			);
 			name = CoreData;
@@ -1114,7 +1114,6 @@
 				DE88318E18812092002244F5 /* SQUTabletSidebarCell.m in Sources */,
 				DE2844031877ABCC0000756C /* SQUSemester.m in Sources */,
 				DE81CDD7186D517800DC1CAB /* TFHpple.m in Sources */,
-				DEF0F1B9186EE05400116B61 /* SQUCourse.m in Sources */,
 				DEF0F1BD186EE52B00116B61 /* UIColor+SQUColourUtilities.m in Sources */,
 				DEF0F23418727EA700116B61 /* LTHPasscodeViewController.m in Sources */,
 				DE81CDD9186D517800DC1CAB /* XPathQuery.m in Sources */,
@@ -1157,6 +1156,7 @@
 				DEF0F25418740A1400116B61 /* MGSplitDividerView.m in Sources */,
 				DEFFDE42186E26FC00E26423 /* AFNetworkReachabilityManager.m in Sources */,
 				DEF0F2221871DB9800116B61 /* SQUSettingsStudents.m in Sources */,
+				DE05E5A918846139008F89F5 /* SQUCourse.m in Sources */,
 				DE7B4E85186EB0F3008079CC /* NSManagedObjectModel+KCOrderedAccessorFix.m in Sources */,
 				DEFFDE46186E26FC00E26423 /* AFURLResponseSerialization.m in Sources */,
 				DE81CDD8186D517800DC1CAB /* TFHppleElement.m in Sources */,

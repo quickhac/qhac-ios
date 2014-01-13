@@ -25,6 +25,7 @@
 #import "Lockbox.h"
 #import "MGSplitViewController.h"
 #import "LTHPasscodeViewController.h"
+#import "AFNetworking.h"
 
 #ifdef DEBUG
 #import "TestFlight.h"
@@ -168,51 +169,49 @@ static SQUAppDelegate *sharedDelegate = nil;
 		studentID = student.student_id;
         
 		// This ensures we can see cached data while the new data is fetched
-		[[SQUGradeManager sharedInstance] setStudent:student];		
-		[[NSNotificationCenter defaultCenter] postNotificationName:SQUGradesDataUpdatedNotification object:nil];
+		if(![[SQUDistrictManager sharedInstance] selectDistrictWithID:student.district.integerValue]) {
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Invalid District", nil) message:NSLocalizedString(@"The student record selected is not using a district supported by qHAC.", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
+			[alert show];
+			
+			// Delete from the database
+			[context deleteObject:student];
+			
+			// Pop up the login controller.
+			SQULoginSchoolSelector *loginController = [[SQULoginSchoolSelector alloc] initWithStyle:UITableViewStyleGrouped];
+			[_navController presentViewController:[[UINavigationController alloc] initWithRootViewController:loginController] animated:NO completion:NULL];
+		} else {
+			[[SQUGradeManager sharedInstance] setStudent:student];
+			[[SQUDistrictManager sharedInstance] selectDistrictWithID:student.district.integerValue];
+			[[NSNotificationCenter defaultCenter] postNotificationName:SQUGradesDataUpdatedNotification object:nil];
+		}
+		
 		
 		// Validate the student object.
-		dispatch_async(dispatch_get_main_queue(), ^{
-			if(![[SQUDistrictManager sharedInstance] selectDistrictWithID:student.district.integerValue]) {
-				UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Invalid District", nil) message:NSLocalizedString(@"The student record selected is not using a district supported by qHAC.", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
-				[alert show];
-				
-				// Delete from the database
-				[context deleteObject:student];
-				
-				// Pop up the login controller.
-				SQULoginSchoolSelector *loginController = [[SQULoginSchoolSelector alloc] initWithStyle:UITableViewStyleGrouped];
-				[_navController presentViewController:[[UINavigationController alloc] initWithRootViewController:loginController] animated:NO completion:NULL];
-			} else { // We found a district, so log in so we may update grades
-				// Select district.
-				[[SQUDistrictManager sharedInstance] selectDistrictWithID:student.district.integerValue];
-				[[NSNotificationCenter defaultCenter] postNotificationName:SQUGradesDataUpdatedNotification object:nil];
-				
-				// Ask the current district instance to do a log in to validate we're still valid
-				[[SQUDistrictManager sharedInstance] performLoginRequestWithUser:username usingPassword:password andCallback:^(NSError *error, id returnData) {
-					if(!error) {
-						if(!returnData) {
-							[SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Wrong Credentials", nil)];
-							
-							// Tell the user what happened
-							UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Authenticating", nil) message:NSLocalizedString(@"Your username or password were rejected by HAC. Please update your password, if it was changed, and try again.", nil) delegate:self cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:NSLocalizedString(@"Settings", nil), nil];
-							alert.tag = kSQUAlertChangePassword;
-							[alert show];
-						} else {
-							// Login succeeded, so we can do a fetch of grades.
-							[[SQUGradeManager sharedInstance] fetchNewClassGradesFromServerWithDoneCallback:^(NSError *err) {
-								[[NSNotificationCenter defaultCenter] postNotificationName:SQUGradesDataUpdatedNotification object:nil];
-							}];
-						}
-					} else {
-						[SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Error", nil)];
+		if([AFNetworkReachabilityManager sharedManager].isReachable) {
+			// Ask the current district instance to do a log in to validate our session is still valid
+			[[SQUDistrictManager sharedInstance] performLoginRequestWithUser:username usingPassword:password andCallback:^(NSError *error, id returnData) {
+				if(!error) {
+					if(!returnData) {
+						[SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Wrong Credentials", nil)];
 						
-						UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Authenticating", nil) message:error.localizedDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
+						// Tell the user what happened
+						UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Authenticating", nil) message:NSLocalizedString(@"Your username or password were rejected by HAC. Please update your password, if it was changed, and try again.", nil) delegate:self cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:/*NSLocalizedString(@"Settings", nil),*/ nil];
+						alert.tag = kSQUAlertChangePassword;
 						[alert show];
+					} else {
+						// Login succeeded, so we can do a fetch of grades.
+						[[SQUGradeManager sharedInstance] fetchNewClassGradesFromServerWithDoneCallback:^(NSError *err) {
+							[[NSNotificationCenter defaultCenter] postNotificationName:SQUGradesDataUpdatedNotification object:nil];
+						}];
 					}
-				}];
-			}
-		});
+				} else {
+					[SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Error", nil)];
+					
+					UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Authenticating", nil) message:error.localizedDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
+					[alert show];
+				}
+			}];
+		}
     }
 	
     return YES;
