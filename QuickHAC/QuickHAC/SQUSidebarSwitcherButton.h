@@ -20,4 +20,6 @@
 @property (nonatomic, readwrite, setter = setTitle:) NSString *title;
 @property (nonatomic, readwrite, setter = setSubtitle:) NSString *subtitle;
 
+- (void) buttonActuated:(id) sender;
+
 @end

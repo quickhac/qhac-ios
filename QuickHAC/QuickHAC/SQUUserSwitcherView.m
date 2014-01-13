@@ -13,6 +13,7 @@
 #import "SQUGradeManager.h"
 #import "SQUDistrictManager.h"
 #import "SQULoginSchoolSelector.h"
+#import "SQUSidebarController.h"
 #import "SQUUserSwitcherView.h"
 
 #import "SVProgressHUD.h"
@@ -133,11 +134,7 @@
 	return cell;
 }
 
-- (void) collectionView:(UICollectionView *) collectionView didSelectItemAtIndexPath:(NSIndexPath *) indexPath {
-	NSLog(@"Selected row %u", indexPath.row);
-	
-//	 [collectionView reloadItemsAtIndexPaths:@[indexPath]];
-	
+- (void) collectionView:(UICollectionView *) collectionView didSelectItemAtIndexPath:(NSIndexPath *) indexPath {	
 	if(indexPath.row == _students.count) {
 		[self showStudentAdder];
 		[self performSelectorOnMainThread:@selector(updateStudents:) withObject:collectionView waitUntilDone:NO];
@@ -148,11 +145,19 @@
 		SQUStudent *student = _students[selectedStudent];
 		[[SQUGradeManager sharedInstance] setStudent:student];
 		[[SQUDistrictManager sharedInstance] selectDistrictWithID:student.district.integerValue];
-		[[NSNotificationCenter defaultCenter] postNotificationName:SQUGradesDataUpdatedNotification object:nil];
 		[[NSUserDefaults standardUserDefaults] synchronize];
 		
+		// Hide switcher
+		[[NSNotificationCenter defaultCenter] postNotificationName:SQUSidebarControllerToggleUserSwitcher object:nil];
+		
+		// Show overview
+		[[NSNotificationCenter defaultCenter] postNotificationName:SQUSidebarControllerShowOverview object:nil];
+		
+		// Update overview
+		[[NSNotificationCenter defaultCenter] postNotificationName:SQUGradesDataUpdatedNotification object:nil];
+		
 		// Load grades, if required
-		if(!student.lastAveragesUpdate) {
+		if(true) {
 			[SVProgressHUD showProgress:-1 status:NSLocalizedString(@"Changing Student…", nil) maskType:SVProgressHUDMaskTypeGradient];
 			
 			// We also have to log in again and disambiguate

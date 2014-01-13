@@ -115,10 +115,8 @@
 			cell.accessoryType = UITableViewCellAccessoryNone;
 		}
 		
-		// Disable selection if there's only one student
-		if(_students.count == 1) {
-			cell.selectionStyle = UITableViewCellSelectionStyleNone;
-		}
+		// Disable selection
+		cell.selectionStyle = UITableViewCellSelectionStyleNone;
 	} else if(indexPath.section == 1) {
 		// "Add New…" button
 		cell = [tableView dequeueReusableCellWithIdentifier:@"SettingsButtonCell" forIndexPath:indexPath];
@@ -177,6 +175,8 @@
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	
 	if(indexPath.section == 0) {
+		return;
+		
 		NSInteger selectedStudent = [[NSUserDefaults standardUserDefaults] integerForKey:@"selectedStudent"];
 		
 		// Update selection if we're not tapping the same cell as selected

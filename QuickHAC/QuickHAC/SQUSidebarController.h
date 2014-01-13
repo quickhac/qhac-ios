@@ -15,6 +15,8 @@
 @class SQUUserSwitcherView;
 
 #define SQUSidebarControllerShowSidebarMessage @"SQUSidebarControllerShowSidebarMessage"
+#define SQUSidebarControllerShowOverview @"SQUSidebarControllerShowOverview"
+#define SQUSidebarControllerToggleUserSwitcher @"SQUSidebarControllerToggleUserSwitcher"
 
 @interface SQUSidebarController : UIViewController <UITableViewDataSource, UITableViewDelegate> {
 	NSIndexPath *selectedItem;

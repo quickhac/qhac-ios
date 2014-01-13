@@ -34,6 +34,8 @@
 		
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(gradesUpdatedNotification:) name:SQUGradesDataUpdatedNotification object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showCourseOverviewNotification:) name:SQUSidebarControllerShowSidebarMessage object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(goToOverview:) name:SQUSidebarControllerShowOverview object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notifToggleSwitcher:) name:SQUSidebarControllerToggleUserSwitcher object:nil];
 		
 		_lastSelection = [NSIndexPath indexPathForRow:0 inSection:0];
     }
@@ -268,6 +270,18 @@
 	if(selectedItem) {
 		[_tableView selectRowAtIndexPath:selectedItem animated:YES scrollPosition:UITableViewScrollPositionNone];
 	}
+}
+
+- (void) goToOverview:(NSNotification *) notif {
+	selectedItem = [NSIndexPath indexPathForRow:0 inSection:0];
+	
+	[[self revealController] setFrontViewController:_overview.navigationController];
+	[[self revealController] resignPresentationModeEntirely:YES animated:YES completion:NULL];
+}
+
+- (void) notifToggleSwitcher:(NSNotification *) notif {
+	[_switcherButton buttonActuated:nil];
+	[self toggleSwitcher:nil];
 }
 
 /*
