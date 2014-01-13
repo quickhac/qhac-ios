@@ -18,9 +18,11 @@
 @interface SQUGradeOverviewTableViewCell (PrivateMethods)
 
 - (CATextLayer *) makeRowHeaderWithString:(NSString *) string andFrame:(CGRect) frame;
-- (UIColor *) colourizeGrade:(float) grade;
 - (void) drawHeaders;
 - (void) drawCells;
+
+- (UIColor *) colourizeGrade:(float) grade;
+- (UIColor *) colourForLetterGrade:(NSString *) grade;
 
 @end
 
@@ -42,6 +44,7 @@
 		_backgroundLayer.shadowColor = [UIColor blackColor].CGColor;
 		_backgroundLayer.shadowOpacity = 0.0625;
 		_backgroundLayer.shadowRadius = 1.0;
+		_backgroundLayer.cornerRadius = 1.0;
 		_backgroundLayer.shadowOffset = CGSizeMake(-8.0, -8.0);
 		_backgroundLayer.masksToBounds = NO;
 		
@@ -50,11 +53,11 @@
         
 		// Course title
         _courseTitle = [CATextLayer layer];
-        _courseTitle.frame = CGRectMake(62, 8, _backgroundLayer.frame.size.width - 70, 32);
+        _courseTitle.frame = CGRectMake(62, 8, _backgroundLayer.frame.size.width - 130, 32);
         _courseTitle.contentsScale = [UIScreen mainScreen].scale;
         _courseTitle.foregroundColor = [UIColor blackColor].CGColor;
         _courseTitle.font = (__bridge CFTypeRef) [UIFont fontWithName:@"HelveticaNeue-Light" size:15.0f];
-        _courseTitle.fontSize = 20.0f;
+        _courseTitle.fontSize = 21.0f;
 		
 		// Apply a mask so overly long course titles "fade out"
 		CAGradientLayer *courseTitleMask = [CAGradientLayer layer];
@@ -77,18 +80,23 @@
         
 		// Period label
         _periodTitle = [CATextLayer layer];
-        _periodTitle.frame = CGRectMake(8, 8, 44, 44);
+        _periodTitle.frame = CGRectMake(0, 2, 44, 44);
         _periodTitle.contentsScale = [UIScreen mainScreen].scale;
         _periodTitle.foregroundColor = [UIColor grayColor].CGColor;
         _periodTitle.font = (__bridge CFTypeRef) [UIFont fontWithName:@"HelveticaNeue-UltraLight" size:15.0f];
         _periodTitle.fontSize = 34;
 		_periodTitle.alignmentMode = kCAAlignmentCenter;
-		_periodTitle.borderColor = [UIColor lightGrayColor].CGColor;
-		_periodTitle.borderWidth = 1.0;
-		_periodTitle.cornerRadius = _periodTitle.frame.size.width / 2;
 				
+		// Circle surrounding period title
+		_periodCircle = [CALayer layer];
+        _periodCircle.frame = CGRectMake(8, 8, 44, 44);
+		_periodCircle.borderColor = [UIColor lightGrayColor].CGColor;
+		_periodCircle.borderWidth = 1.0;
+		_periodCircle.cornerRadius = _periodTitle.frame.size.width / 2;
+		[_periodCircle addSublayer:_periodTitle];
+		
 		// Add sublayers
-        [_backgroundLayer addSublayer:_periodTitle];
+        [_backgroundLayer addSublayer:_periodCircle];
         [_backgroundLayer addSublayer:_courseTitle];
 		[_backgroundLayer addSublayer:_currentAverageLabel];
 		
@@ -138,7 +146,40 @@
 	
 	// Elementary students do not have exams, and only four cycles.
 	if(isElementary) {
+		CGFloat y = 56;
+		NSUInteger cycPerSem = _courseInfo.student.cyclesPerSemester.unsignedIntegerValue;
+		NSUInteger heads = cycPerSem/2;
 		
+		CGFloat width = _backgroundLayer.frame.size.width / heads;
+		CGFloat x = 0;
+		CGRect frame;
+		NSString *title;
+		
+		// Split over two rows
+		for (NSUInteger row = 0; row < heads; row++) {
+			x = 0;
+			
+			// Iterate for each cycle
+			for(NSUInteger i = 0; i < heads; i++) {
+				if(i < cycPerSem) {
+					// CYCLE 0 and whatnot
+					NSUInteger cyc = i+1;
+					cyc += (row * heads);
+					title = [NSString stringWithFormat:NSLocalizedString(@"Cycle %u", nil), cyc];
+				} else {
+					// Display either EXAM or AVERAGE
+					NSUInteger offset = i - cycPerSem;
+					title = semesterStrings[offset];
+				}
+				
+				frame = CGRectMake(x, y+14, width, 14);
+				CATextLayer *layer = [self makeRowHeaderWithString:title andFrame:frame];
+				[_headers addObject:layer];
+				x += width;
+			}
+			
+			y += 75;
+		}
 	} else {
 		CGFloat y = 56;
 		NSUInteger cycPerSem = _courseInfo.student.cyclesPerSemester.unsignedIntegerValue;
@@ -155,16 +196,9 @@
 			
 			// Iterate for each cycle plus two more
 			for(NSUInteger i = 0; i < heads; i++) {
-				if(i < cycPerSem) {
-					// CYCLE 0 and whatnot
-					NSUInteger cyc = i+1;
-					cyc += (semester * cycPerSem);
-					title = [NSString stringWithFormat:NSLocalizedString(@"Cycle %u", nil), cyc];
-				} else {
-					// Display either EXAM or AVERAGE
-					NSUInteger offset = i - cycPerSem;
-					title = semesterStrings[offset];
-				}
+				NSUInteger cyc = i+1;
+				cyc += (semester * cycPerSem);
+				title = [NSString stringWithFormat:NSLocalizedString(@"Cycle %u", nil), cyc];
 				
 				frame = CGRectMake(x, y+14, width, 14);
 				CATextLayer *layer = [self makeRowHeaderWithString:title andFrame:frame];
@@ -204,7 +238,51 @@
 	
 	// Elementary students do not have exams, and only four cycles.
 	if(isElementary) {
+		CGFloat y = 56;
+		NSUInteger cycPerSem = _courseInfo.student.cyclesPerSemester.unsignedIntegerValue;
+		NSUInteger heads = cycPerSem / 2;
 		
+		CGFloat width = _backgroundLayer.frame.size.width / heads;
+		CGFloat x = 0;
+		
+		// Split cycles over two rows
+		for (NSUInteger row = 0; row < heads; row++) {
+			x = 0;
+			
+			// Iterate through each cycle
+			for(NSUInteger i = 0; i < heads; i++) {
+				CAGradientLayer *bg = [CAGradientLayer new];
+				bg.frame = CGRectMake(x, y + 28, width, 47);
+				bg.backgroundColor = UIColorFromRGB(0xffffff).CGColor;
+				
+				// Draw average
+				CATextLayer *average = [CATextLayer layer];
+				average.frame = CGRectMake(0, 4, width, 47);
+				average.contentsScale = [UIScreen mainScreen].scale;
+				average.font = (__bridge CFTypeRef) [UIFont fontWithName:@"HelveticaNeue-Light" size:15.0f];
+				average.fontSize = 31;
+				average.alignmentMode = kCAAlignmentCenter;
+				[bg addSublayer:average];
+				
+				SQUCycle *cycle = _courseInfo.cycles[i + (row * heads)];
+					
+				// Display the letter grade
+				if(cycle.letterGrade.length != 0) {
+					average.string = cycle.letterGrade;
+					bg.backgroundColor = [self colourForLetterGrade:cycle.letterGrade].CGColor;
+					average.foregroundColor = [UIColor whiteColor].CGColor;
+				} else {
+					average.string = NSLocalizedString(@"-", nil);
+					bg.backgroundColor = UIColorFromRGB(0xe0e0e0).CGColor;
+					average.foregroundColor = [UIColor blackColor].CGColor;
+				}
+				
+				[_cells addObject:bg];
+				x += width;
+			}
+			
+			y += 75;
+		}
 	} else {
 		CGFloat y = 56;
 		NSUInteger cycPerSem = _courseInfo.student.cyclesPerSemester.unsignedIntegerValue;
@@ -232,7 +310,6 @@
 				average.font = (__bridge CFTypeRef) [UIFont fontWithName:@"HelveticaNeue-Light" size:15.0f];
 				average.fontSize = 31;
 				average.alignmentMode = kCAAlignmentCenter;
-				average.string = @"100";
 				[bg addSublayer:average];
 				
 				if(i < cycPerSem) {
@@ -309,15 +386,24 @@
 		[_backgroundLayer addSublayer:layer];
 	}
 	
-	// Update average label
-	_currentAverageLabel.string = @"";
+	BOOL isElementary = (_courseInfo.semesters.count == 1);
 	
-	for (NSUInteger i = 0; i < _courseInfo.semesters.count; i++) {
-		SQUSemester *semester = _courseInfo.semesters[i];
-		if(semester.average.integerValue != -1) {
-			_currentAverageLabel.string = [NSString stringWithFormat:
-										   NSLocalizedString(@"%u", nil),
-										   semester.average.unsignedIntegerValue];
+	if(!isElementary) {
+		_currentAverageLabel.string = @"";
+		
+		for (NSUInteger i = 0; i < _courseInfo.semesters.count; i++) {
+			SQUSemester *semester = _courseInfo.semesters[i];
+			if(semester.average.integerValue != -1) {
+				_currentAverageLabel.string = [NSString stringWithFormat:
+											   NSLocalizedString(@"%u", nil),
+											   semester.average.unsignedIntegerValue];
+			}
+		}
+	} else {
+		for (SQUCycle *cycle in _courseInfo.cycles) {
+			if(cycle.letterGrade.length != 0) {
+				_currentAverageLabel.string = cycle.letterGrade;
+			}
 		}
 	}
 }
@@ -350,6 +436,19 @@
 	//    if (h < 0) h += 1;
     
     return [UIColor colorWithHue:h saturation:s brightness:v alpha:1.0];
+}
+
+- (UIColor *) colourForLetterGrade:(NSString *) grade {
+	NSString *letter = [grade substringToIndex:1];
+	NSDictionary *colours = @{
+							  @"A" : UIColorFromRGB(0x27ae60),
+							  @"B" : UIColorFromRGB(0xf1c40f),
+							  @"C" : UIColorFromRGB(0xf39c12),
+							  @"D" : UIColorFromRGB(0xe67e22),
+							  @"E" : UIColorFromRGB(0xe74c3c),
+							  @"F" : UIColorFromRGB(0xc0393b)};
+	
+	return colours[letter];
 }
 
 @end

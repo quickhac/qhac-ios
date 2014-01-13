@@ -20,8 +20,10 @@
 	CALayer *_backgroundLayer;
 	
     CATextLayer *_courseTitle;
-    CATextLayer *_periodTitle;
 	CATextLayer *_currentAverageLabel;
+	
+    CATextLayer *_periodTitle;
+	CALayer *_periodCircle;
 	
 	NSMutableArray *_headers;
 	NSMutableArray *_cells;
