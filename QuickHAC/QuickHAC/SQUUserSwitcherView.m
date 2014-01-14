@@ -84,6 +84,8 @@
 		}
 		
 		[_grid reloadData];
+	} else {
+		[_grid reloadData];
 	}
 	
 	// Update selection
@@ -138,6 +140,9 @@
 	if(indexPath.row == _students.count) {
 		[self showStudentAdder];
 		[self performSelectorOnMainThread:@selector(updateStudents:) withObject:collectionView waitUntilDone:NO];
+		
+		// Hide switcher view
+		[[NSNotificationCenter defaultCenter] postNotificationName:SQUSidebarControllerToggleUserSwitcher object:nil];
 	} else {
 		NSInteger selectedStudent = indexPath.row;
 		
@@ -146,15 +151,6 @@
 		[[SQUGradeManager sharedInstance] setStudent:student];
 		[[SQUDistrictManager sharedInstance] selectDistrictWithID:student.district.integerValue];
 		[[NSUserDefaults standardUserDefaults] synchronize];
-		
-		// Hide switcher
-		[[NSNotificationCenter defaultCenter] postNotificationName:SQUSidebarControllerToggleUserSwitcher object:nil];
-		
-		// Show overview
-		[[NSNotificationCenter defaultCenter] postNotificationName:SQUSidebarControllerShowOverview object:nil];
-		
-		// Update overview
-		[[NSNotificationCenter defaultCenter] postNotificationName:SQUGradesDataUpdatedNotification object:nil];
 		
 		// Load grades, if required
 		if(!student.lastAveragesUpdate) {
@@ -193,6 +189,13 @@
 								[_grid selectItemAtIndexPath:_lastSelection animated:NO scrollPosition:UICollectionViewScrollPositionTop];
 							} else {
 								_lastSelection = indexPath;
+								
+								// Hide switcher
+								[[NSNotificationCenter defaultCenter] postNotificationName:SQUSidebarControllerToggleUserSwitcher object:nil];
+								// Show overview
+								[[NSNotificationCenter defaultCenter] postNotificationName:SQUSidebarControllerShowOverview object:nil];
+								// Update overview
+								[[NSNotificationCenter defaultCenter] postNotificationName:SQUGradesDataUpdatedNotification object:nil];
 							}
 						}];
 					}
@@ -203,8 +206,15 @@
 					[alert show];
 				}
 			}];
-		} else {
+		} else { // We needn't update grades
 			_lastSelection = indexPath;
+			
+			// Hide switcher
+			[[NSNotificationCenter defaultCenter] postNotificationName:SQUSidebarControllerToggleUserSwitcher object:nil];
+			// Show overview
+			[[NSNotificationCenter defaultCenter] postNotificationName:SQUSidebarControllerShowOverview object:nil];
+			// Update overview
+			[[NSNotificationCenter defaultCenter] postNotificationName:SQUGradesDataUpdatedNotification object:nil];
 		}
 	}
 }

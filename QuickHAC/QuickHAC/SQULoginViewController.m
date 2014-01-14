@@ -366,9 +366,49 @@
 					
 					_studentLoginFunction();
 				} else {
-					// If students already exist, don't show a picker
-					[SVProgressHUD dismiss];
-					[self dismissViewControllerAnimated:YES completion:NULL];
+					// Perform fetch for this student to gather some info about them
+					if(![SQUDistrictManager sharedInstance].currentDistrict.hasMultipleStudents) {
+						[SVProgressHUD showProgress:-1 status:NSLocalizedString(@"Updating Grades", nil) maskType:SVProgressHUDMaskTypeGradient];
+						
+						// Fetch grades
+						[[SQUGradeManager sharedInstance] fetchNewClassGradesFromServerWithDoneCallback:^(NSError *error) {
+							if(!error) {
+								[SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"Done", nil)];
+								
+								// Restore old student state
+								if(oldStudent) {
+									[[SQUDistrictManager sharedInstance] selectDistrictWithID:oldStudent.district.integerValue];
+									[[SQUGradeManager sharedInstance] setStudent:oldStudent];
+								}
+								
+								[[NSNotificationCenter defaultCenter] postNotificationName:SQUGradesDataUpdatedNotification object:nil];
+								[[NSNotificationCenter defaultCenter] postNotificationName:SQUStudentsUpdatedNotification object:nil];
+								
+								// Dismiss login view
+								[self_unsafe dismissViewControllerAnimated:YES completion:NO];
+							} else {
+								// Delete students added to the DB
+								for(SQUStudent *studentToDelete in self_unsafe.students) {
+									[[SQUAppDelegate sharedDelegate].managedObjectContext deleteObject:studentToDelete];
+								}
+								
+								[[SQUAppDelegate sharedDelegate] saveContext];
+								
+								[SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Error", nil)];
+								
+								UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Fetching Grades", nil) message:error.localizedDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
+								[alert show];
+							}
+						}];
+					} else {
+						// Restore student
+						[[SQUGradeManager sharedInstance] setStudent:oldStudent];
+						[[SQUDistrictManager sharedInstance] selectDistrictWithID:oldStudent.district.unsignedIntegerValue];
+						
+						// Dismiss the login controller
+						[SVProgressHUD dismiss];
+						[self dismissViewControllerAnimated:YES completion:NULL];
+					}
 					
 					[[NSNotificationCenter defaultCenter] postNotificationName:SQUStudentsUpdatedNotification object:nil];
 				}

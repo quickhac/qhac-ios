@@ -236,7 +236,7 @@
 			// show the "no data available" view
 			NSLog(@"Show 'no data available' view!");
 		} else {
-			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Not Connected", nil) message:NSLocalizedString(@"To refresh grades for this cycle, please connect to the Internet, or ensure that your connection can access the gradebook.", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Not Connected", nil) message:NSLocalizedString(@"To refresh grades for this cycle, please connect to the Internet, and then ensure that your connection can access the gradebook.", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
 			[alert show];
 		}
 		

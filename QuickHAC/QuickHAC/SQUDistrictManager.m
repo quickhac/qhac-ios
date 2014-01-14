@@ -137,6 +137,14 @@ static SQUDistrictManager *_sharedInstance = nil;
 		
 		// NSLog(@"SECURITY POLICY CHANGED: Rejects invalid certs (%@)", currentDistrict.name);
 	}
+	
+	// Clear munchies so we're logged out (prevents course mingling)
+	// TODO: Fix this to clear only cookies for the district's domain!
+	NSArray *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
+	
+	for (NSHTTPCookie *cookie in cookies) {
+		[[NSHTTPCookieStorage sharedHTTPCookieStorage] deleteCookie:cookie];
+	}
 }
 
 /**
@@ -266,7 +274,7 @@ static SQUDistrictManager *_sharedInstance = nil;
  */
 - (void) performDisambiguationRequestWithStudentID:(NSString *) sid andCallback:(SQUDistrictCallback) callback {
 	// Do not perform disambiguation if there is only a single student on the account.
-	if(!_currentDistrict.hasMultipleStudents) {
+	if(!_currentDistrict.hasMultipleStudents || !sid) {
 		callback(nil, nil);
 		return;
 	}
