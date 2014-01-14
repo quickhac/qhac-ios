@@ -302,7 +302,7 @@
 		
 		// Display a message if this cycle has no information
 		if(!numCyclesAvailable) {
-			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"No Grades Available", nil) message:[NSString stringWithFormat:NSLocalizedString(@"There is no data available in the gradebook for the course %@.\nPlease check again later, or consult %@.", @"no cycles with data alert"), course.title, course.teacher_name] delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"No Grades Available", nil) message:[NSString stringWithFormat:NSLocalizedString(@"There is no data available in the gradebook for the course %@.\nPlease check again later, or consult %@.", @"no cycles with data alert"), course.title, [SQUGradeManager convertGradebookToHumanNames:course.teacher_name]] delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
 			[alert show];
 			return;
 		}

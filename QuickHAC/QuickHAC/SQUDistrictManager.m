@@ -328,6 +328,20 @@ static SQUDistrictManager *_sharedInstance = nil;
 			NSString *studentName = [[SQUGradeManager sharedInstance].currentDriver getStudentNameForDistrict:_currentDistrict withString:string];
 			NSString *studentSchool = [[SQUGradeManager sharedInstance].currentDriver getStudentSchoolForDistrict:_currentDistrict withString:string];
 			
+			// Try to make sure that student data does not get mingled
+			NSString *dbName = [SQUGradeManager sharedInstance].student.name;
+			
+			if(dbName) {
+				if(![dbName isEqualToString:studentName]) {
+					NSLog(@"Got grades for `%@` but current is `%@`: ignoring update",
+						  studentName, dbName);
+					
+					// run callback to update UI
+					callback(nil, averages);
+					return;
+				}
+			}
+			
 			[SQUGradeManager sharedInstance].student.name = studentName;
 			[SQUGradeManager sharedInstance].student.school = studentSchool;
 			

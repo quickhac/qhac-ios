@@ -577,4 +577,16 @@ static SQUGradeManager *_sharedInstance = nil;
 	}
 }
 
+/**
+ * Converts a name in the "Last, First" format to the "First Last" format.
+ */
++ (NSString *) convertGradebookToHumanNames:(NSString *) name {
+	NSArray *c = [name componentsSeparatedByString: @","];
+	NSString *f = [[c objectAtIndex:1] stringByAppendingString:@" "];
+	NSString *l = [c objectAtIndex:0];
+	NSString *n = [f stringByAppendingString:l];
+	NSCharacterSet *trimBy = [NSCharacterSet whitespaceCharacterSet];
+	return [n stringByTrimmingCharactersInSet:trimBy];
+}
+
 @end
