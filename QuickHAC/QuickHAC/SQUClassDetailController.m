@@ -173,6 +173,45 @@
 		[self.refreshControl beginRefreshing];
 	}
 	
+	// Make sure that this cycle has data in the gradebook
+	if(!_currentCycle.dataAvailableInGradebook.boolValue) {
+		NSLog(@"wut dis cycle no have data yo what up bro: %u", _currentCycle.cycleIndex.unsignedIntegerValue);
+		SQUCycle *newCyclen;
+		BOOL needsUpdaten = NO;
+		
+		if(_currentCycle.cycleIndex.unsignedIntegerValue != 0) {
+			// find closest cycle backwards
+			for(NSUInteger i = _displayCycle; i > 0; i--) {
+				newCyclen = _course.cycles[i];
+				
+				if(newCyclen.dataAvailableInGradebook.boolValue) {
+					_displayCycle = i;
+					needsUpdaten = YES;
+					break;
+				}
+			}
+			
+			// Check closest cycle forwards
+			for(NSUInteger i = _displayCycle; i < _course.cycles.count; i++) {
+				newCyclen = _course.cycles[i];
+				
+				if(newCyclen.dataAvailableInGradebook.boolValue) {
+					_displayCycle = i;
+					needsUpdaten = YES;
+					break;
+				}
+			}
+		}
+		
+		if(needsUpdaten) {
+			_currentCycle = _course.cycles[_displayCycle];
+			_subtitleLayer.string = [NSString stringWithFormat:NSLocalizedString(@"Cycle %u", @"class info"), _displayCycle+1];
+			[self updateCycle];
+		}
+		
+		return;
+	}
+	
 	// If the cycle has data, update table
 	if(_currentCycle.categories.count != 0) {
 		// Hide the HUD if the last request showed it
@@ -276,7 +315,7 @@
 
 	SQUClassCycleChooserController *controller = [[SQUClassCycleChooserController alloc] initWithCycles:cycles];
 	controller.delegate = self;
-	controller.contentSizeForViewInPopover = CGSizeMake(175, 220);
+	controller.preferredContentSize = CGSizeMake(175, 220);
 	controller.selectedCycle = _displayCycle;
 	
 	_popover = [[WYPopoverController alloc] initWithContentViewController:[[UINavigationController alloc] initWithRootViewController:controller]];

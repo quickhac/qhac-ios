@@ -452,9 +452,9 @@ drawNoGradesAvailable: ;
         _noGradesAvailable.frame = CGRectMake(0, 56+(75/4), _backgroundLayer.frame.size.width, 32);
         _noGradesAvailable.contentsScale = [UIScreen mainScreen].scale;
         _noGradesAvailable.foregroundColor = [UIColor blackColor].CGColor;
-		_noGradesAvailable.string = NSLocalizedString(@"No Grades Available For This Class", nil);
+		_noGradesAvailable.string = NSLocalizedString(@"No Grades", nil);
         _noGradesAvailable.font = (__bridge CFTypeRef) [UIFont fontWithName:@"HelveticaNeue-Light" size:15.0f];
-        _noGradesAvailable.fontSize = 18.0f;
+        _noGradesAvailable.fontSize = 19.0f;
 		_noGradesAvailable.alignmentMode = kCAAlignmentCenter;
 	}
 	

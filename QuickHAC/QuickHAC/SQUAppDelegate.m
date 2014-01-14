@@ -187,7 +187,7 @@ static SQUAppDelegate *sharedDelegate = nil;
 		
 		
 		// Validate the student object.
-		if([AFNetworkReachabilityManager sharedManager].isReachable) {
+		if(true) {
 			// Ask the current district instance to do a log in to validate our session is still valid
 			[[SQUDistrictManager sharedInstance] performLoginRequestWithUser:username usingPassword:password andCallback:^(NSError *error, id returnData) {
 				if(!error) {

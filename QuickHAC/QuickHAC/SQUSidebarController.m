@@ -307,7 +307,7 @@
 			return;
 		}
 		
-		NSUInteger index = [[[SQUGradeManager sharedInstance] getCoursesForCurrentStudent] indexOfObject:course];
+		NSUInteger index = [[SQUGradeManager sharedInstance].student.courses indexOfObject:course];
 		
 		selectedItem = [NSIndexPath indexPathForRow:index inSection:1];
 		[_tableView selectRowAtIndexPath:selectedItem animated:YES scrollPosition:UITableViewScrollPositionNone];

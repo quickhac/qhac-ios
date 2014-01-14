@@ -157,7 +157,6 @@
 	[tableView deselectRowAtIndexPath:indexPath animated:NO];
 	
 	SQUCourse *course = [SQUGradeManager sharedInstance].courses[indexPath.row];
-	
 	[[NSNotificationCenter defaultCenter] postNotificationName:SQUSidebarControllerShowSidebarMessage object:nil userInfo:@{@"course": course}];
 }
 
@@ -211,7 +210,7 @@
 	
 	// Take GPA precision preference into account
 	NSInteger precision = [[NSUserDefaults standardUserDefaults] integerForKey:@"gpa_precision"];
-	NSString *gpaFormatString = [NSString stringWithFormat:NSLocalizedString(@"GPA: %%.%1$uf/%%.%1$uf", nil), precision];
+	NSString *gpaFormatString = [NSString stringWithFormat:NSLocalizedString(@"GPA: %%.%1$uf/%%.%1$uf", @"The first %%.%1$uf is unweighted, the second is weighted GPA."), precision];
 	
 	// Calculate GPA
 	NSNumber *gpaUnweighted = [[SQUDistrictManager sharedInstance].currentDistrict unweightedGPAWithCourses:[SQUGradeManager sharedInstance].student.courses.array];

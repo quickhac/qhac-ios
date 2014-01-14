@@ -247,8 +247,8 @@ static SQUGradeManager *_sharedInstance = nil;
 	[NSEntityDescription entityForName:@"SQUCourse" inManagedObjectContext:_coreDataMOContext];
 	[request setEntity:entity];
 	
-	// Search by title OR course number, and current student
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"((courseCode == %@) OR (title LIKE[c] %@)) AND (student = %@)", class[@"courseNum"], class[@"title"], _student];
+	// Search by title OR course number, current student, and period
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"((courseCode == %@) OR (title LIKE[c] %@)) AND (student = %@) AND (period = %@)", class[@"courseNum"], class[@"title"], _student, class[@"period"]];
 	[request setPredicate:predicate];
 	
 	NSUInteger count = [_coreDataMOContext countForFetchRequest:request error:&err];
@@ -272,8 +272,8 @@ static SQUGradeManager *_sharedInstance = nil;
 	[NSEntityDescription entityForName:@"SQUCourse" inManagedObjectContext:_coreDataMOContext];
 	[request setEntity:entity];
 	
-	// Search by title OR course number, and current student
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"((courseCode == %@) OR (title LIKE[c] %@)) AND (student = %@)", class[@"courseNum"], class[@"title"], _student];
+	// Search by title OR course number, current student, and period
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"((courseCode == %@) OR (title LIKE[c] %@)) AND (student = %@) AND (period = %@)", class[@"courseNum"], class[@"title"], _student, class[@"period"]];
 	[request setPredicate:predicate];
 	
 	NSArray *matches = [_coreDataMOContext executeFetchRequest:request error:&err];
