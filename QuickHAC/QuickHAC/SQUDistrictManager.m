@@ -332,20 +332,26 @@ static SQUDistrictManager *_sharedInstance = nil;
 			NSString *dbName = [SQUGradeManager sharedInstance].student.name;
 			
 			if(dbName) {
-				if(![dbName isEqualToString:studentName]) {
+				// Some districts strip middle names, so we do a substring search
+				if([dbName rangeOfString:studentName].location == NSNotFound) {
 					NSLog(@"Got grades for `%@` but current is `%@`: ignoring update",
 						  studentName, dbName);
 					
 					// run callback to update UI
-					callback(nil, averages);
+					callback(nil, nil);
 					return;
 				}
 			}
 			
+			performUpdate: ;
 			[SQUGradeManager sharedInstance].student.name = studentName;
 			[SQUGradeManager sharedInstance].student.school = studentSchool;
+				
+			[_currentDistrict updateDistrictStateWithClassGrades:averages];
+				
+			callback(nil, averages);
 			
-			// Get display name
+			// Update the display name
 			NSArray *components = [studentName componentsSeparatedByString:@", "];
 			if(components.count == 2) {
 				NSString *firstName = components[1];
@@ -359,10 +365,6 @@ static SQUDistrictManager *_sharedInstance = nil;
 			} else {
 				[SQUGradeManager sharedInstance].student.display_name = studentName;
 			}
-			
-			[_currentDistrict updateDistrictStateWithClassGrades:averages];
-
-			callback(nil, averages);
 		} else {
 			callback([NSError errorWithDomain:@"SQUDistrictManagerErrorDomain" code:kSQUDistrictManagerErrorInvalidDataReceived userInfo:@{@"localizedDescription" : NSLocalizedString(@"The gradebook returned invalid data.", nil)}], nil);
 			// NSLog(@"Got screwy response from gradebook: %@", [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding]);

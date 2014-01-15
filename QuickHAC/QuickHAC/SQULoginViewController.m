@@ -293,6 +293,44 @@
 				// Back up the old student as we need a temporary switch to retrieve data
 				SQUStudent *oldStudent = [SQUGradeManager sharedInstance].student;
 				__unsafe_unretained __block SQULoginViewController *self_unsafe = self;
+
+				// Set up login function
+				_studentLoginFunction = ^{
+					// Update grades
+					[SVProgressHUD showProgress:-1 status:NSLocalizedString(@"Updating Grades", nil) maskType:SVProgressHUDMaskTypeGradient];
+					
+					NSLog(@"fetching grades for: %@", [SQUGradeManager sharedInstance].student.name);
+					
+					// Fetch grades
+					[[SQUGradeManager sharedInstance] fetchNewClassGradesFromServerWithDoneCallback:^(NSError *error) {						
+						if(!error) {
+							[SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"Done", nil)];
+							
+							// Restore old student state
+							if(oldStudent) {
+								[[SQUGradeManager sharedInstance] setStudent:oldStudent];
+								[[SQUDistrictManager sharedInstance] selectDistrictWithID:oldStudent.district.integerValue];
+							}
+							
+							[[NSNotificationCenter defaultCenter] postNotificationName:SQUGradesDataUpdatedNotification object:nil];
+							[[NSNotificationCenter defaultCenter] postNotificationName:SQUStudentsUpdatedNotification object:nil];
+							
+							// Dismiss login view
+							[self_unsafe dismissViewControllerAnimated:YES completion:NO];
+						} else {
+							[SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Error", nil)];
+							
+							// Delete students added to the DB
+							for(SQUStudent *studentToDelete in self_unsafe.students) {
+								[[SQUAppDelegate sharedDelegate].managedObjectContext deleteObject:studentToDelete];
+							}
+							[[SQUAppDelegate sharedDelegate] saveContext];
+							
+							UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Fetching Grades", nil) message:error.localizedDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
+							[alert show];
+						}
+					}];
+				};
 				
 				// If the account is single-student, add the student.
 				if(![SQUDistrictManager sharedInstance].currentDistrict.hasMultipleStudents) {
@@ -314,41 +352,6 @@
 				
 				// Save the database.
 				[[SQUAppDelegate sharedDelegate] saveContext];
-				
-				_studentLoginFunction = ^{
-					// Update grades
-					[SVProgressHUD showProgress:-1 status:NSLocalizedString(@"Updating Grades", nil) maskType:SVProgressHUDMaskTypeGradient];
-					
-					// Fetch grades
-					[[SQUGradeManager sharedInstance] fetchNewClassGradesFromServerWithDoneCallback:^(NSError *error) {
-						if(!error) {
-							[SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"Done", nil)];
-							
-							// Restore old student state
-							if(oldStudent) {
-								[[SQUGradeManager sharedInstance] setStudent:oldStudent];
-								[[SQUDistrictManager sharedInstance] selectDistrictWithID:oldStudent.district.integerValue];
-							}
-							
-							[[NSNotificationCenter defaultCenter] postNotificationName:SQUGradesDataUpdatedNotification object:nil];
-							[[NSNotificationCenter defaultCenter] postNotificationName:SQUStudentsUpdatedNotification object:nil];
-							
-							// Dismiss login view
-							[self_unsafe dismissViewControllerAnimated:YES completion:NO];
-						} else {
-							// Delete students added to the DB
-							for(SQUStudent *studentToDelete in self_unsafe.students) {
-								[[SQUAppDelegate sharedDelegate].managedObjectContext deleteObject:studentToDelete];
-							}
-							[[SQUAppDelegate sharedDelegate] saveContext];
-							
-							[SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Error", nil)];
-							
-							UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Fetching Grades", nil) message:error.localizedDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
-							[alert show];
-						}
-					}];
-				};
 				
 				// Bring up a student selector if multistudent account and no students yet
 				if([SQUDistrictManager sharedInstance].currentDistrict.hasMultipleStudents && !oldStudent) {

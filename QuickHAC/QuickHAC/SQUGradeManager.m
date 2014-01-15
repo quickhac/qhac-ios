@@ -120,7 +120,10 @@ static SQUGradeManager *_sharedInstance = nil;
 					// We successfully selected this student, so update grades.
 					[[SQUDistrictManager sharedInstance] performAveragesRequestWithCallback:^(NSError *error, id returnData) {
 						if(!error) {
-							[self updateCurrentStudentWithClassAverages:returnData];
+							// If no return data is specified, this update is ignored
+							if(returnData) {
+								[self updateCurrentStudentWithClassAverages:returnData];
+							}
 							
 							if(callback) callback(nil);
 						} else {
@@ -178,6 +181,7 @@ static SQUGradeManager *_sharedInstance = nil;
 	studentID = _student.student_id;
 	
 	[[SQUDistrictManager sharedInstance] checkIfLoggedIn:^(BOOL loggedIn) {
+		
 		void (^doGradeChecking)(void) = ^{
 			[[SQUDistrictManager sharedInstance] performDisambiguationRequestWithStudentID:studentID andCallback:^(NSError *error, id returnData) {
 				if(!error) {
@@ -204,6 +208,8 @@ static SQUGradeManager *_sharedInstance = nil;
 		if(loggedIn) {
 			doGradeChecking();
 		} else {
+			NSLog(@"We have to do a login to fetch class grades");
+			
 			// Ask the current district instance to do a log in to validate we're still valid
 			[[SQUDistrictManager sharedInstance] performLoginRequestWithUser:username usingPassword:password andCallback:^(NSError *error, id returnData){
 				if(!error) {
@@ -214,7 +220,19 @@ static SQUGradeManager *_sharedInstance = nil;
 						[alert show];
 						callback([NSError errorWithDomain:@"SQUInvalidHACUsername" code:kSQUDistrictManagerErrorInvalidDisambiguation userInfo:@{@"localizedDescription" : NSLocalizedString(@"The login was rejected.", nil)}]);
 					} else {
-						doGradeChecking();
+						NSLog(@"post-login grade overview update");
+						
+						// Update overall grades to get hashes
+						[self fetchNewClassGradesFromServerWithDoneCallback:^(NSError *err) {
+							NSLog(@"Overview update completed");
+							
+							if(!err) {
+								NSLog(@"got hashes");
+								doGradeChecking();
+							} else {
+								if(callback) callback(err);
+							}
+						}];
 					}
 				} else {
 					if(callback) callback(error);

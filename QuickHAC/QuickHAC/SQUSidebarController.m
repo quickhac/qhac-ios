@@ -218,9 +218,6 @@
 		[self.view insertSubview:_switcher belowSubview:_topView];
 	}
 	
-	// Update switcher's data
-	[_switcher updateStudents:nil];
-	
 	// Set up bounce animation
 	CAKeyframeAnimation *animation = [CAKeyframeAnimation animationWithKeyPath:@"position.y"];
 	animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
@@ -230,6 +227,9 @@
 	
 	// Show switcher
 	if(_switcherButton.toggled) {
+		// Update switcher's data (when showing it first time)
+		[_switcher updateStudents:nil];
+		
 		CGFloat finalPoint = 32+(switcherFrame.size.height/2);
 		
 		// Add keyframes
@@ -239,7 +239,7 @@
 		float e = 2.71;
 		for (int t = 0; t < steps; t++) {
 			// 32 is the bouncyness coefficient, in pixels
-			value = 32 * pow(e, -0.055*t) * cos(0.08*t) + finalPoint;
+			value = 32 * pow(e, -0.055 * t) * cos(0.08 * t) + finalPoint;
 			[values addObject:@(value)];
 		}
 		

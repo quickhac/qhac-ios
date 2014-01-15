@@ -57,7 +57,7 @@
 		[self addSubview:_logoutButton];
 		
 		// Subscribe to notifications
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateStudents:) name:SQUStudentsUpdatedNotification object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateNotification:) name:SQUStudentsUpdatedNotification object:nil];
 		[self updateStudents:nil];
     }
 	
@@ -65,6 +65,10 @@
 }
 
 #pragma mark - Data handling
+- (void) updateNotification:(NSNotification *) notif {
+	[self updateStudents:nil];
+}
+
 - (void) updateStudents:(id) ignored {
 	// Update students data only if "ignored" is nil
 	if(!ignored) {
@@ -83,8 +87,6 @@
 			return;
 		}
 		
-		[_grid reloadData];
-	} else {
 		[_grid reloadData];
 	}
 	
@@ -147,14 +149,16 @@
 		NSInteger selectedStudent = indexPath.row;
 		
 		[[NSUserDefaults standardUserDefaults] setInteger:selectedStudent forKey:@"selectedStudent"];
+		[[NSUserDefaults standardUserDefaults] synchronize];
+		
 		SQUStudent *student = _students[selectedStudent];
 		[[SQUGradeManager sharedInstance] setStudent:student];
+		
 		[[SQUDistrictManager sharedInstance] selectDistrictWithID:student.district.integerValue];
-		[[NSUserDefaults standardUserDefaults] synchronize];
 		
 		// Load grades, if required
 		if(!student.lastAveragesUpdate) {
-			[SVProgressHUD showProgress:-1 status:NSLocalizedString(@"Changing Student…", nil) maskType:SVProgressHUDMaskTypeGradient];
+			[SVProgressHUD showProgress:-1 status:NSLocalizedString(@"Changing Student", nil) maskType:SVProgressHUDMaskTypeGradient];
 			
 			// We also have to log in again and disambiguate
 			NSString *username, *password, *studentID;
@@ -175,7 +179,7 @@
 						[alert show];
 					} else {
 						// Login succeeded, so we can do a fetch of grades.
-						[SVProgressHUD showProgress:-1 status:NSLocalizedString(@"Updating Grades…", nil) maskType:SVProgressHUDMaskTypeGradient];
+						[SVProgressHUD showProgress:-1 status:NSLocalizedString(@"Updating Grades", nil) maskType:SVProgressHUDMaskTypeGradient];
 						
 						[[SQUGradeManager sharedInstance] fetchNewClassGradesFromServerWithDoneCallback:^(NSError *err) {
 							[SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"Done", nil)];
@@ -196,6 +200,26 @@
 								[[NSNotificationCenter defaultCenter] postNotificationName:SQUSidebarControllerShowOverview object:nil];
 								// Update overview
 								[[NSNotificationCenter defaultCenter] postNotificationName:SQUGradesDataUpdatedNotification object:nil];
+								
+								// Update student array
+								NSManagedObjectContext *context = [[SQUAppDelegate sharedDelegate] managedObjectContext];
+								NSError *db_err = nil;
+								
+								NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+								NSEntityDescription *entity = [NSEntityDescription entityForName:@"SQUStudent" inManagedObjectContext:context];
+								[fetchRequest setEntity:entity];
+								_students = [NSMutableArray arrayWithArray:[context executeFetchRequest:fetchRequest error:&db_err]];
+								
+								// Update selection
+								NSInteger index = [_students indexOfObject:student];
+								if(index != NSNotFound) {
+									[[NSUserDefaults standardUserDefaults] setInteger:index forKey:@"selectedStudent"];
+									[[NSUserDefaults standardUserDefaults] synchronize];
+									
+									_lastSelection = [NSIndexPath indexPathForItem:index inSection:0];
+								}
+								
+								[_grid selectItemAtIndexPath:_lastSelection animated:NO scrollPosition:UICollectionViewScrollPositionNone];
 							}
 						}];
 					}
