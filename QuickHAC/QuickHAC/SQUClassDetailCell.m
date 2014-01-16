@@ -11,76 +11,50 @@
 #import "SQUCoreData.h"
 #import "SQUAppDelegate.h"
 
+#import <CoreText/CoreText.h>
+
+@interface SQUClassDetailCell (PrivateMethods)
+
++ (CGFloat) heightForAssignment:(SQUAssignment *) assignment;
+
+@end
+
 @implementation SQUClassDetailCell
 @synthesize category = _category;
 @synthesize index = _index;
 
 // X position and width info for the three table columns
-static NSUInteger SQUClassDetailColX[3] = {24, 171, 225};
-static NSUInteger SQUClassDetailColWidth[3] = {142, 52, 57};
-static NSUInteger SQUClassDetailSeparatorX = 18;
-static NSUInteger SQUClassDetailSeparatorWidth = 263;
+static NSUInteger SQUClassDetailColX[3] = {10, 235};
+static NSUInteger SQUClassDetailColWidth[3] = {220, 65};
+static NSUInteger SQUClassDetailSeparatorX = 8;
+static NSUInteger SQUClassDetailSeparatorWidth = 284;
 static NSUInteger SQUClassDetailRowHeight = 32;
 static NSUInteger SQUClassDetailRowTextOffset = 4;
 static NSUInteger SQUClassDetailTextZPosition = 5;
+static NSUInteger SQUClassDetailTextSize = 15;
 
 - (id)initWithStyle:(UITableViewCellStyle) style reuseIdentifier:(NSString *) reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
 		// Card background
 		_backgroundLayer = [CALayer layer];
-		_backgroundLayer.frame = CGRectMake(15, 15, self.frame.size.width - 30, self.frame.size.height - 10);
+		_backgroundLayer.frame = CGRectMake(10, 10, self.frame.size.width - 20, self.frame.size.height - 6);
         _backgroundLayer.backgroundColor = [UIColor whiteColor].CGColor;
-		_backgroundLayer.cornerRadius = 3.0;
-		
-		// Card shadow
 		_backgroundLayer.borderWidth = 0.0;
 		_backgroundLayer.shadowColor = [UIColor blackColor].CGColor;
 		_backgroundLayer.shadowOpacity = 0.0625;
-		_backgroundLayer.shadowRadius = 4.0;
+		_backgroundLayer.shadowRadius = 2.0;
 		_backgroundLayer.shadowOffset = CGSizeMake(-8.0, -8.0);
+		_backgroundLayer.cornerRadius = 1.0;
+		_backgroundLayer.contentsScale = [UIScreen mainScreen].scale;
 		_backgroundLayer.masksToBounds = NO;
 		
 		UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:_backgroundLayer.frame cornerRadius:_backgroundLayer.cornerRadius];
 		_backgroundLayer.shadowPath = path.CGPath;
 		
-		// Left bar on card
-        _sideBar = [CAGradientLayer layer];
-        _sideBar.frame = CGRectMake(0, 0, 8, _backgroundLayer.frame.size.height);
-		[_backgroundLayer addSublayer:_sideBar];
-		
-		// Prepare and apply a mask to apply rounded corners.
-		UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:_sideBar.frame
-													   byRoundingCorners:UIRectCornerTopLeft | UIRectCornerBottomLeft
-															 cornerRadii:CGSizeMake(3.0, 3.0)];
-		
-		CAShapeLayer *maskLayer = [CAShapeLayer layer];
-		maskLayer.frame = _sideBar.bounds;
-		maskLayer.path = maskPath.CGPath;
-		_sideBar.mask = maskLayer;
-        
-		// Category title
-        _categoryTitle = [CATextLayer layer];
-        _categoryTitle.frame = CGRectMake(24, 4, _backgroundLayer.frame.size.width - 66, 24);
-        _categoryTitle.contentsScale = [UIScreen mainScreen].scale;
-        _categoryTitle.foregroundColor = [UIColor blackColor].CGColor;
-        _categoryTitle.font = (__bridge CFTypeRef) [UIFont fontWithName:@"HelveticaNeue-Light" size:15.0f];
-        _categoryTitle.fontSize = 20.0f;
-		[_backgroundLayer addSublayer:_categoryTitle];
-		
-		// Apply a mask so overly long category titles "fade out"
-		CAGradientLayer *categoryTitleMask = [CAGradientLayer layer];
-		categoryTitleMask.bounds = CGRectMake(0, 0, _backgroundLayer.frame.size.width - 50, 24);
-		categoryTitleMask.position = CGPointMake(_categoryTitle.bounds.size.width/2.0, _categoryTitle.bounds.size.height/2.0);
-		categoryTitleMask.locations = @[@(0.85f), @(1.0f)];
-		categoryTitleMask.colors = @[(id)[UIColor blackColor].CGColor, (id)[UIColor clearColor].CGColor];
-		categoryTitleMask.startPoint = CGPointMake(0.0, 0.5);
-		categoryTitleMask.endPoint = CGPointMake(1.0, 0.5);
-		_categoryTitle.mask = categoryTitleMask;
-		
 		// Text indicating there is no grades
 		_noGradesText = [CATextLayer layer];
-        _noGradesText.frame = CGRectMake(4, 30, _backgroundLayer.frame.size.width-8, 18);
+        _noGradesText.frame = CGRectMake(4, 32, _backgroundLayer.frame.size.width-8, 18);
         _noGradesText.contentsScale = [UIScreen mainScreen].scale;
         _noGradesText.foregroundColor = [UIColor blackColor].CGColor;
         _noGradesText.font = (__bridge CFTypeRef) [UIFont fontWithName:@"HelveticaNeue-Light" size:15.0f];
@@ -96,10 +70,10 @@ static NSUInteger SQUClassDetailTextZPosition = 5;
 		CGFloat assignmentsWidth = _backgroundLayer.frame.size.width - 130;
 		CGFloat remainingWidth = (_backgroundLayer.frame.size.width - assignmentsWidth) - 13;
 		
-		NSArray *rowHeaderTitles = @[NSLocalizedString(@"ASSIGNMENT", @"class detail"), NSLocalizedString(@"DUE", @"class detail"), NSLocalizedString(@"GRADE", @"class detail")];
+		NSArray *rowHeaderTitles = @[NSLocalizedString(@"ASSIGNMENT", @"class detail"), NSLocalizedString(@"GRADE", @"class detail")];
 		_tableColumnWidths = @[@(assignmentsWidth), @(remainingWidth / 2), @(remainingWidth / 2)];
 		
-		for(NSUInteger i = 0; i < 3; i++) {
+		for(NSUInteger i = 0; i < 2; i++) {
 			CATextLayer *layer = [CATextLayer layer];
 			layer.contentsScale = [UIScreen mainScreen].scale;
 			layer.foregroundColor = [UIColor colorWithWhite:0.25 alpha:1.0].CGColor;
@@ -117,14 +91,33 @@ static NSUInteger SQUClassDetailTextZPosition = 5;
 			
 			[_rowHeaders addObject:layer];
 		}
+        
+		// Category title
+        _categoryTitle = [CATextLayer layer];
+        _categoryTitle.frame = CGRectMake(10, 4, _backgroundLayer.frame.size.width - 66, 24);
+        _categoryTitle.contentsScale = [UIScreen mainScreen].scale;
+        _categoryTitle.foregroundColor = [UIColor blackColor].CGColor;
+        _categoryTitle.font = (__bridge CFTypeRef) [UIFont fontWithName:@"HelveticaNeue-Light" size:15.0f];
+        _categoryTitle.fontSize = 20.0f;
+		[_backgroundLayer addSublayer:_categoryTitle];
+		
+		// Apply a mask so overly long category titles "fade out"
+		CAGradientLayer *categoryTitleMask = [CAGradientLayer layer];
+		categoryTitleMask.bounds = CGRectMake(0, 0, _backgroundLayer.frame.size.width - 50, 24);
+		categoryTitleMask.position = CGPointMake(_categoryTitle.bounds.size.width/2.0, _categoryTitle.bounds.size.height/2.0);
+		categoryTitleMask.locations = @[@(0.85f), @(1.0f)];
+		categoryTitleMask.colors = @[(id)[UIColor blackColor].CGColor, (id)[UIColor clearColor].CGColor];
+		categoryTitleMask.startPoint = CGPointMake(0.0, 0.5);
+		categoryTitleMask.endPoint = CGPointMake(1.0, 0.5);
+		_categoryTitle.mask = categoryTitleMask;
 		
 		// Weight
 		_weightTitle = [CATextLayer layer];
-        _weightTitle.frame = CGRectMake(_backgroundLayer.frame.size.width - 45, 7, 40, 18);
+        _weightTitle.frame = CGRectMake(_backgroundLayer.frame.size.width - 45, 4, 40, 24);
         _weightTitle.contentsScale = [UIScreen mainScreen].scale;
         _weightTitle.foregroundColor = [UIColor lightGrayColor].CGColor;
-        _weightTitle.font = (__bridge CFTypeRef) [UIFont systemFontOfSize:15.0f];
-        _weightTitle.fontSize = 15.0f;
+        _weightTitle.font = (__bridge CFTypeRef) [UIFont fontWithName:@"HelveticaNeue-UltraLight" size:15.0f];
+        _weightTitle.fontSize = 20.0f;
 		_weightTitle.alignmentMode = kCAAlignmentRight;
 		[_backgroundLayer addSublayer:_weightTitle];
 		
@@ -145,40 +138,7 @@ static NSUInteger SQUClassDetailTextZPosition = 5;
 	rect.size.height = [SQUClassDetailCell cellHeightForCategory:_category];
 	self.frame = rect;
 	
-	_backgroundLayer.frame = CGRectMake(15, 15, self.frame.size.width - 30, self.frame.size.height - 10);
-	
-	// We also need to update the mask on the sidebar when changing the frame
-	_sideBar.frame = CGRectMake(0, 0, 8, _backgroundLayer.frame.size.height);
-	UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:_sideBar.frame
-												   byRoundingCorners:UIRectCornerTopLeft | UIRectCornerBottomLeft
-														 cornerRadii:CGSizeMake(3.0, 3.0)];
-	
-	CAShapeLayer *maskLayer = [CAShapeLayer layer];
-	maskLayer.frame = _sideBar.bounds;
-	maskLayer.path = maskPath.CGPath;
-	_sideBar.mask = maskLayer;
-	
-	// Update the sidebar colour
-	NSArray *sbcolours = @[
-						   [UIColor colorWithRed:0 green:0.608 blue:0.808 alpha:1] /*#009bce*/,
-						   [UIColor colorWithRed:0.612 green:0.204 blue:0.816 alpha:1], /*#9c34d0*/
-						   [UIColor colorWithRed:0.373 green:0.561 blue:0 alpha:1], /*#5f8f00*/
-						   [UIColor colorWithRed:0.992 green:0.529 blue:0 alpha:1], /*#fd8700*/
-						   [UIColor colorWithRed:0.824 green:0 blue:0 alpha:1], /*#d20000*/
-						   [UIColor colorWithRed:0.2 green:0.71 blue:0.898 alpha:1], /*#33b5e5*/
-						   [UIColor colorWithRed:0.667 green:0.435 blue:0.78 alpha:1], /*#aa6fc7*/
-						   [UIColor colorWithRed:0.624 green:0.831 blue:0 alpha:1], /*#9fd400*/
-						   [UIColor colorWithRed:1 green:0.741 blue:0.22 alpha:1], /*#ffbd38*/
-						   [UIColor colorWithRed:1 green:0.322 blue:0.322 alpha:1] /*#ff5252*/
-						   ];
-	
-	NSUInteger index = _index;
-	
-	if(index > sbcolours.count) {
-		_sideBar.colors = @[(id) [UIColor colorWithWhite:0.08 alpha:1.0].CGColor, (id) [[UIColor colorWithWhite:0.08 alpha:1.0] darkerColor].CGColor];
-	} else {
-		_sideBar.colors = @[(id) [sbcolours[index] CGColor], (id) [[sbcolours[index] darkerColor] CGColor]];
-	}
+	_backgroundLayer.frame = CGRectMake(10, 10, self.frame.size.width - 20, self.frame.size.height - 6);
 	
 	// Update titles
 	_categoryTitle.string = _category.title;
@@ -222,6 +182,9 @@ static NSUInteger SQUClassDetailTextZPosition = 5;
 	
 	y += 4;
 	
+	CGFloat heightOfLastRow = SQUClassDetailRowHeight;
+	CGFloat otherLabelOffsets = 0;
+	
 	// Sort assignments by date due
 	NSSortDescriptor *dateSort = [NSSortDescriptor sortDescriptorWithKey:@"date_due" ascending:YES];
 	NSArray *sortedAssignments = [_category.assignments sortedArrayUsingDescriptors:@[dateSort]];
@@ -243,20 +206,25 @@ static NSUInteger SQUClassDetailTextZPosition = 5;
 		
 		// Text to put on labels
 		NSArray *labels = @[assignment.title,
-							[_dateFormatter stringFromDate:assignment.date_due],
+//							[_dateFormatter stringFromDate:assignment.date_due],
 							assignmentValueString];
 		
 		// Output "Assignment", "Due Date" and "Grade" columns
-		for(NSUInteger c = 0; c < 3; c++) {
+		for(NSUInteger c = 0; c < 2; c++) {
 			CATextLayer *layer = [CATextLayer layer];
 			layer.contentsScale = [UIScreen mainScreen].scale;
 			layer.foregroundColor = [UIColor blackColor].CGColor;
-			layer.font = (__bridge CFTypeRef) [UIFont systemFontOfSize:15.0f];
-			layer.fontSize = 15.0f;
+			layer.font = (__bridge CFTypeRef) [UIFont fontWithName:@"HelveticaNeue-Light" size:SQUClassDetailTextSize];
+			layer.fontSize = (CGFloat) SQUClassDetailTextSize;
 			layer.zPosition = SQUClassDetailTextZPosition;
 			
+			// Multi-line for assignment title
+			if(c == 0) {
+				layer.wrapped = YES;
+			}
+			
 			width = [_tableColumnWidths[c] floatValue];
-			layer.frame = CGRectMake(SQUClassDetailColX[c], y + SQUClassDetailRowTextOffset, SQUClassDetailColWidth[c], 18);
+			layer.frame = CGRectMake(SQUClassDetailColX[c], y + SQUClassDetailRowTextOffset + otherLabelOffsets, SQUClassDetailColWidth[c], 18);
 			x += width;
 			
 			// Grades are centered
@@ -267,7 +235,7 @@ static NSUInteger SQUClassDetailTextZPosition = 5;
 			}
 			
 			// Apply mask if it is the assignment title
-			if(c == 0) {
+			/*if(c == 0) {
 				CAGradientLayer *textMask = [CAGradientLayer layer];
 				textMask.bounds = layer.bounds;
 				textMask.position = CGPointMake(layer.bounds.size.width/2.0, layer.bounds.size.height/2.0);
@@ -276,24 +244,54 @@ static NSUInteger SQUClassDetailTextZPosition = 5;
 				textMask.startPoint = CGPointMake(0.0, 0.5);
 				textMask.endPoint = CGPointMake(1.0, 0.5);
 				layer.mask = textMask;
-			}
+			}*/
 			
 			layer.string = labels[c];
 			
+			// Do the line wrap shit
+			if(c == 0) {
+				layer.wrapped = YES;
+				
+				UIFont *font = [UIFont fontWithName:@"HelveticaNeue-Light" size:SQUClassDetailTextSize];
+				
+				// Calculate height
+				NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:layer.string attributes:nil];
+				[string addAttribute:NSFontAttributeName value:font range:NSMakeRange(0, string.length)];
+				CTFramesetterRef framesetter = CTFramesetterCreateWithAttributedString((CFAttributedStringRef) string);
+				CGSize textSize = CTFramesetterSuggestFrameSizeWithConstraints(framesetter, CFRangeMake(0, 0), NULL, CGSizeMake(SQUClassDetailColWidth[0], CGFLOAT_MAX), NULL);
+				
+				// Resize label to fit multi-line
+				if(textSize.height > (SQUClassDetailTextSize + (SQUClassDetailTextSize / 2))) {
+					heightOfLastRow = SQUClassDetailRowHeight + (textSize.height - 18);
+					
+					CGRect frame = layer.frame;
+					frame.size.height += (textSize.height - 18);
+					layer.frame = frame;
+					
+					otherLabelOffsets = (heightOfLastRow / 4);
+				} else {
+					heightOfLastRow = SQUClassDetailRowHeight;
+					otherLabelOffsets = 0;
+				}
+			}
+			
 			[_tableLabels addObject:layer];
+			
+			
 		}
 		
 		// Draw separator and prepare for next row
-		y += SQUClassDetailRowHeight;
+		y += heightOfLastRow;
+		otherLabelOffsets = 0;
 		x = 12;
 		
-//		if(i + 1 != _category.assignments.count) {
+/*//		if(i + 1 != _category.assignments.count) {
 		CAGradientLayer *layer = [CAGradientLayer layer];
 		layer.frame = CGRectMake(SQUClassDetailSeparatorX, y - 3, SQUClassDetailSeparatorWidth, 1);
 		layer.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1.0].CGColor;
 		layer.zPosition = SQUClassDetailTextZPosition;
 		[_rowSeparators addObject:layer];
-//		}
+//		}*/
 	}
 
 	// Draw average label
@@ -338,6 +336,27 @@ static NSUInteger SQUClassDetailTextZPosition = 5;
 }
 
 /**
+ * Returns the height required to render a certain assignment label.
+ */
++ (CGFloat) heightForAssignment:(SQUAssignment *) assignment {
+	UIFont *font = [UIFont fontWithName:@"HelveticaNeue-Light" size:SQUClassDetailTextSize];
+	
+	// Calculate height
+	NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:assignment.title attributes:nil];
+	[string addAttribute:NSFontAttributeName value:font range:NSMakeRange(0, string.length)];
+	CTFramesetterRef framesetter = CTFramesetterCreateWithAttributedString((CFAttributedStringRef) string);
+	CGSize textSize = CTFramesetterSuggestFrameSizeWithConstraints(framesetter, CFRangeMake(0, 0), NULL, CGSizeMake(SQUClassDetailColWidth[0], CGFLOAT_MAX), NULL);
+	
+	NSLog(@"Height for `%@` = %@", assignment.title, NSStringFromCGSize(textSize));
+	
+	if(textSize.height > (SQUClassDetailTextSize + (SQUClassDetailTextSize/2))) {
+		return (CGFloat) SQUClassDetailRowHeight + (textSize.height-18);
+	} else {
+		return (CGFloat) SQUClassDetailRowHeight;
+	}
+}
+
+/**
  * Returns the height of the cell for a given category. Base height of the cell
  * is 50 pixels, with 32 pixels for the first assignment, then 20 for all
  * assignments thereafter
@@ -346,11 +365,16 @@ static NSUInteger SQUClassDetailTextZPosition = 5;
 	if(category.assignments.count == 0) {
 		return 65;
 	} else if(category.assignments.count == 1) {
-		return 65+(SQUClassDetailRowHeight * 2);
+		return 65+SQUClassDetailRowHeight+[SQUClassDetailCell heightForAssignment:category.assignments[0]];
 	} else {
 		CGFloat height = 65+30;
-		height += (category.assignments.count - 1) * SQUClassDetailRowHeight;
-		height += SQUClassDetailRowHeight;
+		
+		for (SQUAssignment *assignment in category.assignments) {
+			height += [SQUClassDetailCell heightForAssignment:assignment];
+		}
+		
+		// height += (category.assignments.count - 1) * SQUClassDetailRowHeight;
+		// height += SQUClassDetailRowHeight;
 		return height;
 	}
 }
@@ -360,6 +384,7 @@ static NSUInteger SQUClassDetailTextZPosition = 5;
  */
 - (void) touchesBegan:(NSSet *) touches withEvent:(UIEvent *) event {
 	[super touchesBegan:touches withEvent:event];
+	return;
 	
 	// Remove any selection indicators that still are existent
 	if(_selectionLayer) {
