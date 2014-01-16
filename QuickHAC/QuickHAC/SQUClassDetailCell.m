@@ -200,6 +200,11 @@ static NSUInteger SQUClassDetailTextSize = 15;
 			} else {
 				assignmentValueString = [NSString stringWithFormat:NSLocalizedString(@"%u/%u", @"assignment grade in table not out of 100"), assignment.pts_earned.unsignedIntegerValue, assignment.pts_possible.unsignedIntegerValue];
 			}
+			
+			// Append the weight so the assignment shows up as "88x0.5" or "89/90x0.8"
+			if(assignment.weight.floatValue != 1) {
+				assignmentValueString = [assignmentValueString stringByAppendingFormat:NSLocalizedString(@"x%.1f", nil), assignment.weight.floatValue];
+			}
 		} else {
 			assignmentValueString = NSLocalizedString(@" ", @"shown with empty grade in category table");
 		}
@@ -346,8 +351,6 @@ static NSUInteger SQUClassDetailTextSize = 15;
 	[string addAttribute:NSFontAttributeName value:font range:NSMakeRange(0, string.length)];
 	CTFramesetterRef framesetter = CTFramesetterCreateWithAttributedString((CFAttributedStringRef) string);
 	CGSize textSize = CTFramesetterSuggestFrameSizeWithConstraints(framesetter, CFRangeMake(0, 0), NULL, CGSizeMake(SQUClassDetailColWidth[0], CGFLOAT_MAX), NULL);
-	
-	NSLog(@"Height for `%@` = %@", assignment.title, NSStringFromCGSize(textSize));
 	
 	if(textSize.height > (SQUClassDetailTextSize + (SQUClassDetailTextSize/2))) {
 		return (CGFloat) SQUClassDetailRowHeight + (textSize.height-18);
