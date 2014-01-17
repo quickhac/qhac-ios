@@ -10,6 +10,7 @@
 #import "SQUClassDetailController.h"
 #import "SQUCoreData.h"
 #import "SQUGradeManager.h"
+#import "SQUEmptyView.h"
 #import "SQUDistrictManager.h"
 #import "SQUClassDetailCell.h"
 
@@ -20,6 +21,9 @@
 #import "SVProgressHUD.h"
 
 @interface SQUClassDetailController ()
+
+- (void) showEmptyView;
+- (void) hideEmptyView;
 
 @end
 
@@ -179,6 +183,8 @@
 		SQUCycle *newCyclen;
 		BOOL needsUpdaten = NO;
 		
+		[self showEmptyView];
+		
 		if(_currentCycle.cycleIndex.unsignedIntegerValue != 0) {
 			// find closest cycle backwards
 			for(NSUInteger i = _displayCycle; i > 0; i--) {
@@ -222,33 +228,45 @@
 		[self.tableView reloadData];
 		_iCanHazCompleteReload = NO;
 	} else {
-		_iCanHazCompleteReload = YES;
-		
 		// Only pop up the HUD if the network is up
-		if([AFNetworkReachabilityManager sharedManager].isReachable) {
+		if([SQUDistrictManager sharedInstance].reachabilityManager.isReachable) {
 			[SVProgressHUD showProgress:-1.0 status:NSLocalizedString(@"Updating Grades…", @"class detail HUD when loading grades for first time") maskType:SVProgressHUDMaskTypeGradient];
+			_iCanHazCompleteReload = YES;
+		} else {
+			NSLog(@"No connection and no data available");
+			[self showEmptyView];
+			return;
 		}
 	}
 	
 	// If we're not connected to the network, show a little message
-	if(![AFNetworkReachabilityManager sharedManager].isReachable) {
+	if(![SQUDistrictManager sharedInstance].reachabilityManager.isReachable) {
 		if(_iCanHazCompleteReload) {
 			// show the "no data available" view
-			NSLog(@"Show 'no data available' view!");
+			[self showEmptyView];
 		} else {
-			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Not Connected", nil) message:NSLocalizedString(@"To refresh grades for this cycle, please connect to the Internet, and then ensure that your connection can access the gradebook.", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Not Connected", nil) message:NSLocalizedString(@"To refresh grades for this cycle, please connect to the Internet, and then ensure that you have unrestricted access to the district's gradebook.", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
 			[alert show];
+			
+			// Show the empty view if there's no data available at this point
+			if(_currentCycle.categories.count == 0) {
+				[self showEmptyView];
+			} else {
+				[self hideEmptyView];
+			}
 		}
 		
 		// End refreshing, if the refresh control is refreshing
 		[self.refreshControl endRefreshing];
 	} else { // Connection exists, use it
 		// Hide "no data available" view if it's shown
-		NSLog(@"Hide 'no data available' view!");
+		[self hideEmptyView];
 		
 		// Update course grades
 		[[SQUGradeManager sharedInstance] fetchNewCycleGradesFromServerForCourse:_course.courseCode withCycle:_displayCycle % 3 andSemester:_displayCycle / 3 andDoneCallback:^(NSError * error) {
 			if(!error) {
+				[self hideEmptyView];
+				
 				_currentCycle = _course.cycles[_displayCycle];
 				[self.tableView reloadData];
 				
@@ -274,6 +292,7 @@
 						}
 						
 						[self.tableView reloadData];
+						[self showEmptyView];
 					}
 				} else {
 					UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Updating Grades", nil) message:error.localizedDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
@@ -300,6 +319,34 @@
 	} else {
 		[[self revealController] resignPresentationModeEntirely:YES animated:YES completion:NULL];
 	}
+}
+
+
+- (void) showEmptyView {
+	// Initialise empty view if required
+	
+	if(!_emptyView) {
+		_emptyView = [[SQUEmptyView alloc] initWithFrame:self.tableView.frame];
+	}
+	
+	_emptyView.frame = self.tableView.frame;
+	
+	[self.refreshControl endRefreshing];
+	if(_currentCycle.categories.count != 0) {
+		[self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+	}
+	
+	[self.view addSubview:_emptyView];
+	
+	// Disable scrolling
+	self.view.userInteractionEnabled = NO;
+}
+
+- (void) hideEmptyView {
+	[_emptyView removeFromSuperview];
+	
+	// Re-enable scrolling
+	self.view.userInteractionEnabled = YES;
 }
 
 #pragma mark - Cycle selection

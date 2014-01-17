@@ -186,8 +186,8 @@ static SQUAppDelegate *sharedDelegate = nil;
 		}
 		
 		
-		// Validate the student object.
-		if(true) {
+		// Update data, ONLY if the district can be reached
+		if([SQUDistrictManager sharedInstance].reachabilityManager.isReachable) {
 			// Ask the current district instance to do a log in to validate our session is still valid
 			[[SQUDistrictManager sharedInstance] performLoginRequestWithUser:username usingPassword:password andCallback:^(NSError *error, id returnData) {
 				if(!error) {
@@ -211,6 +211,10 @@ static SQUAppDelegate *sharedDelegate = nil;
 					[alert show];
 				}
 			}];
+		} else {
+			// Just show cached data.
+			NSLog(@"no connection to district, showing cached data");
+			[[NSNotificationCenter defaultCenter] postNotificationName:SQUGradesDataUpdatedNotification object:nil];
 		}
     }
 	

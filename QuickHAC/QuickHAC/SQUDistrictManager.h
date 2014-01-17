@@ -16,6 +16,7 @@
 typedef void (^ SQUDistrictCallback)(NSError *error, id returnData);
 
 @class AFHTTPRequestOperationManager;
+@class AFNetworkReachabilityManager;
 
 @interface SQUDistrictManager : NSObject {
 	NSMutableArray *_loadedDistricts;
@@ -24,9 +25,11 @@ typedef void (^ SQUDistrictCallback)(NSError *error, id returnData);
 	SQUDistrict *_currentDistrict;
 	
 	AFHTTPRequestOperationManager *_HTTPManager;
+	AFNetworkReachabilityManager *_reachabilityManager;
 }
 
 @property (nonatomic, readwrite, setter = setCurrentDistrict:) SQUDistrict *currentDistrict;
+@property (nonatomic, readonly) AFNetworkReachabilityManager *reachabilityManager;
 
 + (SQUDistrictManager *) sharedInstance;
 - (void) registerDistrict:(Class) district;

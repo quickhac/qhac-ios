@@ -25,9 +25,9 @@
 
 // X position and width info for the three table columns
 static NSUInteger SQUClassDetailColX[3] = {10, 235};
-static NSUInteger SQUClassDetailColWidth[3] = {220, 65};
+static NSUInteger SQUClassDetailColWidth[3] = {220, 68};
 static NSUInteger SQUClassDetailSeparatorX = 8;
-static NSUInteger SQUClassDetailSeparatorWidth = 284;
+static NSUInteger SQUClassDetailSeparatorWidth = 287;
 static NSUInteger SQUClassDetailRowHeight = 32;
 static NSUInteger SQUClassDetailRowTextOffset = 4;
 static NSUInteger SQUClassDetailTextZPosition = 5;

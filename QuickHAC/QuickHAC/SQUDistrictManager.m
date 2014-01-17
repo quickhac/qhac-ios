@@ -20,7 +20,7 @@
 static SQUDistrictManager *_sharedInstance = nil;
 
 @implementation SQUDistrictManager
-@synthesize currentDistrict = _currentDistrict;
+@synthesize currentDistrict = _currentDistrict, reachabilityManager = _reachabilityManager;
 
 #pragma mark - Singleton
 
@@ -139,11 +139,18 @@ static SQUDistrictManager *_sharedInstance = nil;
 	}
 	
 	// Clear munchies so we're logged out (prevents course mingling)
-	// TODO: Fix this to clear only cookies for the district's domain!
+	// TODO: Fix this to clear only munchies for the district's domain!
 	NSArray *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
 	
 	for (NSHTTPCookie *cookie in cookies) {
 		[[NSHTTPCookieStorage sharedHTTPCookieStorage] deleteCookie:cookie];
+	}
+	
+	// Update the reachability manager
+	if(currentDistrict.districtDomain) {
+		_reachabilityManager = [AFNetworkReachabilityManager managerForDomain:currentDistrict.districtDomain];
+	} else {
+		_reachabilityManager = [AFNetworkReachabilityManager sharedManager];
 	}
 }
 

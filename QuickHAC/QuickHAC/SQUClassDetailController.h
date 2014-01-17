@@ -12,6 +12,7 @@
 @class SQUCourse;
 @class SQUCycle;
 @class WYPopoverController;
+@class SQUEmptyView;
 
 @interface SQUClassDetailController : UITableViewController <SQUClassCycleChooserControllerDelegate> {
 	SQUCourse *_course;
@@ -27,6 +28,7 @@
 	CATextLayer *_subtitleLayer;
 	
 	WYPopoverController *_popover;
+	SQUEmptyView *_emptyView;
 }
 
 - (id) initWithCourse:(SQUCourse *) course;

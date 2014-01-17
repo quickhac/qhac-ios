@@ -83,6 +83,7 @@ typedef struct {
 	NSRange _studentIDLength;
 	BOOL _hasMultipleStudents;
 	NSMutableArray *_studentsOnAccount;
+	NSString *_districtDomain;
 }
 
 /// Gradebook driver in use by this district.
@@ -108,5 +109,8 @@ typedef struct {
 
 /// If hasMultipleStudents is YES, this has some info on all students on the account.
 @property (readonly) NSMutableArray *studentsOnAccount;
+
+/// Domain to use to determine reachability.
+@property (readonly) NSString *districtDomain;
 
 @end

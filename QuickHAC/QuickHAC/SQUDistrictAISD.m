@@ -40,6 +40,8 @@
 		_district_id = 2;
 		
 		_studentIDLength = NSMakeRange(7, 8);
+		
+		_districtDomain = @"gradespeed.austinisd.org";
 	}
 	
 	return self;

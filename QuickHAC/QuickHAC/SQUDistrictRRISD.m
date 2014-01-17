@@ -40,6 +40,8 @@
 		_district_id = 1;
 		
 		_studentIDLength = NSMakeRange(6, 6);
+		
+		_districtDomain = @"accesscenter.roundrockisd.org";
 	}
 	
 	return self;

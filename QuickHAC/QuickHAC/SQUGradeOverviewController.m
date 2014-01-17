@@ -20,12 +20,14 @@
 #import "SQUDistrictManager.h"
 #import "SQUPushHandler.h"
 #import "SQUGradeManager.h"
+#import "SQUDistrictManager.h"
 #import "SQUSidebarController.h"
 #import "SQUGradeOverviewController.h"
 
 #import "UIViewController+PKRevealController.h"
 #import "PKRevealController.h"
 #import "UIView+JMNoise.h"
+#import "AFNetworking.h"
 
 @implementation SQUGradeOverviewController
 
@@ -170,21 +172,29 @@
 }
 
 - (void) reloadData:(UIRefreshControl *) control {
-	[[SQUGradeManager sharedInstance] fetchNewClassGradesFromServerWithDoneCallback:^(NSError *error){
-		[[NSNotificationCenter defaultCenter] postNotificationName:SQUGradesDataUpdatedNotification object:nil];
+	if([SQUDistrictManager sharedInstance].reachabilityManager.isReachable) {
+		[[SQUGradeManager sharedInstance] fetchNewClassGradesFromServerWithDoneCallback:^(NSError *error){
+			[[NSNotificationCenter defaultCenter] postNotificationName:SQUGradesDataUpdatedNotification object:nil];
+			
+			if(error) {
+				UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Updating Grades", nil) message:error.localizedDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
+				[alert show];
+			} else {
+				[self.tableView reloadData];
+			}
+			
+			// End refreshing
+			control.attributedTitle = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"Updated %@", @"relative date grades refresh control"), [[NSDate date] relativeDate]]];
+			
+			[control endRefreshing];
+		}];
+	} else {
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Not Connected", nil) message:NSLocalizedString(@"To refresh the overview, please connect to the Internet, and then ensure that you have unrestricted access to the district's gradebook.", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
+		[alert show];
 		
-		if(error) {
-			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Updating Grades", nil) message:error.localizedDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
-            [alert show];
-		} else {
-			[self.tableView reloadData];
-		}
-		
-		// End refreshing
-		control.attributedTitle = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"Updated %@", @"relative date grades refresh control"), [[NSDate date] relativeDate]]];
-		
+		// Update the UI that normally would be updated by the post-request block
 		[control endRefreshing];
-	}];
+	}
 }
 
 #pragma mark - Update handlers
