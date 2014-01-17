@@ -147,11 +147,11 @@ static SQUDistrictManager *_sharedInstance = nil;
 	}
 	
 	// Update the reachability manager
-	if(currentDistrict.districtDomain) {
-		_reachabilityManager = [AFNetworkReachabilityManager managerForDomain:currentDistrict.districtDomain];
-	} else {
+//	if(currentDistrict.districtDomain) {
+//		_reachabilityManager = [AFNetworkReachabilityManager managerForDomain:currentDistrict.districtDomain];
+//	} else {
 		_reachabilityManager = [AFNetworkReachabilityManager sharedManager];
-	}
+//	}
 }
 
 /**

@@ -51,6 +51,8 @@
 	};
 	[section addElement:button];
 	
+	section.footer =NSLocalizedString(@"Calculated GPA may not be accurate. We are not responsible for any problems arising from inaccurate calculations.", nil);
+	
 	[root addSection:section];
 	
 	self.root = root;

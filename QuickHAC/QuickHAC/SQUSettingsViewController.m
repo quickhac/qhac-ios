@@ -148,7 +148,19 @@
 			
 		case 1: {
 			if(indexPath.row == 0) {
+				UIViewController *controller = [[UIViewController alloc] init];
+				controller.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(closeModal:)];
+				controller.title = NSLocalizedString(@"About QuickHAC", @"settings");
 				
+				UITextView *textView = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, 320, 480)];
+				textView.editable = NO;
+				controller.view = textView;
+				
+				NSURL *urlOfRTF = [[NSBundle mainBundle] URLForResource:@"about" withExtension:@"rtfd"];
+				NSAttributedString *attrString = [[NSAttributedString alloc] initWithFileURL:urlOfRTF options:@{NSDocumentTypeDocumentAttribute:NSRTFDTextDocumentType} documentAttributes:nil error:nil];
+				textView.attributedText = attrString;
+				
+				[self presentViewController:[[UINavigationController alloc] initWithRootViewController:controller] animated:YES completion:NULL];
 			} else if(indexPath.row == 1) {
 				UIViewController *controller = [[UIViewController alloc] init];
 				controller.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(closeModal:)];
@@ -158,8 +170,8 @@
 				textView.editable = NO;
 				controller.view = textView;
 				
-				NSURL *urlOfAckText = [[NSBundle mainBundle] URLForResource:@"acknowledgements" withExtension:@"rtf"];
-				NSAttributedString *attrString = [[NSAttributedString alloc] initWithFileURL:urlOfAckText options:@{NSDocumentTypeDocumentAttribute:NSRTFTextDocumentType} documentAttributes:nil error:nil];
+				NSURL *urlOfRTF = [[NSBundle mainBundle] URLForResource:@"acknowledgements" withExtension:@"rtf"];
+				NSAttributedString *attrString = [[NSAttributedString alloc] initWithFileURL:urlOfRTF options:@{NSDocumentTypeDocumentAttribute:NSRTFTextDocumentType} documentAttributes:nil error:nil];
 				textView.attributedText = attrString;
 				
 				[self presentViewController:[[UINavigationController alloc] initWithRootViewController:controller] animated:YES completion:NULL];

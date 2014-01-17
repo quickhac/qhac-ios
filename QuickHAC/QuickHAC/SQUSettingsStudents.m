@@ -120,7 +120,7 @@
 	} else if(indexPath.section == 1) {
 		// "Add New…" button
 		cell = [tableView dequeueReusableCellWithIdentifier:@"SettingsButtonCell" forIndexPath:indexPath];
-		cell.textLabel.text = NSLocalizedString(@"Add Account…", nil);
+		cell.textLabel.text = NSLocalizedString(@"Add Student…", nil);
 	}
     
     return cell;

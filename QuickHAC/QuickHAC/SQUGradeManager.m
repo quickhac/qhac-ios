@@ -208,7 +208,7 @@ static SQUGradeManager *_sharedInstance = nil;
 		if(loggedIn) {
 			doGradeChecking();
 		} else {
-			NSLog(@"We have to do a login to fetch class grades");
+			// NSLog(@"We have to do a login to fetch class grades");
 			
 			// Ask the current district instance to do a log in to validate we're still valid
 			[[SQUDistrictManager sharedInstance] performLoginRequestWithUser:username usingPassword:password andCallback:^(NSError *error, id returnData){
@@ -220,14 +220,14 @@ static SQUGradeManager *_sharedInstance = nil;
 						[alert show];
 						callback([NSError errorWithDomain:@"SQUInvalidHACUsername" code:kSQUDistrictManagerErrorInvalidDisambiguation userInfo:@{@"localizedDescription" : NSLocalizedString(@"The login was rejected.", nil)}]);
 					} else {
-						NSLog(@"post-login grade overview update");
+						// NSLog(@"post-login grade overview update");
 						
 						// Update overall grades to get hashes
 						[self fetchNewClassGradesFromServerWithDoneCallback:^(NSError *err) {
 							NSLog(@"Overview update completed");
 							
 							if(!err) {
-								NSLog(@"got hashes");
+								// NSLog(@"got hashes");
 								doGradeChecking();
 							} else {
 								if(callback) callback(err);

@@ -42,6 +42,7 @@
 		DE485DDB1881D67500B215C6 /* default_avatar.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DE485DDA1881D67500B215C6 /* default_avatar.jpg */; };
 		DE485DDE1881EACA00B215C6 /* SQUUserSwitcherView.m in Sources */ = {isa = PBXBuildFile; fileRef = DE485DDD1881EACA00B215C6 /* SQUUserSwitcherView.m */; };
 		DE485DE31881FAC700B215C6 /* SQUUserSwitcherCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DE485DE21881FAC700B215C6 /* SQUUserSwitcherCell.m */; };
+		DE4D5BB21888CA3E00371A75 /* about.rtfd in Resources */ = {isa = PBXBuildFile; fileRef = DE4D5BB11888CA3E00371A75 /* about.rtfd */; };
 		DE72EBB9187A102B006F6F1A /* SQUEmptyView.m in Sources */ = {isa = PBXBuildFile; fileRef = DE72EBB8187A102B006F6F1A /* SQUEmptyView.m */; };
 		DE7B4E85186EB0F3008079CC /* NSManagedObjectModel+KCOrderedAccessorFix.m in Sources */ = {isa = PBXBuildFile; fileRef = DE7B4E84186EB0F3008079CC /* NSManagedObjectModel+KCOrderedAccessorFix.m */; };
 		DE7F51D6178C8B5E00A677CE /* SQULoginSchoolSelector.m in Sources */ = {isa = PBXBuildFile; fileRef = DE7F51D5178C8B5E00A677CE /* SQULoginSchoolSelector.m */; };
@@ -217,6 +218,7 @@
 		DE485DDD1881EACA00B215C6 /* SQUUserSwitcherView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUUserSwitcherView.m; sourceTree = "<group>"; };
 		DE485DE11881FAC700B215C6 /* SQUUserSwitcherCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUUserSwitcherCell.h; sourceTree = "<group>"; };
 		DE485DE21881FAC700B215C6 /* SQUUserSwitcherCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUUserSwitcherCell.m; sourceTree = "<group>"; };
+		DE4D5BB11888CA3E00371A75 /* about.rtfd */ = {isa = PBXFileReference; lastKnownFileType = wrapper.rtfd; name = about.rtfd; path = assets/about.rtfd; sourceTree = SOURCE_ROOT; };
 		DE72EBB7187A102B006F6F1A /* SQUEmptyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUEmptyView.h; sourceTree = "<group>"; };
 		DE72EBB8187A102B006F6F1A /* SQUEmptyView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUEmptyView.m; sourceTree = "<group>"; };
 		DE7B4E83186EB0F3008079CC /* NSManagedObjectModel+KCOrderedAccessorFix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSManagedObjectModel+KCOrderedAccessorFix.h"; path = "../../KCOrderedAccessorFix/NSManagedObjectModel+KCOrderedAccessorFix.h"; sourceTree = "<group>"; };
@@ -463,6 +465,7 @@
 		DE06158317874D0D004B2877 /* Miscellaneous Resources */ = {
 			isa = PBXGroup;
 			children = (
+				DE4D5BB11888CA3E00371A75 /* about.rtfd */,
 				DEF0F23D1873797400116B61 /* DistrictCerts.bundle */,
 				DEF0F21B187156D000116B61 /* acknowledgements.rtf */,
 				DE06158417874D0D004B2877 /* QuickHAC-Info.plist */,
@@ -1050,6 +1053,7 @@
 				DE2843F318768D530000756C /* README.md in Resources */,
 				DE06159217874D0D004B2877 /* Images.xcassets in Resources */,
 				DEF0F23E1873797400116B61 /* DistrictCerts.bundle in Resources */,
+				DE4D5BB21888CA3E00371A75 /* about.rtfd in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
