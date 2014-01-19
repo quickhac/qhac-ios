@@ -333,6 +333,11 @@
 			ptsEarnedNum = [split[0] floatValue];
 			weight = [split[1] floatValue];
 		}
+		
+		// Check if the assignment is marked as missing (wrapped in <del> tags)
+		if(!NSEqualRanges(NSMakeRange(NSNotFound, 0), [ptsEarned rangeOfString:@"del"])) {
+			ptsEarnedNum = 0;
+		}
 	} else {
 		ptsEarnedNum = -1;
 		weight = 1.0;

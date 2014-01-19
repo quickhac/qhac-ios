@@ -206,7 +206,7 @@ static NSUInteger SQUClassDetailTextSize = 15;
 				assignmentValueString = [assignmentValueString stringByAppendingFormat:NSLocalizedString(@"x%.1f", nil), assignment.weight.floatValue];
 			}
 		} else {
-			assignmentValueString = NSLocalizedString(@" ", @"shown with empty grade in category table");
+			assignmentValueString = NSLocalizedString(@"-", @"shown with empty grade in category table");
 		}
 		
 		// Text to put on labels

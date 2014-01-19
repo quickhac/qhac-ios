@@ -235,10 +235,17 @@
 				SQUStudent *studentInfo = [NSEntityDescription insertNewObjectForEntityForName:@"SQUStudent" inManagedObjectContext:context];
 				
 				// Set up student ID and district to database
-				studentInfo.student_id = studentID;
 				studentInfo.district = [NSNumber numberWithInteger:_district.district_id];
 				studentInfo.hacUsername = _usernameField.text;
-				studentInfo.name = studentName;
+				
+				// Set name to `nil` if it's a single student account
+				if(student) {
+					studentInfo.name = studentName;
+					studentInfo.student_id = studentID;
+				} else {
+					studentInfo.name = nil;
+					studentInfo.student_id = nil;
+				}
 				
 				// Convert to display name
 				NSArray *components = [studentName componentsSeparatedByString:@", "];

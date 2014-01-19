@@ -165,6 +165,10 @@
 	self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"Updated %@", @"relative date grades refresh control"), [_currentCycle.last_updated relativeDate]]];
 	
 	[self.tableView reloadData];
+	
+	if(_currentCycle.categories.count == 0) {
+		[self reloadData:nil];
+	}
 }
 
 #pragma mark - UI
@@ -210,8 +214,6 @@
 		}
 		
 		if(needsUpdaten) {
-			_currentCycle = _course.cycles[_displayCycle];
-			_subtitleLayer.string = [NSString stringWithFormat:NSLocalizedString(@"Cycle %u", @"class info"), _displayCycle+1];
 			[self updateCycle];
 		}
 		

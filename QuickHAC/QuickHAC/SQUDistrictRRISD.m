@@ -315,6 +315,12 @@
 	AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
 	manager.responseSerializer = [AFHTTPResponseSerializer serializer];
 	
+	// Select which SSL certificates we allow
+	NSArray *certs = [self districtSSLCertData];
+	manager.securityPolicy.allowInvalidCertificates = NO;
+	manager.securityPolicy.SSLPinningMode = AFSSLPinningModeCertificate;
+	[manager.securityPolicy setPinnedCertificates:certs];
+	
 	[manager HEAD:@"https://accesscenter.roundrockisd.org/homeaccess/Student/Gradespeed.aspx?target=https://gradebook.roundrockisd.org/pc/displaygrades.aspx" parameters:nil success:^(AFHTTPRequestOperation *operation) {
 		callback(YES);
 	} failure:^(AFHTTPRequestOperation *operation, NSError *err) {

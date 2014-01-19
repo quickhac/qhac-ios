@@ -26,9 +26,7 @@
 		_subtitle.lineBreakMode = NSLineBreakByWordWrapping;
 		_subtitle.numberOfLines = 0;
 		
-		_imageView = [[UIImageView alloc] init];
-		_imageView.layer.borderColor = UIColorFromRGB(0x00ff00).CGColor;
-		_imageView.layer.borderWidth = 1.0;
+		_imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"no_data"]];
 		
 		[self addSubview:_header];
 		[self addSubview:_subtitle];

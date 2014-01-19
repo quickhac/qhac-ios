@@ -329,8 +329,16 @@
  * Called to get the current login status.
  */
 - (void) isLoggedInWithCallback:(SQULoggedInCallback) callback {
+	// dirty hack because AISD can't deal with HEAD requests
+	callback(NO);
+	return;
+	
+#if false
 	AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
 	manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+
+	// Select which SSL certificates we allow
+	manager.securityPolicy.allowInvalidCertificates = YES;
 	
 	[manager HEAD:@"https://gradespeed.austinisd.org/pc/ParentStudentGrades.aspx" parameters:nil success:^(AFHTTPRequestOperation *operation) {
 		if(operation.response.statusCode == 200) {
@@ -345,6 +353,7 @@
 		
 		callback(NO);
 	}];
+#endif
 }
 
 /*

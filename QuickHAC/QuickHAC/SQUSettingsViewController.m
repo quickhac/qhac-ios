@@ -50,22 +50,22 @@
 
 - (NSInteger) numberOfSectionsInTableView:(UITableView *) tableView {
     // Return the number of sections.
-    return 3;
+    return 2; // 3 if beta
 }
 
 - (NSInteger) tableView:(UITableView *) tableView numberOfRowsInSection:(NSInteger) section {
     // Return the number of rows in the section.
 	switch(section) {
 		case 0:
-			return 3;
+			return 2; 
 			break;
 			
 		case 1:
-			return 2;
+			return 2; // about, acknowledgements
 			break;
 			
 		case 2:
-			return 1;
+			return 1; // beta
 			break;
 			
 		default:
