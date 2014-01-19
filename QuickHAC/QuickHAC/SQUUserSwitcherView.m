@@ -91,7 +91,7 @@
 	}
 	
 	// Update selection
-	NSInteger selectedStudent = [[NSUserDefaults standardUserDefaults] integerForKey:@"selectedStudent"];
+	NSInteger selectedStudent = [_students indexOfObject:[[SQUGradeManager sharedInstance] getSelectedStudent]];
 	[_grid selectItemAtIndexPath:[NSIndexPath indexPathForItem:selectedStudent inSection:0] animated:NO scrollPosition:UICollectionViewScrollPositionTop];
 }
 
@@ -148,11 +148,9 @@
 	} else {
 		NSInteger selectedStudent = indexPath.row;
 		
-		[[NSUserDefaults standardUserDefaults] setInteger:selectedStudent forKey:@"selectedStudent"];
-		[[NSUserDefaults standardUserDefaults] synchronize];
-		
 		SQUStudent *student = _students[selectedStudent];
 		[[SQUGradeManager sharedInstance] setStudent:student];
+		[[SQUGradeManager sharedInstance] changeSelectedStudent:student];
 		
 		[[SQUDistrictManager sharedInstance] selectDistrictWithID:student.district.integerValue];
 		
@@ -212,12 +210,8 @@
 								
 								// Update selection
 								NSInteger index = [_students indexOfObject:student];
-								if(index != NSNotFound) {
-									[[NSUserDefaults standardUserDefaults] setInteger:index forKey:@"selectedStudent"];
-									[[NSUserDefaults standardUserDefaults] synchronize];
 									
-									_lastSelection = [NSIndexPath indexPathForItem:index inSection:0];
-								}
+								_lastSelection = [NSIndexPath indexPathForItem:index inSection:0];
 								
 								[_grid selectItemAtIndexPath:_lastSelection animated:NO scrollPosition:UICollectionViewScrollPositionNone];
 							}

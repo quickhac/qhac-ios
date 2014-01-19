@@ -149,14 +149,14 @@ static SQUAppDelegate *sharedDelegate = nil;
 			[[LTHPasscodeViewController sharedUser] showLockScreenWithAnimation:YES];
 		}*/
 		
-		NSUInteger selectedStudent = [[NSUserDefaults standardUserDefaults] integerForKey:@"selectedStudent"];
+		NSUInteger selectedStudent = [students indexOfObject:[[SQUGradeManager sharedInstance] getSelectedStudent]];
 		
 		// Ensure that the index is in bounds
 		if(selectedStudent > students.count) {
 			selectedStudent = 0;
-			[[NSUserDefaults standardUserDefaults] setInteger:selectedStudent forKey:@"selectedStudent"];
+			[[SQUGradeManager sharedInstance] changeSelectedStudent:students[selectedStudent]];
 		} else {
-			[[NSUserDefaults standardUserDefaults] setInteger:selectedStudent forKey:@"selectedStudent"];
+			[[SQUGradeManager sharedInstance] changeSelectedStudent:students[selectedStudent]];
 		}
 		
         SQUStudent *student = students[selectedStudent];

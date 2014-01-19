@@ -43,4 +43,7 @@
 
 + (NSString *) convertGradebookToHumanNames:(NSString *) name;
 
+- (void) changeSelectedStudent:(SQUStudent *) student;
+- (SQUStudent *) getSelectedStudent;
+
 @end

@@ -607,4 +607,34 @@ static SQUGradeManager *_sharedInstance = nil;
 	return [n stringByTrimmingCharactersInSet:trimBy];
 }
 
+#pragma mark - Student management
+/**
+ * Updates the selected student.
+ *
+ * @param student The student to select.
+ */
+- (void) changeSelectedStudent:(SQUStudent *) student {
+	NSManagedObjectID *objID = student.objectID;
+	NSString *str = objID.URIRepresentation.absoluteString;
+	
+	[[NSUserDefaults standardUserDefaults] setObject:str forKey:@"currentStudent"];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+	
+	//NSLog(@"Changed selected student: %@", str);
+}
+
+/**
+ * Reads the user defaults for the current student.
+ *
+ * @return The SQUStudent object of the active student, or nil if it hasn't been set
+ */
+- (SQUStudent *) getSelectedStudent {
+	NSString *objectID = [[NSUserDefaults standardUserDefaults] objectForKey:@"currentStudent"];
+	//NSLog(@"Selected student: %@", objectID);
+	if(!objectID) return nil;
+	
+	NSManagedObjectID *id = [[SQUAppDelegate sharedDelegate].persistentStoreCoordinator managedObjectIDForURIRepresentation:[NSURL URLWithString:objectID]];
+	return (SQUStudent *) [[SQUAppDelegate sharedDelegate].managedObjectContext objectWithID:id];
+}
+
 @end

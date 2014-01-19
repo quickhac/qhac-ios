@@ -106,7 +106,7 @@
 			cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"District: %@", nil), district.name];			
 		}
 		
-		NSInteger selectedStudent = [[NSUserDefaults standardUserDefaults] integerForKey:@"selectedStudent"];
+		NSInteger selectedStudent = [_students indexOfObject:[[SQUGradeManager sharedInstance] getSelectedStudent]];
 		
 		// Always show the check if there's only a single student
 		if(indexPath.row == selectedStudent || _students.count == 1) {
@@ -143,15 +143,26 @@
 
 - (void) tableView:(UITableView *) tableView commitEditingStyle:(UITableViewCellEditingStyle) editingStyle forRowAtIndexPath:(NSIndexPath *) indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-		NSInteger selectedStudent = [[NSUserDefaults standardUserDefaults] integerForKey:@"selectedStudent"];
+		NSInteger selectedStudent = [_students indexOfObject:[[SQUGradeManager sharedInstance] getSelectedStudent]];
+		
+		[_students removeObjectAtIndex:indexPath.row];
 		
 		if(indexPath.row == selectedStudent) {
-			[[NSUserDefaults standardUserDefaults] setInteger:selectedStudent forKey:@"selectedStudent"];
+			if(selectedStudent < _students.count) {
+				[[SQUGradeManager sharedInstance] changeSelectedStudent:_students[selectedStudent]];
+			} else if(selectedStudent == 0 && _students.count != 0) {
+				[[SQUGradeManager sharedInstance] changeSelectedStudent:_students[0]];
+			} else if(selectedStudent >= _students.count) {
+				[[SQUGradeManager sharedInstance] changeSelectedStudent:_students[selectedStudent--]];
+			} else if(_students.count == 0) {
+				NSLog(@"all students deleted");
+			} else {
+				NSAssert(false, @"Unhandled student deletion case");
+			}
 		}
 		
 		// Delete object from DB
 		[[SQUAppDelegate sharedDelegate].managedObjectContext deleteObject:_students[indexPath.row]];
-		[_students removeObjectAtIndex:indexPath.row];
 		
 		// Do animate-y thing
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
@@ -177,12 +188,12 @@
 	if(indexPath.section == 0) {
 		return;
 		
-		NSInteger selectedStudent = [[NSUserDefaults standardUserDefaults] integerForKey:@"selectedStudent"];
+		NSInteger selectedStudent = [_students indexOfObject:[[SQUGradeManager sharedInstance] getSelectedStudent]];
 		
 		// Update selection if we're not tapping the same cell as selected
 		if(indexPath.row != selectedStudent) {
 			// Update UI and user defaults
-			[[NSUserDefaults standardUserDefaults] setInteger:indexPath.row forKey:@"selectedStudent"];
+			[[SQUGradeManager sharedInstance] changeSelectedStudent:_students[indexPath.row]];
 		
 			[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:selectedStudent inSection:0], indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
 			
@@ -190,7 +201,6 @@
 			
 			[SVProgressHUD showProgress:-1 status:NSLocalizedString(@"Changing Student…", nil) maskType:SVProgressHUDMaskTypeGradient];
 			
-			[[NSUserDefaults standardUserDefaults] setInteger:indexPath.row forKey:@"selectedStudent"];
 			// Update internal state to reflect new student
 			SQUStudent *student = _students[selectedStudent];
 			[[SQUGradeManager sharedInstance] setStudent:student];
@@ -241,7 +251,6 @@
 			}];
 			
 			NSLog(@"Changed student to %@ (index %u)", [SQUGradeManager sharedInstance].student.name, selectedStudent);
-			[[NSUserDefaults standardUserDefaults] synchronize];
 		}
 	} else if(indexPath.section == 1) {
 		// Show login controller
