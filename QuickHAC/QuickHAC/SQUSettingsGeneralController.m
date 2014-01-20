@@ -9,7 +9,7 @@
 #import "SQUGradeManager.h"
 #import "SQUCoreData.h"
 #import "SQUSettingsGPAOptionsController.h"
-
+#import "SQUSettingsHueElement.h"
 #import "SQUSettingsGeneralController.h"
 
 #import <QuickDialog.h>
@@ -52,6 +52,27 @@
 	[section addElement:button];
 	
 	section.footer =NSLocalizedString(@"Calculated GPA may not be accurate. We are not responsible for any problems arising from inaccurate calculations.", nil);
+	
+	[root addSection:section];
+	
+	// Build "Appearance" section
+	section = [[QSection alloc] initWithTitle:NSLocalizedString(@"Grade Colourisation", nil)];
+	
+	QFloatElement *asianness = [[QFloatElement alloc] initWithTitle:NSLocalizedString(@"Power Level", nil) value:[[NSUserDefaults standardUserDefaults] floatForKey:@"asianness"]];
+	__unsafe_unretained QFloatElement *tempAsianness = asianness;
+	asianness.minimumValue = 1.0;
+	asianness.maximumValue = 12.2;
+	asianness.onValueChanged = ^(QRootElement *element) {
+		[[NSUserDefaults standardUserDefaults] setFloat:tempAsianness.floatValue forKey:@"asianness"];
+	};
+	[section addElement:asianness];
+	
+	SQUSettingsHueElement *hue = [[SQUSettingsHueElement alloc] initWithTitle:NSLocalizedString(@"Hue", nil) value:[[NSUserDefaults standardUserDefaults] floatForKey:@"gradesHue"]];
+	__unsafe_unretained SQUSettingsHueElement *tempHue = hue;
+	hue.onValueChanged = ^(QRootElement *element) {
+		[[NSUserDefaults standardUserDefaults] setFloat:tempHue.floatValue forKey:@"gradesHue"];
+	};
+	[section addElement:hue];
 	
 	[root addSection:section];
 	

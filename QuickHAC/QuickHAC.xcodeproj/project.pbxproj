@@ -59,6 +59,8 @@
 		DEC5954818783D69004F4BA4 /* SQUPushHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = DEC5954718783D69004F4BA4 /* SQUPushHandler.m */; };
 		DECEA57F1877FF8900C3D2FC /* NSMutableURLRequest+POSTGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = DECEA57E1877FF8900C3D2FC /* NSMutableURLRequest+POSTGenerator.m */; };
 		DECFF3CA187B444B007AFE6D /* SQUCycle.m in Sources */ = {isa = PBXBuildFile; fileRef = DECFF3C9187B444B007AFE6D /* SQUCycle.m */; };
+		DEECE01F188C63F8000EFAB8 /* SQUSettingsHueElement.m in Sources */ = {isa = PBXBuildFile; fileRef = DEECE01E188C63F8000EFAB8 /* SQUSettingsHueElement.m */; };
+		DEECE024188C6468000EFAB8 /* SQUHueSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = DEECE023188C6468000EFAB8 /* SQUHueSlider.m */; };
 		DEF0F1BD186EE52B00116B61 /* UIColor+SQUColourUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F1BC186EE52B00116B61 /* UIColor+SQUColourUtilities.m */; };
 		DEF0F1BF186EEA6500116B61 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DEF0F1BE186EEA6400116B61 /* CoreImage.framework */; };
 		DEF0F1C1186EEA6900116B61 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DEF0F1C0186EEA6900116B61 /* QuartzCore.framework */; };
@@ -250,6 +252,10 @@
 		DECFF3C6187B42D5007AFE6D /* QuickHAC CoreData Beta 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "QuickHAC CoreData Beta 2.xcdatamodel"; sourceTree = "<group>"; };
 		DECFF3C8187B444B007AFE6D /* SQUCycle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUCycle.h; sourceTree = "<group>"; };
 		DECFF3C9187B444B007AFE6D /* SQUCycle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUCycle.m; sourceTree = "<group>"; };
+		DEECE01D188C63F8000EFAB8 /* SQUSettingsHueElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUSettingsHueElement.h; sourceTree = "<group>"; };
+		DEECE01E188C63F8000EFAB8 /* SQUSettingsHueElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUSettingsHueElement.m; sourceTree = "<group>"; };
+		DEECE022188C6468000EFAB8 /* SQUHueSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUHueSlider.h; sourceTree = "<group>"; };
+		DEECE023188C6468000EFAB8 /* SQUHueSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUHueSlider.m; sourceTree = "<group>"; };
 		DEF0F1BB186EE52B00116B61 /* UIColor+SQUColourUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+SQUColourUtilities.h"; sourceTree = "<group>"; };
 		DEF0F1BC186EE52B00116B61 /* UIColor+SQUColourUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+SQUColourUtilities.m"; sourceTree = "<group>"; };
 		DEF0F1BE186EEA6400116B61 /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
@@ -698,6 +704,17 @@
 			name = "Miscellaneous Categories";
 			sourceTree = "<group>";
 		};
+		DEECE021188C6405000EFAB8 /* Settings UI */ = {
+			isa = PBXGroup;
+			children = (
+				DEECE01D188C63F8000EFAB8 /* SQUSettingsHueElement.h */,
+				DEECE01E188C63F8000EFAB8 /* SQUSettingsHueElement.m */,
+				DEECE022188C6468000EFAB8 /* SQUHueSlider.h */,
+				DEECE023188C6468000EFAB8 /* SQUHueSlider.m */,
+			);
+			name = "Settings UI";
+			sourceTree = "<group>";
+		};
 		DEF0F1BA186EE4E100116B61 /* Miscellaneous UI */ = {
 			isa = PBXGroup;
 			children = (
@@ -854,6 +871,7 @@
 				DEF0F2421873DC0600116B61 /* SQUSettingsGeneralController.m */,
 				DEF0F2441873E09400116B61 /* SQUSettingsGPAOptionsController.h */,
 				DEF0F2451873E09400116B61 /* SQUSettingsGPAOptionsController.m */,
+				DEECE021188C6405000EFAB8 /* Settings UI */,
 			);
 			name = Settings;
 			sourceTree = "<group>";
@@ -1121,6 +1139,7 @@
 				DEF0F1BD186EE52B00116B61 /* UIColor+SQUColourUtilities.m in Sources */,
 				DEF0F23418727EA700116B61 /* LTHPasscodeViewController.m in Sources */,
 				DE81CDD9186D517800DC1CAB /* XPathQuery.m in Sources */,
+				DEECE01F188C63F8000EFAB8 /* SQUSettingsHueElement.m in Sources */,
 				DEFFDE27186D8C5F00E26423 /* SQUDistrictManager.m in Sources */,
 				DEFFDE58186E270900E26423 /* AFNetworkActivityIndicatorManager.m in Sources */,
 				DEF0F2251871EEAD00116B61 /* SQUDistrictAISD.m in Sources */,
@@ -1136,6 +1155,7 @@
 				DEF0F23518727EA700116B61 /* SFHFKeychainUtils.m in Sources */,
 				DEF0F1D7186FC7FA00116B61 /* SQUAssignment.m in Sources */,
 				DEF0F2461873E09400116B61 /* SQUSettingsGPAOptionsController.m in Sources */,
+				DEECE024188C6468000EFAB8 /* SQUHueSlider.m in Sources */,
 				DE0615E617891E0C004B2877 /* SVProgressHUD.m in Sources */,
 				DEC5954818783D69004F4BA4 /* SQUPushHandler.m in Sources */,
 				DEAE4699187807AB008DAE0C /* NSURL+RequestParams.m in Sources */,

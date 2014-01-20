@@ -6,5 +6,9 @@
 	<integer>0</integer>
 	<key>gpa_precision</key>
 	<integer>4</integer>
+	<key>asianness</key>
+	<integer>2</integer>
+	<key>gradesHue</key>
+	<integer>0</integer>
 </dict>
 </plist>

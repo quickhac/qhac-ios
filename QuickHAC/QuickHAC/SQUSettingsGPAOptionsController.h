@@ -3,7 +3,7 @@
 //  QuickHAC
 //
 //  Created by Tristan Seifert on 12/31/13.
-//  Copyright (c) 2013 Squee! Apps. All rights reserved.
+//  See README.MD for licensing and copyright information.
 //
 
 #import "QuickDialogController.h"

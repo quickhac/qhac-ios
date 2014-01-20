@@ -21,9 +21,6 @@
 - (void) drawHeaders;
 - (void) drawCells;
 
-- (UIColor *) colourizeGrade:(float) grade;
-- (UIColor *) colourForLetterGrade:(NSString *) grade;
-
 @end
 
 @implementation SQUGradeOverviewTableViewCell
@@ -278,7 +275,7 @@
 				// Display the letter grade
 				if(cycle.letterGrade.length != 0) {
 					average.string = cycle.letterGrade;
-					bg.backgroundColor = [self colourForLetterGrade:cycle.letterGrade].CGColor;
+					bg.backgroundColor = [SQUGradeOverviewTableViewCell colourForLetterGrade:cycle.letterGrade].CGColor;
 					average.foregroundColor = [UIColor whiteColor].CGColor;
 				} else {
 					average.string = NSLocalizedString(@"-", nil);
@@ -328,7 +325,7 @@
 					
 					if(cycle.average.unsignedIntegerValue != 0) {
 						average.string = [NSString stringWithFormat:NSLocalizedString(@"%u", nil), cycle.average.unsignedIntegerValue];
-						bg.backgroundColor = [self colourizeGrade:cycle.average.floatValue].CGColor;
+						bg.backgroundColor = [SQUGradeOverviewTableViewCell colourizeGrade:cycle.average.floatValue].CGColor;
 					} else {
 						average.string = NSLocalizedString(@"-", nil);
 						bg.backgroundColor = UIColorFromRGB(0xe0e0e0).CGColor;
@@ -345,7 +342,7 @@
 							bg.backgroundColor = UIColorFromRGB(0xe0e0e0).CGColor;
 						} else {
 							average.string = [NSString stringWithFormat:NSLocalizedString(@"%u", nil), sem.examGrade.unsignedIntegerValue];
-							bg.backgroundColor = [self colourizeGrade:sem.examGrade.floatValue].CGColor;
+							bg.backgroundColor = [SQUGradeOverviewTableViewCell colourizeGrade:sem.examGrade.floatValue].CGColor;
 						}
 					} else if(offset == 1) { // semester average
 						if(sem.average.integerValue == -1) {
@@ -353,7 +350,7 @@
 							bg.backgroundColor = UIColorFromRGB(0xe0e0e0).CGColor;
 						} else {
 							average.string = [NSString stringWithFormat:NSLocalizedString(@"%u", nil), sem.average.unsignedIntegerValue];
-							bg.backgroundColor = [self colourizeGrade:sem.average.floatValue].CGColor;
+							bg.backgroundColor = [SQUGradeOverviewTableViewCell colourizeGrade:sem.average.floatValue].CGColor;
 						}
 					}
 				}
@@ -461,9 +458,9 @@ drawNoGradesAvailable: ;
 	[_backgroundLayer addSublayer:_noGradesAvailable];
 }
 
-- (UIColor *) colourizeGrade:(float) grade {
++ (UIColor *) colourizeGrade:(float) grade {
     // Makes sure asianness cannot be negative
-    NSUInteger asianness_limited = MAX(2, 0);
+    float asianness = MAX([[NSUserDefaults standardUserDefaults] floatForKey:@"asianness"], 0);
     
     // interpolate a hue gradient and convert to rgb
     float h, s, v;
@@ -478,20 +475,22 @@ drawNoGradesAvailable: ;
         s = 1;
         v = 0.86945;
     } else {
-        h = MIN(0.25 * pow(grade / 100, asianness_limited), 0.13056);
-        s = 1 - pow(grade / 100, asianness_limited * 2);
+        h = MIN(0.25 * pow(grade / 100, asianness), 0.13056);
+        s = 1 - pow(grade / 100, asianness * 2);
         v = 0.86945 + h;
     }
+	
+	// Hue must be between 0 and 1.0 for this code
+	float hue = [[NSUserDefaults standardUserDefaults] floatForKey:@"gradesHue"] / 360.0;
     
-    // apply hue transformation
-	//    h += hue;
-	//    h %= 1;
-	//    if (h < 0) h += 1;
+    h += hue;
+//	h %= 1;
+	if (h < 0) h += 1;
     
     return [UIColor colorWithHue:h saturation:s brightness:v alpha:1.0];
 }
 
-- (UIColor *) colourForLetterGrade:(NSString *) grade {
++ (UIColor *) colourForLetterGrade:(NSString *) grade {
 	NSString *letter = [grade substringToIndex:1];
 	NSDictionary *colours = @{
 							  @"A" : UIColorFromRGB(0x27ae60),
