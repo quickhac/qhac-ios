@@ -22,6 +22,7 @@
 #import "SQUGradeManager.h"
 #import "SQUDistrictManager.h"
 #import "SQUSidebarController.h"
+#import "SQUColourScheme.h"
 #import "SQUGradeOverviewController.h"
 
 #import "UIViewController+PKRevealController.h"
@@ -56,10 +57,10 @@
 		
 		_titleLayer = [CATextLayer new];
 		_titleLayer.frame = CGRectMake(0, 4, 200, 28);
-		_titleLayer.font = (__bridge CFTypeRef)([UIFont fontWithName:@"HelveticaNeue-Medium" size:26.0]);
+		_titleLayer.font = (__bridge CFTypeRef)([UIFont fontWithName:@"HelveticaNeue-Light" size:26.0]);
 		_titleLayer.fontSize = 17.0f;
 		_titleLayer.contentsScale = [UIScreen mainScreen].scale;
-		_titleLayer.foregroundColor = [UIColor blackColor].CGColor;
+		_titleLayer.foregroundColor = UIColorFromRGB(kSQUColourTitle).CGColor;
 		_titleLayer.string = NSLocalizedString(@"Overview", nil);
 		_titleLayer.alignmentMode = kCAAlignmentCenter;
 		
@@ -70,7 +71,7 @@
 		_subtitleLayer.font = (__bridge CFTypeRef)([UIFont fontWithName:@"HelveticaNeue-LightItalic" size:26.0]);
 		_subtitleLayer.fontSize = 12.0f;
 		_subtitleLayer.contentsScale = [UIScreen mainScreen].scale;
-		_subtitleLayer.foregroundColor = [UIColor lightGrayColor].CGColor;
+		_subtitleLayer.foregroundColor = UIColorFromRGB(kSQUColourSubtitle).CGColor;
 		_subtitleLayer.alignmentMode = kCAAlignmentCenter;
 		
 		[_navbarTitle.layer addSublayer:_subtitleLayer];

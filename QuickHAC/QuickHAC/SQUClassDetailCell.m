@@ -9,6 +9,7 @@
 #import "SQUClassDetailCell.h"
 #import "UIColor+SQUColourUtilities.h"
 #import "SQUCoreData.h"
+#import "SQUColourScheme.h"
 #import "SQUAppDelegate.h"
 
 #import <CoreText/CoreText.h>
@@ -32,6 +33,11 @@ static NSUInteger SQUClassDetailRowHeight = 32;
 static NSUInteger SQUClassDetailRowTextOffset = 4;
 static NSUInteger SQUClassDetailTextZPosition = 5;
 static NSUInteger SQUClassDetailTextSize = 15;
+
+static NSUInteger SQUClassDetailAssignmentColour = 0x000000;
+static NSUInteger SQUClassDetailDroppedColour = kSQUColourConcrete;
+static NSUInteger SQUClassDetailMissingColour = kSQUColourAlizarin;
+static NSUInteger SQUClassDetailExtraCreditColour = kSQUColourEmerald;
 
 - (id)initWithStyle:(UITableViewCellStyle) style reuseIdentifier:(NSString *) reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
@@ -214,11 +220,10 @@ static NSUInteger SQUClassDetailTextSize = 15;
 //							[_dateFormatter stringFromDate:assignment.date_due],
 							assignmentValueString];
 		
-		// Output "Assignment", "Due Date" and "Grade" columns
+		// Output the columns
 		for(NSUInteger c = 0; c < 2; c++) {
 			CATextLayer *layer = [CATextLayer layer];
 			layer.contentsScale = [UIScreen mainScreen].scale;
-			layer.foregroundColor = [UIColor blackColor].CGColor;
 			layer.font = (__bridge CFTypeRef) [UIFont fontWithName:@"HelveticaNeue-Light" size:SQUClassDetailTextSize];
 			layer.fontSize = (CGFloat) SQUClassDetailTextSize;
 			layer.zPosition = SQUClassDetailTextZPosition;
@@ -278,6 +283,25 @@ static NSUInteger SQUClassDetailTextSize = 15;
 					heightOfLastRow = SQUClassDetailRowHeight;
 					otherLabelOffsets = 0;
 				}
+			}
+			
+			/* 
+			 * If the assignment is dropped, extra credit or missing, perform
+			 * special styling on the text, as well as possibly rendering an
+			 * icon.
+			 */
+			if(assignment.extra_credit.boolValue) {
+				layer.foregroundColor = UIColorFromRGB(SQUClassDetailExtraCreditColour).CGColor;
+			} else if([assignment.description rangeOfString:@"Missing" options:NSCaseInsensitiveSearch].location != NSNotFound) {
+				layer.foregroundColor = UIColorFromRGB(SQUClassDetailMissingColour).CGColor;
+			} else if([assignment.description rangeOfString:@"Dropped" options:NSCaseInsensitiveSearch].location != NSNotFound) {
+				layer.foregroundColor = UIColorFromRGB(SQUClassDetailDroppedColour).CGColor;
+				
+				/*NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:layer.string];
+				[str addAttribute:NSStrikethroughStyleAttributeName value:@(NSUnderlinePatternSolid | NSUnderlineStyleSingle) range:NSMakeRange(0, str.length)];
+				layer.string = str;*/
+			} else {
+				layer.foregroundColor = UIColorFromRGB(SQUClassDetailAssignmentColour).CGColor;				
 			}
 			
 			[_tableLabels addObject:layer];

@@ -1,6 +1,16 @@
 {
   "images" : [
     {
+      "idiom" : "iphone",
+      "scale" : "1x",
+      "filename" : "navbar_bg.png"
+    },
+    {
+      "idiom" : "iphone",
+      "scale" : "2x",
+      "filename" : "navbar_bg@2x.png"
+    },
+    {
       "idiom" : "ipad",
       "scale" : "1x",
       "filename" : "banner_bg.png"

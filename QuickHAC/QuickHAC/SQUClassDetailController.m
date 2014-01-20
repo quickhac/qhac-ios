@@ -12,6 +12,7 @@
 #import "SQUGradeManager.h"
 #import "SQUEmptyView.h"
 #import "SQUDistrictManager.h"
+#import "SQUColourScheme.h"
 #import "SQUClassDetailCell.h"
 
 #import "UIView+JMNoise.h"
@@ -24,6 +25,7 @@
 
 - (void) showEmptyView;
 - (void) hideEmptyView;
+- (void) changeNoDataDisplay;
 
 @end
 
@@ -89,16 +91,17 @@
 	
 	[self reloadData:self.refreshControl];
 	[self.tableView reloadData];
+	[self changeNoDataDisplay];
 	
 	// Set up the title view container and title text
 	_navbarTitle = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 200, 44)];
 	
 	_titleLayer = [CATextLayer new];
 	_titleLayer.frame = CGRectMake(0, 4, 200, 28);
-	_titleLayer.font = (__bridge CFTypeRef)([UIFont fontWithName:@"HelveticaNeue-Medium" size:26.0]);
+	_titleLayer.font = (__bridge CFTypeRef)([UIFont fontWithName:@"HelveticaNeue-Light" size:26.0]);
 	_titleLayer.fontSize = 17.0f;
 	_titleLayer.contentsScale = [UIScreen mainScreen].scale;
-	_titleLayer.foregroundColor = [UIColor blackColor].CGColor;
+	_titleLayer.foregroundColor = UIColorFromRGB(kSQUColourTitle).CGColor;
 	_titleLayer.string = _course.title;
 	_titleLayer.alignmentMode = kCAAlignmentCenter;
 	
@@ -109,7 +112,7 @@
 	_subtitleLayer.font = (__bridge CFTypeRef)([UIFont fontWithName:@"HelveticaNeue-LightItalic" size:26.0]);
 	_subtitleLayer.fontSize = 12.0f;
 	_subtitleLayer.contentsScale = [UIScreen mainScreen].scale;
-	_subtitleLayer.foregroundColor = [UIColor lightGrayColor].CGColor;
+	_subtitleLayer.foregroundColor = UIColorFromRGB(kSQUColourSubtitle).CGColor;
 	_subtitleLayer.string = [NSString stringWithFormat:NSLocalizedString(@"Cycle %u", @"class detail"), _displayCycle+1];
 	_subtitleLayer.alignmentMode = kCAAlignmentCenter;
 	
@@ -171,6 +174,17 @@
 	}
 }
 
+/**
+ * Show or hide the data display, depending on the state of this cycle.
+ */
+- (void) changeNoDataDisplay {
+	if(_currentCycle.categories.count == 0) {
+		[self showEmptyView];
+	} else {
+		[self hideEmptyView];
+	}
+}
+
 #pragma mark - UI
 - (void) reloadData:(id) sender {
 	// Update the title
@@ -187,7 +201,7 @@
 		SQUCycle *newCyclen;
 		BOOL needsUpdaten = NO;
 		
-		[self showEmptyView];
+		[self changeNoDataDisplay];
 		
 		if(_currentCycle.cycleIndex.unsignedIntegerValue != 0) {
 			// find closest cycle backwards
@@ -236,7 +250,7 @@
 			_iCanHazCompleteReload = YES;
 		} else {
 			NSLog(@"No connection and no data available");
-			[self showEmptyView];
+			[self changeNoDataDisplay];
 			return;
 		}
 	}
@@ -245,29 +259,24 @@
 	if(![SQUDistrictManager sharedInstance].reachabilityManager.isReachable) {
 		if(_iCanHazCompleteReload) {
 			// show the "no data available" view
-			[self showEmptyView];
+			[self changeNoDataDisplay];
 		} else {
 			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Not Connected", nil) message:NSLocalizedString(@"To refresh grades for this cycle, please connect to the Internet, and then ensure that you have unrestricted access to the district's gradebook.", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
 			[alert show];
 			
-			// Show the empty view if there's no data available at this point
-			if(_currentCycle.categories.count == 0) {
-				[self showEmptyView];
-			} else {
-				[self hideEmptyView];
-			}
+			[self changeNoDataDisplay];
 		}
 		
 		// End refreshing, if the refresh control is refreshing
 		[self.refreshControl endRefreshing];
 	} else { // Connection exists, use it
 		// Hide "no data available" view if it's shown
-		[self hideEmptyView];
+		[self changeNoDataDisplay];
 		
 		// Update course grades
 		[[SQUGradeManager sharedInstance] fetchNewCycleGradesFromServerForCourse:_course.courseCode withCycle:_displayCycle % 3 andSemester:_displayCycle / 3 andDoneCallback:^(NSError * error) {
 			if(!error) {
-				[self hideEmptyView];
+				[self changeNoDataDisplay];
 				
 				_currentCycle = _course.cycles[_displayCycle];
 				[self.tableView reloadData];
@@ -294,7 +303,7 @@
 						}
 						
 						[self.tableView reloadData];
-						[self showEmptyView];
+						[self changeNoDataDisplay];
 					}
 				} else {
 					UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Updating Grades", nil) message:error.localizedDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];

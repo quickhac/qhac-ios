@@ -35,7 +35,7 @@
 		
 		CGRect gridFrame = frame;
 		gridFrame.origin.y = 0;
-		gridFrame.size.height -= 45;
+//		gridFrame.size.height -= 45;
 		
 		// Grid
 		_grid = [[UICollectionView alloc] initWithFrame:gridFrame collectionViewLayout:_gridLayout];
@@ -49,12 +49,12 @@
 		[self addSubview:_grid];
 		
 		// Logout button
-		CGRect buttonRect = CGRectMake(0, gridFrame.size.height + 1, gridFrame.size.width, 44);
+/*		CGRect buttonRect = CGRectMake(0, gridFrame.size.height + 1, gridFrame.size.width, 44);
 		_logoutButton = [[UIButton alloc] initWithFrame:buttonRect];
 		[_logoutButton setBackgroundImage:[UIColorFromRGB(0x363636) imageFromColor] forState:UIControlStateNormal];
 		[_logoutButton setBackgroundImage:[UIColorFromRGB(0x2b2b2b) imageFromColor] forState:UIControlStateSelected];
 		[_logoutButton setTitle:NSLocalizedString(@"Log Out", nil) forState:UIControlStateNormal];
-		[self addSubview:_logoutButton];
+		[self addSubview:_logoutButton];*/
 		
 		// Subscribe to notifications
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateNotification:) name:SQUStudentsUpdatedNotification object:nil];

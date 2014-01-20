@@ -30,6 +30,8 @@
     
     UIButton *_changeDistrictLink;
     CATextLayer *_districtSelected;
+	
+	UIImageView *_background;
     
     SQUDistrict *_district;
     

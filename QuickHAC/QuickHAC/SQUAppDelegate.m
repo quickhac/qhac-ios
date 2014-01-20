@@ -16,6 +16,7 @@
 #import "SQUTabletLoginController.h"
 #import "SQUUIHelpers.h"
 #import "SQUPushHandler.h"
+#import "SQUColourScheme.h"
 #import "SQUAppDelegate.h"
 
 #import "PKRevealController.h"
@@ -24,6 +25,7 @@
 #import "SVProgressHUD.h"
 #import "Lockbox.h"
 #import "MGSplitViewController.h"
+#import "WYPopoverController.h"
 #import "LTHPasscodeViewController.h"
 #import "AFNetworking.h"
 
@@ -77,11 +79,23 @@ static SQUAppDelegate *sharedDelegate = nil;
 		_window.rootViewController = _drawerController;
 		
 		// UI control theming
-		/*[[UINavigationBar appearance] setBackgroundColor:UIColorFromRGB(0x41a2da)];
+		[[UINavigationBar appearance] setTintColor:UIColorFromRGB(kSQUColourTitle)];
+		[[UINavigationBar appearance] setBarTintColor:UIColorFromRGB(kSQUColourNavbarBG)];
+		[[UINavigationBar appearance] setBackgroundColor:UIColorFromRGB(kSQUColourNavbarBG)];
 		[[UINavigationBar appearance] setTitleTextAttributes:@{
-															   NSForegroundColorAttributeName: UIColorFromRGB(0xffffff),
-															   NSFontAttributeName: [UIFont fontWithName:@"Helvetica Neue-Medium" size:0.0],
-															   }];*/
+															   NSForegroundColorAttributeName: UIColorFromRGB(kSQUColourTitle),
+															   NSFontAttributeName: [UIFont fontWithName:@"HelveticaNeue-Light" size:0.0],
+															   }];
+		[[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"navbar_bg"] forBarMetrics:UIBarMetricsDefault];
+		
+		// Light status bar
+		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+		
+		// Popover
+		
+		WYPopoverBackgroundView* popoverAppearance = [WYPopoverBackgroundView appearance];
+		[popoverAppearance setFillTopColor:UIColorFromRGB(kSQUColourNavbarBG)];
+		[popoverAppearance setFillBottomColor:UIColorFromRGB(kSQUColourNavbarBG)];
 	} else {
 		// Set up iPad UI
 		_ipadSidebar = [[SQUTabletSidebarController alloc] initWithStyle:UITableViewStyleGrouped];
@@ -99,7 +113,7 @@ static SQUAppDelegate *sharedDelegate = nil;
 		_ipadSplitController.splitWidth = 0.0;
 		
 		// Set up iPad appearances
-		[[UINavigationBar appearance] setBackgroundColor:UIColorFromRGB(0x3a9ddd)];
+		[[UINavigationBar appearance] setBarTintColor:UIColorFromRGB(0x3a9ddd)];
 		[[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"navbar_bg"] forBarMetrics:UIBarMetricsDefault];
 	}
 	
@@ -187,7 +201,7 @@ static SQUAppDelegate *sharedDelegate = nil;
 		
 		
 		// Update data, ONLY if the district can be reached
-		if([SQUDistrictManager sharedInstance].reachabilityManager.isReachable) {
+		if(/*[SQUDistrictManager sharedInstance].reachabilityManager.isReachable*/ true) {
 			// Ask the current district instance to do a log in to validate our session is still valid
 			[[SQUDistrictManager sharedInstance] performLoginRequestWithUser:username usingPassword:password andCallback:^(NSError *error, id returnData) {
 				if(!error) {

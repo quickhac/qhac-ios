@@ -26,6 +26,7 @@
 		DE0615D81787ADFE004B2877 /* SQULoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0615D71787ADFE004B2877 /* SQULoginViewController.m */; };
 		DE0615E517891E0C004B2877 /* SVProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DE0615E217891E0B004B2877 /* SVProgressHUD.bundle */; };
 		DE0615E617891E0C004B2877 /* SVProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0615E417891E0C004B2877 /* SVProgressHUD.m */; };
+		DE0A58AB188CEEC8001A5D17 /* blurry_bg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DE0A58AA188CEEC8001A5D17 /* blurry_bg.jpg */; };
 		DE2843DE18760E3D0000756C /* SQUGradebookDriver.m in Sources */ = {isa = PBXBuildFile; fileRef = DE2843DD18760E3D0000756C /* SQUGradebookDriver.m */; };
 		DE2843E118760FD80000756C /* SQUGradespeedDriver.m in Sources */ = {isa = PBXBuildFile; fileRef = DE2843E018760FD80000756C /* SQUGradespeedDriver.m */; };
 		DE2843E618764FD10000756C /* SQUStudent.m in Sources */ = {isa = PBXBuildFile; fileRef = DE2843E518764FD10000756C /* SQUStudent.m */; };
@@ -50,7 +51,6 @@
 		DE81CDD8186D517800DC1CAB /* TFHppleElement.m in Sources */ = {isa = PBXBuildFile; fileRef = DE81CDD4186D517800DC1CAB /* TFHppleElement.m */; };
 		DE81CDD9186D517800DC1CAB /* XPathQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = DE81CDD6186D517800DC1CAB /* XPathQuery.m */; };
 		DE81CDDC186D538000DC1CAB /* libxml2.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DE81CDDA186D518C00DC1CAB /* libxml2.2.dylib */; };
-		DE883187188119F8002244F5 /* login_background.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DE883186188119F8002244F5 /* login_background.jpg */; };
 		DE88318B18811F6B002244F5 /* SQUSidebarCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DE88318A18811F6B002244F5 /* SQUSidebarCell.m */; };
 		DE88318E18812092002244F5 /* SQUTabletSidebarCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DE88318D18812092002244F5 /* SQUTabletSidebarCell.m */; };
 		DEAE4699187807AB008DAE0C /* NSURL+RequestParams.m in Sources */ = {isa = PBXBuildFile; fileRef = DEAE4698187807AB008DAE0C /* NSURL+RequestParams.m */; };
@@ -189,6 +189,8 @@
 		DE0615E217891E0B004B2877 /* SVProgressHUD.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = SVProgressHUD.bundle; sourceTree = "<group>"; };
 		DE0615E317891E0C004B2877 /* SVProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVProgressHUD.h; sourceTree = "<group>"; };
 		DE0615E417891E0C004B2877 /* SVProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVProgressHUD.m; sourceTree = "<group>"; };
+		DE0A58A8188CE02E001A5D17 /* SQUColourScheme.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SQUColourScheme.h; sourceTree = "<group>"; };
+		DE0A58AA188CEEC8001A5D17 /* blurry_bg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = blurry_bg.jpg; path = assets/miscellaneous/blurry_bg.jpg; sourceTree = SOURCE_ROOT; };
 		DE2843DC18760E3D0000756C /* SQUGradebookDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUGradebookDriver.h; sourceTree = "<group>"; };
 		DE2843DD18760E3D0000756C /* SQUGradebookDriver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUGradebookDriver.m; sourceTree = "<group>"; };
 		DE2843DF18760FD80000756C /* SQUGradespeedDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUGradespeedDriver.h; sourceTree = "<group>"; };
@@ -235,7 +237,6 @@
 		DE81CDD5186D517800DC1CAB /* XPathQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XPathQuery.h; path = ../../hpple/XPathQuery.h; sourceTree = "<group>"; };
 		DE81CDD6186D517800DC1CAB /* XPathQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = XPathQuery.m; path = ../../hpple/XPathQuery.m; sourceTree = "<group>"; };
 		DE81CDDA186D518C00DC1CAB /* libxml2.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.2.dylib; path = usr/lib/libxml2.2.dylib; sourceTree = SDKROOT; };
-		DE883186188119F8002244F5 /* login_background.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = login_background.jpg; path = assets/miscellaneous/login_background.jpg; sourceTree = SOURCE_ROOT; };
 		DE88318918811F6A002244F5 /* SQUSidebarCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUSidebarCell.h; sourceTree = "<group>"; };
 		DE88318A18811F6B002244F5 /* SQUSidebarCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUSidebarCell.m; sourceTree = "<group>"; };
 		DE88318C18812092002244F5 /* SQUTabletSidebarCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUTabletSidebarCell.h; sourceTree = "<group>"; };
@@ -722,6 +723,7 @@
 				DEF0F1BC186EE52B00116B61 /* UIColor+SQUColourUtilities.m */,
 				DE72EBB7187A102B006F6F1A /* SQUEmptyView.h */,
 				DE72EBB8187A102B006F6F1A /* SQUEmptyView.m */,
+				DE0A58A8188CE02E001A5D17 /* SQUColourScheme.h */,
 			);
 			name = "Miscellaneous UI";
 			sourceTree = "<group>";
@@ -774,7 +776,7 @@
 		DEF0F2491873FB6700116B61 /* iPad Resources */ = {
 			isa = PBXGroup;
 			children = (
-				DE883186188119F8002244F5 /* login_background.jpg */,
+				DE0A58AA188CEEC8001A5D17 /* blurry_bg.jpg */,
 			);
 			name = "iPad Resources";
 			sourceTree = "<group>";
@@ -1062,11 +1064,11 @@
 				DE485DDB1881D67500B215C6 /* default_avatar.jpg in Resources */,
 				DEF0F23218727EA700116B61 /* Localizable.strings in Resources */,
 				DEF0F23B1872C3AC00116B61 /* settings_defaults.plist in Resources */,
-				DE883187188119F8002244F5 /* login_background.jpg in Resources */,
 				DE3AC65C187B63D3007540A9 /* Localizable.strings in Resources */,
 				DE06158717874D0D004B2877 /* InfoPlist.strings in Resources */,
 				DE2843F418768D530000756C /* release_notes.md in Resources */,
 				DEF0F21C187156D000116B61 /* acknowledgements.rtf in Resources */,
+				DE0A58AB188CEEC8001A5D17 /* blurry_bg.jpg in Resources */,
 				DE0615E517891E0C004B2877 /* SVProgressHUD.bundle in Resources */,
 				DE2843F318768D530000756C /* README.md in Resources */,
 				DE06159217874D0D004B2877 /* Images.xcassets in Resources */,
@@ -1341,7 +1343,7 @@
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "E3EEA7E0-939E-45CA-AD8D-3574C38B6E35";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -1375,7 +1377,7 @@
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "E3EEA7E0-939E-45CA-AD8D-3574C38B6E35";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};

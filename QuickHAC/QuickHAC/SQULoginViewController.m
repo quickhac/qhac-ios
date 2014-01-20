@@ -11,6 +11,7 @@
 #import "SQUAppDelegate.h"
 #import "SQUDistrict.h"
 #import "SQUGradeManager.h"
+#import "SQUColourScheme.h"
 #import "SQUDistrictManager.h"
 #import "SQUCoreData.h"
 
@@ -30,12 +31,15 @@
 - (void) viewDidLoad {
     [super viewDidLoad];
     
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = [UIColor darkGrayColor];
     
     // Set up QuickHAC "q" logo
     _qLogo = [CALayer layer];
-    _qLogo.frame = CGRectMake(160 - (140 / 2), 70, 140, 140);
-    _qLogo.contents = (__bridge id)([UIImage imageNamed:@"QuickHACIcon"].CGImage);
+    _qLogo.frame = CGRectMake(160 - (180 / 2), 34, 180, 180);
+    _qLogo.contents = (__bridge id)([UIImage imageNamed:@"LoginIcon"].CGImage);
+	_qLogo.cornerRadius = 25.263;
+	_qLogo.masksToBounds = YES;
+	_qLogo.contentsScale = [UIScreen mainScreen].scale;
     
     [self.view.layer addSublayer:_qLogo];
     
@@ -46,7 +50,7 @@
     _districtSelected.alignmentMode = kCAAlignmentCenter;
     _districtSelected.frame = CGRectMake(16, 370, (320 - 32), 18);
     _districtSelected.string = [NSString stringWithFormat:NSLocalizedString(@"You selected %@.", nil), _district.name];
-    _districtSelected.foregroundColor = [UIColor grayColor].CGColor;
+    _districtSelected.foregroundColor = UIColorFromRGB(kSQUColourTitle).CGColor;
     
     [self.view.layer addSublayer:_districtSelected];
     
@@ -55,7 +59,7 @@
     NSMutableAttributedString *changeDistrictTitle = [[NSMutableAttributedString alloc] initWithString:NSLocalizedString(@"Change District", nil) attributes:nil];
     [changeDistrictTitle addAttribute:(__bridge NSString *) kCTUnderlineStyleAttributeName value:[NSNumber numberWithInteger:kCTUnderlineStyleSingle] range:NSMakeRange(0, changeDistrictTitle.length)];
     [changeDistrictTitle addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:14.0f] range:NSMakeRange(0, changeDistrictTitle.length)];
-    [changeDistrictTitle addAttribute:NSForegroundColorAttributeName value:[UIColor grayColor] range:NSMakeRange(0, changeDistrictTitle.length)];
+    [changeDistrictTitle addAttribute:NSForegroundColorAttributeName value:UIColorFromRGB(kSQUColourTitle) range:NSMakeRange(0, changeDistrictTitle.length)];
     [_changeDistrictLink setAttributedTitle:changeDistrictTitle forState:UIControlStateNormal];
     
     [_changeDistrictLink addTarget:self action:@selector(changeDistrictSelection:) forControlEvents:UIControlEventTouchUpInside];
@@ -64,7 +68,7 @@
     [self.view addSubview:_changeDistrictLink];
     
     // set up login fields
-    _authFieldTable = [[UITableView alloc] initWithFrame:CGRectMake(0, 220, 304, 100) style:UITableViewStylePlain];
+    _authFieldTable = [[UITableView alloc] initWithFrame:CGRectMake(0, 238, 304, 100) style:UITableViewStylePlain];
 	
     _authFieldTable.delegate = self;
     _authFieldTable.dataSource = self;
@@ -77,7 +81,40 @@
     [self.view addSubview:_authFieldTable];
     
     _tableMovedAlready = NO;
-    
+	
+	// Background
+	_background = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"blurry_bg.jpg"]];
+	_background.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+	_background.alpha =  0.75;
+	_background.opaque = YES;
+	_background.contentMode = UIViewContentModeCenter;
+	[self.view insertSubview:_background atIndex:0];
+	
+	// Set vertical effect
+	UIInterpolatingMotionEffect *verticalMotionEffect =
+	[[UIInterpolatingMotionEffect alloc]
+	 initWithKeyPath:@"center.y"
+	 type:UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis];
+	verticalMotionEffect.minimumRelativeValue = @(-10);
+	verticalMotionEffect.maximumRelativeValue = @(10);
+	
+	// Set horizontal effect
+	UIInterpolatingMotionEffect *horizontalMotionEffect =
+	[[UIInterpolatingMotionEffect alloc]
+	 initWithKeyPath:@"center.x"
+	 type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
+	horizontalMotionEffect.minimumRelativeValue = @(-10);
+	horizontalMotionEffect.maximumRelativeValue = @(10);
+	
+	// Create group to combine both
+	UIMotionEffectGroup *group = [UIMotionEffectGroup new];
+	group.motionEffects = @[horizontalMotionEffect, verticalMotionEffect];
+	
+	// Add both effects to your view
+	[_background addMotionEffect:group];
+	
+	self.view.backgroundColor = UIColorFromRGB(kSQUColourConcrete);
+	
     // set up navbar state
     self.title = NSLocalizedString(@"QuickHAC", @"login screen");
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]
@@ -86,9 +123,14 @@
                                               target:self action:@selector(loginBarButtonItemPressed:)];
 }
 
-- (void) didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (void) viewWillAppear:(BOOL) animated {
+    [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:YES animated:animated];
+}
+
+- (void) viewWillDisappear:(BOOL) animated {
+    [super viewWillDisappear:animated];
+    [self.navigationController setNavigationBarHidden:NO animated:animated];
 }
 
 #pragma mark - Miscellaneous UI actions
@@ -114,8 +156,12 @@
     static NSString *CellIdentifier = @"LoginCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
+	cell.backgroundColor = [UIColor clearColor];
+	cell.opaque = NO;
+	
     UITextField *_textView = [[UITextField alloc] initWithFrame:CGRectMake(12+16, 9, cell.frame.size.width - 24 - 14 - 16, cell.frame.size.height - 17)];
     _textView.delegate = self;
+	_textView.textColor = UIColorFromRGB(kSQUColourTitle);
     [cell.contentView addSubview:_textView];
     
     if(indexPath.row == 0) {
@@ -128,7 +174,7 @@
         _textView.adjustsFontSizeToFitWidth = YES;
         _textView.minimumFontSize = 12;
         
-        _textView.placeholder = NSLocalizedString(@"Username", @"login view controller placeholder");
+		_textView.attributedPlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Username", @"login view controller placeholder") attributes:@{NSForegroundColorAttributeName: UIColorFromRGB(kSQUColourTitle)}];
         
         _usernameField = _textView;
     } else if(indexPath.row == 1) {
@@ -138,7 +184,7 @@
         _textView.adjustsFontSizeToFitWidth = YES;
         _textView.minimumFontSize = 12;
         
-        _textView.placeholder = NSLocalizedString(@"Password", @"login view controller placeholder");
+		_textView.attributedPlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Password", @"login view controller placeholder") attributes:@{NSForegroundColorAttributeName: UIColorFromRGB(kSQUColourTitle)}];
         
         _passField = _textView;
     }
@@ -184,10 +230,10 @@
     
     [UIView animateWithDuration:0.25 delay:0 options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseInOut animations:^{
         CGRect tempFrame = _authFieldTable.frame;
-        tempFrame.origin.y -= 88;
+        tempFrame.origin.y -= 95;
         _authFieldTable.frame = tempFrame;
         
-        _qLogo.frame = CGRectMake(12, 68, 64, 64);
+        _qLogo.frame = CGRectMake(160 - (104 / 2), 30, 104, 104);
     } completion:^(BOOL finished) { }];
 }
 
@@ -196,10 +242,10 @@
     
     [UIView animateWithDuration:0.25 delay:0 options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseInOut animations:^{
         CGRect tempFrame = _authFieldTable.frame;
-        tempFrame.origin.y += 88;
+        tempFrame.origin.y += 95;
         _authFieldTable.frame = tempFrame;
         
-        _qLogo.frame = CGRectMake(160 - (140 / 2), 70, 140, 140);
+        _qLogo.frame = CGRectMake(160 - (180 / 2), 34, 180, 180);
     } completion:^(BOOL finished) { }];
 }
 
@@ -352,6 +398,12 @@
 					UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"No Students", nil) message:[NSString stringWithFormat:NSLocalizedString(@"All students on the account '%@' have already been added to QuickHAC.\nUse the sidebar to switch between them.", nil), _usernameField.text] delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
 					[alert show];
 					[SVProgressHUD dismiss];
+					
+					// Restore old student state
+					if(oldStudent) {
+						[[SQUDistrictManager sharedInstance] selectDistrictWithID:oldStudent.district.integerValue];
+						[[SQUGradeManager sharedInstance] setStudent:oldStudent];
+					}
 					
 					[self dismissViewControllerAnimated:YES completion:NULL];
 					return;
