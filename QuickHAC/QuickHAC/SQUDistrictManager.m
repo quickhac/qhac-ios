@@ -355,8 +355,6 @@ static SQUDistrictManager *_sharedInstance = nil;
 			[SQUGradeManager sharedInstance].student.school = studentSchool;
 				
 			[_currentDistrict updateDistrictStateWithClassGrades:averages];
-				
-			callback(nil, averages);
 			
 			// Update the display name
 			NSArray *components = [studentName componentsSeparatedByString:@", "];
@@ -372,6 +370,11 @@ static SQUDistrictManager *_sharedInstance = nil;
 			} else {
 				[SQUGradeManager sharedInstance].student.display_name = studentName;
 			}
+			
+			// NSLog(@"Updated grades for %@ (%@)", [SQUGradeManager sharedInstance].student.name, [SQUGradeManager sharedInstance].student.display_name);
+			
+			// Run the callback now to appease login process
+			callback(nil, averages);
 		} else {
 			callback([NSError errorWithDomain:@"SQUDistrictManagerErrorDomain" code:kSQUDistrictManagerErrorInvalidDataReceived userInfo:@{@"localizedDescription" : NSLocalizedString(@"The gradebook returned invalid data.", nil)}], nil);
 			// NSLog(@"Got screwy response from gradebook: %@", [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding]);

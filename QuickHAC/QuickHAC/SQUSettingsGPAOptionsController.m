@@ -65,6 +65,8 @@
 		[section addElement:toggle];
 	}
 	
+	section.footer = NSLocalizedString(@"These courses will not be counted towards weighted GPA.", nil);
+	
 	[root addSection:section];
 	self.root = root;
 	

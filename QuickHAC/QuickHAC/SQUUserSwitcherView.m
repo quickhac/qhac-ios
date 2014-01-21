@@ -132,7 +132,7 @@
 		}
 		
 		[cell setTitle:student.display_name];
-		[cell setImage:[UIImage imageNamed:@"default_avatar.jpg"]];
+		[cell setImage:[UIImage imageNamed:@"default_avatar"]];
 	}
 	
 	return cell;

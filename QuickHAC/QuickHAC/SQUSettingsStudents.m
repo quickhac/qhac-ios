@@ -147,24 +147,24 @@
 		
 		// Delete object from DB
 		[[SQUAppDelegate sharedDelegate].managedObjectContext deleteObject:_students[indexPath.row]];
-		[_students removeObjectAtIndex:indexPath.row];
-		
-		if(indexPath.row == selectedStudent) {
-			if(selectedStudent < _students.count) {
-				[[SQUGradeManager sharedInstance] changeSelectedStudent:_students[selectedStudent]];
-			} else if(selectedStudent == 0 && _students.count != 0) {
-				[[SQUGradeManager sharedInstance] changeSelectedStudent:_students[0]];
-			} else if(selectedStudent >= _students.count) {
-				[[SQUGradeManager sharedInstance] changeSelectedStudent:_students[selectedStudent--]];
-			} else if(_students.count == 0) {
-				NSLog(@"all students deleted");
-			} else {
-				NSAssert(false, @"Unhandled student deletion case");
-			}
-		}
+		[_students removeObject:_students[indexPath.row]];
 		
 		// Do animate-y thing
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+		
+		// Update selection, if we are deleting the selected student
+		if(indexPath.row == selectedStudent) {
+			[[SQUGradeManager sharedInstance] changeSelectedStudent:_students[0]];
+			
+			// Set default student
+			SQUStudent *student = _students[0];
+			[[SQUDistrictManager sharedInstance] selectDistrictWithID:student.district.integerValue];
+			[[SQUGradeManager sharedInstance] setStudent:student];
+			
+			// Update UI
+			[[NSNotificationCenter defaultCenter] postNotificationName:SQUGradesDataUpdatedNotification object:nil];
+			[[NSNotificationCenter defaultCenter] postNotificationName:SQUStudentsUpdatedNotification object:nil];
+		}
 		
 		if(_students.count == 1) {
 			self.navigationItem.rightBarButtonItem = nil;

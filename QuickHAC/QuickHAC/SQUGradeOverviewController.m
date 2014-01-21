@@ -27,7 +27,6 @@
 
 #import "UIViewController+PKRevealController.h"
 #import "PKRevealController.h"
-#import "UIView+JMNoise.h"
 #import "AFNetworking.h"
 
 @implementation SQUGradeOverviewController

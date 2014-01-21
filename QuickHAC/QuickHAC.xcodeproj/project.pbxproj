@@ -40,7 +40,6 @@
 		DE3AC657187B5A37007540A9 /* NSDate+RelativeDate.m in Sources */ = {isa = PBXBuildFile; fileRef = DE3AC656187B5A37007540A9 /* NSDate+RelativeDate.m */; };
 		DE3AC65C187B63D3007540A9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = DE3AC65A187B63D3007540A9 /* Localizable.strings */; };
 		DE485DD81881CEE800B215C6 /* SQUSidebarSwitcherButton.m in Sources */ = {isa = PBXBuildFile; fileRef = DE485DD71881CEE800B215C6 /* SQUSidebarSwitcherButton.m */; };
-		DE485DDB1881D67500B215C6 /* default_avatar.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DE485DDA1881D67500B215C6 /* default_avatar.jpg */; };
 		DE485DDE1881EACA00B215C6 /* SQUUserSwitcherView.m in Sources */ = {isa = PBXBuildFile; fileRef = DE485DDD1881EACA00B215C6 /* SQUUserSwitcherView.m */; };
 		DE485DE31881FAC700B215C6 /* SQUUserSwitcherCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DE485DE21881FAC700B215C6 /* SQUUserSwitcherCell.m */; };
 		DE4D5BB21888CA3E00371A75 /* about.rtfd in Resources */ = {isa = PBXBuildFile; fileRef = DE4D5BB11888CA3E00371A75 /* about.rtfd */; };
@@ -64,7 +63,6 @@
 		DEF0F1BD186EE52B00116B61 /* UIColor+SQUColourUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F1BC186EE52B00116B61 /* UIColor+SQUColourUtilities.m */; };
 		DEF0F1BF186EEA6500116B61 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DEF0F1BE186EEA6400116B61 /* CoreImage.framework */; };
 		DEF0F1C1186EEA6900116B61 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DEF0F1C0186EEA6900116B61 /* QuartzCore.framework */; };
-		DEF0F1C5186EEB9500116B61 /* UIView+JMNoise.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F1C4186EEB9500116B61 /* UIView+JMNoise.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DEF0F1CB186F7D8F00116B61 /* SQUClassDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F1CA186F7D8F00116B61 /* SQUClassDetailController.m */; };
 		DEF0F1CE186F7D9E00116B61 /* SQUClassDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F1CD186F7D9E00116B61 /* SQUClassDetailCell.m */; };
 		DEF0F1D7186FC7FA00116B61 /* SQUAssignment.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F1D6186FC7FA00116B61 /* SQUAssignment.m */; };
@@ -217,7 +215,6 @@
 		DE3AC65B187B63D3007540A9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		DE485DD61881CEE700B215C6 /* SQUSidebarSwitcherButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUSidebarSwitcherButton.h; sourceTree = "<group>"; };
 		DE485DD71881CEE800B215C6 /* SQUSidebarSwitcherButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUSidebarSwitcherButton.m; sourceTree = "<group>"; };
-		DE485DDA1881D67500B215C6 /* default_avatar.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = default_avatar.jpg; path = "assets/sidebar UI/default_avatar.jpg"; sourceTree = SOURCE_ROOT; };
 		DE485DDC1881EACA00B215C6 /* SQUUserSwitcherView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUUserSwitcherView.h; sourceTree = "<group>"; };
 		DE485DDD1881EACA00B215C6 /* SQUUserSwitcherView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUUserSwitcherView.m; sourceTree = "<group>"; };
 		DE485DE11881FAC700B215C6 /* SQUUserSwitcherCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUUserSwitcherCell.h; sourceTree = "<group>"; };
@@ -261,8 +258,6 @@
 		DEF0F1BC186EE52B00116B61 /* UIColor+SQUColourUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+SQUColourUtilities.m"; sourceTree = "<group>"; };
 		DEF0F1BE186EEA6400116B61 /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
 		DEF0F1C0186EEA6900116B61 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		DEF0F1C3186EEB9500116B61 /* UIView+JMNoise.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIView+JMNoise.h"; path = "../../JMNoise/JMNoise/UIView+JMNoise.h"; sourceTree = "<group>"; };
-		DEF0F1C4186EEB9500116B61 /* UIView+JMNoise.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIView+JMNoise.m"; path = "../../JMNoise/JMNoise/UIView+JMNoise.m"; sourceTree = "<group>"; };
 		DEF0F1C9186F7D8F00116B61 /* SQUClassDetailController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUClassDetailController.h; sourceTree = "<group>"; };
 		DEF0F1CA186F7D8F00116B61 /* SQUClassDetailController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUClassDetailController.m; sourceTree = "<group>"; };
 		DEF0F1CC186F7D9E00116B61 /* SQUClassDetailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUClassDetailCell.h; sourceTree = "<group>"; };
@@ -458,9 +453,8 @@
 				DE0615E717891E23004B2877 /* 3rd Party */,
 				DE06158B17874D0D004B2877 /* SQUAppDelegate.h */,
 				DE06158C17874D0D004B2877 /* SQUAppDelegate.m */,
-				DE485DDA1881D67500B215C6 /* default_avatar.jpg */,
 				DE06159117874D0D004B2877 /* Images.xcassets */,
-				DEF0F2491873FB6700116B61 /* iPad Resources */,
+				DEF0F2491873FB6700116B61 /* Images */,
 				DE06158E17874D0D004B2877 /* QuickHAC.xcdatamodeld */,
 				DE06158317874D0D004B2877 /* Miscellaneous Resources */,
 				DE06158817874D0D004B2877 /* main.m */,
@@ -549,7 +543,6 @@
 				DEF0F24A18740A0200116B61 /* MGSplitViewController */,
 				DEF0F22618727EA700116B61 /* LTHPasscodeViewController */,
 				DEF0F1DE1870E60B00116B61 /* WYPopoverController */,
-				DEF0F1C2186EEB8000116B61 /* JMNoise */,
 				DE7B4E82186EB0CB008079CC /* KCOrderedAccessorFix */,
 				DE81CDD0186D50E800DC1CAB /* TFHpple (HTML Parsing) */,
 				DE35E9A61806147900F15F20 /* Lockbox (Keychain) */,
@@ -728,15 +721,6 @@
 			name = "Miscellaneous UI";
 			sourceTree = "<group>";
 		};
-		DEF0F1C2186EEB8000116B61 /* JMNoise */ = {
-			isa = PBXGroup;
-			children = (
-				DEF0F1C3186EEB9500116B61 /* UIView+JMNoise.h */,
-				DEF0F1C4186EEB9500116B61 /* UIView+JMNoise.m */,
-			);
-			name = JMNoise;
-			sourceTree = "<group>";
-		};
 		DEF0F1DE1870E60B00116B61 /* WYPopoverController */ = {
 			isa = PBXGroup;
 			children = (
@@ -773,12 +757,12 @@
 			path = ../../LTHPasscodeViewController/LTHPasscodeViewController;
 			sourceTree = "<group>";
 		};
-		DEF0F2491873FB6700116B61 /* iPad Resources */ = {
+		DEF0F2491873FB6700116B61 /* Images */ = {
 			isa = PBXGroup;
 			children = (
 				DE0A58AA188CEEC8001A5D17 /* blurry_bg.jpg */,
 			);
-			name = "iPad Resources";
+			name = Images;
 			sourceTree = "<group>";
 		};
 		DEF0F24A18740A0200116B61 /* MGSplitViewController */ = {
@@ -1061,7 +1045,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DE485DDB1881D67500B215C6 /* default_avatar.jpg in Resources */,
 				DEF0F23218727EA700116B61 /* Localizable.strings in Resources */,
 				DEF0F23B1872C3AC00116B61 /* settings_defaults.plist in Resources */,
 				DE3AC65C187B63D3007540A9 /* Localizable.strings in Resources */,
@@ -1146,7 +1129,6 @@
 				DEFFDE58186E270900E26423 /* AFNetworkActivityIndicatorManager.m in Sources */,
 				DEF0F2251871EEAD00116B61 /* SQUDistrictAISD.m in Sources */,
 				DE485DE31881FAC700B215C6 /* SQUUserSwitcherCell.m in Sources */,
-				DEF0F1C5186EEB9500116B61 /* UIView+JMNoise.m in Sources */,
 				DEFFDE5E186E270900E26423 /* UIWebView+AFNetworking.m in Sources */,
 				DEF0F1CB186F7D8F00116B61 /* SQUClassDetailController.m in Sources */,
 				DECFF3CA187B444B007AFE6D /* SQUCycle.m in Sources */,

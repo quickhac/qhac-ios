@@ -231,9 +231,11 @@
 	NSLog(@"Passcode entered successful !!!");
 }
 
+#ifdef DEBUG
 - (void) submitFeedback:(id) sender {
 	[TestFlight submitFeedback:_feedbackView.text];
 	[self dismissViewControllerAnimated:YES completion:NULL];
 }
+#endif
 
 @end

@@ -15,7 +15,6 @@
 #import "SQUColourScheme.h"
 #import "SQUClassDetailCell.h"
 
-#import "UIView+JMNoise.h"
 #import "PKRevealController.h"
 #import "AFNetworking.h"
 #import "WYPopoverController.h"

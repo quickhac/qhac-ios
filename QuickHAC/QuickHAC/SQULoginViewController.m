@@ -174,7 +174,7 @@
         _textView.adjustsFontSizeToFitWidth = YES;
         _textView.minimumFontSize = 12;
         
-		_textView.attributedPlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Username", @"login view controller placeholder") attributes:@{NSForegroundColorAttributeName: UIColorFromRGB(kSQUColourTitle)}];
+		_textView.attributedPlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Username", @"login view controller placeholder") attributes:@{NSForegroundColorAttributeName: UIColorFromRGB(kSQUColourAsbestos)}];
         
         _usernameField = _textView;
     } else if(indexPath.row == 1) {
@@ -184,7 +184,7 @@
         _textView.adjustsFontSizeToFitWidth = YES;
         _textView.minimumFontSize = 12;
         
-		_textView.attributedPlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Password", @"login view controller placeholder") attributes:@{NSForegroundColorAttributeName: UIColorFromRGB(kSQUColourTitle)}];
+		_textView.attributedPlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Password", @"login view controller placeholder") attributes:@{NSForegroundColorAttributeName: UIColorFromRGB(kSQUColourAsbestos)}];
         
         _passField = _textView;
     }
@@ -333,18 +333,25 @@
 	// Set district so login may occurr
 	[[SQUDistrictManager sharedInstance] selectDistrictWithID:_district.district_id];
 	
+	__block SQUStudent *oldStudent = [SQUGradeManager sharedInstance].student;
+	
 	// Ask the current district instance to do a log in
 	[[SQUDistrictManager sharedInstance] performLoginRequestWithUser:_usernameField.text usingPassword:_passField.text andCallback:^(NSError *error, id returnData){
 		if(!error) {
 			if(!returnData) {
 				[SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Wrong Credentials", nil)];
+
+				// Restore old student state
+				if(oldStudent) {
+					[[SQUDistrictManager sharedInstance] selectDistrictWithID:oldStudent.district.integerValue];
+					[[SQUGradeManager sharedInstance] setStudent:oldStudent];
+				}
 			} else {
 				[SVProgressHUD showProgress:-1 status:NSLocalizedString(@"Adding students", nil) maskType:SVProgressHUDMaskTypeGradient];
 				// Store the username's password in the keychain
 				[Lockbox setString:_passField.text forKey:_usernameField.text];
 
 				// Back up the old student as we need a temporary switch to retrieve data
-				SQUStudent *oldStudent = [SQUGradeManager sharedInstance].student;
 				__unsafe_unretained __block SQULoginViewController *self_unsafe = self;
 
 				// Set up login function
@@ -355,7 +362,7 @@
 					NSLog(@"fetching grades for: %@", [SQUGradeManager sharedInstance].student.name);
 					
 					// Fetch grades
-					[[SQUGradeManager sharedInstance] fetchNewClassGradesFromServerWithDoneCallback:^(NSError *error) {						
+					[[SQUGradeManager sharedInstance] fetchNewClassGradesFromServerWithDoneCallback:^(NSError *error) {
 						if(!error) {
 							[SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"Done", nil)];
 							
@@ -421,15 +428,22 @@
 					picker.delegate = self;
 					[self.navigationController pushViewController:picker animated:YES];
 				} else if(![SQUDistrictManager sharedInstance].currentDistrict.hasMultipleStudents && !oldStudent) {
-					[[NSUserDefaults standardUserDefaults] setInteger:0 forKey:@"selectedStudent"];
-					[[NSUserDefaults standardUserDefaults] synchronize];
-					
+					// No previous students and not multistudent account
+					[[SQUGradeManager sharedInstance] changeSelectedStudent:_students[0]];
 					[[SQUGradeManager sharedInstance] setStudent:_students[0]];
 					
 					_studentLoginFunction();
 				} else {
+					// There exists a previous student(s), and this account does not have multistudent
+					
 					// Perform fetch for this student to gather some info about them
 					if(![SQUDistrictManager sharedInstance].currentDistrict.hasMultipleStudents) {
+						// this is so the student data goes to the right student
+						SQUStudent *theStudent = _students[0];
+						theStudent.name = nil;
+						theStudent.display_name = nil;
+						[[SQUGradeManager sharedInstance] setStudent:theStudent];
+						
 						[SVProgressHUD showProgress:-1 status:NSLocalizedString(@"Updating Grades", nil) maskType:SVProgressHUDMaskTypeGradient];
 						
 						// Fetch grades
@@ -480,6 +494,14 @@
             
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Authenticating", nil) message:error.localizedDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
             [alert show];
+			
+			// Restore old student state
+			if(oldStudent) {
+				NSLog(@"Restoring student: %@", oldStudent);
+				
+				[[SQUDistrictManager sharedInstance] selectDistrictWithID:oldStudent.district.integerValue];
+				[[SQUGradeManager sharedInstance] setStudent:oldStudent];
+			}
 		}
 	}];
 }
