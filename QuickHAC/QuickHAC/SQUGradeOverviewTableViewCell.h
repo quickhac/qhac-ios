@@ -36,7 +36,6 @@
 
 - (void) updateUI;
 
-+ (UIColor *) colourizeGrade:(float) grade;
 + (UIColor *) colourForLetterGrade:(NSString *) grade;
 + (CGFloat) cellHeightForCourse:(SQUCourse *) course;
 

@@ -1323,6 +1323,7 @@
 				CODE_SIGN_ENTITLEMENTS = QuickHAC/QuickHAC.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				EXCLUDED_SOURCE_FILE_NAMES = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "QuickHAC/QuickHAC-Prefix.pch";
 				GCC_WARN_UNDECLARED_SELECTOR = NO;
@@ -1357,6 +1358,7 @@
 				CODE_SIGN_ENTITLEMENTS = QuickHAC/QuickHAC.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				EXCLUDED_SOURCE_FILE_NAMES = libTestFlight.a;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "QuickHAC/QuickHAC-Prefix.pch";
 				GCC_WARN_UNDECLARED_SELECTOR = NO;

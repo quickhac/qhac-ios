@@ -83,7 +83,7 @@
     _tableMovedAlready = NO;
 	
 	// Background
-	_background = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"blurry_bg.jpg"]];
+/*	_background = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"blurry_bg.jpg"]];
 	_background.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
 	_background.alpha =  0.75;
 	_background.opaque = YES;
@@ -111,7 +111,7 @@
 	group.motionEffects = @[horizontalMotionEffect, verticalMotionEffect];
 	
 	// Add both effects to your view
-	[_background addMotionEffect:group];
+	[_background addMotionEffect:group];*/
 	
 	self.view.backgroundColor = UIColorFromRGB(kSQUColourConcrete);
 	
@@ -549,11 +549,11 @@
 	
 	selectedStudent = [students indexOfObject:student];
 	
+	// Make sure the student is in the DB
 	if(selectedStudent != NSNotFound) {
 		// Only update selection if there's no other students in the database
 		if(students.count == _students.count) {
-			[[NSUserDefaults standardUserDefaults] setInteger:selectedStudent forKey:@"selectedStudent"];
-			[[NSUserDefaults standardUserDefaults] synchronize];
+			[[SQUGradeManager sharedInstance] changeSelectedStudent:student];
 		}
 	} else {
 		NSLog(@"student %@ is fucked man", student);

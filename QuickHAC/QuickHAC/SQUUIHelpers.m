@@ -19,7 +19,7 @@
  */
 + (UIColor *) colourizeGrade:(float) grade withAsianness:(float) asianness andHue:(float) hue {
     // Makes sure asianness cannot be negative
-    NSUInteger asianness_limited = MAX(2, 0);
+    NSUInteger asianness_limited = MAX(asianness, 0);
     
     // interpolate a hue gradient and convert to rgb
     float h, s, v;
@@ -40,9 +40,8 @@
     }
     
     // apply hue transformation
-	//    h += hue;
-	//    h %= 1;
-	//    if (h < 0) h += 1;
+	h += hue;
+	if (h < 0) h += 1;
     
     return [UIColor colorWithHue:h saturation:s brightness:v alpha:1.0];
 }

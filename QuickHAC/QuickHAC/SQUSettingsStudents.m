@@ -145,6 +145,8 @@
     if (editingStyle == UITableViewCellEditingStyleDelete) {
 		NSInteger selectedStudent = [_students indexOfObject:[[SQUGradeManager sharedInstance] getSelectedStudent]];
 		
+		// Delete object from DB
+		[[SQUAppDelegate sharedDelegate].managedObjectContext deleteObject:_students[indexPath.row]];
 		[_students removeObjectAtIndex:indexPath.row];
 		
 		if(indexPath.row == selectedStudent) {
@@ -160,9 +162,6 @@
 				NSAssert(false, @"Unhandled student deletion case");
 			}
 		}
-		
-		// Delete object from DB
-		[[SQUAppDelegate sharedDelegate].managedObjectContext deleteObject:_students[indexPath.row]];
 		
 		// Do animate-y thing
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];

@@ -40,8 +40,8 @@
 		self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         
 		self.tableView.backgroundView = [[UIView alloc] initWithFrame:self.tableView.frame];
-		self.tableView.backgroundView.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1.0];
-		[self.tableView.backgroundView applyNoiseWithOpacity:0.15f];
+		self.tableView.backgroundView.backgroundColor = UIColorFromRGB(kSQUColourTableBackground);
+		// [self.tableView.backgroundView applyNoiseWithOpacity:0.15f];
 		
         self.title = NSLocalizedString(@"Overview", nil);
         
@@ -57,7 +57,7 @@
 		
 		_titleLayer = [CATextLayer new];
 		_titleLayer.frame = CGRectMake(0, 4, 200, 28);
-		_titleLayer.font = (__bridge CFTypeRef)([UIFont fontWithName:@"HelveticaNeue-Light" size:26.0]);
+		_titleLayer.font = (__bridge CFTypeRef)([UIFont fontWithName:@"HelveticaNeue-Medium" size:26.0]);
 		_titleLayer.fontSize = 17.0f;
 		_titleLayer.contentsScale = [UIScreen mainScreen].scale;
 		_titleLayer.foregroundColor = UIColorFromRGB(kSQUColourTitle).CGColor;

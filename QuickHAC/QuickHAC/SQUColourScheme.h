@@ -36,5 +36,6 @@
 #define kSQUColourNavbarBG kSQUColourBelizeHole
 #define kSQUColourTitle kSQUColourClouds
 #define kSQUColourSubtitle 0xe3e8e9
+#define kSQUColourTableBackground kSQUColourClouds
 
 #endif

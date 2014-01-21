@@ -53,6 +53,25 @@ static SQUAppDelegate *sharedDelegate = nil;
 	NSAssert(defaultPreferences, @"Default preferences could not be loaded from URL %@", defaultPreferencesURL);
 	[[NSUserDefaults standardUserDefaults] registerDefaults:defaultPreferences];
 	
+	// See if the user updated the app
+	NSString *appVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey: @"CFBundleShortVersionString"];
+	NSString *lastVersion = [[NSUserDefaults standardUserDefaults] stringForKey:@"lastAppVersion"];
+	
+	if(lastVersion) {
+		if([lastVersion isEqualToString:appVersion]) {
+			// not updated since last launch
+		} else {
+			NSLog(@"User updated from %@ to %@", lastVersion, appVersion);
+			[[NSUserDefaults standardUserDefaults] setObject:appVersion forKey:@"lastAppVersion"];
+			[[NSUserDefaults standardUserDefaults] synchronize];
+		}
+	} else {
+		NSLog(@"User is running %@ for first time", appVersion);
+		
+		[[NSUserDefaults standardUserDefaults] setObject:appVersion forKey:@"lastAppVersion"];
+		[[NSUserDefaults standardUserDefaults] synchronize];
+	}
+	
     // Used for the entire singleton thing
     sharedDelegate = self;
     
@@ -84,7 +103,7 @@ static SQUAppDelegate *sharedDelegate = nil;
 		[[UINavigationBar appearance] setBackgroundColor:UIColorFromRGB(kSQUColourNavbarBG)];
 		[[UINavigationBar appearance] setTitleTextAttributes:@{
 															   NSForegroundColorAttributeName: UIColorFromRGB(kSQUColourTitle),
-															   NSFontAttributeName: [UIFont fontWithName:@"HelveticaNeue-Light" size:0.0],
+															   NSFontAttributeName: [UIFont fontWithName:@"HelveticaNeue-Medium" size:0.0],
 															   }];
 		[[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"navbar_bg"] forBarMetrics:UIBarMetricsDefault];
 		
