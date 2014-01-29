@@ -396,13 +396,13 @@ static SQUGradeManager *_sharedInstance = nil;
 			
 			/*
 			 * Attempt to detect if a course is honours or not by checking for
-			 * "AP", "IB" or "TAG" in the title.
+			 * "AP", "IB" or "TAG" in the title, ignoring the case of the text.
 			 */
-			if(!NSEqualRanges([course.title rangeOfString:@"IB"], NSMakeRange(NSNotFound, 0))) {
+			if(!NSEqualRanges([course.title rangeOfString:@"IB" options:NSCaseInsensitiveSearch], NSMakeRange(NSNotFound, 0))) {
 				course.isHonours = @(YES);
-			} else if(!NSEqualRanges([course.title rangeOfString:@"AP"], NSMakeRange(NSNotFound, 0))) {
+			} else if(!NSEqualRanges([course.title rangeOfString:@"AP" options:NSCaseInsensitiveSearch], NSMakeRange(NSNotFound, 0))) {
 				course.isHonours = @(YES);
-			} else if(!NSEqualRanges([course.title rangeOfString:@"TAG"], NSMakeRange(NSNotFound, 0))) {
+			} else if(!NSEqualRanges([course.title rangeOfString:@"TAG" options:NSCaseInsensitiveSearch], NSMakeRange(NSNotFound, 0))) {
 				course.isHonours = @(YES);
 			} else {
 				course.isHonours = @(NO);

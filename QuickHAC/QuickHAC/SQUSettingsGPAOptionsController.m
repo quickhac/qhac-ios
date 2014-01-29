@@ -39,8 +39,9 @@
 		__unsafe_unretained SQUCourse *tempCourse = course;
 		
 		toggle.onValueChanged = ^(QRootElement *root) {
-			tempCourse.isExcludedFromGPA = @(tempToggle.boolValue);
-			[[SQUAppDelegate sharedDelegate] saveContext];
+			tempCourse.isHonours = @(tempToggle.boolValue);
+			_shouldSaveDB = YES;
+			// [[SQUAppDelegate sharedDelegate] saveContext];
 		};
 		
 		[section addElement:toggle];
@@ -59,7 +60,8 @@
 		
 		toggle.onValueChanged = ^(QRootElement *root) {
 			tempCourse.isExcludedFromGPA = @(tempToggle.boolValue);
-			[[SQUAppDelegate sharedDelegate] saveContext];
+			_shouldSaveDB = YES;
+			// [[SQUAppDelegate sharedDelegate] saveContext];
 		};
 		
 		[section addElement:toggle];
@@ -70,7 +72,26 @@
 	[root addSection:section];
 	self.root = root;
 	
+	_shouldSaveDB = NO;
+	
 	return self;
+}
+
+// When the view disappears, we should try to save the DB
+- (void) viewWillDisappear:(BOOL) animated {
+	// Only save if needed
+	if(!_shouldSaveDB) return;
+	
+	NSLog(@"saving db");
+	
+	// Save to DB
+	NSError *err = nil;
+	if(![[SQUAppDelegate sharedDelegate].managedObjectContext save:&err]) {
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Database Error", nil) message:err.localizedDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
+		[alert show];
+	} else {
+		_shouldSaveDB = NO;
+	}
 }
 
 @end

@@ -8,6 +8,8 @@
 
 #import "QuickDialogController.h"
 
-@interface SQUSettingsGPAOptionsController : QuickDialogController
+@interface SQUSettingsGPAOptionsController : QuickDialogController {
+	BOOL _shouldSaveDB;
+}
 
 @end
