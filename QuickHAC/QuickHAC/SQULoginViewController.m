@@ -174,7 +174,7 @@
         _textView.adjustsFontSizeToFitWidth = YES;
         _textView.minimumFontSize = 12;
         
-		_textView.attributedPlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Username", @"login view controller placeholder") attributes:@{NSForegroundColorAttributeName: UIColorFromRGB(kSQUColourClouds)}];
+		_textView.attributedPlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Username", @"login view controller placeholder") attributes:@{NSForegroundColorAttributeName: UIColorFromRGB(kSQUColourSilver)}];
         
         _usernameField = _textView;
     } else if(indexPath.row == 1) {
@@ -184,7 +184,7 @@
         _textView.adjustsFontSizeToFitWidth = YES;
         _textView.minimumFontSize = 12;
         
-		_textView.attributedPlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Password", @"login view controller placeholder") attributes:@{NSForegroundColorAttributeName: UIColorFromRGB(kSQUColourClouds)}];
+		_textView.attributedPlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Password", @"login view controller placeholder") attributes:@{NSForegroundColorAttributeName: UIColorFromRGB(kSQUColourSilver)}];
         
         _passField = _textView;
     }
@@ -552,8 +552,6 @@
 }
 
 - (void) studentPickerDidSelect:(SQULoginStudentPicker *) picker withStudent:(SQUStudent *) student {
-	[[SQUGradeManager sharedInstance] setStudent:student];
-	
 	// Check which index this student is in the database.
 	NSUInteger selectedStudent;
 	
@@ -576,16 +574,24 @@
 		// Only update selection if there's no other students in the database
 		if(students.count == _students.count) {
 			[[SQUGradeManager sharedInstance] changeSelectedStudent:student];
+			[[SQUGradeManager sharedInstance] setStudent:student];
+			
+			// Fire off notifications
+			[[NSNotificationCenter defaultCenter] postNotificationName:SQUGradesDataUpdatedNotification object:nil];
+			[[NSNotificationCenter defaultCenter] postNotificationName:SQUStudentsUpdatedNotification object:nil];
 		}
 	} else {
 		NSLog(@"student %@ is fucked man", student);
 		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Database Error", nil) message:NSLocalizedString(@"Something happened.", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
 		[alert show];
 		
-		// something broke so delete students from DB
+		// something broke so delete students added earlier from DB and plsagaintry
 		for(SQUStudent *studentToDelete in _students) {
 			[[SQUAppDelegate sharedDelegate].managedObjectContext deleteObject:studentToDelete];
 		}
+		
+		[[SQUAppDelegate sharedDelegate] saveContext];
+		[self.navigationController popViewControllerAnimated:YES];
 		
 		return;
 	}

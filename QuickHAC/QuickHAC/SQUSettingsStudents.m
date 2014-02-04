@@ -210,18 +210,30 @@
 				// Reset default student
 				[[SQUGradeManager sharedInstance] changeSelectedStudent:nil];
 				
+				/*
+				 * This is ESSENTIAL to avoid a crash in the login code when all
+				 * students are deleted and a multi-student account is added, as
+				 * the student picker will NOT be shown and the app is left in
+				 * an inconsistent state.
+				 */
+				[SQUGradeManager sharedInstance].student = nil;
+				
 				// Save to DB
 				NSError *err = nil;
 				if(![[SQUAppDelegate sharedDelegate].managedObjectContext save:&err]) {
 					UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Database Error", nil) message:err.localizedDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
 					[alert show];
+					return;
 				}
 				
 				// If we deleted all students, we must show the login dialogue
-				SQULoginSchoolSelector *loginController = [[SQULoginSchoolSelector alloc] initWithStyle:UITableViewStyleGrouped];
-				[self.navigationController popToRootViewControllerAnimated:YES];
-				[self.navigationController dismissViewControllerAnimated:YES completion:NULL];
-				[self.navigationController presentViewController:[[UINavigationController alloc] initWithRootViewController:loginController] animated:NO completion:NULL];
+				[self.navigationController dismissViewControllerAnimated:NO completion:^{
+					SQULoginSchoolSelector *loginController = [[SQULoginSchoolSelector alloc] initWithStyle:UITableViewStyleGrouped];
+					[[[UIApplication sharedApplication].windows[0] rootViewController] presentViewController:[[UINavigationController alloc] initWithRootViewController:loginController] animated:NO completion:NULL];
+					
+					// Hide sidebar
+					[((PKRevealController *) [[UIApplication sharedApplication].windows[0] rootViewController]) resignPresentationModeEntirely:YES animated:NO completion:NULL];
+				}];
 			}
 			
 			break;
