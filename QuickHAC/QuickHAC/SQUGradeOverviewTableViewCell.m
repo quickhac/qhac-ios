@@ -16,6 +16,8 @@
 #import "SQUGradeManager.h"
 #import "UIColor+SQUColourUtilities.h"
 
+#define kSQUGradeOverviewAverageFontSize 29
+
 @interface SQUGradeOverviewTableViewCell (PrivateMethods)
 
 - (CATextLayer *) makeRowHeaderWithString:(NSString *) string andFrame:(CGRect) frame;
@@ -264,10 +266,10 @@
 				
 				// Draw average
 				CATextLayer *average = [CATextLayer layer];
-				average.frame = CGRectMake(0, 4, width, 47);
+				average.frame = CGRectMake(0, 6, width, 47);
 				average.contentsScale = [UIScreen mainScreen].scale;
 				average.font = (__bridge CFTypeRef) [UIFont fontWithName:@"HelveticaNeue-Light" size:15.0f];
-				average.fontSize = 31;
+				average.fontSize = kSQUGradeOverviewAverageFontSize;
 				average.alignmentMode = kCAAlignmentCenter;
 				[bg addSublayer:average];
 				
@@ -313,11 +315,11 @@
 				
 				// Draw average
 				CATextLayer *average = [CATextLayer layer];
-				average.frame = CGRectMake(0, 4, width, 47);
+				average.frame = CGRectMake(0, 6, width, 47);
 				average.contentsScale = [UIScreen mainScreen].scale;
 				average.foregroundColor = [UIColor blackColor].CGColor;
 				average.font = (__bridge CFTypeRef) [UIFont fontWithName:@"HelveticaNeue-Light" size:15.0f];
-				average.fontSize = 31;
+				average.fontSize = kSQUGradeOverviewAverageFontSize;
 				average.alignmentMode = kCAAlignmentCenter;
 				[bg addSublayer:average];
 				

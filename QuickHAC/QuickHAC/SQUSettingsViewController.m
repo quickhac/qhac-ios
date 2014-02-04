@@ -201,6 +201,21 @@
 	}
 }
 
+/**
+ * This method is overridden to allow us to have a custom footer in the table.
+ */
+- (NSString *) tableView:(UITableView *) tableView titleForFooterInSection:(NSInteger) section {
+	if(section == 1) {
+		NSDictionary *info = [[NSBundle mainBundle] infoDictionary];
+		NSString *build = info[@"CFBundleVersion"];
+		NSString *version = info[@"CFBundleShortVersionString"];
+		
+		return [NSString stringWithFormat:NSLocalizedString(@"QuickHAC Version %@ (build %@)", @"settings footer"), version, build];
+	}
+	
+	return nil;
+}
+
 #pragma mark - UI callbacks
 - (void) closeModal:(id) sender {
 	[self dismissViewControllerAnimated:YES completion:NULL];

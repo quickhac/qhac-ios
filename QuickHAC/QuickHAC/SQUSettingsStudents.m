@@ -43,8 +43,8 @@
 			return nil;
 		}
 		
-		
-		if(_students.count > 1) {
+		// Display edit button regardless
+		if(true) {
 			self.navigationItem.rightBarButtonItem = self.editButtonItem;
 		}
 		
@@ -138,11 +138,19 @@
 
 #pragma mark - Table editng for student items
 - (BOOL) tableView:(UITableView *) tableView canEditRowAtIndexPath:(NSIndexPath *) indexPath {
-    return (indexPath.section == 0) && !(_students.count == 1);
+    return (indexPath.section == 0) /*&& !(_students.count == 1)*/;
 }
 
 - (void) tableView:(UITableView *) tableView commitEditingStyle:(UITableViewCellEditingStyle) editingStyle forRowAtIndexPath:(NSIndexPath *) indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
+		// if there's only one student left and we delete it ask for more confirmation
+		if(_students.count == 1) {
+			UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Once you remove this student, QuickHAC will require you to add an account before you can use it.", nil) delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) destructiveButtonTitle:NSLocalizedString(@"Remove Student", nil) otherButtonTitles:nil];
+			sheet.tag = kSQUActionSheetDeleteStudent;
+			[sheet showInView:self.view];
+			return;
+		}
+		
 		NSInteger selectedStudent = [_students indexOfObject:[[SQUGradeManager sharedInstance] getSelectedStudent]];
 		
 		// Delete object from DB
@@ -166,9 +174,12 @@
 			[[NSNotificationCenter defaultCenter] postNotificationName:SQUStudentsUpdatedNotification object:nil];
 		}
 		
-		if(_students.count == 1) {
-			self.navigationItem.rightBarButtonItem = nil;
-			[self.tableView setEditing:NO animated:YES];
+		// If we deleted all students, we must show the login dialogue
+		if(_students.count == 0) {
+			SQULoginSchoolSelector *loginController = [[SQULoginSchoolSelector alloc] initWithStyle:UITableViewStyleGrouped];
+			[self.navigationController popToRootViewControllerAnimated:YES];
+			[self.navigationController dismissViewControllerAnimated:YES completion:NULL];
+			[self.navigationController presentViewController:[[UINavigationController alloc] initWithRootViewController:loginController] animated:NO completion:NULL];
 		}
 		
 		// Save to DB
@@ -178,6 +189,47 @@
 			[alert show];
 		}
     }
+}
+
+#pragma mark - Action sheet
+- (void) actionSheet:(UIActionSheet *) actionSheet clickedButtonAtIndex:(NSInteger) buttonIndex {
+	switch (actionSheet.tag) {
+		case kSQUActionSheetDeleteStudent: {
+			if (buttonIndex == 1) {
+				[self.tableView endEditing:YES];
+			} else if(buttonIndex == 0) {
+				// Delete object from DB
+				[self.tableView beginUpdates];
+				[[SQUAppDelegate sharedDelegate].managedObjectContext deleteObject:_students[0]];
+				[_students removeObject:_students[0]];
+				
+				// Do animate-y thing
+				[self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+				[self.tableView endUpdates];
+				
+				// Reset default student
+				[[SQUGradeManager sharedInstance] changeSelectedStudent:nil];
+				
+				// Save to DB
+				NSError *err = nil;
+				if(![[SQUAppDelegate sharedDelegate].managedObjectContext save:&err]) {
+					UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Database Error", nil) message:err.localizedDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
+					[alert show];
+				}
+				
+				// If we deleted all students, we must show the login dialogue
+				SQULoginSchoolSelector *loginController = [[SQULoginSchoolSelector alloc] initWithStyle:UITableViewStyleGrouped];
+				[self.navigationController popToRootViewControllerAnimated:YES];
+				[self.navigationController dismissViewControllerAnimated:YES completion:NULL];
+				[self.navigationController presentViewController:[[UINavigationController alloc] initWithRootViewController:loginController] animated:NO completion:NULL];
+			}
+			
+			break;
+		}
+			
+		default:
+			break;
+	}
 }
 
 #pragma mark - Student adding

@@ -17,10 +17,6 @@
 		DE06158D17874D0D004B2877 /* SQUAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DE06158C17874D0D004B2877 /* SQUAppDelegate.m */; };
 		DE06159017874D0D004B2877 /* QuickHAC.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DE06158E17874D0D004B2877 /* QuickHAC.xcdatamodeld */; };
 		DE06159217874D0D004B2877 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DE06159117874D0D004B2877 /* Images.xcassets */; };
-		DE06159917874D0F004B2877 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE06159817874D0F004B2877 /* XCTest.framework */; };
-		DE06159A17874D0F004B2877 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE06157A17874D0C004B2877 /* Foundation.framework */; };
-		DE06159B17874D0F004B2877 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE06157E17874D0C004B2877 /* UIKit.framework */; };
-		DE06159C17874D0F004B2877 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE06158017874D0C004B2877 /* CoreData.framework */; };
 		DE0615D31787AD3E004B2877 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE0615D21787AD3D004B2877 /* SystemConfiguration.framework */; };
 		DE0615D51787AD50004B2877 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE0615D41787AD50004B2877 /* MobileCoreServices.framework */; };
 		DE0615D81787ADFE004B2877 /* SQULoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0615D71787ADFE004B2877 /* SQULoginViewController.m */; };
@@ -117,13 +113,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		DE06159D17874D0F004B2877 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = DE06156F17874D0C004B2877 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = DE06157617874D0C004B2877;
-			remoteInfo = QuickHAC;
-		};
 		DEF0F20C18712DB300116B61 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = DEF0F20718712DB100116B61 /* QuickDialog.xcodeproj */;
@@ -177,7 +166,6 @@
 		DE06158C17874D0D004B2877 /* SQUAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SQUAppDelegate.m; sourceTree = "<group>"; };
 		DE06158F17874D0D004B2877 /* QuickHAC.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = QuickHAC.xcdatamodel; sourceTree = "<group>"; };
 		DE06159117874D0D004B2877 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		DE06159717874D0F004B2877 /* QuickHACTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QuickHACTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DE06159817874D0F004B2877 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		DE0615D017874F73004B2877 /* QuickHAC.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = QuickHAC.entitlements; sourceTree = "<group>"; };
 		DE0615D21787AD3D004B2877 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -283,12 +271,10 @@
 		DEF0F2241871EEAD00116B61 /* SQUDistrictAISD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUDistrictAISD.m; sourceTree = "<group>"; };
 		DEF0F22818727EA700116B61 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		DEF0F22918727EA700116B61 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
-		DEF0F22A18727EA700116B61 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		DEF0F22B18727EA700116B61 /* LTHNavigationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTHNavigationViewController.h; sourceTree = "<group>"; };
 		DEF0F22C18727EA700116B61 /* LTHNavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTHNavigationViewController.m; sourceTree = "<group>"; };
 		DEF0F22D18727EA700116B61 /* LTHPasscodeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTHPasscodeViewController.h; sourceTree = "<group>"; };
 		DEF0F22E18727EA700116B61 /* LTHPasscodeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTHPasscodeViewController.m; sourceTree = "<group>"; };
-		DEF0F22F18727EA700116B61 /* ro */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ro; path = ro.lproj/Localizable.strings; sourceTree = "<group>"; };
 		DEF0F23018727EA700116B61 /* SFHFKeychainUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFHFKeychainUtils.h; sourceTree = "<group>"; };
 		DEF0F23118727EA700116B61 /* SFHFKeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFHFKeychainUtils.m; sourceTree = "<group>"; };
 		DEF0F2381872901C00116B61 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
@@ -383,17 +369,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		DE06159417874D0F004B2877 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				DE06159917874D0F004B2877 /* XCTest.framework in Frameworks */,
-				DE06159C17874D0F004B2877 /* CoreData.framework in Frameworks */,
-				DE06159B17874D0F004B2877 /* UIKit.framework in Frameworks */,
-				DE06159A17874D0F004B2877 /* Foundation.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -412,7 +387,6 @@
 			isa = PBXGroup;
 			children = (
 				DE06157717874D0C004B2877 /* QuickHAC.app */,
-				DE06159717874D0F004B2877 /* QuickHACTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -938,24 +912,6 @@
 			productReference = DE06157717874D0C004B2877 /* QuickHAC.app */;
 			productType = "com.apple.product-type.application";
 		};
-		DE06159617874D0F004B2877 /* QuickHACTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = DE0615AC17874D0F004B2877 /* Build configuration list for PBXNativeTarget "QuickHACTests" */;
-			buildPhases = (
-				DE06159317874D0F004B2877 /* Sources */,
-				DE06159417874D0F004B2877 /* Frameworks */,
-				DE06159517874D0F004B2877 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				DE06159E17874D0F004B2877 /* PBXTargetDependency */,
-			);
-			name = QuickHACTests;
-			productName = QuickHACTests;
-			productReference = DE06159717874D0F004B2877 /* QuickHACTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -979,9 +935,6 @@
 								enabled = 1;
 							};
 						};
-					};
-					DE06159617874D0F004B2877 = {
-						TestTargetID = DE06157617874D0C004B2877;
 					};
 				};
 			};
@@ -1011,7 +964,6 @@
 			projectRoot = "";
 			targets = (
 				DE06157617874D0C004B2877 /* QuickHAC */,
-				DE06159617874D0F004B2877 /* QuickHACTests */,
 			);
 		};
 /* End PBXProject section */
@@ -1057,13 +1009,6 @@
 				DE06159217874D0D004B2877 /* Images.xcassets in Resources */,
 				DEF0F23E1873797400116B61 /* DistrictCerts.bundle in Resources */,
 				DE4D5BB21888CA3E00371A75 /* about.rtfd in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		DE06159517874D0F004B2877 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1171,21 +1116,9 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		DE06159317874D0F004B2877 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		DE06159E17874D0F004B2877 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = DE06157617874D0C004B2877 /* QuickHAC */;
-			targetProxy = DE06159D17874D0F004B2877 /* PBXContainerItemProxy */;
-		};
 		DEF0F21118712DC200116B61 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = QuickDialog;
@@ -1220,8 +1153,6 @@
 			children = (
 				DEF0F22818727EA700116B61 /* de */,
 				DEF0F22918727EA700116B61 /* en */,
-				DEF0F22A18727EA700116B61 /* es */,
-				DEF0F22F18727EA700116B61 /* ro */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -1303,7 +1234,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = QuickHAC/QuickHAC.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Thomas Seifert (86GK6CJCPM)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				EXCLUDED_SOURCE_FILE_NAMES = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1320,9 +1251,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"/Users/tristanseifert/quickhac-ios/TestFlightSDK2.1.3",
-					"/Users/tristanseifert/quickhac-ios/QuickHAC/TestFlightSDK2.1.3",
-					"/Users/tristanseifert/QuickHAC/quickhac-ios/QuickHAC/TestFlightSDK2.1.3",
+					"$(SRCROOT)/TestFlightSDK2.1.3",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1338,7 +1267,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = QuickHAC/QuickHAC.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Thomas Seifert (86GK6CJCPM)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				EXCLUDED_SOURCE_FILE_NAMES = libTestFlight.a;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1355,55 +1284,13 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"/Users/tristanseifert/quickhac-ios/TestFlightSDK2.1.3",
-					"/Users/tristanseifert/quickhac-ios/QuickHAC/TestFlightSDK2.1.3",
-					"/Users/tristanseifert/QuickHAC/quickhac-ios/QuickHAC/TestFlightSDK2.1.3",
+					"$(SRCROOT)/TestFlightSDK2.1.3",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "E3EEA7E0-939E-45CA-AD8D-3574C38B6E35";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
-			};
-			name = Release;
-		};
-		DE0615AD17874D0F004B2877 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/QuickHAC.app/QuickHAC";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(SYSTEM_APPS_DIR)/Xcode5-DP.app/Contents/Developer/Library/Frameworks",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "QuickHAC/QuickHAC-Prefix.pch";
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = "QuickHACTests/QuickHACTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = xctest;
-			};
-			name = Debug;
-		};
-		DE0615AE17874D0F004B2877 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/QuickHAC.app/QuickHAC";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(SYSTEM_APPS_DIR)/Xcode5-DP.app/Contents/Developer/Library/Frameworks",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "QuickHAC/QuickHAC-Prefix.pch";
-				INFOPLIST_FILE = "QuickHACTests/QuickHACTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = xctest;
 			};
 			name = Release;
 		};
@@ -1424,15 +1311,6 @@
 			buildConfigurations = (
 				DE0615AA17874D0F004B2877 /* Debug */,
 				DE0615AB17874D0F004B2877 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		DE0615AC17874D0F004B2877 /* Build configuration list for PBXNativeTarget "QuickHACTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				DE0615AD17874D0F004B2877 /* Debug */,
-				DE0615AE17874D0F004B2877 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

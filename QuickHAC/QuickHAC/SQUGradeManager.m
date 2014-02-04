@@ -609,16 +609,22 @@ static SQUGradeManager *_sharedInstance = nil;
 
 #pragma mark - Student management
 /**
- * Updates the selected student.
+ * Updates the selected student. Passing `nil` causes the preference to be
+ * deleted from the user default store.
  *
  * @param student The student to select.
  */
 - (void) changeSelectedStudent:(SQUStudent *) student {
-	NSManagedObjectID *objID = student.objectID;
-	NSString *str = objID.URIRepresentation.absoluteString;
-	
-	[[NSUserDefaults standardUserDefaults] setObject:str forKey:@"currentStudent"];
-	[[NSUserDefaults standardUserDefaults] synchronize];
+	if(student) {
+		NSManagedObjectID *objID = student.objectID;
+		NSString *str = objID.URIRepresentation.absoluteString;
+		
+		[[NSUserDefaults standardUserDefaults] setObject:str forKey:@"currentStudent"];
+		[[NSUserDefaults standardUserDefaults] synchronize];
+	} else {
+		[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"currentStudent"];
+		[[NSUserDefaults standardUserDefaults] synchronize];
+	}
 	
 	//NSLog(@"Changed selected student: %@", str);
 }

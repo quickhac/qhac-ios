@@ -174,7 +174,7 @@
         _textView.adjustsFontSizeToFitWidth = YES;
         _textView.minimumFontSize = 12;
         
-		_textView.attributedPlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Username", @"login view controller placeholder") attributes:@{NSForegroundColorAttributeName: UIColorFromRGB(kSQUColourAsbestos)}];
+		_textView.attributedPlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Username", @"login view controller placeholder") attributes:@{NSForegroundColorAttributeName: UIColorFromRGB(kSQUColourClouds)}];
         
         _usernameField = _textView;
     } else if(indexPath.row == 1) {
@@ -184,7 +184,7 @@
         _textView.adjustsFontSizeToFitWidth = YES;
         _textView.minimumFontSize = 12;
         
-		_textView.attributedPlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Password", @"login view controller placeholder") attributes:@{NSForegroundColorAttributeName: UIColorFromRGB(kSQUColourAsbestos)}];
+		_textView.attributedPlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Password", @"login view controller placeholder") attributes:@{NSForegroundColorAttributeName: UIColorFromRGB(kSQUColourClouds)}];
         
         _passField = _textView;
     }
@@ -581,6 +581,12 @@
 		NSLog(@"student %@ is fucked man", student);
 		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Database Error", nil) message:NSLocalizedString(@"Something happened.", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
 		[alert show];
+		
+		// something broke so delete students from DB
+		for(SQUStudent *studentToDelete in _students) {
+			[[SQUAppDelegate sharedDelegate].managedObjectContext deleteObject:studentToDelete];
+		}
+		
 		return;
 	}
 	

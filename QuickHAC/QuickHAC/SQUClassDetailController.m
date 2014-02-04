@@ -137,9 +137,9 @@
 
 - (CGFloat) tableView:(UITableView *) tableView heightForRowAtIndexPath:(NSIndexPath *) indexPath {
 	if((indexPath.row + 1) != _currentCycle.categories.count) {
-		return [SQUClassDetailCell cellHeightForCategory:_currentCycle.categories[indexPath.row]] + 8;
+		return [SQUClassDetailCell cellHeightForCategory:_currentCycle.categories[indexPath.row]] + 16;
 	} else {
-		return [SQUClassDetailCell cellHeightForCategory:_currentCycle.categories[indexPath.row]] + 24;
+		return [SQUClassDetailCell cellHeightForCategory:_currentCycle.categories[indexPath.row]] + 32;
 	}
 }
 

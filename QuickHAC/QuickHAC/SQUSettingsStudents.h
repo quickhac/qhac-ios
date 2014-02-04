@@ -8,7 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SQUSettingsStudents : UITableViewController {
+#define kSQUActionSheetDeleteStudent 1337
+
+@interface SQUSettingsStudents : UITableViewController <UIActionSheetDelegate> {
 	NSMutableArray *_students;
 }
 

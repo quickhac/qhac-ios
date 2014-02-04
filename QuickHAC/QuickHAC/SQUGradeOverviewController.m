@@ -126,9 +126,9 @@
 	CGFloat cellHeight = [SQUGradeOverviewTableViewCell cellHeightForCourse:course];
 	
 	if((indexPath.row + 1) != [[SQUGradeManager sharedInstance] getCoursesForCurrentStudent].count) {
-		return cellHeight + 8;
+		return cellHeight + 16;
 	} else {
-		return cellHeight + 24;
+		return cellHeight + 32;
 	}
 }
 
