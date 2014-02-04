@@ -294,6 +294,14 @@ static NSUInteger SQUClassDetailExtraCreditColour = kSQUColourEmerald;
 				layer.foregroundColor = UIColorFromRGB(SQUClassDetailExtraCreditColour).CGColor;
 			} else if([assignment.description rangeOfString:@"Missing" options:NSCaseInsensitiveSearch].location != NSNotFound) {
 				layer.foregroundColor = UIColorFromRGB(SQUClassDetailMissingColour).CGColor;
+				
+				/*
+				 * This is kind of a nasty ugly hack and whatnot, because
+				 * apparently 0 = missing.
+				 */
+				if(c == 1) {
+					layer.string = @"0";
+				}
 			} else if([assignment.description rangeOfString:@"Dropped" options:NSCaseInsensitiveSearch].location != NSNotFound) {
 				layer.foregroundColor = UIColorFromRGB(SQUClassDetailDroppedColour).CGColor;
 				

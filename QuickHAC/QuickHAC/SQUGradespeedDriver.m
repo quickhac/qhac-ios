@@ -337,6 +337,7 @@
 		// Check if the assignment is marked as missing (wrapped in <del> tags)
 		if(!NSEqualRanges(NSMakeRange(NSNotFound, 0), [ptsEarned rangeOfString:@"del"])) {
 			ptsEarnedNum = 0;
+			NSLog(@"squelchmatron");
 		}
 	} else {
 		ptsEarnedNum = -1;
