@@ -43,7 +43,7 @@
 									initWithBarButtonSystemItem:UIBarButtonSystemItemDone
 									target:self
 									action:@selector(closeModal:)];
-	self.navigationItem.leftBarButtonItem = doneButton;
+	self.navigationItem.rightBarButtonItem = doneButton;
 }
 
 #pragma mark - Table view data source

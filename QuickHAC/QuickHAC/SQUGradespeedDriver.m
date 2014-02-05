@@ -96,7 +96,7 @@
 		cycles[i] = [self parseCycleWithDistrict:district andCell:cells[i] andIndex:i];
 	}
 	
-	// Elementary students don't have exams or semester averages
+	// Elementary students don't have exams or semester averages because they're noobs
 	if(semParams.cyclesPerSemester != 4) {
 		// Parse exam grade
 		TFHppleElement *exam = cells[semParams.cyclesPerSemester];
@@ -105,10 +105,14 @@
 		if(exam.hasChildren) {
 			exam = exam.children[0];
 			
+			// Is the exam exempt?
 			if([exam.text isEqualToString:@"EX"] || [exam.text isEqualToString:@"Exc"]) {
 				examIsExempt = YES;
 			} else if(exam.text != nil) {
-				examGrade = [exam.text integerValue];
+				// Is there a valid integer in that field?
+				if([[NSScanner scannerWithString:exam.text] scanInt:NULL]) {
+					examGrade = [exam.text integerValue];
+				}
 			}
 		}
 		
