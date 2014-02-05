@@ -38,6 +38,7 @@
 		DE485DD81881CEE800B215C6 /* SQUSidebarSwitcherButton.m in Sources */ = {isa = PBXBuildFile; fileRef = DE485DD71881CEE800B215C6 /* SQUSidebarSwitcherButton.m */; };
 		DE485DDE1881EACA00B215C6 /* SQUUserSwitcherView.m in Sources */ = {isa = PBXBuildFile; fileRef = DE485DDD1881EACA00B215C6 /* SQUUserSwitcherView.m */; };
 		DE485DE31881FAC700B215C6 /* SQUUserSwitcherCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DE485DE21881FAC700B215C6 /* SQUUserSwitcherCell.m */; };
+		DE4A00D418A2E0E700C05EBC /* SQURelativeRefreshControl.m in Sources */ = {isa = PBXBuildFile; fileRef = DE4A00D318A2E0E700C05EBC /* SQURelativeRefreshControl.m */; };
 		DE4D5BB21888CA3E00371A75 /* about.rtfd in Resources */ = {isa = PBXBuildFile; fileRef = DE4D5BB11888CA3E00371A75 /* about.rtfd */; };
 		DE72EBB9187A102B006F6F1A /* SQUEmptyView.m in Sources */ = {isa = PBXBuildFile; fileRef = DE72EBB8187A102B006F6F1A /* SQUEmptyView.m */; };
 		DE7B4E85186EB0F3008079CC /* NSManagedObjectModel+KCOrderedAccessorFix.m in Sources */ = {isa = PBXBuildFile; fileRef = DE7B4E84186EB0F3008079CC /* NSManagedObjectModel+KCOrderedAccessorFix.m */; };
@@ -207,6 +208,8 @@
 		DE485DDD1881EACA00B215C6 /* SQUUserSwitcherView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUUserSwitcherView.m; sourceTree = "<group>"; };
 		DE485DE11881FAC700B215C6 /* SQUUserSwitcherCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUUserSwitcherCell.h; sourceTree = "<group>"; };
 		DE485DE21881FAC700B215C6 /* SQUUserSwitcherCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUUserSwitcherCell.m; sourceTree = "<group>"; };
+		DE4A00D218A2E0E700C05EBC /* SQURelativeRefreshControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQURelativeRefreshControl.h; sourceTree = "<group>"; };
+		DE4A00D318A2E0E700C05EBC /* SQURelativeRefreshControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQURelativeRefreshControl.m; sourceTree = "<group>"; };
 		DE4D5BB11888CA3E00371A75 /* about.rtfd */ = {isa = PBXFileReference; lastKnownFileType = wrapper.rtfd; name = about.rtfd; path = assets/about.rtfd; sourceTree = SOURCE_ROOT; };
 		DE72EBB7187A102B006F6F1A /* SQUEmptyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUEmptyView.h; sourceTree = "<group>"; };
 		DE72EBB8187A102B006F6F1A /* SQUEmptyView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUEmptyView.m; sourceTree = "<group>"; };
@@ -691,6 +694,8 @@
 				DE72EBB7187A102B006F6F1A /* SQUEmptyView.h */,
 				DE72EBB8187A102B006F6F1A /* SQUEmptyView.m */,
 				DE0A58A8188CE02E001A5D17 /* SQUColourScheme.h */,
+				DE4A00D218A2E0E700C05EBC /* SQURelativeRefreshControl.h */,
+				DE4A00D318A2E0E700C05EBC /* SQURelativeRefreshControl.m */,
 			);
 			name = "Miscellaneous UI";
 			sourceTree = "<group>";
@@ -1113,6 +1118,7 @@
 				DE7B4E85186EB0F3008079CC /* NSManagedObjectModel+KCOrderedAccessorFix.m in Sources */,
 				DEFFDE46186E26FC00E26423 /* AFURLResponseSerialization.m in Sources */,
 				DE81CDD8186D517800DC1CAB /* TFHppleElement.m in Sources */,
+				DE4A00D418A2E0E700C05EBC /* SQURelativeRefreshControl.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

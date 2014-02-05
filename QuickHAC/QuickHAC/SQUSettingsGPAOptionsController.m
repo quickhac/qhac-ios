@@ -82,8 +82,6 @@
 	// Only save if needed
 	if(!_shouldSaveDB) return;
 	
-	NSLog(@"saving db");
-	
 	// Save to DB
 	NSError *err = nil;
 	if(![[SQUAppDelegate sharedDelegate].managedObjectContext save:&err]) {

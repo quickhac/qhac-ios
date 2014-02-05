@@ -6,7 +6,7 @@
 //  See README.MD for licensing and copyright information.
 //
 
-#import "NSDate+RelativeDate.h"
+#import "SQURelativeRefreshControl.h"
 #import "SQUClassDetailController.h"
 #import "SQUCoreData.h"
 #import "SQUGradeManager.h"
@@ -72,7 +72,7 @@
 }
 
 - (void) viewDidLoad {
-    UIRefreshControl *refresher = [[UIRefreshControl alloc] init];
+    SQURelativeRefreshControl *refresher = [[SQURelativeRefreshControl alloc] init];
     [refresher addTarget:self action:@selector(reloadData:)
         forControlEvents:UIControlEventValueChanged];
 	
@@ -121,7 +121,7 @@
 	self.navigationItem.titleView = _navbarTitle;
 	
 	// Update relative date
-	self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"Updated %@", @"relative date grades refresh control"), [_currentCycle.last_updated relativeDate]]];
+	((SQURelativeRefreshControl *) self.refreshControl).date = _currentCycle.last_updated;
 }
 
 #pragma mark - Table view data source
@@ -164,7 +164,7 @@
 	
 	_currentCycle = _course.cycles[_displayCycle];
 	
-	self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"Updated %@", @"relative date grades refresh control"), [_currentCycle.last_updated relativeDate]]];
+	((SQURelativeRefreshControl *) self.refreshControl).date = _currentCycle.last_updated;
 	
 	[self.tableView reloadData];
 	
@@ -317,7 +317,7 @@
 			
 			[self.refreshControl endRefreshing];
 			
-			self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"Updated %@", @"relative date grades refresh control"), [_currentCycle.last_updated relativeDate]]];
+			((SQURelativeRefreshControl *) self.refreshControl).date = _currentCycle.last_updated;
 			
 			[[NSUserDefaults standardUserDefaults] setInteger:_displayCycle forKey:@"selectedCycle"];
 		}];

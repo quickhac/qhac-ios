@@ -14,6 +14,7 @@
 
 #import "NSDate+RelativeDate.h"
 
+#import "SQURelativeRefreshControl.h"
 #import "SQUGradeOverviewTableViewCell.h"
 #import "SQUAppDelegate.h"
 #import "SQUCoreData.h"
@@ -93,11 +94,9 @@
     [super viewDidLoad];
     
     // set up refresh control
-    UIRefreshControl *refresher = [[UIRefreshControl alloc] init];
+    SQURelativeRefreshControl *refresher = [[SQURelativeRefreshControl alloc] init];
     [refresher addTarget:self action:@selector(reloadData:)
         forControlEvents:UIControlEventValueChanged];
-
-	refresher.attributedTitle = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"Updated %@", @"relative date grades refresh control"), [[SQUGradeManager sharedInstance].student.lastAveragesUpdate relativeDate]]];
 	
 	// iOS 7 is stupid and draws the referesh control behind the table's BG view
 	refresher.layer.zPosition = self.tableView.backgroundView.layer.zPosition + 1;
@@ -109,7 +108,8 @@
 
 - (void) viewWillAppear:(BOOL) animated {
 	// Show relative date
-	self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"Updated %@", @"relative date grades refresh control"), [[SQUGradeManager sharedInstance].student.lastAveragesUpdate relativeDate]]];
+	((SQURelativeRefreshControl *) self.refreshControl).date =
+	[SQUGradeManager sharedInstance].student.lastAveragesUpdate;
 	
 	// Reload table data
 	[self.tableView reloadData];
@@ -171,7 +171,7 @@
 	}
 }
 
-- (void) reloadData:(UIRefreshControl *) control {
+- (void) reloadData:(SQURelativeRefreshControl *) control {
 	if([SQUDistrictManager sharedInstance].reachabilityManager.isReachable) {
 		[[SQUGradeManager sharedInstance] fetchNewClassGradesFromServerWithDoneCallback:^(NSError *error){
 			[[NSNotificationCenter defaultCenter] postNotificationName:SQUGradesDataUpdatedNotification object:nil];
@@ -184,8 +184,7 @@
 			}
 			
 			// End refreshing
-			control.attributedTitle = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"Updated %@", @"relative date grades refresh control"), [[NSDate date] relativeDate]]];
-			
+			control.date = [NSDate date];
 			[control endRefreshing];
 		}];
 	} else {
@@ -201,7 +200,8 @@
 - (void) updateTableNotification:(NSNotification *) notif {
 	[self.tableView reloadData];
 	
-	self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"Updated %@", @"relative date grades refresh control"), [[SQUGradeManager sharedInstance].student.lastAveragesUpdate relativeDate]]];
+	((SQURelativeRefreshControl *) self.refreshControl).date =
+	[SQUGradeManager sharedInstance].student.lastAveragesUpdate;
 	
 	// Update GPA display
 	[self updateGPA];

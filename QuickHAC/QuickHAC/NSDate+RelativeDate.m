@@ -25,6 +25,8 @@
 - (BOOL) isLastWeek:(NSTimeInterval) secondsSince;
 - (BOOL) isLastMonth:(NSTimeInterval) secondsSince;
 - (BOOL) isLastYear:(NSTimeInterval) secondsSince;
+
+- (NSString *) formatSecondsAgo:(NSTimeInterval) secondsSince;
 - (NSString *) formatMinutesAgo:(NSTimeInterval) secondsSince;
 - (NSString *) formatAsToday:(NSTimeInterval) secondsSince;
 - (NSString *) formatAsYesterday;
@@ -50,7 +52,7 @@
     
     // < 1 minute = "Just now"
     if(secondsSince < MINUTE) {
-        return NSLocalizedString(@"Just now", @"relative date less than one minute ago");
+        return [self formatSecondsAgo:secondsSince];
 	} else if(secondsSince < HOUR) { // x minutes ago
         return [self formatMinutesAgo:secondsSince];
 	} else if([self isSameDayAs:now]) { // x hours ago
@@ -117,13 +119,26 @@
 
 #pragma mark Formatting methods
 /**
+ * Formats a date less than 1 minute ago as "42 seconds ago"
+ */
+- (NSString *) formatSecondsAgo:(NSTimeInterval) secondsSince {
+    if(secondsSince == 0) {
+        return NSLocalizedString(@"Just Now", @"relative date seconds ago");
+    } else if(secondsSince == 1) {
+        return NSLocalizedString(@"1 second ago", @"relative date seconds ago");
+    } else {
+        return [NSString stringWithFormat:NSLocalizedString(@"%d seconds ago", @"relative date seconds ago"), (int) secondsSince];
+	}
+}
+
+/**
  * Formats a date less than 60 minutes ago as "42 minutes ago"
  */
 - (NSString *) formatMinutesAgo:(NSTimeInterval) secondsSince {
-    //Convert to minutes
-    int minutesSince = (int)secondsSince / MINUTE;
+    // Convert to minutes
+    int minutesSince = (int) secondsSince / MINUTE;
     
-    //Handle Plural
+    // Handle Plural
     if(minutesSince == 1) {
         return NSLocalizedString(@"1 minute ago", @"relative date minutes ago");
     } else {
@@ -138,7 +153,7 @@
 - (NSString *) formatAsToday:(NSTimeInterval) secondsSince {
     int hoursSince = (int) secondsSince / HOUR;
     
-    //Handle Plural
+    // Handle Plural
     if(hoursSince == 1) {
         return NSLocalizedString(@"1 hour ago", @"relative date hours ago");
     } else {
@@ -153,7 +168,7 @@
 - (NSString *) formatAsYesterday {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     
-    //Format
+    // Format
     [dateFormatter setDateFormat:NSLocalizedString(@"'Yesterday at' h:mm a", @"relative date yesterday")];
     return [dateFormatter stringFromDate:self];
 }
@@ -165,7 +180,7 @@
 - (NSString *) formatAsLastWeek {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 	
-    //Format
+    // Format
     [dateFormatter setDateFormat:NSLocalizedString(@"EEEE 'at' h:mm a", @"relative date last week")];
     return [dateFormatter stringFromDate:self];
 }
@@ -177,7 +192,7 @@
 - (NSString *) formatAsLastMonth {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     
-    //Format
+    // Format
     [dateFormatter setDateFormat:NSLocalizedString(@"MMMM d 'at' h:mm a", @"relative date last month")];
     return [dateFormatter stringFromDate:self];
 }
@@ -189,7 +204,7 @@
 - (NSString *) formatAsLastYear {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     
-    //Format
+    // Format
     [dateFormatter setDateFormat:NSLocalizedString(@"MMMM d", @"relative date last year")];
     return [dateFormatter stringFromDate:self];
 }
@@ -201,7 +216,7 @@
 - (NSString *) formatAsOther {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     
-    //Format
+    // Format
     [dateFormatter setDateFormat:NSLocalizedString(@"LLLL d, yyyy", @"relative date")];
     return [dateFormatter stringFromDate:self];
 }
