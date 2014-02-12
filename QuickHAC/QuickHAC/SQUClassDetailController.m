@@ -14,6 +14,7 @@
 #import "SQUDistrictManager.h"
 #import "SQUColourScheme.h"
 #import "SQUClassDetailCell.h"
+#import "SQUClassDetailHeaderCell.h"
 
 #import "PKRevealController.h"
 #import "AFNetworking.h"
@@ -35,6 +36,9 @@
     if (self) {
         [self.tableView registerClass:[SQUClassDetailCell class]
                forCellReuseIdentifier:@"CourseOverviewCell"];
+		[self.tableView registerClass:[SQUClassDetailHeaderCell class]
+			   forCellReuseIdentifier:@"CourseOverviewHeaderCell"];
+		
 		self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         
 		self.tableView.backgroundView = [[UIView alloc] initWithFrame:self.tableView.frame];
@@ -132,30 +136,45 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
-    return _currentCycle.categories.count;
+    return _currentCycle.categories.count + 1;
 }
 
 - (CGFloat) tableView:(UITableView *) tableView heightForRowAtIndexPath:(NSIndexPath *) indexPath {
-	if((indexPath.row + 1) != _currentCycle.categories.count) {
-		return [SQUClassDetailCell cellHeightForCategory:_currentCycle.categories[indexPath.row]] + 16;
+	if(indexPath.row == 0) {
+		return SQUClassDetailHeaderCellHeight;
+	} else if((indexPath.row + 1) != _currentCycle.categories.count) {
+		return [SQUClassDetailCell cellHeightForCategory:_currentCycle.categories[indexPath.row-1]] + 16;
 	} else {
-		return [SQUClassDetailCell cellHeightForCategory:_currentCycle.categories[indexPath.row]] + 32;
+		return [SQUClassDetailCell cellHeightForCategory:_currentCycle.categories[indexPath.row-1]] + 32;
 	}
 }
 
 - (UITableViewCell *) tableView:(UITableView *) tableView cellForRowAtIndexPath:(NSIndexPath *) indexPath {
-    static NSString *CellIdentifier = @"CourseOverviewCell";
-    SQUClassDetailCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-    
-	cell.category = _currentCycle.categories[indexPath.row];
-	cell.index = indexPath.row;
-	cell.backgroundColor = [UIColor clearColor];
-	cell.clipsToBounds = NO;
-	cell.selectionStyle = UITableViewCellSelectionStyleNone;
-	
-    [cell updateUI];
-    
-    return cell;
+	if(indexPath.row != 0) {
+		static NSString *CellIdentifier = @"CourseOverviewCell";
+		SQUClassDetailCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+		
+		cell.category = _currentCycle.categories[indexPath.row-1];
+		cell.index = indexPath.row;
+		cell.backgroundColor = [UIColor clearColor];
+		cell.clipsToBounds = NO;
+		cell.selectionStyle = UITableViewCellSelectionStyleNone;
+		
+		[cell updateUI];
+		return cell;
+	} else {
+		static NSString *CellIdentifier = @"CourseOverviewHeaderCell";
+		SQUClassDetailHeaderCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+		
+		cell.backgroundColor = [UIColor clearColor];
+		cell.clipsToBounds = NO;
+		cell.selectionStyle = UITableViewCellSelectionStyleNone;
+		
+		cell.cycle = _currentCycle;
+		cell.course = _course;
+		
+		return cell;
+	}
 }
 
 #pragma mark - Cycle switching

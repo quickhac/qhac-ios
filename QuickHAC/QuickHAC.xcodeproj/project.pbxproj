@@ -22,6 +22,7 @@
 		DE0615D81787ADFE004B2877 /* SQULoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0615D71787ADFE004B2877 /* SQULoginViewController.m */; };
 		DE0615E517891E0C004B2877 /* SVProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DE0615E217891E0B004B2877 /* SVProgressHUD.bundle */; };
 		DE0615E617891E0C004B2877 /* SVProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0615E417891E0C004B2877 /* SVProgressHUD.m */; };
+		DE08210618ABCC5F00A76A21 /* SQUClassDetailHeaderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DE08210518ABCC5F00A76A21 /* SQUClassDetailHeaderCell.m */; };
 		DE0A58AB188CEEC8001A5D17 /* blurry_bg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DE0A58AA188CEEC8001A5D17 /* blurry_bg.jpg */; };
 		DE2843DE18760E3D0000756C /* SQUGradebookDriver.m in Sources */ = {isa = PBXBuildFile; fileRef = DE2843DD18760E3D0000756C /* SQUGradebookDriver.m */; };
 		DE2843E118760FD80000756C /* SQUGradespeedDriver.m in Sources */ = {isa = PBXBuildFile; fileRef = DE2843E018760FD80000756C /* SQUGradespeedDriver.m */; };
@@ -176,6 +177,8 @@
 		DE0615E217891E0B004B2877 /* SVProgressHUD.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = SVProgressHUD.bundle; sourceTree = "<group>"; };
 		DE0615E317891E0C004B2877 /* SVProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVProgressHUD.h; sourceTree = "<group>"; };
 		DE0615E417891E0C004B2877 /* SVProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVProgressHUD.m; sourceTree = "<group>"; };
+		DE08210418ABCC5F00A76A21 /* SQUClassDetailHeaderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUClassDetailHeaderCell.h; sourceTree = "<group>"; };
+		DE08210518ABCC5F00A76A21 /* SQUClassDetailHeaderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUClassDetailHeaderCell.m; sourceTree = "<group>"; };
 		DE0A58A8188CE02E001A5D17 /* SQUColourScheme.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SQUColourScheme.h; sourceTree = "<group>"; };
 		DE0A58AA188CEEC8001A5D17 /* blurry_bg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = blurry_bg.jpg; path = assets/miscellaneous/blurry_bg.jpg; sourceTree = SOURCE_ROOT; };
 		DE2843DC18760E3D0000756C /* SQUGradebookDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUGradebookDriver.h; sourceTree = "<group>"; };
@@ -819,6 +822,8 @@
 				DEF0F1CA186F7D8F00116B61 /* SQUClassDetailController.m */,
 				DEF0F1CC186F7D9E00116B61 /* SQUClassDetailCell.h */,
 				DEF0F1CD186F7D9E00116B61 /* SQUClassDetailCell.m */,
+				DE08210418ABCC5F00A76A21 /* SQUClassDetailHeaderCell.h */,
+				DE08210518ABCC5F00A76A21 /* SQUClassDetailHeaderCell.m */,
 				DEF0F1E51870E78000116B61 /* SQUClassCycleChooserController.h */,
 				DEF0F1E61870E78000116B61 /* SQUClassCycleChooserController.m */,
 			);
@@ -1100,6 +1105,7 @@
 				DE485DDE1881EACA00B215C6 /* SQUUserSwitcherView.m in Sources */,
 				DEF0F1E71870E78000116B61 /* SQUClassCycleChooserController.m in Sources */,
 				DEF43B0317965B0D00190803 /* SQUGradeOverviewController.m in Sources */,
+				DE08210618ABCC5F00A76A21 /* SQUClassDetailHeaderCell.m in Sources */,
 				DEF0F26318743B7E00116B61 /* SQUTabletLoginController.m in Sources */,
 				DEF0F2151871300A00116B61 /* SQUSettingsViewController.m in Sources */,
 				DE06159017874D0D004B2877 /* QuickHAC.xcdatamodeld in Sources */,

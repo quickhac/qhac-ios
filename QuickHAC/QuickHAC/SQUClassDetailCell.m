@@ -93,7 +93,7 @@ static NSUInteger SQUClassDetailExtraCreditColour = kSQUColourEmerald;
 				layer.alignmentMode = kCAAlignmentLeft;
 			}
 			
-			layer.frame = CGRectMake(SQUClassDetailColX[i], 34, SQUClassDetailColWidth[i], 18);
+			layer.frame = CGRectMake(SQUClassDetailColX[i], 36, SQUClassDetailColWidth[i], 18);
 			
 			[_rowHeaders addObject:layer];
 		}
@@ -349,7 +349,13 @@ static NSUInteger SQUClassDetailExtraCreditColour = kSQUColourEmerald;
 	textLayer.foregroundColor = [UIColor colorWithWhite:0.375 alpha:1.0].CGColor;
 	textLayer.font = (__bridge CFTypeRef) [UIFont fontWithName:@"HelveticaNeue-Medium" size:14.0f];
 	textLayer.fontSize = 13.0f;
-	textLayer.string = [NSString stringWithFormat:NSLocalizedString(@"%.2f%%", @"category detail average"), _category.average.floatValue];
+	
+	if(_category.average.floatValue == 0) {
+		textLayer.string = NSLocalizedString(@"N/A", @"average not calculated");
+	} else {
+		textLayer.string = [NSString stringWithFormat:NSLocalizedString(@"%.2f%%", @"category detail average"), _category.average.floatValue];
+	}
+	
 	textLayer.alignmentMode = kCAAlignmentLeft;
 	width = [_tableColumnWidths[0] floatValue];
 	textLayer.frame = CGRectMake(SQUClassDetailColX[1], y + SQUClassDetailRowTextOffset, SQUClassDetailColWidth[1], 18);
