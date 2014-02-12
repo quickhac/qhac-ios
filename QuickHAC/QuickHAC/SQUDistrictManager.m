@@ -152,6 +152,8 @@ static SQUDistrictManager *_sharedInstance = nil;
 //	} else {
 		_reachabilityManager = [AFNetworkReachabilityManager sharedManager];
 //	}
+	
+	_lastRequest = nil;
 }
 
 /**
@@ -206,6 +208,8 @@ static SQUDistrictManager *_sharedInstance = nil;
 			response[@"password"] = password;
 			response[@"serverResponse"] = responseObject;
 			
+			_lastRequest = [NSDate date];
+			
 			callback(nil, response);
 		} else {
 			callback(nil, nil);
@@ -215,6 +219,7 @@ static SQUDistrictManager *_sharedInstance = nil;
 	// Called if the request fails for some reason (500, network error, etc)
 	void (^loginFailure)(AFHTTPRequestOperation*operation, NSError *error) = ^(AFHTTPRequestOperation*operation, NSError *error) {
 		callback(error, nil);
+		_lastRequest = nil;
 	};
 	
 	/*
@@ -375,6 +380,8 @@ static SQUDistrictManager *_sharedInstance = nil;
 			
 			// Run the callback now to appease login process
 			callback(nil, averages);
+			
+			_lastRequest = [NSDate date];
 		} else {
 			callback([NSError errorWithDomain:@"SQUDistrictManagerErrorDomain" code:kSQUDistrictManagerErrorInvalidDataReceived userInfo:@{@"localizedDescription" : NSLocalizedString(@"The gradebook returned invalid data.", nil)}], nil);
 			// NSLog(@"Got screwy response from gradebook: %@", [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding]);
@@ -384,6 +391,7 @@ static SQUDistrictManager *_sharedInstance = nil;
 	// Called on server error
 	void (^averagesFailure)(AFHTTPRequestOperation*operation, NSError *error) = ^(AFHTTPRequestOperation*operation, NSError *error) {
 		callback(error, nil);
+		_lastRequest = nil;
 		NSLog(@"Averages error: %@", error);
 	};
 	
@@ -420,6 +428,8 @@ static SQUDistrictManager *_sharedInstance = nil;
 		
 		if(classGrades != nil) {
 			callback(nil, classGrades);
+			
+			_lastRequest = [NSDate date];
 		} else {
 			callback([NSError errorWithDomain:@"SQUDistrictManagerErrorDomain" code:kSQUDistrictManagerErrorInvalidDataReceived userInfo:@{@"localizedDescription" : NSLocalizedString(@"The gradebook returned invalid data.", nil)}], nil);
 		}
@@ -428,6 +438,7 @@ static SQUDistrictManager *_sharedInstance = nil;
 	// Called on server error
 	void (^callbackFailure)(AFHTTPRequestOperation*operation, NSError *error) = ^(AFHTTPRequestOperation*operation, NSError *error) {
 		callback(error, nil);
+		_lastRequest = nil;
 		NSLog(@"Class grade fetching error: %@", error);
 	};
 	
@@ -450,7 +461,14 @@ static SQUDistrictManager *_sharedInstance = nil;
  * successful or not.
  */
 - (void) checkIfLoggedIn:(SQULoggedInCallback) callback {
-	[_currentDistrict isLoggedInWithCallback:callback];
+	NSTimeInterval diff = [[NSDate date] timeIntervalSinceDate:_lastRequest];
+	
+	if((diff > SQUDistrictManagerMaxRequestDelay) || !_lastRequest) {
+		[_currentDistrict isLoggedInWithCallback:callback];
+	} else {
+		// NSLog(@"Delay not elapsed: assuming logged in (%f)", diff);
+		callback(YES);
+	}
 }
 
 /**

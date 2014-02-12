@@ -44,14 +44,14 @@
         _courseTitle.frame = CGRectMake(0, 6, _backgroundLayer.frame.size.width - SQUClassDetailHeaderCellAvgLabelWidth - 4, 32);
         _courseTitle.contentsScale = [UIScreen mainScreen].scale;
         _courseTitle.font = (__bridge CFTypeRef) [UIFont fontWithName:@"HelveticaNeue-Light" size:15.0f];
-        _courseTitle.fontSize = 26.0f;
+        _courseTitle.fontSize = 25.0f;
         _courseTitle.foregroundColor = [UIColor blackColor].CGColor;
 		[_backgroundLayer addSublayer:_courseTitle];
 		[self applyMaskToTextLayer:_courseTitle];
 		
 		// Teacher name
 		_teacher = [CATextLayer layer];
-        _teacher.frame = CGRectMake(0, 38, _backgroundLayer.frame.size.width - SQUClassDetailHeaderCellAvgLabelWidth - 4, 32);
+        _teacher.frame = CGRectMake(0, 36, _backgroundLayer.frame.size.width - SQUClassDetailHeaderCellAvgLabelWidth - 4, 32);
         _teacher.contentsScale = [UIScreen mainScreen].scale;
         _teacher.font = (__bridge CFTypeRef) [UIFont fontWithName:@"HelveticaNeue" size:15.0f];
         _teacher.fontSize = 15.0f;

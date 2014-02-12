@@ -51,6 +51,13 @@
 										target:self
 										action:@selector(openSidebar:)];
 		self.navigationItem.leftBarButtonItem = showSidebar;
+        
+        UIBarButtonItem *showNotifications = [[UIBarButtonItem alloc]
+											  initWithImage:[UIImage imageNamed:@"notificationsIcon"]
+											  style:UIBarButtonItemStyleBordered
+											  target:self
+											  action:@selector(showNotifications:)];
+		self.navigationItem.rightBarButtonItem = showNotifications;
 		
 		// Set up the title view container and title text
 		_navbarTitle = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 200, 44)];
@@ -169,6 +176,10 @@
 	} else {
 		[[self revealController] resignPresentationModeEntirely:YES animated:YES completion:NULL];
 	}
+}
+
+- (void) showNotifications:(id) sender {
+	NSLog(@"show notifications");
 }
 
 - (void) reloadData:(SQURelativeRefreshControl *) control {

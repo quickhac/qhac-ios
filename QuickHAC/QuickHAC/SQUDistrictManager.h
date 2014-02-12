@@ -13,6 +13,12 @@
 #define kSQUDistrictManagerErrorInvalidDataReceived 2000
 #define kSQUDistrictManagerErrorNoDataAvailable 3000
 
+/**
+ * This defines the maximum delay between two requests before a login request is
+ * forced. Default is five minutes
+ */
+#define SQUDistrictManagerMaxRequestDelay 300
+
 typedef void (^ SQUDistrictCallback)(NSError *error, id returnData);
 
 @class AFHTTPRequestOperationManager;
@@ -26,6 +32,8 @@ typedef void (^ SQUDistrictCallback)(NSError *error, id returnData);
 	
 	AFHTTPRequestOperationManager *_HTTPManager;
 	AFNetworkReachabilityManager *_reachabilityManager;
+	
+	NSDate *_lastRequest;
 }
 
 @property (nonatomic, readwrite, setter = setCurrentDistrict:) SQUDistrict *currentDistrict;

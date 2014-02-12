@@ -307,12 +307,15 @@ static SQUGradeManager *_sharedInstance = nil;
  * Updates a specific cycle with information.
  */
 - (void) updateCycle:(SQUCycle *) cycle withCycleInfo:(NSDictionary *) dict {
-	// Set a flag if this grade changed
+	/*
+	 * If this grade changed, set a flag that indicates to our notifications
+	 * GUI that it did. This flag will be cleared when the user acknowledges the
+	 * change by either a) viewing the cycle, or b) tapping the notification in
+	 * the notifications drawer.
+	 */
 	if(cycle.average.floatValue != [dict[@"average"] floatValue]) {
 		cycle.changedSinceLastFetch = @(YES);
 		cycle.preChangeGrade = cycle.average;
-	} else {
-		cycle.changedSinceLastFetch = @(NO);
 	}
 	
 	cycle.last_updated = [NSDate new];

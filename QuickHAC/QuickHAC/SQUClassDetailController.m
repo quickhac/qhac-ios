@@ -351,7 +351,6 @@
 	}
 }
 
-
 - (void) showEmptyView {
 	// Initialise empty view if required
 	
