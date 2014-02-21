@@ -11,7 +11,7 @@
 
 #define SQUGradeOverviewCellHeight 212.0
 
-@class SQUCourse;
+@class SQUCourse, SQUCycle;
 @interface SQUGradeOverviewTableViewCell : UITableViewCell {
     // public properties
     SQUCourse *_courseInfo;
@@ -38,5 +38,6 @@
 
 + (UIColor *) colourForLetterGrade:(NSString *) grade;
 + (CGFloat) cellHeightForCourse:(SQUCourse *) course;
++ (UIColor *) gradeChangeColour:(SQUCycle *) cycle;
 
 @end

@@ -8,6 +8,8 @@
 	<integer>4</integer>
 	<key>asianness</key>
 	<integer>2</integer>
+	<key>certPinning</key>
+	<true/>
 	<key>gradesHue</key>
 	<integer>0</integer>
 </dict>

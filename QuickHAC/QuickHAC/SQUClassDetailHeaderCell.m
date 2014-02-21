@@ -8,6 +8,7 @@
 
 #import "SQUColourScheme.h"
 #import "SQUCoreData.h"
+#import "SQUGradeOverviewTableViewCell.h"
 #import "SQUClassDetailHeaderCell.h"
 
 #import <CoreText/CoreText.h>
@@ -70,6 +71,8 @@
 		_teacher.string = [_course.teacher_name uppercaseStringWithLocale:
 						   [NSLocale currentLocale]];
 		_average.string = [_cycle.average stringValue];
+		
+		_average.foregroundColor = [SQUGradeOverviewTableViewCell gradeChangeColour:_cycle].CGColor;
 	}
 }
 

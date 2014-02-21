@@ -132,7 +132,13 @@ static SQUAppDelegate *sharedDelegate = nil;
 		_ipadSplitController.splitWidth = 0.0;
 		
 		// Set up iPad appearances
-		[[UINavigationBar appearance] setBarTintColor:UIColorFromRGB(0x3a9ddd)];
+		[[UINavigationBar appearance] setTintColor:UIColorFromRGB(kSQUColourTitle)];
+		[[UINavigationBar appearance] setBarTintColor:UIColorFromRGB(kSQUColourNavbarBG)];
+		[[UINavigationBar appearance] setBackgroundColor:UIColorFromRGB(kSQUColourNavbarBG)];
+		[[UINavigationBar appearance] setTitleTextAttributes:@{
+															   NSForegroundColorAttributeName: UIColorFromRGB(kSQUColourTitle),
+															   NSFontAttributeName: [UIFont fontWithName:@"HelveticaNeue-Medium" size:0.0],
+															   }];
 		[[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"navbar_bg"] forBarMetrics:UIBarMetricsDefault];
 	}
 	

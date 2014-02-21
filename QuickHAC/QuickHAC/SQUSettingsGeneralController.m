@@ -76,6 +76,19 @@
 	
 	[root addSection:section];
 	
+	// Misc section
+	section = [[QSection alloc] initWithTitle:NSLocalizedString(@"Miscellaneous", nil)];
+	
+	QBooleanElement *secureSwitcher = [[QBooleanElement alloc] initWithTitle:NSLocalizedString(@"Validate Certificates", nil) BoolValue:[[NSUserDefaults standardUserDefaults] boolForKey:@"certPinning"]];
+	__unsafe_unretained QBooleanElement *secureSwitcherTmp = secureSwitcher;
+	secureSwitcher.onValueChanged = ^(QRootElement *element) {
+		[[NSUserDefaults standardUserDefaults] setBool:secureSwitcherTmp.boolValue
+												forKey:@"certPinning"];
+	};
+	[section addElement:secureSwitcher];
+	
+	[root addSection:section];
+	
 	self.root = root;
 	
 	return self;

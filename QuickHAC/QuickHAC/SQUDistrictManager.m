@@ -260,6 +260,8 @@ static SQUDistrictManager *_sharedInstance = nil;
 		void (^preLoginFailure)(AFHTTPRequestOperation*operation, NSError *error) = ^(AFHTTPRequestOperation*operation, NSError *error) {
 			callback(error, nil);
 			NSLog(@"Pre log-in error: %@", error);
+			
+			_lastRequest = nil;
 		};
 		
 		// Set up the request

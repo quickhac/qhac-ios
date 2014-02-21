@@ -9,6 +9,7 @@
 #import "SQUCoreData.h"
 #import "SQUTabletSidebarCell.h"
 #import "SQUGradeManager.h"
+#import "SQUColourScheme.h"
 #import "SQUTabletSidebarController.h"
 
 @interface SQUTabletSidebarController ()
@@ -23,7 +24,7 @@
         [self.tableView registerClass:NSClassFromString(@"SQUTabletSidebarCell") forCellReuseIdentifier:@"TabletSidebarCell"];
 		
 		self.title = NSLocalizedString(@"QuickHAC", nil);
-		self.tableView.backgroundColor = UIColorFromRGB(0x4E5758);
+		self.tableView.backgroundColor = UIColorFromRGB(kSQUColourWetAsphalt);
 		self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 		self.automaticallyAdjustsScrollViewInsets = NO;
 		
@@ -100,16 +101,16 @@
 			cell.textLabel.text = course.title;
 			
 			// Try to find the latest cycle with data now
-			NSInteger latestCycle = -1;
+			SQUCycle *latestCycle = nil;
 			for(SQUCycle *cycle in course.cycles) {
 				if(cycle.dataAvailableInGradebook.boolValue) {
-					latestCycle++;
+					latestCycle = cycle;
 				}
 			}
 			
-			if(latestCycle != -1) {
-				SQUCycle *semester = course.cycles[latestCycle];
-				[cell setGrade:semester.average.floatValue];
+			// Was there a cycle found?
+			if(latestCycle) {
+				[cell setGrade:latestCycle.average.floatValue];
 			} else {
 				[cell setGrade:-1];
 			}
@@ -131,7 +132,7 @@
 - (UIView *) tableView:(UITableView *) tableView viewForHeaderInSection:(NSInteger) section {
 	if(section == 1 || section == 2) {
 		UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(16, 0, self.tableView.frame.size.width-32, 17)];
-		headerLabel.textColor = UIColorFromRGB(0xBDC3C7);
+		headerLabel.textColor = UIColorFromRGB(kSQUColourSilver);
 		headerLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:16.0];
 		
 		// Set strings
@@ -144,7 +145,7 @@
 		
 		// Add the underline
 		CAGradientLayer *layer = [CAGradientLayer layer];
-		layer.backgroundColor = UIColorFromRGB(0x7F8C8D).CGColor;
+		layer.backgroundColor = UIColorFromRGB(kSQUColourConcrete).CGColor;
 		layer.frame = CGRectMake(16, 18, self.tableView.frame.size.width-32, 1);
 		
 		[container.layer addSublayer:layer];

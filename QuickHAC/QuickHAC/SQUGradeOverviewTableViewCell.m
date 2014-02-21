@@ -12,6 +12,7 @@
 #import "SQUGradeOverviewTableViewCell.h"
 #import "SQUCoreData.h"
 #import "SQUDistrictManager.h"
+#import "SQUColourScheme.h"
 #import "SQUUIHelpers.h"
 #import "SQUGradeManager.h"
 #import "UIColor+SQUColourUtilities.h"
@@ -220,7 +221,7 @@
 			shade.backgroundColor = UIColorFromRGB(0xf2f2f2).CGColor;
 			[_shades addObject:shade];
 			
-			// Draw the "SEMESTER 1" title
+			// Draw the "SEMESTER x" title
 			semesterHeader = [CATextLayer layer];
 			semesterHeader.contentsScale = [UIScreen mainScreen].scale;
 			semesterHeader.foregroundColor = [UIColor grayColor].CGColor;
@@ -325,6 +326,7 @@
 				
 				if(i < cycPerSem) {
 					SQUCycle *cycle = _courseInfo.cycles[i + (semester * cycPerSem)];
+					average.foregroundColor = [SQUGradeOverviewTableViewCell gradeChangeColour:cycle].CGColor;
 					
 					if(cycle.average.unsignedIntegerValue != 0) {
 						average.string = [NSString stringWithFormat:NSLocalizedString(@"%u", nil), cycle.average.unsignedIntegerValue];
@@ -366,6 +368,22 @@
 		end: ;
 		}
 	}
+}
+
++ (UIColor *) gradeChangeColour:(SQUCycle *) cycle {
+	// Get if grade changed
+	if(cycle.changedSinceLastFetch.boolValue) {
+		if(cycle.average.floatValue > cycle.preChangeGrade.floatValue) {
+			// Grade went down
+			return UIColorFromRGB(kSQUColourEmerald);
+		} else if(cycle.average.floatValue < cycle.preChangeGrade.floatValue) {
+			// Grade went up
+			return UIColorFromRGB(kSQUColourPumpkin);
+		}
+	}
+	
+	// No change in colour
+	return [UIColor blackColor];
 }
 
 /**
