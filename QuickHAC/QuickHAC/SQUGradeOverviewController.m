@@ -35,6 +35,8 @@
 - (id) initWithStyle:(UITableViewStyle) style {
     self = [super initWithStyle:style];
     if (self) {
+		_cellsCollapsed = NO;
+		
         [self.tableView registerClass:[SQUGradeOverviewTableViewCell class]
                forCellReuseIdentifier:@"GradeOverviewCell"];
 		self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -129,6 +131,14 @@
 
 #pragma mark - Table view data source
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	if(_cellsCollapsed) {
+		if((indexPath.row + 1) != [[SQUGradeManager sharedInstance] getCoursesForCurrentStudent].count) {
+			return SQUGradeOverviewCellCollapsedHeight;
+		} else {
+			return SQUGradeOverviewCellCollapsedHeight + 16;
+		}
+	}
+	
 	SQUCourse *course = [[[SQUGradeManager sharedInstance] getCoursesForCurrentStudent] objectAtIndex:indexPath.row];
 	CGFloat cellHeight = [SQUGradeOverviewTableViewCell cellHeightForCourse:course];
 	
@@ -156,7 +166,7 @@
 	cell.backgroundColor = [UIColor clearColor];
 	cell.clipsToBounds = NO;
 	cell.selectionStyle = UITableViewCellSelectionStyleNone;
-	
+	cell.isCollapsed = _cellsCollapsed;
     [cell updateUI];
     
     return cell;

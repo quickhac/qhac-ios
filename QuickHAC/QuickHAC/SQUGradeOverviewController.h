@@ -13,6 +13,8 @@
 	UIView *_navbarTitle;
 	CATextLayer *_titleLayer;
 	CATextLayer *_subtitleLayer;
+	
+	BOOL _cellsCollapsed;
 }
 
 @end

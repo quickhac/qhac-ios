@@ -180,6 +180,7 @@
 		CGFloat y = 56;
 		NSUInteger cycPerSem = _courseInfo.student.cyclesPerSemester.unsignedIntegerValue;
 		NSUInteger heads = cycPerSem + 2;
+		NSUInteger row = 0;
 		
 		CGFloat width = _backgroundLayer.frame.size.width / heads;
 		CGFloat x = 0;
@@ -234,7 +235,25 @@
 			semesterHeader.string = [NSString stringWithFormat:NSLocalizedString(@"Semester %u", nil), semester+1];
 			[_headers addObject:semesterHeader];
 			
+			// Add rounded corners on top of semester header
+			if(row == 0) {
+				// Background
+				CALayer *layer = [CALayer layer];
+				layer.backgroundColor = [UIColor whiteColor].CGColor;
+				
+				// Contents mask
+				CALayer *mask = [CALayer layer];
+				mask.backgroundColor = [UIColor blackColor].CGColor;
+				mask.cornerRadius = 3.0;
+				mask.frame = CGRectMake(0, 0, shade.frame.size.width+mask.cornerRadius, shade.frame.size.height+(mask.cornerRadius * 2));
+				[layer addSublayer:mask];
+				
+				// Apply mask
+				shade.mask = layer;
+			}
+			
 			y += 75;
+			row++;
 		end: ;
 		}
 	}
@@ -396,8 +415,15 @@
     _periodTitle.string = [NSString stringWithFormat:NSLocalizedString(@"%u", nil), period];
     _courseTitle.string = _courseInfo.title;
 	
+	// Adjust height for collapsed state
+	if(_isCollapsed) {
+		_backgroundLayer.frame = CGRectMake(10, 10, self.frame.size.width - 20, SQUGradeOverviewCellCollapsedHeight - 10);
+	} else {
+		_backgroundLayer.frame = CGRectMake(10, 10, self.frame.size.width - 20, [SQUGradeOverviewTableViewCell cellHeightForCourse:_courseInfo] - 6);
+	}
+	
 	// Update BG layer and shadow path
-	_backgroundLayer.frame = CGRectMake(10, 10, self.frame.size.width - 20, [SQUGradeOverviewTableViewCell cellHeightForCourse:_courseInfo] - 6);
+//	_backgroundLayer.frame = CGRectMake(10, 10, self.frame.size.width - 20, _backgroundLayer.frame.size.height);
 	UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:_backgroundLayer.frame cornerRadius:_backgroundLayer.cornerRadius];
 	_backgroundLayer.shadowPath = path.CGPath;
 	
@@ -418,16 +444,19 @@
 		[_noGradesAvailable removeFromSuperlayer];
 	}
 	
-	// Re-draw table
-	[self drawHeaders];
-	[self drawCells];
-	
-	for (CALayer *layer in _shades) {
-		[_backgroundLayer addSublayer:layer];
-	} for (CALayer *layer in _headers) {
-		[_backgroundLayer addSublayer:layer];
-	} for (CALayer *layer in _cells) {
-		[_backgroundLayer addSublayer:layer];
+	// Update collapsed state
+	if(!_isCollapsed) {
+		// Re-draw table
+		[self drawHeaders];
+		[self drawCells];
+		
+		for (CALayer *layer in _shades) {
+			[_backgroundLayer addSublayer:layer];
+		} for (CALayer *layer in _headers) {
+			[_backgroundLayer addSublayer:layer];
+		} for (CALayer *layer in _cells) {
+			[_backgroundLayer addSublayer:layer];
+		}
 	}
 	
 	// Update the averages label

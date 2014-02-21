@@ -10,6 +10,7 @@
 #import <CoreGraphics/CoreGraphics.h>
 
 #define SQUGradeOverviewCellHeight 212.0
+#define SQUGradeOverviewCellCollapsedHeight 70
 
 @class SQUCourse, SQUCycle;
 @interface SQUGradeOverviewTableViewCell : UITableViewCell {
@@ -30,9 +31,12 @@
 	NSMutableArray *_headers;
 	NSMutableArray *_cells;
 	NSMutableArray *_shades;
+	
+	BOOL _isCollapsed;
 }
 
 @property (nonatomic) SQUCourse *courseInfo;
+@property (nonatomic) BOOL isCollapsed;
 
 - (void) updateUI;
 
