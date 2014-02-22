@@ -1,57 +1,48 @@
 //
-//  SQUGradeOverviewTableViewCell.m
+//  SQUDashboardCell.m
 //  QuickHAC
 //
-//  Created by Tristan Seifert on 16/07/2013.
+//  Created by Tristan Seifert on 2/22/14.
 //  See README.MD for licensing and copyright information.
 //
 
-#import <QuartzCore/QuartzCore.h>
-#import <CoreText/CoreText.h>
+#import "SQUDashboardCell.h"
 
-#import "SQUGradeOverviewTableViewCell.h"
-#import "SQUCoreData.h"
-#import "SQUDistrictManager.h"
 #import "SQUColourScheme.h"
 #import "SQUUIHelpers.h"
-#import "SQUGradeManager.h"
-#import "UIColor+SQUColourUtilities.h"
+#import "SQUCoreData.h"
 
-#define kSQUGradeOverviewAverageFontSize 29
+#import <CoreText/CoreText.h>
 
-@interface SQUGradeOverviewTableViewCell (PrivateMethods)
+static const CGFloat SQUDashboardCellAverageFontSize = 27;
+static const CGFloat SQUDashboardCellAverageFontOffsetY = 3;
+static const CGFloat SQUDashboardCellAverageRectHeight = 39;
+static const CGFloat SQUDashboardCellSemesterRectHeight = 67;
+static const CGFloat SQUDashboardCellGradesOffsetY = 50;
 
-- (CATextLayer *) makeRowHeaderWithString:(NSString *) string andFrame:(CGRect) frame;
-- (void) drawHeaders;
-- (void) drawCells;
+@implementation SQUDashboardCell
+@synthesize course = _courseInfo;
 
-@end
-
-@implementation SQUGradeOverviewTableViewCell
-@synthesize courseInfo = _courseInfo;
-
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-    if (self) {
-        CGRect rect = self.frame;
-        rect.size.height = SQUGradeOverviewCellHeight;
-        self.frame = rect;
-		
+- (id)initWithFrame:(CGRect) frame {
+    self = [super initWithFrame:frame];
+  
+	if (self) {
 		// Card background
 		_backgroundLayer = [CALayer layer];
-		_backgroundLayer.frame = CGRectMake(10, 10, self.frame.size.width - 20, self.frame.size.height - 6);
+		_backgroundLayer.frame = CGRectMake(0, 0, frame.size.width, frame.size.height);
         _backgroundLayer.backgroundColor = [UIColor whiteColor].CGColor;
 		_backgroundLayer.borderWidth = 0.0;
-		_backgroundLayer.shadowColor = [UIColor blackColor].CGColor;
-		_backgroundLayer.shadowOpacity = 0.0625;
-		_backgroundLayer.shadowRadius = 2.0;
-		_backgroundLayer.shadowOffset = CGSizeMake(-8.0, -8.0);
-		_backgroundLayer.cornerRadius = 1.0;
+		_backgroundLayer.cornerRadius = 2.0;
 		_backgroundLayer.contentsScale = [UIScreen mainScreen].scale;
-		_backgroundLayer.masksToBounds = NO;
+		_backgroundLayer.masksToBounds = YES;
 		
+		// Apply shadow to actual cell layer
 		UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:_backgroundLayer.frame cornerRadius:_backgroundLayer.cornerRadius];
-		_backgroundLayer.shadowPath = path.CGPath;
+		self.layer.shadowPath = path.CGPath;
+		self.layer.shadowColor = [UIColor blackColor].CGColor;
+		self.layer.shadowOpacity = 0.1;
+		self.layer.shadowRadius = 3.0;
+		self.layer.shadowOffset = CGSizeMake(0.0, 0.0);
         
 		// Course title
         _courseTitle = [CATextLayer layer];
@@ -73,7 +64,7 @@
 		
 		// Average label
 		_currentAverageLabel = [CATextLayer layer];
-		_currentAverageLabel.frame = CGRectMake(_backgroundLayer.frame.size.width - 70, 5, 62, 38);
+		_currentAverageLabel.frame = CGRectMake(_backgroundLayer.frame.size.width - 67, 5, 62, 38);
         _currentAverageLabel.contentsScale = [UIScreen mainScreen].scale;
         _currentAverageLabel.foregroundColor = [UIColor grayColor].CGColor;
         _currentAverageLabel.font = (__bridge CFTypeRef) [UIFont fontWithName:@"HelveticaNeue-UltraLight" size:15.0f];
@@ -88,7 +79,7 @@
         _periodTitle.font = (__bridge CFTypeRef) [UIFont fontWithName:@"HelveticaNeue-UltraLight" size:15.0f];
         _periodTitle.fontSize = 34;
 		_periodTitle.alignmentMode = kCAAlignmentCenter;
-				
+		
 		// Circle surrounding period title
 		_periodCircle = [CALayer layer];
         _periodCircle.frame = CGRectMake(8, 8, 44, 44);
@@ -108,18 +99,12 @@
 		_cells = [NSMutableArray new];
 		_headers = [NSMutableArray new];
 		_shades = [NSMutableArray new];
-    
+		
 		// Prepare background layer
 		self.layer.backgroundColor = [UIColor clearColor].CGColor;
-	}
-    
-	return self;
-}
-
-- (void) setSelected:(BOOL) selected animated:(BOOL) animated {
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
+    }
+	
+    return self;
 }
 
 /**
@@ -148,7 +133,7 @@
 	
 	// Elementary students do not have exams, and only four cycles.
 	if(isElementary) {
-		CGFloat y = 56;
+		CGFloat y = SQUDashboardCellGradesOffsetY;
 		NSUInteger cycPerSem = _courseInfo.student.cyclesPerSemester.unsignedIntegerValue;
 		NSUInteger heads = cycPerSem/2;
 		
@@ -166,7 +151,7 @@
 				NSUInteger cyc = i+1;
 				cyc += (row * heads);
 				title = [NSString stringWithFormat:NSLocalizedString(@"Cycle %u", nil), cyc];
-
+				
 				
 				frame = CGRectMake(x, y+14, width, 14);
 				CATextLayer *layer = [self makeRowHeaderWithString:title andFrame:frame];
@@ -177,7 +162,7 @@
 			y += 75;
 		}
 	} else {
-		CGFloat y = 56;
+		CGFloat y = SQUDashboardCellGradesOffsetY;
 		NSUInteger cycPerSem = _courseInfo.student.cyclesPerSemester.unsignedIntegerValue;
 		NSUInteger heads = cycPerSem + 2;
 		NSUInteger row = 0;
@@ -193,7 +178,7 @@
 		for (NSUInteger semester = 0; semester < _courseInfo.semesters.count; semester++) {
 			SQUSemester *sem = _courseInfo.semesters[semester];
 			x = 0;
-		
+			
 			// Do not render the semester if it has no data
 			if(sem.average.integerValue == -1) goto end;
 			
@@ -218,7 +203,7 @@
 			
 			// Draw "semester outlines"
 			shade = [CAGradientLayer layer];
-			shade.frame = CGRectMake(x-(width*2), y, width*2, 75);
+			shade.frame = CGRectMake(x-(width*2), y, width*2, SQUDashboardCellSemesterRectHeight);
 			shade.backgroundColor = UIColorFromRGB(0xf2f2f2).CGColor;
 			[_shades addObject:shade];
 			
@@ -252,7 +237,7 @@
 				shade.mask = layer;
 			}
 			
-			y += 75;
+			y += SQUDashboardCellSemesterRectHeight-2;
 			row++;
 		end: ;
 		}
@@ -267,7 +252,7 @@
 	
 	// Elementary students do not have exams, and only four cycles.
 	if(isElementary) {
-		CGFloat y = 56;
+		CGFloat y = SQUDashboardCellGradesOffsetY;
 		NSUInteger cycPerSem = _courseInfo.student.cyclesPerSemester.unsignedIntegerValue;
 		NSUInteger heads = cycPerSem / 2;
 		
@@ -281,24 +266,24 @@
 			// Iterate through each cycle
 			for(NSUInteger i = 0; i < heads; i++) {
 				CAGradientLayer *bg = [CAGradientLayer new];
-				bg.frame = CGRectMake(x, y + 28, width, 47);
+				bg.frame = CGRectMake(x, y + 28, width, SQUDashboardCellAverageRectHeight);
 				bg.backgroundColor = UIColorFromRGB(0xffffff).CGColor;
 				
 				// Draw average
 				CATextLayer *average = [CATextLayer layer];
-				average.frame = CGRectMake(0, 6, width, 47);
+				average.frame = CGRectMake(0, SQUDashboardCellAverageFontOffsetY, width, SQUDashboardCellAverageRectHeight);
 				average.contentsScale = [UIScreen mainScreen].scale;
 				average.font = (__bridge CFTypeRef) [UIFont fontWithName:@"HelveticaNeue-Light" size:15.0f];
-				average.fontSize = kSQUGradeOverviewAverageFontSize;
+				average.fontSize = SQUDashboardCellAverageFontSize;
 				average.alignmentMode = kCAAlignmentCenter;
 				[bg addSublayer:average];
 				
 				SQUCycle *cycle = _courseInfo.cycles[i + (row * heads)];
-					
+				
 				// Display the letter grade
 				if(cycle.letterGrade.length != 0) {
 					average.string = cycle.letterGrade;
-					bg.backgroundColor = [SQUGradeOverviewTableViewCell colourForLetterGrade:cycle.letterGrade].CGColor;
+					bg.backgroundColor = [SQUDashboardCell colourForLetterGrade:cycle.letterGrade].CGColor;
 					average.foregroundColor = [UIColor whiteColor].CGColor;
 				} else {
 					average.string = NSLocalizedString(@"-", nil);
@@ -310,10 +295,10 @@
 				x += width;
 			}
 			
-			y += 75;
+			y += SQUDashboardCellSemesterRectHeight;
 		}
 	} else {
-		CGFloat y = 56;
+		CGFloat y = SQUDashboardCellGradesOffsetY;
 		NSUInteger cycPerSem = _courseInfo.student.cyclesPerSemester.unsignedIntegerValue;
 		NSUInteger heads = cycPerSem + 2;
 		
@@ -330,22 +315,22 @@
 			// Iterate for each cycle plus two more
 			for(NSUInteger i = 0; i < heads; i++) {
 				CAGradientLayer *bg = [CAGradientLayer new];
-				bg.frame = CGRectMake(x, y + 28, width, 47);
+				bg.frame = CGRectMake(x, y + 28, width, SQUDashboardCellAverageRectHeight);
 				bg.backgroundColor = UIColorFromRGB(0xffffff).CGColor;
 				
 				// Draw average
 				CATextLayer *average = [CATextLayer layer];
-				average.frame = CGRectMake(0, 6, width, 47);
+				average.frame = CGRectMake(0, SQUDashboardCellAverageFontOffsetY, width, SQUDashboardCellAverageRectHeight);
 				average.contentsScale = [UIScreen mainScreen].scale;
 				average.foregroundColor = [UIColor blackColor].CGColor;
 				average.font = (__bridge CFTypeRef) [UIFont fontWithName:@"HelveticaNeue-Light" size:15.0f];
-				average.fontSize = kSQUGradeOverviewAverageFontSize;
+				average.fontSize = SQUDashboardCellAverageFontSize;
 				average.alignmentMode = kCAAlignmentCenter;
 				[bg addSublayer:average];
 				
 				if(i < cycPerSem) {
 					SQUCycle *cycle = _courseInfo.cycles[i + (semester * cycPerSem)];
-					average.foregroundColor = [SQUGradeOverviewTableViewCell gradeChangeColour:cycle].CGColor;
+					average.foregroundColor = [SQUDashboardCell gradeChangeColour:cycle].CGColor;
 					
 					if(cycle.average.unsignedIntegerValue != 0) {
 						average.string = [NSString stringWithFormat:NSLocalizedString(@"%u", nil), cycle.average.unsignedIntegerValue];
@@ -383,7 +368,7 @@
 				x += width;
 			}
 			
-			y += 75;
+			y += SQUDashboardCellSemesterRectHeight;
 		end: ;
 		}
 	}
@@ -411,24 +396,15 @@
 /**
  * Updates the user interface of the cell.
  */
-- (void) updateUI {
+- (void) setCourse:(SQUCourse *) course {
+	_courseInfo = course;
+	
 	NSUInteger period = _courseInfo.period.unsignedIntegerValue;
 	BOOL isElementary = (_courseInfo.semesters.count == 1);
 	
+	// Update course title and period doohickey
     _periodTitle.string = [NSString stringWithFormat:NSLocalizedString(@"%u", nil), period];
     _courseTitle.string = _courseInfo.title;
-	
-	// Adjust height for collapsed state
-	if(_isCollapsed) {
-		_backgroundLayer.frame = CGRectMake(10, 10, self.frame.size.width - 20, SQUGradeOverviewCellCollapsedHeight - 10);
-	} else {
-		_backgroundLayer.frame = CGRectMake(10, 10, self.frame.size.width - 20, [SQUGradeOverviewTableViewCell cellHeightForCourse:_courseInfo] - 6);
-	}
-	
-	// Update BG layer and shadow path
-//	_backgroundLayer.frame = CGRectMake(10, 10, self.frame.size.width - 20, _backgroundLayer.frame.size.height);
-	UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:_backgroundLayer.frame cornerRadius:_backgroundLayer.cornerRadius];
-	_backgroundLayer.shadowPath = path.CGPath;
 	
 	// Get rid of all the currently existing layers
 	for (CALayer *layer in _cells) {
@@ -447,19 +423,16 @@
 		[_noGradesAvailable removeFromSuperlayer];
 	}
 	
-	// Update collapsed state
-	if(!_isCollapsed) {
-		// Re-draw table
-		[self drawHeaders];
-		[self drawCells];
-		
-		for (CALayer *layer in _shades) {
-			[_backgroundLayer addSublayer:layer];
-		} for (CALayer *layer in _headers) {
-			[_backgroundLayer addSublayer:layer];
-		} for (CALayer *layer in _cells) {
-			[_backgroundLayer addSublayer:layer];
-		}
+	// Re-draw table
+	[self drawHeaders];
+	[self drawCells];
+	
+	for (CALayer *layer in _shades) {
+		[_backgroundLayer addSublayer:layer];
+	} for (CALayer *layer in _headers) {
+		[_backgroundLayer addSublayer:layer];
+	} for (CALayer *layer in _cells) {
+		[_backgroundLayer addSublayer:layer];
 	}
 	
 	// Update the averages label
@@ -499,7 +472,7 @@
 drawNoGradesAvailable: ;
 	if(!_noGradesAvailable) {
 		_noGradesAvailable = [CATextLayer layer];
-        _noGradesAvailable.frame = CGRectMake(0, 56+(75/4), _backgroundLayer.frame.size.width, 32);
+        _noGradesAvailable.frame = CGRectMake(0, (self.frame.size.height / 2) - 16, _backgroundLayer.frame.size.width, 32);
         _noGradesAvailable.contentsScale = [UIScreen mainScreen].scale;
         _noGradesAvailable.foregroundColor = [UIColor blackColor].CGColor;
 		_noGradesAvailable.string = NSLocalizedString(@"No Grades", nil);
@@ -522,22 +495,6 @@ drawNoGradesAvailable: ;
 							  @"F" : UIColorFromRGB(0xc0393b)};
 	
 	return colours[letter];
-}
-
-+ (CGFloat) cellHeightForCourse:(SQUCourse *) course {
-	BOOL isElementary = (course.semesters.count == 1);
-	
-	if(isElementary) {
-		return SQUGradeOverviewCellHeight;
-	} else {
-		if([course.semesters[1] average].integerValue == -1) {
-			return SQUGradeOverviewCellHeight - 75;
-		} else if([course.semesters[0] average].integerValue == -1) {
-			return SQUGradeOverviewCellHeight - 75;
-		} else {
-			return SQUGradeOverviewCellHeight;
-		}
-	}
 }
 
 @end

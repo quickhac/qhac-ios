@@ -12,6 +12,8 @@
 #import "SQUColourScheme.h"
 #import "SQUTabletSidebarController.h"
 
+#import "SQUDashboardController.h"
+
 @interface SQUTabletSidebarController ()
 
 @end
@@ -32,6 +34,8 @@
 		self.tableView.contentInset = UIEdgeInsetsMake(28+8, 0, 0, 0);
 		
 		[self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] animated:NO scrollPosition:UITableViewScrollPositionNone];
+		 
+		[self performSelector:@selector(updateDetailView:) withObject:self.tableView.indexPathForSelectedRow afterDelay:0.01];
 		
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateTableNotification:) name:SQUGradesDataUpdatedNotification object:nil];
     }
@@ -169,7 +173,7 @@
  * Table selection callback
  */
 - (void) tableView:(UITableView *) tableView didSelectRowAtIndexPath:(NSIndexPath *) indexPath {
-	
+	[self updateDetailView:indexPath];
 }
 
 
@@ -177,6 +181,34 @@
 	NSIndexPath *path = self.tableView.indexPathForSelectedRow;
 	[self.tableView reloadData];
 	[self.tableView selectRowAtIndexPath:path animated:NO scrollPosition:UITableViewScrollPositionNone];
+}
+
+- (void) updateDetailView:(NSIndexPath *) path {
+	UISplitViewController *controller = (UISplitViewController *) self.navigationController.splitViewController;
+	
+	switch (path.section) {
+		case 0: { // dashboard
+			
+			SQUDashboardController *c = [[SQUDashboardController alloc] init];
+			UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:c];
+			controller.viewControllers = @[controller.viewControllers[0], nc];
+			
+			break;
+		}
+			
+		case 1: { // course
+			
+			break;
+		}
+			
+		case 2: { // settings
+			
+			break;
+		}
+			
+		default:
+			break;
+	}
 }
 
 @end

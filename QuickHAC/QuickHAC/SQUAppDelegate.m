@@ -24,7 +24,7 @@
 #import "NSManagedObjectModel+KCOrderedAccessorFix.h"
 #import "SVProgressHUD.h"
 #import "Lockbox.h"
-#import "MGSplitViewController.h"
+#import "SQUSplitViewController.h"
 #import "WYPopoverController.h"
 #import "LTHPasscodeViewController.h"
 #import "AFNetworking.h"
@@ -119,17 +119,14 @@ static SQUAppDelegate *sharedDelegate = nil;
 		// Set up iPad UI
 		_ipadSidebar = [[SQUTabletSidebarController alloc] initWithStyle:UITableViewStyleGrouped];
 		_ipadSidebarWrapper = [[UINavigationController alloc] initWithRootViewController:_ipadSidebar];
-		_ipadContentWrapper = [[UINavigationController alloc] initWithRootViewController:nil];
 		
 		// Initialise split view
-		_ipadSplitController = [[MGSplitViewController alloc] init];
-		_window.rootViewController = _ipadSplitController;
-		_ipadSplitController.masterViewController = _ipadSidebarWrapper;
-		_ipadSplitController.detailViewController = _ipadContentWrapper;
-		_ipadSplitController.showsMasterInPortrait = YES;
+		_ipadSplitController = [[SQUSplitViewController alloc] init];
+		_ipadSplitController.delegate = self;
+		_ipadSplitController.presentsWithGesture = YES;
+		_ipadSplitController.viewControllers = @[_ipadSidebarWrapper, [[UINavigationController alloc] init]];
 		
-		// Hide splitter
-		_ipadSplitController.splitWidth = 0.0;
+		_window.rootViewController = _ipadSplitController;
 		
 		// Set up iPad appearances
 		[[UINavigationBar appearance] setTintColor:UIColorFromRGB(kSQUColourTitle)];
@@ -144,12 +141,6 @@ static SQUAppDelegate *sharedDelegate = nil;
 	
     _window.backgroundColor = UIColorFromRGB(0xECF0F1);
 	[_window makeKeyAndVisible];
-    
-    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
-		// Hack for an MGSplitViewController bug
-		[_ipadSplitController setSplitPosition:_ipadSplitController.splitPosition - 1];
-		[_ipadSplitController setSplitPosition:_ipadSplitController.splitPosition + 1];
-	}
 	
 	// TODO: Check if user enabled push
 	if(false) {
@@ -409,6 +400,21 @@ static SQUAppDelegate *sharedDelegate = nil;
 - (void) maxNumberOfFailedAttemptsReached {
 	NSLog(@"Maximum passcode attempts reached.");
 	exit(-1);
+}
+
+- (void) splitViewController:(UISplitViewController*) svc willHideViewController:(UIViewController *) aViewController withBarButtonItem:(UIBarButtonItem *) barButtonItem forPopoverController:(UIPopoverController*) pc {
+	barButtonItem.title = NSLocalizedString(@"Sidebar", nil);
+	UINavigationController *nav = svc.viewControllers[1];
+	nav.topViewController.navigationItem.leftBarButtonItem = barButtonItem;
+	
+	// NSLog(@"Sidebar bar button item created");
+}
+
+- (void) splitViewController:(UISplitViewController *) svc willShowViewController:(UIViewController *) aViewController invalidatingBarButtonItem:(UIBarButtonItem *) barButtonItem {
+	UINavigationController *nav = svc.viewControllers[1];
+	nav.topViewController.navigationItem.leftBarButtonItem = nil;
+	
+	// NSLog(@"Sidebar bar button item invalidated");
 }
 
 @end
