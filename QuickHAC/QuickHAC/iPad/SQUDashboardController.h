@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
+@class SQURelativeRefreshControl;
 @interface SQUDashboardController : UICollectionViewController <UICollectionViewDelegateFlowLayout> {
-	
+	SQURelativeRefreshControl *_refresher;
 }
 
 - (instancetype) init;

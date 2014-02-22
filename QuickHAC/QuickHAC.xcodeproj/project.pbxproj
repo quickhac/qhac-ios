@@ -47,6 +47,7 @@
 		DE6F180518B9128B00546B0E /* SQUTabletLoginController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE6F180418B9128B00546B0E /* SQUTabletLoginController.m */; };
 		DE6F180918B91ADB00546B0E /* SQUSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE6F180818B91ADB00546B0E /* SQUSplitViewController.m */; };
 		DE6F180C18B91DAE00546B0E /* SQUDashboardCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DE6F180B18B91DAE00546B0E /* SQUDashboardCell.m */; };
+		DE6F181018B9300700546B0E /* SQUTabletClassDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE6F180F18B9300700546B0E /* SQUTabletClassDetailController.m */; };
 		DE72EBB9187A102B006F6F1A /* SQUEmptyView.m in Sources */ = {isa = PBXBuildFile; fileRef = DE72EBB8187A102B006F6F1A /* SQUEmptyView.m */; };
 		DE7B4E85186EB0F3008079CC /* NSManagedObjectModel+KCOrderedAccessorFix.m in Sources */ = {isa = PBXBuildFile; fileRef = DE7B4E84186EB0F3008079CC /* NSManagedObjectModel+KCOrderedAccessorFix.m */; };
 		DE7F51D6178C8B5E00A677CE /* SQULoginSchoolSelector.m in Sources */ = {isa = PBXBuildFile; fileRef = DE7F51D5178C8B5E00A677CE /* SQULoginSchoolSelector.m */; };
@@ -225,6 +226,8 @@
 		DE6F180818B91ADB00546B0E /* SQUSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SQUSplitViewController.m; path = iPad/SQUSplitViewController.m; sourceTree = "<group>"; };
 		DE6F180A18B91DAE00546B0E /* SQUDashboardCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SQUDashboardCell.h; path = iPad/SQUDashboardCell.h; sourceTree = "<group>"; };
 		DE6F180B18B91DAE00546B0E /* SQUDashboardCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SQUDashboardCell.m; path = iPad/SQUDashboardCell.m; sourceTree = "<group>"; };
+		DE6F180E18B9300700546B0E /* SQUTabletClassDetailController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SQUTabletClassDetailController.h; path = iPad/SQUTabletClassDetailController.h; sourceTree = "<group>"; };
+		DE6F180F18B9300700546B0E /* SQUTabletClassDetailController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SQUTabletClassDetailController.m; path = iPad/SQUTabletClassDetailController.m; sourceTree = "<group>"; };
 		DE72EBB7187A102B006F6F1A /* SQUEmptyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUEmptyView.h; sourceTree = "<group>"; };
 		DE72EBB8187A102B006F6F1A /* SQUEmptyView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUEmptyView.m; sourceTree = "<group>"; };
 		DE7B4E83186EB0F3008079CC /* NSManagedObjectModel+KCOrderedAccessorFix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSManagedObjectModel+KCOrderedAccessorFix.h"; path = "../../KCOrderedAccessorFix/NSManagedObjectModel+KCOrderedAccessorFix.h"; sourceTree = "<group>"; };
@@ -637,6 +640,15 @@
 			name = General;
 			sourceTree = "<group>";
 		};
+		DE6F180D18B92CD400546B0E /* Class Detail */ = {
+			isa = PBXGroup;
+			children = (
+				DE6F180E18B9300700546B0E /* SQUTabletClassDetailController.h */,
+				DE6F180F18B9300700546B0E /* SQUTabletClassDetailController.m */,
+			);
+			name = "Class Detail";
+			sourceTree = "<group>";
+		};
 		DE7B4E82186EB0CB008079CC /* KCOrderedAccessorFix */ = {
 			isa = PBXGroup;
 			children = (
@@ -781,6 +793,7 @@
 			children = (
 				DE6F180618B91AC300546B0E /* General */,
 				DE6F17F818B911C300546B0E /* Dashboard */,
+				DE6F180D18B92CD400546B0E /* Class Detail */,
 				DEF0F25F18743B5300116B61 /* Login */,
 				DEF0F26018743B5B00116B61 /* Sidebar */,
 			);
@@ -1057,6 +1070,7 @@
 				DE3AC657187B5A37007540A9 /* NSDate+RelativeDate.m in Sources */,
 				DEFFDE45186E26FC00E26423 /* AFURLRequestSerialization.m in Sources */,
 				DE88318B18811F6B002244F5 /* SQUSidebarCell.m in Sources */,
+				DE6F181018B9300700546B0E /* SQUTabletClassDetailController.m in Sources */,
 				DE6F180518B9128B00546B0E /* SQUTabletLoginController.m in Sources */,
 				DEFFDE44186E26FC00E26423 /* AFURLConnectionOperation.m in Sources */,
 				DE2843E118760FD80000756C /* SQUGradespeedDriver.m in Sources */,

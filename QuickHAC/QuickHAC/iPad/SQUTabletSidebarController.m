@@ -13,6 +13,7 @@
 #import "SQUTabletSidebarController.h"
 
 #import "SQUDashboardController.h"
+#import "SQUTabletClassDetailController.h"
 
 @interface SQUTabletSidebarController ()
 
@@ -188,7 +189,6 @@
 	
 	switch (path.section) {
 		case 0: { // dashboard
-			
 			SQUDashboardController *c = [[SQUDashboardController alloc] init];
 			UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:c];
 			controller.viewControllers = @[controller.viewControllers[0], nc];
@@ -197,6 +197,11 @@
 		}
 			
 		case 1: { // course
+			SQUTabletClassDetailController *c = [[SQUTabletClassDetailController alloc] init];
+			c.course = [[SQUGradeManager sharedInstance] getCoursesForCurrentStudent][path.row];
+			
+			UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:c];
+			controller.viewControllers = @[controller.viewControllers[0], nc];
 			
 			break;
 		}

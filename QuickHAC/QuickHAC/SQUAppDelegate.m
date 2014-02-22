@@ -406,15 +406,11 @@ static SQUAppDelegate *sharedDelegate = nil;
 	barButtonItem.title = NSLocalizedString(@"Sidebar", nil);
 	UINavigationController *nav = svc.viewControllers[1];
 	nav.topViewController.navigationItem.leftBarButtonItem = barButtonItem;
-	
-	// NSLog(@"Sidebar bar button item created");
 }
 
 - (void) splitViewController:(UISplitViewController *) svc willShowViewController:(UIViewController *) aViewController invalidatingBarButtonItem:(UIBarButtonItem *) barButtonItem {
 	UINavigationController *nav = svc.viewControllers[1];
 	nav.topViewController.navigationItem.leftBarButtonItem = nil;
-	
-	// NSLog(@"Sidebar bar button item invalidated");
 }
 
 @end
