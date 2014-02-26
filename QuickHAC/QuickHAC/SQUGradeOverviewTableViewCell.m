@@ -44,8 +44,8 @@
 		_backgroundLayer.borderWidth = 0.0;
 		_backgroundLayer.shadowColor = [UIColor blackColor].CGColor;
 		_backgroundLayer.shadowOpacity = 0.0625;
-		_backgroundLayer.shadowRadius = 2.0;
-		_backgroundLayer.shadowOffset = CGSizeMake(-8.0, -8.0);
+		_backgroundLayer.shadowRadius = 4.0;
+		_backgroundLayer.shadowOffset = CGSizeMake(-10.0, -10.0);
 		_backgroundLayer.cornerRadius = 1.0;
 		_backgroundLayer.contentsScale = [UIScreen mainScreen].scale;
 		_backgroundLayer.masksToBounds = NO;

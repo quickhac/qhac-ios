@@ -54,12 +54,12 @@
 										action:@selector(openSidebar:)];
 		self.navigationItem.leftBarButtonItem = showSidebar;
         
-        UIBarButtonItem *showNotifications = [[UIBarButtonItem alloc]
+    /*    UIBarButtonItem *showNotifications = [[UIBarButtonItem alloc]
 											  initWithImage:[UIImage imageNamed:@"notificationsIcon"]
 											  style:UIBarButtonItemStyleBordered
 											  target:self
 											  action:@selector(showNotifications:)];
-		self.navigationItem.rightBarButtonItem = showNotifications;
+		self.navigationItem.rightBarButtonItem = showNotifications;*/
 		
 		// Set up the title view container and title text
 		_navbarTitle = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 200, 44)];
@@ -195,7 +195,7 @@
 - (void) reloadData:(SQURelativeRefreshControl *) control {
 	if([SQUDistrictManager sharedInstance].reachabilityManager.isReachable) {
 		[[SQUGradeManager sharedInstance] fetchNewClassGradesFromServerWithDoneCallback:^(NSError *error){
-			[[NSNotificationCenter defaultCenter] postNotificationName:SQUGradesDataUpdatedNotification object:nil];
+			[[NSNotificationCenter defaultCenter] postNotificationName:SQUGradesDataUpdatedNotification object:nil userInfo:@{}];
 			
 			if(error) {
 				UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Updating Grades", nil) message:error.localizedDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
@@ -223,6 +223,10 @@
 	
 	((SQURelativeRefreshControl *) self.refreshControl).date =
 	[SQUGradeManager sharedInstance].student.lastAveragesUpdate;
+	
+	if(!notif.userInfo) {
+		[self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+	}
 	
 	// Update GPA display
 	[self updateGPA];

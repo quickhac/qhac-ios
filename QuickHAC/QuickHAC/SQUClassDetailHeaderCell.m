@@ -8,6 +8,7 @@
 
 #import "SQUColourScheme.h"
 #import "SQUCoreData.h"
+#import "SQUAppDelegate.h"
 #import "SQUGradeOverviewTableViewCell.h"
 #import "SQUClassDetailHeaderCell.h"
 
@@ -73,6 +74,17 @@
 		_average.string = [_cycle.average stringValue];
 		
 		_average.foregroundColor = [SQUGradeOverviewTableViewCell gradeChangeColour:_cycle].CGColor;
+		
+		if(_cycle.changedSinceLastFetch.boolValue) {
+			// Reset fetch status
+			_cycle.changedSinceLastFetch = @(NO);
+			// Save to DB
+			NSError *err = nil;
+			if(![[SQUAppDelegate sharedDelegate].managedObjectContext save:&err]) {
+				UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Database Error", nil) message:err.localizedDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
+				[alert show];
+			}
+		}
 	}
 }
 

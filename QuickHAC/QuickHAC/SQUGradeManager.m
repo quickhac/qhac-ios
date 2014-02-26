@@ -313,9 +313,11 @@ static SQUGradeManager *_sharedInstance = nil;
 	 * change by either a) viewing the cycle, or b) tapping the notification in
 	 * the notifications drawer.
 	 */
-	if(cycle.average.floatValue != [dict[@"average"] floatValue]) {
-		cycle.changedSinceLastFetch = @(YES);
-		cycle.preChangeGrade = cycle.average;
+	if(cycle.average.floatValue != 0) { // prevent notifications for all grades on first launch
+		if(cycle.average.floatValue != [dict[@"average"] floatValue]) {
+			cycle.changedSinceLastFetch = @(YES);
+			cycle.preChangeGrade = cycle.average;
+		}
 	}
 	
 	cycle.last_updated = [NSDate new];
