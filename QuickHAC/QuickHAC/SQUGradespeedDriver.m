@@ -164,63 +164,72 @@
  * Processes a row of the overall gradebook, i.e. a class.
  */
 - (NSDictionary *) parseCourseWithDistrict:(SQUDistrict *) district andTableRow:(TFHppleElement *) row andSemesterParams:(semester_params_t) semParams {
-	NSMutableDictionary *dict = [NSMutableDictionary new];
-	NSMutableArray *semesters = [NSMutableArray new];
-	
-	// Get cells and teacher cell
-	NSArray *cells = [row childrenWithTagName:@"td"];
-	TFHppleElement *teacherLink = [[row childrenWithClassName:@"TeacherNameCell"][0] children][0];
-	
-	// If we detect 4 cycles/semester
-	if(semParams.cyclesPerSemester != 4) {
-		// Build a list of cells in a semester
-		for (NSUInteger i = 0; i < semParams.semesters; i++) {
+	@try {
+		NSMutableDictionary *dict = [NSMutableDictionary new];
+		NSMutableArray *semesters = [NSMutableArray new];
+		
+		// Get cells and teacher cell
+		NSArray *cells = [row childrenWithTagName:@"td"];
+		TFHppleElement *teacherLink = [[row childrenWithClassName:@"TeacherNameCell"][0] children][0];
+		
+		// Ignore GPA cell
+		if([teacherLink.text compare:@"Cumulative GPA" options:NSCaseInsensitiveSearch] == NSOrderedSame) return nil;
+		
+		// If we detect 4 cycles/semester
+		if(semParams.cyclesPerSemester != 4) {
+			// Build a list of cells in a semester
+			for (NSUInteger i = 0; i < semParams.semesters; i++) {
+				NSMutableArray *semesterCells = [NSMutableArray new];
+				NSUInteger cellOffset = district.tableOffsets.grades + (i * (semParams.cyclesPerSemester + 2));
+				
+				for(NSUInteger j = 0; j < semParams.cyclesPerSemester + 2; j++) {
+					semesterCells[j] = cells[cellOffset + j];
+				}
+				
+				// Get information for this semester.
+				semesters[i] = [self parseSemesterWithDistrict:district andSemesterCells:semesterCells andSemester:i andSemesterParams:semParams];
+			}
+		} else {
+			// Process the student as an elementary student.
 			NSMutableArray *semesterCells = [NSMutableArray new];
-			NSUInteger cellOffset = district.tableOffsets.grades + (i * (semParams.cyclesPerSemester + 2));
+			NSUInteger cellOffset = district.tableOffsets.grades;
 			
-			for(NSUInteger j = 0; j < semParams.cyclesPerSemester + 2; j++) {
+			for(NSUInteger j = 0; j < semParams.cyclesPerSemester; j++) {
 				semesterCells[j] = cells[cellOffset + j];
 			}
 			
 			// Get information for this semester.
-			semesters[i] = [self parseSemesterWithDistrict:district andSemesterCells:semesterCells andSemester:i andSemesterParams:semParams];
-		}
-	} else {
-		// Process the student as an elementary student.
-		NSMutableArray *semesterCells = [NSMutableArray new];
-		NSUInteger cellOffset = district.tableOffsets.grades;
-		
-		for(NSUInteger j = 0; j < semParams.cyclesPerSemester; j++) {
-			semesterCells[j] = cells[cellOffset + j];
+			semesters[0] = [self parseSemesterWithDistrict:district andSemesterCells:semesterCells andSemester:0 andSemesterParams:semParams];
 		}
 		
-		// Get information for this semester.
-		semesters[0] = [self parseSemesterWithDistrict:district andSemesterCells:semesterCells andSemester:0 andSemesterParams:semParams];
+		NSString *courseCode = [self getCourseNumberForDistrict:district andCells:cells];
+		
+		dict[@"title"] = [cells[district.tableOffsets.title] text];
+		dict[@"period"] = [NSNumber numberWithInteger:[[cells[district.tableOffsets.period] text] integerValue]];
+		dict[@"teacherName"] = [teacherLink text];
+		dict[@"teacherEmail"] = [teacherLink[@"href"] substringFromIndex:7];
+		dict[@"semesters"] = semesters;
+		
+		// Put an empty string in the dictionary if there's no course code
+		if(courseCode) {
+			dict[@"courseNum"] = courseCode;
+		} else {
+			// Ignore known non-graded periods
+			if([dict[@"title"] rangeOfString:@"ADVISORY"].location != NSNotFound) {
+				return nil;
+			} else if([dict[@"title"] rangeOfString:@"Homeroom"].location != NSNotFound) {
+				return nil;
+			}
+			
+			dict[@"courseNum"] = @"";
+		}
+		
+		return dict;
 	}
-	
-	NSString *courseCode = [self getCourseNumberForDistrict:district andCells:cells];
-	
-	dict[@"title"] = [cells[district.tableOffsets.title] text];
-	dict[@"period"] = [NSNumber numberWithInteger:[[cells[district.tableOffsets.period] text] integerValue]];
-	dict[@"teacherName"] = [teacherLink text];
-	dict[@"teacherEmail"] = [teacherLink[@"href"] substringFromIndex:7];
-	dict[@"semesters"] = semesters;
-	
-	// Put an empty string in the dictionary if there's no course code
-	if(courseCode) {
-		dict[@"courseNum"] = courseCode;
-	} else {
-		// Ignore known non-graded periods
-		if([dict[@"title"] rangeOfString:@"ADVISORY"].location != NSNotFound) {
-			return nil;
-		} else if([dict[@"title"] rangeOfString:@"Homeroom"].location != NSNotFound) {
-			return nil;
-		}
-		
-		dict[@"courseNum"] = @"";
+	@catch (NSException *exception) {
+		NSLog(@"Error parsing row: %@", exception);
+		return nil;
 	}
-
-	return dict;
 }
 
 /**
@@ -283,6 +292,7 @@
 			if([row[@"class"] isEqualToString:@"DataRow"] || [row[@"class"] isEqualToString:@"DataRowAlt"]) {
 				NSDictionary *classInfo = [self parseCourseWithDistrict:district andTableRow:row andSemesterParams:semesterParams];
 				
+				// Don't insert nil
 				if(classInfo) {
 					[averages addObject:classInfo];
 				}
