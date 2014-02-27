@@ -119,23 +119,29 @@ static SQUDistrictManager *_sharedInstance = nil;
 - (void) setCurrentDistrict:(SQUDistrict *) currentDistrict {
 	_currentDistrict = currentDistrict;
 	
-	// Load the district's SSL certs, if they are specified.
-	NSArray *certs = [currentDistrict districtSSLCertData];
-	
-	// If there's no certs, panic
-	if((certs.count == 1 && [certs[0] integerValue] == 0) || !certs) {
-		_HTTPManager.securityPolicy.SSLPinningMode = AFSSLPinningModeNone;
+	// Check if the user disabled certificate validation
+	if([[NSUserDefaults standardUserDefaults] boolForKey:@"certPinning"]) {
+		// Load the district's SSL certs, if they are specified.
+		NSArray *certs = [currentDistrict districtSSLCertData];
+		
+		// If there's no certs, panic
+		if((certs.count == 1 && [certs[0] integerValue] == 0) || !certs) {
+			_HTTPManager.securityPolicy.SSLPinningMode = AFSSLPinningModeNone;
+			_HTTPManager.securityPolicy.allowInvalidCertificates = YES;
+			_HTTPManager.securityPolicy.pinnedCertificates = nil;
+			
+			// NSLog(@"SECURITY POLICY CHANGED: Accepts invalid certs (%@)", currentDistrict.name);
+		} else if(certs.count != 0) {
+			_HTTPManager.securityPolicy.allowInvalidCertificates = NO;
+			_HTTPManager.securityPolicy.SSLPinningMode = AFSSLPinningModeCertificate;
+			
+			[_HTTPManager.securityPolicy setPinnedCertificates:certs];
+			
+			// NSLog(@"SECURITY POLICY CHANGED: Rejects invalid certs (%@)", currentDistrict.name);
+		}
+	} else {
 		_HTTPManager.securityPolicy.allowInvalidCertificates = YES;
-		_HTTPManager.securityPolicy.pinnedCertificates = nil;
-		
-		// NSLog(@"SECURITY POLICY CHANGED: Accepts invalid certs (%@)", currentDistrict.name);
-	} else if(certs.count != 0) {
-		_HTTPManager.securityPolicy.allowInvalidCertificates = NO;
-		_HTTPManager.securityPolicy.SSLPinningMode = AFSSLPinningModeCertificate;
-		
-		[_HTTPManager.securityPolicy setPinnedCertificates:certs];
-		
-		// NSLog(@"SECURITY POLICY CHANGED: Rejects invalid certs (%@)", currentDistrict.name);
+		NSLog(@"WARNING: Accepting any certificate!");
 	}
 	
 	// Clear munchies so we're logged out (prevents course mingling)

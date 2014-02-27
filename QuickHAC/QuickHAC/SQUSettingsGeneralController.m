@@ -51,14 +51,14 @@
 	};
 	[section addElement:button];
 	
-	section.footer =NSLocalizedString(@"Calculated GPA may not be accurate. We are not responsible for any problems arising from inaccurate calculations.", nil);
+	section.footer =NSLocalizedString(@"Calculated GPA may not be accurate. We are not responsible for any problems arising from inaccurate calculations.", @"general settings");
 	
 	[root addSection:section];
 	
 	// Build "Appearance" section
-	section = [[QSection alloc] initWithTitle:NSLocalizedString(@"Grade Colourisation", nil)];
+	section = [[QSection alloc] initWithTitle:NSLocalizedString(@"Grade Colourisation", @"general settings")];
 	
-	QFloatElement *asianness = [[QFloatElement alloc] initWithTitle:NSLocalizedString(@"Power Level", nil) value:[[NSUserDefaults standardUserDefaults] floatForKey:@"asianness"]];
+	QFloatElement *asianness = [[QFloatElement alloc] initWithTitle:NSLocalizedString(@"Power Level", @"general settings") value:[[NSUserDefaults standardUserDefaults] floatForKey:@"asianness"]];
 	__unsafe_unretained QFloatElement *tempAsianness = asianness;
 	asianness.minimumValue = 1.0;
 	asianness.maximumValue = 12.2;
@@ -67,7 +67,7 @@
 	};
 	[section addElement:asianness];
 	
-	SQUSettingsHueElement *hue = [[SQUSettingsHueElement alloc] initWithTitle:NSLocalizedString(@"Hue", nil) value:[[NSUserDefaults standardUserDefaults] floatForKey:@"gradesHue"]];
+	SQUSettingsHueElement *hue = [[SQUSettingsHueElement alloc] initWithTitle:NSLocalizedString(@"Hue", @"general settings") value:[[NSUserDefaults standardUserDefaults] floatForKey:@"gradesHue"]];
 	__unsafe_unretained SQUSettingsHueElement *tempHue = hue;
 	hue.onValueChanged = ^(QRootElement *element) {
 		[[NSUserDefaults standardUserDefaults] setFloat:tempHue.floatValue forKey:@"gradesHue"];
@@ -79,13 +79,14 @@
 	// Misc section
 	section = [[QSection alloc] initWithTitle:NSLocalizedString(@"Miscellaneous", nil)];
 	
-	QBooleanElement *secureSwitcher = [[QBooleanElement alloc] initWithTitle:NSLocalizedString(@"Validate Certificates", nil) BoolValue:[[NSUserDefaults standardUserDefaults] boolForKey:@"certPinning"]];
+	QBooleanElement *secureSwitcher = [[QBooleanElement alloc] initWithTitle:NSLocalizedString(@"Connection Validation", @"general settings") BoolValue:[[NSUserDefaults standardUserDefaults] boolForKey:@"certPinning"]];
 	__unsafe_unretained QBooleanElement *secureSwitcherTmp = secureSwitcher;
 	secureSwitcher.onValueChanged = ^(QRootElement *element) {
 		[[NSUserDefaults standardUserDefaults] setBool:secureSwitcherTmp.boolValue
 												forKey:@"certPinning"];
 	};
 	[section addElement:secureSwitcher];
+	section.footer = NSLocalizedString(@"If you have difficulty getting grades, try disabling this option.", @"general settings");
 	
 	[root addSection:section];
 	
