@@ -237,10 +237,6 @@ static SQUDistrictManager *_sharedInstance = nil;
 		_lastRequest = nil;
 	};
 	
-	/*
-	 * If any gradebook software out there does a login using GET, they're a
-	 * bunch of fuckwits and should die in a fire.
-	 */
 	if([loginRequest[@"request"][@"method"] isEqualToString:@"POST"]) {
 		[self sendPOSTRequestToURL:url withParameters:loginRequest[@"params"] andSuccessBlock:loginSuccess andFailureBlock:loginFailure];
 	} else {
@@ -342,30 +338,18 @@ static SQUDistrictManager *_sharedInstance = nil;
 /*
  * Data fix
  *
- * A little note about this fucking kludge:
+ * A little note about this kludge:
  *
  * AISD is a bunch of dipshits and in their recent GradeSpeed update that
  * displays GPA, they introduced a nice little issue in which there's
  * random \x00's scattered throughout the page.
  *
- * Seriously. If you have fucking \x00 in your god damn HTML you should
- * be shot, run over with an SUV, shot again, then drowned in a solution
+ * Seriously. If you have \x00 in your damn HTML you should be shot, run
+ * over with an SUV, shot again, then drowned in a solution
  * of twelve molar hydrosulphuric acid. And then shot again.
  */
 - (NSData *) fixData:(NSData *) in {
 	NSMutableData *data = [in mutableCopy];
-	
-	/*
-	 * A little note about this fucking kludge:
-	 *
-	 * AISD is a bunch of dipshits and in their recent GradeSpeed update that
-	 * displays GPA, they introduced a nice little issue in which there's
-	 * random \x00's scattered throughout the page.
-	 *
-	 * Seriously. If you have fucking \x00 in your god damn HTML you should
-	 * be shot, run over with an SUV, shot again, then drowned in a solution
-	 * of twelve molar hydrosulphuric acid. And then shot again.
-	 */
 	uint8_t *bytes = (uint8_t *) data.bytes;
 	uint32_t spaces = 0x20202020;
 	
