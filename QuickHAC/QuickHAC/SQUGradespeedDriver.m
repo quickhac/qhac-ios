@@ -164,72 +164,69 @@
  * Processes a row of the overall gradebook, i.e. a class.
  */
 - (NSDictionary *) parseCourseWithDistrict:(SQUDistrict *) district andTableRow:(TFHppleElement *) row andSemesterParams:(semester_params_t) semParams {
-	@try {
-		NSMutableDictionary *dict = [NSMutableDictionary new];
-		NSMutableArray *semesters = [NSMutableArray new];
-		
-		// Get cells and teacher cell
-		NSArray *cells = [row childrenWithTagName:@"td"];
-		TFHppleElement *teacherLink = [[row childrenWithClassName:@"TeacherNameCell"][0] children][0];
-		
-		// Ignore GPA cell
-		if([teacherLink.text compare:@"Cumulative GPA" options:NSCaseInsensitiveSearch] == NSOrderedSame) return nil;
-		
-		// If we detect 4 cycles/semester
-		if(semParams.cyclesPerSemester != 4) {
-			// Build a list of cells in a semester
-			for (NSUInteger i = 0; i < semParams.semesters; i++) {
-				NSMutableArray *semesterCells = [NSMutableArray new];
-				NSUInteger cellOffset = district.tableOffsets.grades + (i * (semParams.cyclesPerSemester + 2));
-				
-				for(NSUInteger j = 0; j < semParams.cyclesPerSemester + 2; j++) {
-					semesterCells[j] = cells[cellOffset + j];
-				}
-				
-				// Get information for this semester.
-				semesters[i] = [self parseSemesterWithDistrict:district andSemesterCells:semesterCells andSemester:i andSemesterParams:semParams];
-			}
-		} else {
-			// Process the student as an elementary student.
+	NSMutableDictionary *dict = [NSMutableDictionary new];
+	NSMutableArray *semesters = [NSMutableArray new];
+	
+	// Get cells and teacher cell
+	NSArray *cells = [row childrenWithTagName:@"td"];
+	TFHppleElement *teacherLink = [[row childrenWithClassName:@"TeacherNameCell"][0] children][0];
+	
+	// Ignore GPA cell
+	if([cells[district.tableOffsets.title] text].length < 4) {
+		NSLog(@"Ignoring invalid course title (shorter than 4 chars)");
+		return nil;
+	}
+	
+	// If we detect 4 cycles/semester
+	if(semParams.cyclesPerSemester != 4) {
+		// Build a list of cells in a semester
+		for (NSUInteger i = 0; i < semParams.semesters; i++) {
 			NSMutableArray *semesterCells = [NSMutableArray new];
-			NSUInteger cellOffset = district.tableOffsets.grades;
+			NSUInteger cellOffset = district.tableOffsets.grades + (i * (semParams.cyclesPerSemester + 2));
 			
-			for(NSUInteger j = 0; j < semParams.cyclesPerSemester; j++) {
+			for(NSUInteger j = 0; j < semParams.cyclesPerSemester + 2; j++) {
 				semesterCells[j] = cells[cellOffset + j];
 			}
 			
 			// Get information for this semester.
-			semesters[0] = [self parseSemesterWithDistrict:district andSemesterCells:semesterCells andSemester:0 andSemesterParams:semParams];
+			semesters[i] = [self parseSemesterWithDistrict:district andSemesterCells:semesterCells andSemester:i andSemesterParams:semParams];
+		}
+	} else {
+		// Process the student as an elementary student.
+		NSMutableArray *semesterCells = [NSMutableArray new];
+		NSUInteger cellOffset = district.tableOffsets.grades;
+		
+		for(NSUInteger j = 0; j < semParams.cyclesPerSemester; j++) {
+			semesterCells[j] = cells[cellOffset + j];
 		}
 		
-		NSString *courseCode = [self getCourseNumberForDistrict:district andCells:cells];
-		
-		dict[@"title"] = [cells[district.tableOffsets.title] text];
-		dict[@"period"] = [NSNumber numberWithInteger:[[cells[district.tableOffsets.period] text] integerValue]];
-		dict[@"teacherName"] = [teacherLink text];
-		dict[@"teacherEmail"] = [teacherLink[@"href"] substringFromIndex:7];
-		dict[@"semesters"] = semesters;
-		
-		// Put an empty string in the dictionary if there's no course code
-		if(courseCode) {
-			dict[@"courseNum"] = courseCode;
-		} else {
-			// Ignore known non-graded periods
-			if([dict[@"title"] rangeOfString:@"ADVISORY"].location != NSNotFound) {
-				return nil;
-			} else if([dict[@"title"] rangeOfString:@"Homeroom"].location != NSNotFound) {
-				return nil;
-			}
-			
-			dict[@"courseNum"] = @"";
+		// Get information for this semester.
+		semesters[0] = [self parseSemesterWithDistrict:district andSemesterCells:semesterCells andSemester:0 andSemesterParams:semParams];
+	}
+	
+	NSString *courseCode = [self getCourseNumberForDistrict:district andCells:cells];
+	
+	dict[@"title"] = [cells[district.tableOffsets.title] text];
+	dict[@"period"] = [NSNumber numberWithInteger:[[cells[district.tableOffsets.period] text] integerValue]];
+	dict[@"teacherName"] = [teacherLink text];
+	dict[@"teacherEmail"] = [teacherLink[@"href"] substringFromIndex:7];
+	dict[@"semesters"] = semesters;
+	
+	// Put an empty string in the dictionary if there's no course code
+	if(courseCode) {
+		dict[@"courseNum"] = courseCode;
+	} else {
+		// Ignore known non-graded periods
+		if([dict[@"title"] rangeOfString:@"ADVISORY"].location != NSNotFound) {
+			return nil;
+		} else if([dict[@"title"] rangeOfString:@"Homeroom"].location != NSNotFound) {
+			return nil;
 		}
 		
-		return dict;
+		dict[@"courseNum"] = @"";
 	}
-	@catch (NSException *exception) {
-		NSLog(@"Error parsing row: %@", exception);
-		return nil;
-	}
+	
+	return dict;
 }
 
 /**
@@ -239,9 +236,8 @@
  * @param string: Gradebook HTML.
  * @return Averages for all courses the student is enrolled in.
  */
-- (NSArray *) parseAveragesForDistrict:(SQUDistrict *) district withString:(NSString *) string {
-	NSData *htmlData = [string dataUsingEncoding:NSUTF8StringEncoding];
-	TFHpple *parser = [TFHpple hppleWithHTMLData:htmlData];
+- (NSArray *) parseAveragesForDistrict:(SQUDistrict *) district withData:(NSData *) data {
+	TFHpple *parser = [TFHpple hppleWithHTMLData:data];
 	
 	NSMutableArray *averages = [NSMutableArray new];
 	
@@ -249,12 +245,11 @@
 	@try {
 #endif
 		// Find table
-		NSArray *tables = [parser searchWithXPathQuery:@"//table[@class='DataTable']"];
-		TFHppleElement *table = nil;
-		
-		if(tables.count > 0) {
-			table = tables[0];
-		} else {
+		TFHppleElement *table = [parser peekAtSearchWithXPathQuery:@"//table[@class='DataTable']"];
+				
+		// Ensure there's a table
+		if(!table) {
+			[[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"There is no .DataTable in the document.", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil] show];
 			return nil;
 		}
 		
@@ -286,15 +281,23 @@
 			semesterParams.cyclesPerSemester = sem;
 		}
 		
+		NSLog(@"rows: %u", rows.count);
+		// NSLog(@"Cyc %u sem %u", cyc, sem);
+		
 		// Iterate the rows
 		for (TFHppleElement *row in rows) {
 			// Ignore all rows that do not contain data
 			if([row[@"class"] isEqualToString:@"DataRow"] || [row[@"class"] isEqualToString:@"DataRowAlt"]) {
-				NSDictionary *classInfo = [self parseCourseWithDistrict:district andTableRow:row andSemesterParams:semesterParams];
-				
-				// Don't insert nil
-				if(classInfo) {
-					[averages addObject:classInfo];
+				@try {
+					NSDictionary *classInfo = [self parseCourseWithDistrict:district andTableRow:row andSemesterParams:semesterParams];
+					
+					// Don't insert nil
+					if(classInfo) {
+						[averages addObject:classInfo];
+					}
+				}
+				@catch (NSException *exception) {
+					NSLog(@"something broke %@", exception);
 				}
 			}
 		}
@@ -448,11 +451,10 @@
  * @param string: Gradebook HTML.
  * @return Categories and assignments for the class.
  */
-- (NSDictionary *) getClassGradesForDistrict:(SQUDistrict *) district withString:(NSString *) string {
+- (NSDictionary *) getClassGradesForDistrict:(SQUDistrict *) district withData:(NSData *) data {
 	NSMutableDictionary *grades = [NSMutableDictionary new];
 	
-	NSData *htmlData = [string dataUsingEncoding:NSUTF8StringEncoding];
-	TFHpple *parser = [TFHpple hppleWithHTMLData:htmlData];
+	TFHpple *parser = [TFHpple hppleWithHTMLData:data];
 	
 #ifndef DEBUG
 	@try {
@@ -503,9 +505,8 @@
  * @param string: Gradebook HTML.
  * @return Student's name.
  */
-- (NSString *) getStudentNameForDistrict:(SQUDistrict *) district withString:(NSString *) string {
-	NSData *htmlData = [string dataUsingEncoding:NSUTF8StringEncoding];
-	TFHpple *parser = [TFHpple hppleWithHTMLData:htmlData];
+- (NSString *) getStudentNameForDistrict:(SQUDistrict *) district withData:(NSData *) data{
+	TFHpple *parser = [TFHpple hppleWithHTMLData:data];
 	NSArray *matches = [parser searchWithXPathQuery:@"//span[@class='StudentName']"];
 	
 	if(matches.count != 0) {
@@ -521,9 +522,8 @@
  * @param string: Gradebook HTML.
  * @return School attended by the student.
  */
-- (NSString *) getStudentSchoolForDistrict:(SQUDistrict *) district withString:(NSString *) string {
-	NSData *htmlData = [string dataUsingEncoding:NSUTF8StringEncoding];
-	TFHpple *parser = [TFHpple hppleWithHTMLData:htmlData];
+- (NSString *) getStudentSchoolForDistrict:(SQUDistrict *) district withData:(NSData *) data {
+	TFHpple *parser = [TFHpple hppleWithHTMLData:data];
 	NSArray *matches = [parser searchWithXPathQuery:@"//*[@id='_ctl0_tdMainContent']/div"];
 	
 	if(matches.count != 0) {

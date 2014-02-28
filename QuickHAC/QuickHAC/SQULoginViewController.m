@@ -372,7 +372,7 @@
 								[[SQUDistrictManager sharedInstance] selectDistrictWithID:oldStudent.district.integerValue];
 							}
 							
-							[[NSNotificationCenter defaultCenter] postNotificationName:SQUGradesDataUpdatedNotification object:nil];
+							[[NSNotificationCenter defaultCenter] postNotificationName:SQUGradesDataUpdatedNotification object:nil userInfo:@{}];
 							[[NSNotificationCenter defaultCenter] postNotificationName:SQUStudentsUpdatedNotification object:nil];
 							
 							// Dismiss login view
@@ -457,7 +457,7 @@
 									[[SQUGradeManager sharedInstance] setStudent:oldStudent];
 								}
 								
-								[[NSNotificationCenter defaultCenter] postNotificationName:SQUGradesDataUpdatedNotification object:nil];
+								[[NSNotificationCenter defaultCenter] postNotificationName:SQUGradesDataUpdatedNotification object:nil userInfo:@{}];
 								[[NSNotificationCenter defaultCenter] postNotificationName:SQUStudentsUpdatedNotification object:nil];
 								
 								// Dismiss login view
@@ -577,7 +577,7 @@
 			[[SQUGradeManager sharedInstance] setStudent:student];
 			
 			// Fire off notifications
-			[[NSNotificationCenter defaultCenter] postNotificationName:SQUGradesDataUpdatedNotification object:nil];
+			[[NSNotificationCenter defaultCenter] postNotificationName:SQUGradesDataUpdatedNotification object:nil userInfo:@{}];
 			[[NSNotificationCenter defaultCenter] postNotificationName:SQUStudentsUpdatedNotification object:nil];
 		}
 	} else {

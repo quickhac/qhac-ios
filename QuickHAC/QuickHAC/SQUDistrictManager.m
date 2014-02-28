@@ -57,6 +57,8 @@ static SQUDistrictManager *_sharedInstance = nil;
 			
 			_HTTPManager = [AFHTTPRequestOperationManager manager];
 			_HTTPManager.responseSerializer = [AFHTTPResponseSerializer serializer];
+			
+			[_HTTPManager.requestSerializer setValue:@"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.117 Safari/537.36" forHTTPHeaderField:@"User-Agent"];
         }
 		
         return self;
@@ -144,13 +146,13 @@ static SQUDistrictManager *_sharedInstance = nil;
 		NSLog(@"WARNING: Accepting any certificate!");
 	}
 	
-	// Clear munchies so we're logged out (prevents course mingling)
+/*	// Clear munchies so we're logged out (prevents course mingling)
 	// TODO: Fix this to clear only munchies for the district's domain!
 	NSArray *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
 	
 	for (NSHTTPCookie *cookie in cookies) {
 		[[NSHTTPCookieStorage sharedHTTPCookieStorage] deleteCookie:cookie];
-	}
+	}*/
 	
 	// Update the reachability manager
 //	if(currentDistrict.districtDomain) {
@@ -201,6 +203,12 @@ static SQUDistrictManager *_sharedInstance = nil;
  */
 - (void) performActualLoginRequestWithUser:(NSString *) username usingPassword:(NSString *) password andCallback:(SQUDistrictCallback) callback {
 	NSDictionary *loginRequest = [_currentDistrict buildLoginRequestWithUser:username usingPassword:password andUserData:nil];
+	if(!loginRequest) {
+		[[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Logging In", nil) message:NSLocalizedString(@"An internal error occurred. Please try again later.", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil] show];
+		callback([NSError errorWithDomain:@"SQUKartoffelDomain" code:-1337 userInfo:nil], nil);
+		return;
+	}
+	
 	NSURL *url = loginRequest[@"request"][@"URL"];
 	
 	// Called on success of the operation (200 OK)
@@ -330,6 +338,48 @@ static SQUDistrictManager *_sharedInstance = nil;
 	}
 }
 
+/*
+ * Data fix
+ *
+ * A little note about this fucking kludge:
+ *
+ * AISD is a bunch of dipshits and in their recent GradeSpeed update that
+ * displays GPA, they introduced a nice little issue in which there's
+ * random \x00's scattered throughout the page.
+ *
+ * Seriously. If you have fucking \x00 in your god damn HTML you should
+ * be shot, run over with an SUV, shot again, then drowned in a solution
+ * of twelve molar hydrosulphuric acid. And then shot again.
+ */
+- (NSData *) fixData:(NSData *) in {
+	NSMutableData *data = [in mutableCopy];
+	
+	/*
+	 * A little note about this fucking kludge:
+	 *
+	 * AISD is a bunch of dipshits and in their recent GradeSpeed update that
+	 * displays GPA, they introduced a nice little issue in which there's
+	 * random \x00's scattered throughout the page.
+	 *
+	 * Seriously. If you have fucking \x00 in your god damn HTML you should
+	 * be shot, run over with an SUV, shot again, then drowned in a solution
+	 * of twelve molar hydrosulphuric acid. And then shot again.
+	 */
+	uint8_t *bytes = (uint8_t *) data.bytes;
+	uint32_t spaces = 0x20202020;
+	
+	for (NSUInteger i = 0; i < data.length; i++) {
+		if(bytes[i] == 0x00) {
+			[data replaceBytesInRange:NSMakeRange(i, 1) withBytes:&spaces length:1];
+			NSLog(@"Fixing 0x00 in response at 0x%X", i);
+		}
+	}
+	
+	NSLog(@"Response length: %lu", (unsigned long) data.length);
+	
+	return [data copy];
+}
+
 /**
  * Fetches class averages from the server, parsing the data appropriately and
  * returning it to the callback.
@@ -341,12 +391,13 @@ static SQUDistrictManager *_sharedInstance = nil;
 	
 	// Called if the request succeeds
 	void (^averagesSuccess)(AFHTTPRequestOperation*operation, id responseObject) = ^(AFHTTPRequestOperation*operation, id responseObject) {
-		NSString *string = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-		NSArray *averages = [[SQUGradeManager sharedInstance].currentDriver parseAveragesForDistrict:_currentDistrict withString:string];
+		NSData *data = [self fixData:responseObject];
+		
+		NSArray *averages = [[SQUGradeManager sharedInstance].currentDriver parseAveragesForDistrict:_currentDistrict withData:data];
 		
 		if(averages != nil) {
-			NSString *studentName = [[SQUGradeManager sharedInstance].currentDriver getStudentNameForDistrict:_currentDistrict withString:string];
-			NSString *studentSchool = [[SQUGradeManager sharedInstance].currentDriver getStudentSchoolForDistrict:_currentDistrict withString:string];
+			NSString *studentName = [[SQUGradeManager sharedInstance].currentDriver getStudentNameForDistrict:_currentDistrict withData:data];
+			NSString *studentSchool = [[SQUGradeManager sharedInstance].currentDriver getStudentSchoolForDistrict:_currentDistrict withData:data];
 			
 			// Try to make sure that student data does not get mingled
 			NSString *dbName = [SQUGradeManager sharedInstance].student.name;
@@ -432,7 +483,9 @@ static SQUDistrictManager *_sharedInstance = nil;
 	
 	// Called if the request succeeds
 	void (^callbackSuccess)(AFHTTPRequestOperation*operation, id responseObject) = ^(AFHTTPRequestOperation*operation, id responseObject) {
-		NSDictionary *classGrades = [[SQUGradeManager sharedInstance].currentDriver getClassGradesForDistrict:_currentDistrict withString:[[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding]];
+		NSData *data = [self fixData:responseObject];
+		
+		NSDictionary *classGrades = [[SQUGradeManager sharedInstance].currentDriver getClassGradesForDistrict:_currentDistrict withData:data];
 		
 		if(classGrades != nil) {
 			callback(nil, classGrades);

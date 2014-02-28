@@ -224,7 +224,7 @@
 	((SQURelativeRefreshControl *) self.refreshControl).date =
 	[SQUGradeManager sharedInstance].student.lastAveragesUpdate;
 	
-	if(!notif.userInfo) {
+	if(!notif.userInfo && [[SQUGradeManager sharedInstance] getCoursesForCurrentStudent].count != 0) {
 		[self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
 	}
 	

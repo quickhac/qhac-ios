@@ -23,7 +23,7 @@
  * @param string: Gradebook HTML.
  * @return Averages for all courses the student is enrolled in.
  */
-- (NSArray *) parseAveragesForDistrict:(SQUDistrict *) district withString:(NSString *) string;
+- (NSArray *) parseAveragesForDistrict:(SQUDistrict *) district withData:(NSData *) data;
 /**
  * Parses the assignments in a class.
  *
@@ -31,19 +31,19 @@
  * @param string: Gradebook HTML.
  * @return Categories and assignments for the class.
  */
-- (NSDictionary *) getClassGradesForDistrict:(SQUDistrict *) district withString:(NSString *) string;
+- (NSDictionary *) getClassGradesForDistrict:(SQUDistrict *) district  withData:(NSData *) data;
 /**
  * @param district: District to use for parsing.
  * @param string: Gradebook HTML.
  * @return Student's name.
  */
-- (NSString *) getStudentNameForDistrict:(SQUDistrict *) district withString:(NSString *) string;
+- (NSString *) getStudentNameForDistrict:(SQUDistrict *) district withData:(NSData *) data;
 /**
  * @param district: District to use for parsing.
  * @param string: Gradebook HTML.
  * @return School attended by the student.
  */
-- (NSString *) getStudentSchoolForDistrict:(SQUDistrict *) district withString:(NSString *) string;
+- (NSString *) getStudentSchoolForDistrict:(SQUDistrict *) district withData:(NSData *) data;
 
 @end
 

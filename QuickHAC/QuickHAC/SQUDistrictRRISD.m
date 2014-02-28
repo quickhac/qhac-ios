@@ -69,6 +69,10 @@
  * possibly using the user data, depending on district.
  */
 - (NSDictionary *) buildLoginRequestWithUser:(NSString *) username usingPassword:(NSString *) password andUserData:(id) userData {
+	if(!_loginASPNetInfo[@"__VIEWSTATE"]) {
+		return nil;
+	}
+	
 	NSMutableDictionary *dictionary = [NSMutableDictionary new];
 	dictionary[@"request"] = [NSMutableDictionary new];
 	dictionary[@"params"] = [NSMutableDictionary new];

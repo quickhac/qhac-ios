@@ -11,22 +11,22 @@
 @implementation SQUGradebookDriver
 @synthesize identifier = _identifier;
 
-- (NSArray *) parseAveragesForDistrict:(SQUDistrict *) district withString:(NSString *) string {
+- (NSArray *) parseAveragesForDistrict:(SQUDistrict *) district withData:(NSData *) data {
 	NSLog(@"%s(%i) %s: SQUGradebookDriver method not overridden or no subclass used", __FILE__, __LINE__, __func__);
 	return nil;	
 }
 
-- (NSDictionary *) getClassGradesForDistrict:(SQUDistrict *) district withString:(NSString *) string {
+- (NSDictionary *) getClassGradesForDistrict:(SQUDistrict *) district withData:(NSData *) data {
 	NSLog(@"%s(%i) %s: SQUGradebookDriver method not overridden or no subclass used", __FILE__, __LINE__, __func__);
 	return nil;
 }
 
-- (NSString *) getStudentNameForDistrict:(SQUDistrict *) district withString:(NSString *) string {
+- (NSString *) getStudentNameForDistrict:(SQUDistrict *) district withData:(NSData *) data {
 	NSLog(@"%s(%i) %s: SQUGradebookDriver method not overridden or no subclass used", __FILE__, __LINE__, __func__);
 	return nil;
 }
 
-- (NSString *) getStudentSchoolForDistrict:(SQUDistrict *) district withString:(NSString *) string {
+- (NSString *) getStudentSchoolForDistrict:(SQUDistrict *) district withData:(NSData *) data {
 	NSLog(@"%s(%i) %s: SQUGradebookDriver method not overridden or no subclass used", __FILE__, __LINE__, __func__);
 	return nil;	
 }

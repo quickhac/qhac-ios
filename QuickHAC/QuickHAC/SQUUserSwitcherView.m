@@ -181,7 +181,7 @@
 						
 						[[SQUGradeManager sharedInstance] fetchNewClassGradesFromServerWithDoneCallback:^(NSError *err) {
 							[SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"Done", nil)];
-							[[NSNotificationCenter defaultCenter] postNotificationName:SQUGradesDataUpdatedNotification object:nil];
+							[[NSNotificationCenter defaultCenter] postNotificationName:SQUGradesDataUpdatedNotification object:nil userInfo:@{}];
 							
 							// Display error
 							if(err) {
@@ -197,7 +197,7 @@
 								// Show overview
 								[[NSNotificationCenter defaultCenter] postNotificationName:SQUSidebarControllerShowOverview object:nil];
 								// Update overview
-								[[NSNotificationCenter defaultCenter] postNotificationName:SQUGradesDataUpdatedNotification object:nil];
+								[[NSNotificationCenter defaultCenter] postNotificationName:SQUGradesDataUpdatedNotification object:nil userInfo:@{}];
 								
 								// Update student array
 								NSManagedObjectContext *context = [[SQUAppDelegate sharedDelegate] managedObjectContext];
@@ -232,7 +232,7 @@
 			// Show overview
 			[[NSNotificationCenter defaultCenter] postNotificationName:SQUSidebarControllerShowOverview object:nil];
 			// Update overview
-			[[NSNotificationCenter defaultCenter] postNotificationName:SQUGradesDataUpdatedNotification object:nil];
+			[[NSNotificationCenter defaultCenter] postNotificationName:SQUGradesDataUpdatedNotification object:nil userInfo:@{}];
 		}
 	}
 }
