@@ -18,7 +18,7 @@
     SQUCourse *_courseInfo;
     
 @private	
-	CALayer *_backgroundLayer;
+	CAGradientLayer *_backgroundLayer;
 	
     CATextLayer *_courseTitle;
 	CATextLayer *_currentAverageLabel;

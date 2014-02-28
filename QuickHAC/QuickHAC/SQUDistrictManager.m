@@ -204,8 +204,9 @@ static SQUDistrictManager *_sharedInstance = nil;
 - (void) performActualLoginRequestWithUser:(NSString *) username usingPassword:(NSString *) password andCallback:(SQUDistrictCallback) callback {
 	NSDictionary *loginRequest = [_currentDistrict buildLoginRequestWithUser:username usingPassword:password andUserData:nil];
 	if(!loginRequest) {
-		[[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Logging In", nil) message:NSLocalizedString(@"An internal error occurred. Please try again later.", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil] show];
-		callback([NSError errorWithDomain:@"SQUKartoffelDomain" code:-1337 userInfo:nil], nil);
+		NSError *err = [NSError errorWithDomain:@"SQUDistrictManagerErrorDomain" code:kSQUDistrictManagerErrorLoginFailure userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"There was an error during the pre-login process. Ensure that HAC is not down.", nil)}];
+		
+		callback(err, nil);
 		return;
 	}
 	

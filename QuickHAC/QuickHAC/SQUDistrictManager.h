@@ -12,6 +12,7 @@
 #define kSQUDistrictManagerErrorInvalidDisambiguation 1000
 #define kSQUDistrictManagerErrorInvalidDataReceived 2000
 #define kSQUDistrictManagerErrorNoDataAvailable 3000
+#define kSQUDistrictManagerErrorLoginFailure 4000
 
 /**
  * This defines the maximum delay between two requests before a login request is
