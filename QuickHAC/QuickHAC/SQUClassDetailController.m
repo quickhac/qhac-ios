@@ -399,6 +399,15 @@
 }
 
 - (void) cycleChooser:(SQUClassCycleChooserController *) chooser selectedCycle:(NSUInteger) cycle {
+	// Scroll to top
+	@try {
+		[self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+	}
+	
+	@catch (NSException *exception) {
+		NSLog(@"exception %@", exception);
+	}
+	
 	if(_displayCycle != cycle) {
 		_displayCycle = cycle;
 		_currentCycle = _course.cycles[_displayCycle];
