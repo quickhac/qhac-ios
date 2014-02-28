@@ -497,7 +497,7 @@
 			
 			// Restore old student state
 			if(oldStudent) {
-				NSLog(@"Restoring student: %@", oldStudent);
+				// NSLog(@"Restoring student: %@", oldStudent);
 				
 				[[SQUDistrictManager sharedInstance] selectDistrictWithID:oldStudent.district.integerValue];
 				[[SQUGradeManager sharedInstance] setStudent:oldStudent];

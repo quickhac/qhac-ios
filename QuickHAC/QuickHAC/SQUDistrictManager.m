@@ -213,11 +213,13 @@ static SQUDistrictManager *_sharedInstance = nil;
 	NSURL *url = loginRequest[@"request"][@"URL"];
 	
 	// Called on success of the operation (200 OK)
-	void (^loginSuccess)(AFHTTPRequestOperation*operation, id responseObject) = ^(AFHTTPRequestOperation*operation, id responseObject) {		
-		[_currentDistrict updateDistrictStateWithPostLoginData:responseObject];
+	void (^loginSuccess)(AFHTTPRequestOperation*operation, id responseObject) = ^(AFHTTPRequestOperation*operation, id responseObject) {
+		NSData *data = [self fixData:responseObject];
+		
+		[_currentDistrict updateDistrictStateWithPostLoginData:data];
 		
 		// The server accepted our request, now check if the request succeeded
-		if([_currentDistrict didLoginSucceedWithLoginData:responseObject]) {
+		if([_currentDistrict didLoginSucceedWithLoginData:data]) {
 			NSMutableDictionary *response = [NSMutableDictionary new];
 			response[@"username"] = username;
 			response[@"password"] = password;
@@ -261,7 +263,8 @@ static SQUDistrictManager *_sharedInstance = nil;
 	if(preLogin) {
 		// Called if the pre-login succeeds
 		void (^preLoginSuccess)(AFHTTPRequestOperation*operation, id responseObject) = ^(AFHTTPRequestOperation*operation, id responseObject) {
-			[_currentDistrict updateDistrictStateWithPreLoginData:(NSData *) responseObject];
+			NSData *data = [self fixData:responseObject];
+			[_currentDistrict updateDistrictStateWithPreLoginData:data];
 			
 			// Perform the actual login, as the pre log-in request was success
 			[self performActualLoginRequestWithUser:username usingPassword:password andCallback:callback];
@@ -308,8 +311,9 @@ static SQUDistrictManager *_sharedInstance = nil;
 	
 	// Called if the request succeeds
 	void (^disambiguateSuccess)(AFHTTPRequestOperation*operation, id responseObject) = ^(AFHTTPRequestOperation*operation, id responseObject) {
+		NSData *data = [self fixData:responseObject];
 		
-		if([_currentDistrict didDisambiguationSucceedWithLoginData:responseObject]) {
+		if([_currentDistrict didDisambiguationSucceedWithLoginData:data]) {
 			callback(nil, responseObject);
 		} else {
 			callback([NSError errorWithDomain:@"SQUDistrictManagerErrorDomain" code:kSQUDistrictManagerErrorInvalidDisambiguation userInfo:@{@"localizedDescription" : NSLocalizedString(@"The disambiguation process failed.", nil)}], nil);
@@ -353,6 +357,7 @@ static SQUDistrictManager *_sharedInstance = nil;
 	uint8_t *bytes = (uint8_t *) data.bytes;
 	uint32_t spaces = 0x20202020;
 	
+	// loop through all bytes
 	for (NSUInteger i = 0; i < data.length; i++) {
 		if(bytes[i] == 0x00) {
 			[data replaceBytesInRange:NSMakeRange(i, 1) withBytes:&spaces length:1];

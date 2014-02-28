@@ -217,18 +217,14 @@
 	
 	// Set up a parser
 	TFHpple *parser = [TFHpple hppleWithHTMLData:data];
-	TFHppleElement *form = [parser searchWithXPathQuery:@"//form[@name='aspnetForm']"][0];
 	
-	// Find children of the form
-	NSArray *formChildren = [form childrenWithTagName:@"input"];
+	// Find required elements
+	TFHppleElement *viewState = [parser peekAtSearchWithXPathQuery:@"//*[@id=\"__VIEWSTATE\"]"];
+	TFHppleElement *eventValidation = [parser peekAtSearchWithXPathQuery:@"//*[@id=\"__EVENTVALIDATION\"]"];
 	
-	for (TFHppleElement *input in formChildren) {
-		if([input[@"name"] isEqualToString:@"__VIEWSTATE"]) {
-			_loginASPNetInfo[@"__VIEWSTATE"] = input[@"value"];
-		} else if([input[@"name"] isEqualToString:@"__EVENTVALIDATION"]) {
-			_loginASPNetInfo[@"__EVENTVALIDATION"] = input[@"value"];
-		}
-	}
+	// Get their value
+	_loginASPNetInfo[@"__VIEWSTATE"] = viewState[@"value"];
+	_loginASPNetInfo[@"__EVENTVALIDATION"] = eventValidation[@"value"];
 }
 
 /*
