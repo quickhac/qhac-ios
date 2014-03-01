@@ -281,9 +281,6 @@
 			semesterParams.cyclesPerSemester = sem;
 		}
 		
-		NSLog(@"rows: %u", rows.count);
-		// NSLog(@"Cyc %u sem %u", cyc, sem);
-		
 		// Iterate the rows
 		for (TFHppleElement *row in rows) {
 			// Ignore all rows that do not contain data

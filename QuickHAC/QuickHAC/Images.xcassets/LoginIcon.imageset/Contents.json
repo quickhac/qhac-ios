@@ -9,6 +9,16 @@
       "idiom" : "iphone",
       "scale" : "2x",
       "filename" : "login_icon@2x.png"
+    },
+    {
+      "idiom" : "ipad",
+      "scale" : "1x",
+      "filename" : "login_icon-1.png"
+    },
+    {
+      "idiom" : "ipad",
+      "scale" : "2x",
+      "filename" : "login_icon@2x-1.png"
     }
   ],
   "info" : {

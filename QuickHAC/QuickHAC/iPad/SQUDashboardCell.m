@@ -10,6 +10,8 @@
 
 #import "SQUColourScheme.h"
 #import "SQUUIHelpers.h"
+#import "SQUGradeManager.h"
+#import "UIColor+SQUColourUtilities.h"
 #import "SQUCoreData.h"
 
 #import <CoreText/CoreText.h>
@@ -28,13 +30,16 @@ static const CGFloat SQUDashboardCellGradesOffsetY = 50;
   
 	if (self) {
 		// Card background
-		_backgroundLayer = [CALayer layer];
+		_backgroundLayer = [CAGradientLayer layer];
 		_backgroundLayer.frame = CGRectMake(0, 0, frame.size.width, frame.size.height);
         _backgroundLayer.backgroundColor = [UIColor whiteColor].CGColor;
 		_backgroundLayer.borderWidth = 0.0;
 		_backgroundLayer.cornerRadius = 2.0;
 		_backgroundLayer.contentsScale = [UIScreen mainScreen].scale;
 		_backgroundLayer.masksToBounds = YES;
+		
+		// gradient bar support
+		_backgroundLayer.locations = @[@(0.00), @(0.175)];
 		
 		// Apply shadow to actual cell layer
 		UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:_backgroundLayer.frame cornerRadius:_backgroundLayer.cornerRadius];
@@ -401,6 +406,27 @@ static const CGFloat SQUDashboardCellGradesOffsetY = 50;
 	
 	NSUInteger period = _courseInfo.period.unsignedIntegerValue;
 	BOOL isElementary = (_courseInfo.semesters.count == 1);
+	
+	// Colour bar thing
+	NSArray *sbcolours = @[
+						   [UIColor colorWithRed:0 green:0.608 blue:0.808 alpha:1] /*#009bce*/,
+						   [UIColor colorWithRed:0.612 green:0.204 blue:0.816 alpha:1], /*#9c34d0*/
+						   [UIColor colorWithRed:0.373 green:0.561 blue:0 alpha:1], /*#5f8f00*/
+						   [UIColor colorWithRed:0.992 green:0.529 blue:0 alpha:1], /*#fd8700*/
+						   [UIColor colorWithRed:0.824 green:0 blue:0 alpha:1], /*#d20000*/
+						   [UIColor colorWithRed:0.2 green:0.71 blue:0.898 alpha:1], /*#33b5e5*/
+						   [UIColor colorWithRed:0.667 green:0.435 blue:0.78 alpha:1], /*#aa6fc7*/
+						   [UIColor colorWithRed:0.624 green:0.831 blue:0 alpha:1], /*#9fd400*/
+						   [UIColor colorWithRed:1 green:0.741 blue:0.22 alpha:1], /*#ffbd38*/
+						   [UIColor colorWithRed:1 green:0.322 blue:0.322 alpha:1] /*#ff5252*/
+						   ];
+	
+	if(period > sbcolours.count) {
+		_backgroundLayer.colors = @[(id) [[UIColor colorWithWhite:0.08 alpha:1.0] lighterColor].CGColor, (id) [UIColor whiteColor].CGColor];
+	} else {
+		NSUInteger index = [[SQUGradeManager sharedInstance].student.courses indexOfObject:_courseInfo];
+		_backgroundLayer.colors = @[(id) [[sbcolours[index] lighterColor] CGColor], (id) [UIColor whiteColor].CGColor];
+	}
 	
 	// Update course title and period doohickey
     _periodTitle.string = [NSString stringWithFormat:NSLocalizedString(@"%u", nil), period];

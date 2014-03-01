@@ -10,6 +10,7 @@
 #import "SQUCoreData.h"
 #import "SQUAppDelegate.h"
 #import "SQUGradeManager.h"
+#import "SQUColourScheme.h"
 #import "SQUTabletLoginController.h"
 
 #import "SVProgressHUD.h"
@@ -29,12 +30,12 @@
 @implementation SQUTabletLoginController
 @synthesize students = _students;
 
-- (void)viewDidLoad {
+- (void) viewDidLoad {
     [super viewDidLoad];
 	
 	// Draw background view
 	UIImageView *backgroundView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 768, 1024)];
-	backgroundView.image = [UIImage imageNamed:@"login_background.jpg"];
+	backgroundView.image = [UIImage imageNamed:@"blurry_bg.jpg"];
 	backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	[self.view addSubview:backgroundView];
 	
@@ -47,9 +48,9 @@
 										 UIViewAutoresizingFlexibleBottomMargin |
 										 UIViewAutoresizingFlexibleLeftMargin;
 	
-	// Rocket icon
+	// QuickHAC icon
 	UIImageView *icon = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 128, 128)];
-	icon.image = [UIImage imageNamed:@"icon_rocket_login"];
+	icon.image = [UIImage imageNamed:@"LoginIcon"];
 	[_loginContainerBox addSubview:icon];
 	
 	// "Welcome to QuickHAC" text
@@ -58,7 +59,7 @@
 	welcomeLabel.numberOfLines = 0;
 	welcomeLabel.textAlignment = NSTextAlignmentCenter;
 	
-	NSMutableAttributedString *welcomeText = [[NSMutableAttributedString alloc] initWithString:NSLocalizedString(@"Welcome to\nQuickHAC", nil) attributes:@{NSKernAttributeName:[NSNull null], NSForegroundColorAttributeName:UIColorFromRGB(0xECF0F1)}];
+	NSMutableAttributedString *welcomeText = [[NSMutableAttributedString alloc] initWithString:NSLocalizedString(@"Welcome to\nQuickHAC", nil) attributes:@{NSKernAttributeName:[NSNull null], NSForegroundColorAttributeName:UIColorFromRGB(kSQUColourClouds)}];
 	
 	/*
 	 * "Welcome to" is in HelveticaNeue-Medium, "Quick" in HelveticaNeue-UltraLight,
@@ -74,7 +75,7 @@
 	
 	// Build the form container.
 	UIView *formContainer = [[UIView alloc] initWithFrame:CGRectMake(154, 48, 271, 147)];
-	formContainer.backgroundColor = UIColorFromRGB(0xECF0F1);
+	formContainer.backgroundColor = UIColorFromRGB(kSQUColourClouds);
 	
 	// Set up the shadow for the form container.
 	formContainer.layer.shadowColor = [UIColor blackColor].CGColor;
@@ -93,7 +94,7 @@
 	
 	CAShapeLayer *triangle = [CAShapeLayer layer];
 	triangle.frame = CGRectMake(-triangleWidth, 57, triangleWidth, triangleHeight);
-	triangle.fillColor = UIColorFromRGB(0xECF0F1).CGColor;
+	triangle.fillColor = UIColorFromRGB(kSQUColourClouds).CGColor;
 	
 	CGMutablePathRef path = CGPathCreateMutable();
 	CGPathMoveToPoint(path, NULL, triangleWidth, 0);
@@ -141,6 +142,7 @@
 	_userField.delegate = self;
 	_userField.returnKeyType = UIReturnKeyNext;
 	_userField.autocorrectionType = UITextAutocorrectionTypeNo;
+	_userField.autocapitalizationType = UITextAutocapitalizationTypeNone;
 	[formContainer addSubview:_userField];
 	
 	// Add user icon to username field.
@@ -397,9 +399,6 @@
 }
 
 #pragma mark - Student selector
-
-
-#pragma mark - Student selector
 - (void) studentPickerCancelled:(SQULoginStudentPicker *) picker {
 	// Delete students added to the DB
 	for(SQUStudent *studentToDelete in _students) {
@@ -433,11 +432,9 @@
 	if(selectedStudent != NSNotFound) {
 		// Only update selection if there's no other students in the database
 		if(students.count == _students.count) {
-			[[NSUserDefaults standardUserDefaults] setInteger:selectedStudent forKey:@"selectedStudent"];
-			[[NSUserDefaults standardUserDefaults] synchronize];
+			[[SQUGradeManager sharedInstance] changeSelectedStudent:student];
 		}
 	} else {
-		NSLog(@"student %@ is fucked man", student);
 		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Database Error", nil) message:NSLocalizedString(@"Something happened.", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
 		[alert show];
 		return;

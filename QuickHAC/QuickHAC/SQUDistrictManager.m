@@ -365,8 +365,6 @@ static SQUDistrictManager *_sharedInstance = nil;
 		}
 	}
 	
-	NSLog(@"Response length: %lu", (unsigned long) data.length);
-	
 	return [data copy];
 }
 
