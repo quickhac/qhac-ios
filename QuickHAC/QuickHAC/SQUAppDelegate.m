@@ -17,6 +17,7 @@
 #import "SQUUIHelpers.h"
 #import "SQUPushHandler.h"
 #import "SQUColourScheme.h"
+#import "SQUCrashHandler.h"
 #import "SQUAppDelegate.h"
 
 #import "PKRevealController.h"
@@ -142,6 +143,10 @@ static SQUAppDelegate *sharedDelegate = nil;
     _window.backgroundColor = UIColorFromRGB(0xECF0F1);
 	[_window makeKeyAndVisible];
 	
+	// Install crash handler
+	BOOL pendingCrashReport = [[SQUCrashHandler sharedInstance]
+							   installCrashHandlerWithRootView:_rootViewController];
+	
 	// TODO: Check if user enabled push
 	if(false) {
 		[[UIApplication sharedApplication] registerForRemoteNotificationTypes:UIRemoteNotificationTypeBadge|
@@ -215,9 +220,8 @@ static SQUAppDelegate *sharedDelegate = nil;
 			[[NSNotificationCenter defaultCenter] postNotificationName:SQUGradesDataUpdatedNotification object:nil];
 		}
 		
-		
-		// Update data, ONLY if the district can be reached
-		if(/*[SQUDistrictManager sharedInstance].reachabilityManager.isReachable*/ true) {
+		// Update data if there's no pending crash report
+		if(!pendingCrashReport) {
 			// Ask the current district instance to do a log in to validate our session is still valid
 			[[SQUDistrictManager sharedInstance] performLoginRequestWithUser:username usingPassword:password andCallback:^(NSError *error, id returnData) {
 				if(!error) {
@@ -243,7 +247,7 @@ static SQUAppDelegate *sharedDelegate = nil;
 			}];
 		} else {
 			// Just show cached data.
-			NSLog(@"no connection to district, showing cached data");
+			NSLog(@"Have crash report, showing cached data");
 			[[NSNotificationCenter defaultCenter] postNotificationName:SQUGradesDataUpdatedNotification object:nil];
 		}
     }

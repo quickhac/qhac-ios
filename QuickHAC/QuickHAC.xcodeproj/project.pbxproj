@@ -40,6 +40,9 @@
 		DE485DDE1881EACA00B215C6 /* SQUUserSwitcherView.m in Sources */ = {isa = PBXBuildFile; fileRef = DE485DDD1881EACA00B215C6 /* SQUUserSwitcherView.m */; };
 		DE485DE31881FAC700B215C6 /* SQUUserSwitcherCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DE485DE21881FAC700B215C6 /* SQUUserSwitcherCell.m */; };
 		DE4A00D418A2E0E700C05EBC /* SQURelativeRefreshControl.m in Sources */ = {isa = PBXBuildFile; fileRef = DE4A00D318A2E0E700C05EBC /* SQURelativeRefreshControl.m */; };
+		DE4B3CB118D918D800A6B5F9 /* libCrashReporter-iphoneos.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DE4B3C9C18D918BF00A6B5F9 /* libCrashReporter-iphoneos.a */; };
+		DE4B3CB418D9191E00A6B5F9 /* SQUCrashHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = DE4B3CB318D9191E00A6B5F9 /* SQUCrashHandler.m */; };
+		DE4B3CB518D91C5F00A6B5F9 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DEF0F2031871287300116B61 /* MessageUI.framework */; };
 		DE4D5BB21888CA3E00371A75 /* about.rtfd in Resources */ = {isa = PBXBuildFile; fileRef = DE4D5BB11888CA3E00371A75 /* about.rtfd */; };
 		DE6F17FC18B9124700546B0E /* SQUDashboardController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE6F17FB18B9124700546B0E /* SQUDashboardController.m */; };
 		DE6F17FF18B9127B00546B0E /* SQUTabletSidebarCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DE6F17FE18B9127B00546B0E /* SQUTabletSidebarCell.m */; };
@@ -115,6 +118,104 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		DE4B3C9518D918BF00A6B5F9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DE4B3C8218D918BF00A6B5F9 /* CrashReporter.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 05E731F30EFA1AAB005EDFB7;
+			remoteInfo = "CrashReporter-MacOSX-Static";
+		};
+		DE4B3C9718D918BF00A6B5F9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DE4B3C8218D918BF00A6B5F9 /* CrashReporter.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8DC2EF5B0486A6940098B216;
+			remoteInfo = "CrashReporter-MacOSX";
+		};
+		DE4B3C9918D918BF00A6B5F9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DE4B3C8218D918BF00A6B5F9 /* CrashReporter.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 058812B91040582D009128FB;
+			remoteInfo = "CrashReporter-iOS";
+		};
+		DE4B3C9B18D918BF00A6B5F9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DE4B3C8218D918BF00A6B5F9 /* CrashReporter.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 05CD31520EE936A9000FDE88;
+			remoteInfo = "CrashReporter-iOS-Device";
+		};
+		DE4B3C9D18D918BF00A6B5F9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DE4B3C8218D918BF00A6B5F9 /* CrashReporter.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 05CD31630EE93905000FDE88;
+			remoteInfo = "CrashReporter-iOS-Simulator";
+		};
+		DE4B3C9F18D918BF00A6B5F9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DE4B3C8218D918BF00A6B5F9 /* CrashReporter.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 05E731E30EFA1A3E005EDFB7;
+			remoteInfo = plcrashutil;
+		};
+		DE4B3CA118D918BF00A6B5F9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DE4B3C8218D918BF00A6B5F9 /* CrashReporter.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 05CD32690EE93DC3000FDE88;
+			remoteInfo = "Tests-MacOSX";
+		};
+		DE4B3CA318D918BF00A6B5F9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DE4B3C8218D918BF00A6B5F9 /* CrashReporter.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 05CD32A90EE94062000FDE88;
+			remoteInfo = "Tests-iOS-Simulator";
+		};
+		DE4B3CA518D918BF00A6B5F9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DE4B3C8218D918BF00A6B5F9 /* CrashReporter.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 05CD33240EE94439000FDE88;
+			remoteInfo = "Tests-iOS-Device";
+		};
+		DE4B3CA718D918BF00A6B5F9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DE4B3C8218D918BF00A6B5F9 /* CrashReporter.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 05F40CE70EF7AB80008050CF;
+			remoteInfo = DemoCrash;
+		};
+		DE4B3CA918D918BF00A6B5F9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DE4B3C8218D918BF00A6B5F9 /* CrashReporter.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 052A45CF136353FB00987004;
+			remoteInfo = "DemoCrash-iOS-Device";
+		};
+		DE4B3CAB18D918BF00A6B5F9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DE4B3C8218D918BF00A6B5F9 /* CrashReporter.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 052A464F136355FD00987004;
+			remoteInfo = "DemoCrash-iOS-Simulator";
+		};
+		DE4B3CAD18D918BF00A6B5F9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DE4B3C8218D918BF00A6B5F9 /* CrashReporter.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 050DE24D0F61B80B00152ED3;
+			remoteInfo = "Fuzz Testing";
+		};
+		DE4B3CAF18D918CF00A6B5F9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DE4B3C8218D918BF00A6B5F9 /* CrashReporter.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 05CD31510EE936A9000FDE88;
+			remoteInfo = "CrashReporter-iOS-Device";
+		};
 		DEF0F20C18712DB300116B61 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = DEF0F20718712DB100116B61 /* QuickDialog.xcodeproj */;
@@ -213,6 +314,9 @@
 		DE485DE21881FAC700B215C6 /* SQUUserSwitcherCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUUserSwitcherCell.m; sourceTree = "<group>"; };
 		DE4A00D218A2E0E700C05EBC /* SQURelativeRefreshControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQURelativeRefreshControl.h; sourceTree = "<group>"; };
 		DE4A00D318A2E0E700C05EBC /* SQURelativeRefreshControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQURelativeRefreshControl.m; sourceTree = "<group>"; };
+		DE4B3C8218D918BF00A6B5F9 /* CrashReporter.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CrashReporter.xcodeproj; path = "../../PLCrashReporter/Source/plcrashreporter-1.2-rc4/CrashReporter.xcodeproj"; sourceTree = "<group>"; };
+		DE4B3CB218D9191E00A6B5F9 /* SQUCrashHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUCrashHandler.h; sourceTree = "<group>"; };
+		DE4B3CB318D9191E00A6B5F9 /* SQUCrashHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUCrashHandler.m; sourceTree = "<group>"; };
 		DE4D5BB11888CA3E00371A75 /* about.rtfd */ = {isa = PBXFileReference; lastKnownFileType = wrapper.rtfd; name = about.rtfd; path = assets/about.rtfd; sourceTree = SOURCE_ROOT; };
 		DE6F17FA18B9124700546B0E /* SQUDashboardController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SQUDashboardController.h; path = iPad/SQUDashboardController.h; sourceTree = "<group>"; };
 		DE6F17FB18B9124700546B0E /* SQUDashboardController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SQUDashboardController.m; path = iPad/SQUDashboardController.m; sourceTree = "<group>"; };
@@ -358,6 +462,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DE4B3CB518D91C5F00A6B5F9 /* MessageUI.framework in Frameworks */,
+				DE4B3CB118D918D800A6B5F9 /* libCrashReporter-iphoneos.a in Frameworks */,
 				DEF0F2391872901C00116B61 /* libz.dylib in Frameworks */,
 				DEF0F21218712DC700116B61 /* libQuickDialog.a in Frameworks */,
 				DEF0F1C1186EEA6900116B61 /* QuartzCore.framework in Frameworks */,
@@ -422,6 +528,7 @@
 			isa = PBXGroup;
 			children = (
 				DE0615D017874F73004B2877 /* QuickHAC.entitlements */,
+				DE4B3C8018D9184F00A6B5F9 /* Crash Reporting */,
 				DECEA57B1877FF6C00C3D2FC /* Miscellaneous Categories */,
 				DE2844041877E7010000756C /* Push Notifications */,
 				DE0615D917890813004B2877 /* HAC Interface */,
@@ -618,6 +725,36 @@
 				DE485DE21881FAC700B215C6 /* SQUUserSwitcherCell.m */,
 			);
 			name = "User Switcher";
+			sourceTree = "<group>";
+		};
+		DE4B3C8018D9184F00A6B5F9 /* Crash Reporting */ = {
+			isa = PBXGroup;
+			children = (
+				DE4B3C8218D918BF00A6B5F9 /* CrashReporter.xcodeproj */,
+				DE4B3CB218D9191E00A6B5F9 /* SQUCrashHandler.h */,
+				DE4B3CB318D9191E00A6B5F9 /* SQUCrashHandler.m */,
+			);
+			name = "Crash Reporting";
+			sourceTree = "<group>";
+		};
+		DE4B3C8318D918BF00A6B5F9 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				DE4B3C9618D918BF00A6B5F9 /* libCrashReporter-MacOSX-Static.a */,
+				DE4B3C9818D918BF00A6B5F9 /* CrashReporter.framework */,
+				DE4B3C9A18D918BF00A6B5F9 /* CrashReporter.framework */,
+				DE4B3C9C18D918BF00A6B5F9 /* libCrashReporter-iphoneos.a */,
+				DE4B3C9E18D918BF00A6B5F9 /* libCrashReporter-iphonesimulator.a */,
+				DE4B3CA018D918BF00A6B5F9 /* plcrashutil */,
+				DE4B3CA218D918BF00A6B5F9 /* Tests-MacOSX.octest */,
+				DE4B3CA418D918BF00A6B5F9 /* Tests-iOS-Simulator.app */,
+				DE4B3CA618D918BF00A6B5F9 /* Tests-iOS-Device.app */,
+				DE4B3CA818D918BF00A6B5F9 /* DemoCrash.app */,
+				DE4B3CAA18D918BF00A6B5F9 /* DemoCrash-iOS-Device.app */,
+				DE4B3CAC18D918BF00A6B5F9 /* DemoCrash-iOS-Simulator.app */,
+				DE4B3CAE18D918BF00A6B5F9 /* Fuzz Testing */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		DE6F17F818B911C300546B0E /* Dashboard */ = {
@@ -930,6 +1067,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				DE4B3CB018D918CF00A6B5F9 /* PBXTargetDependency */,
 				DEF0F21118712DC200116B61 /* PBXTargetDependency */,
 				DEFFDE93186E784800E26423 /* PBXTargetDependency */,
 			);
@@ -979,6 +1117,10 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
+					ProductGroup = DE4B3C8318D918BF00A6B5F9 /* Products */;
+					ProjectRef = DE4B3C8218D918BF00A6B5F9 /* CrashReporter.xcodeproj */;
+				},
+				{
 					ProductGroup = DEFFDE8D186E782D00E26423 /* Products */;
 					ProjectRef = DEFFDE8C186E782D00E26423 /* PKRevealController.xcodeproj */;
 				},
@@ -995,6 +1137,97 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		DE4B3C9618D918BF00A6B5F9 /* libCrashReporter-MacOSX-Static.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libCrashReporter-MacOSX-Static.a";
+			remoteRef = DE4B3C9518D918BF00A6B5F9 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		DE4B3C9818D918BF00A6B5F9 /* CrashReporter.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = CrashReporter.framework;
+			remoteRef = DE4B3C9718D918BF00A6B5F9 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		DE4B3C9A18D918BF00A6B5F9 /* CrashReporter.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = CrashReporter.framework;
+			remoteRef = DE4B3C9918D918BF00A6B5F9 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		DE4B3C9C18D918BF00A6B5F9 /* libCrashReporter-iphoneos.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libCrashReporter-iphoneos.a";
+			remoteRef = DE4B3C9B18D918BF00A6B5F9 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		DE4B3C9E18D918BF00A6B5F9 /* libCrashReporter-iphonesimulator.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libCrashReporter-iphonesimulator.a";
+			remoteRef = DE4B3C9D18D918BF00A6B5F9 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		DE4B3CA018D918BF00A6B5F9 /* plcrashutil */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = plcrashutil;
+			remoteRef = DE4B3C9F18D918BF00A6B5F9 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		DE4B3CA218D918BF00A6B5F9 /* Tests-MacOSX.octest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "Tests-MacOSX.octest";
+			remoteRef = DE4B3CA118D918BF00A6B5F9 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		DE4B3CA418D918BF00A6B5F9 /* Tests-iOS-Simulator.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = "Tests-iOS-Simulator.app";
+			remoteRef = DE4B3CA318D918BF00A6B5F9 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		DE4B3CA618D918BF00A6B5F9 /* Tests-iOS-Device.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = "Tests-iOS-Device.app";
+			remoteRef = DE4B3CA518D918BF00A6B5F9 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		DE4B3CA818D918BF00A6B5F9 /* DemoCrash.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = DemoCrash.app;
+			remoteRef = DE4B3CA718D918BF00A6B5F9 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		DE4B3CAA18D918BF00A6B5F9 /* DemoCrash-iOS-Device.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = "DemoCrash-iOS-Device.app";
+			remoteRef = DE4B3CA918D918BF00A6B5F9 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		DE4B3CAC18D918BF00A6B5F9 /* DemoCrash-iOS-Simulator.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = "DemoCrash-iOS-Simulator.app";
+			remoteRef = DE4B3CAB18D918BF00A6B5F9 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		DE4B3CAE18D918BF00A6B5F9 /* Fuzz Testing */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = "Fuzz Testing";
+			remoteRef = DE4B3CAD18D918BF00A6B5F9 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		DEF0F20D18712DB300116B61 /* QuickDialogExample.app */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.application;
@@ -1130,6 +1363,7 @@
 				DEFFDE2B186D8EEF00E26423 /* SQUDistrictRRISD.m in Sources */,
 				DEFFDE40186E26FC00E26423 /* AFHTTPRequestOperationManager.m in Sources */,
 				DE35E9A9180614DF00F15F20 /* Lockbox.m in Sources */,
+				DE4B3CB418D9191E00A6B5F9 /* SQUCrashHandler.m in Sources */,
 				DEF0F2431873DC0600116B61 /* SQUSettingsGeneralController.m in Sources */,
 				DEBA3D121878FA04003C209B /* NSData+SQUAdditions.m in Sources */,
 				DE6F17FF18B9127B00546B0E /* SQUTabletSidebarCell.m in Sources */,
@@ -1147,6 +1381,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		DE4B3CB018D918CF00A6B5F9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "CrashReporter-iOS-Device";
+			targetProxy = DE4B3CAF18D918CF00A6B5F9 /* PBXContainerItemProxy */;
+		};
 		DEF0F21118712DC200116B61 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = QuickDialog;
@@ -1274,6 +1513,7 @@
 					"$(SDKROOT)/usr/include/libxml2/**",
 					"\"$(SRCROOT)/../PKRevealController/Source/PKRevealController\"/**",
 					"\"$(SRCROOT)/../QuickDialog/quickdialog\"/**",
+					"\"$(SRCROOT)/../PLCrashReporter/Source/plcrashreporter-1.2-rc4/Source\"",
 				);
 				INFOPLIST_FILE = "QuickHAC/QuickHAC-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
@@ -1307,6 +1547,7 @@
 					"$(SDKROOT)/usr/include/libxml2/**",
 					"\"$(SRCROOT)/../PKRevealController/Source/PKRevealController\"/**",
 					"\"$(SRCROOT)/../QuickDialog/quickdialog\"/**",
+					"\"$(SRCROOT)/../PLCrashReporter/Source/plcrashreporter-1.2-rc4/Source\"",
 				);
 				INFOPLIST_FILE = "QuickHAC/QuickHAC-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;

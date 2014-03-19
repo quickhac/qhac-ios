@@ -48,7 +48,7 @@
         self.title = NSLocalizedString(@"Overview", nil);
         
         UIBarButtonItem *showSidebar = [[UIBarButtonItem alloc]
-										initWithImage:[UIImage imageNamed:@"RevealSidebarIcon"]
+										initWithImage: [UIImage imageNamed:@"RevealSidebarIcon"]
 										style:UIBarButtonItemStyleBordered
 										target:self
 										action:@selector(openSidebar:)];
@@ -60,6 +60,13 @@
 											  target:self
 											  action:@selector(showNotifications:)];
 		self.navigationItem.rightBarButtonItem = showNotifications;*/
+		
+		UIBarButtonItem *collapseToggle = [[UIBarButtonItem alloc]
+										   initWithImage: [UIImage imageNamed:@"ViewSettingsIcon"]
+										   style:UIBarButtonItemStylePlain
+										   target:self
+										   action:@selector(toggleCollapse:)];
+		self.navigationItem.rightBarButtonItem = collapseToggle;
 		
 		// Set up the title view container and title text
 		_navbarTitle = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 200, 44)];
@@ -256,5 +263,12 @@
 	
 	_subtitleLayer.string = [NSString stringWithFormat:gpaFormatString, gpaUnweighted.floatValue, gpaWeighted.floatValue];
 }
+
+/*
+ * Toggles the collapse status of the cards.
+ */
+/*- (void) toggleCollapse:(id) sender {
+	
+}*/
 
 @end
