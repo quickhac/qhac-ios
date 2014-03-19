@@ -51,7 +51,24 @@
 		_backgroundLayer.masksToBounds = NO;
 		
 		// gradient bar support
-		_backgroundLayer.locations = @[@(0.00), @(0.175)];
+		_topBar = [CAGradientLayer layer];
+		_topBar.frame = CGRectMake(0, 0, _backgroundLayer.frame.size.width, 13);
+		_topBar.locations = @[@(0.00), @(1.0)];
+		_topBar.contentsScale = [UIScreen mainScreen].scale;
+		_topBar.masksToBounds = NO;
+		
+		
+		// Mask top bar to have 1pt border on top
+		CALayer *layer = [CALayer layer];
+		layer.backgroundColor = [UIColor whiteColor].CGColor;
+		
+		CALayer *mask = [CALayer layer];
+		mask.backgroundColor = [UIColor blackColor].CGColor;
+		mask.cornerRadius = _backgroundLayer.cornerRadius;
+		mask.frame = CGRectMake(0, 0, _topBar.frame.size.width, _topBar.frame.size.height+(_backgroundLayer.cornerRadius * 2));
+		[layer addSublayer:mask];
+		
+		_topBar.mask = layer;
 		
 		// Set shadow radius on BG layer
 		UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:_backgroundLayer.frame cornerRadius:_backgroundLayer.cornerRadius];
@@ -59,7 +76,7 @@
         
 		// Course title
         _courseTitle = [CATextLayer layer];
-        _courseTitle.frame = CGRectMake(62, 8, _backgroundLayer.frame.size.width - 130, 32);
+        _courseTitle.frame = CGRectMake(62, 18, _backgroundLayer.frame.size.width - 130, 32);
         _courseTitle.contentsScale = [UIScreen mainScreen].scale;
         _courseTitle.foregroundColor = [UIColor blackColor].CGColor;
         _courseTitle.font = (__bridge CFTypeRef) [UIFont fontWithName:@"HelveticaNeue-Light" size:15.0f];
@@ -77,14 +94,14 @@
 		
 		// Average label
 		_currentAverageLabel = [CATextLayer layer];
-		_currentAverageLabel.frame = CGRectMake(_backgroundLayer.frame.size.width - 70, 5, 62, 38);
+		_currentAverageLabel.frame = CGRectMake(_backgroundLayer.frame.size.width - 70, 15, 62, 38);
         _currentAverageLabel.contentsScale = [UIScreen mainScreen].scale;
         _currentAverageLabel.foregroundColor = [UIColor grayColor].CGColor;
         _currentAverageLabel.font = (__bridge CFTypeRef) [UIFont fontWithName:@"HelveticaNeue-UltraLight" size:15.0f];
         _currentAverageLabel.fontSize = 36;
 		_currentAverageLabel.alignmentMode = kCAAlignmentRight;
         
-		// Period label
+		// Period label (inside the circular thingie)
         _periodTitle = [CATextLayer layer];
         _periodTitle.frame = CGRectMake(0, 2, 44, 44);
         _periodTitle.contentsScale = [UIScreen mainScreen].scale;
@@ -95,13 +112,14 @@
 				
 		// Circle surrounding period title
 		_periodCircle = [CALayer layer];
-        _periodCircle.frame = CGRectMake(8, 8, 44, 44);
+        _periodCircle.frame = CGRectMake(8, 18, 44, 44);
 		_periodCircle.borderColor = [UIColor lightGrayColor].CGColor;
 		_periodCircle.borderWidth = 1.0;
 		_periodCircle.cornerRadius = _periodTitle.frame.size.width / 2;
 		[_periodCircle addSublayer:_periodTitle];
 		
 		// Add sublayers
+		[_backgroundLayer addSublayer:_topBar];
         [_backgroundLayer addSublayer:_periodCircle];
         [_backgroundLayer addSublayer:_courseTitle];
 		[_backgroundLayer addSublayer:_currentAverageLabel];
@@ -152,7 +170,7 @@
 	
 	// Elementary students do not have exams, and only four cycles.
 	if(isElementary) {
-		CGFloat y = 56;
+		CGFloat y = 60;
 		NSUInteger cycPerSem = _courseInfo.student.cyclesPerSemester.unsignedIntegerValue;
 		NSUInteger heads = cycPerSem/2;
 		
@@ -181,7 +199,7 @@
 			y += 75;
 		}
 	} else {
-		CGFloat y = 56;
+		CGFloat y = 60;
 		NSUInteger cycPerSem = _courseInfo.student.cyclesPerSemester.unsignedIntegerValue;
 		NSUInteger heads = cycPerSem + 2;
 		NSUInteger row = 0;
@@ -271,7 +289,7 @@
 	
 	// Elementary students do not have exams, and only four cycles.
 	if(isElementary) {
-		CGFloat y = 56;
+		CGFloat y = 60;
 		NSUInteger cycPerSem = _courseInfo.student.cyclesPerSemester.unsignedIntegerValue;
 		NSUInteger heads = cycPerSem / 2;
 		
@@ -317,7 +335,7 @@
 			y += 75;
 		}
 	} else {
-		CGFloat y = 56;
+		CGFloat y = 60;
 		NSUInteger cycPerSem = _courseInfo.student.cyclesPerSemester.unsignedIntegerValue;
 		NSUInteger heads = cycPerSem + 2;
 		
@@ -437,10 +455,10 @@
 						   ];
 	
 	if(period > sbcolours.count) {
-		_backgroundLayer.colors = @[(id) [[UIColor colorWithWhite:0.08 alpha:1.0] lighterColor].CGColor, (id) [UIColor whiteColor].CGColor];
+		_topBar.colors = @[(id) [[UIColor colorWithWhite:0.08 alpha:1.0] lighterColor].CGColor, (id) [UIColor whiteColor].CGColor, (id) [UIColor whiteColor].CGColor];
 	} else {
 		NSUInteger index = [[SQUGradeManager sharedInstance].student.courses indexOfObject:_courseInfo];
-		_backgroundLayer.colors = @[(id) [[sbcolours[index] lighterColor] CGColor], (id) [UIColor whiteColor].CGColor];
+		_topBar.colors = @[(id) [[sbcolours[index] lighterColor] CGColor], (id) [sbcolours[index] CGColor], (id) [UIColor whiteColor].CGColor];
 	}
 	
 	// Adjust height for collapsed state

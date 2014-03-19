@@ -9,8 +9,8 @@
 #import <UIKit/UIKit.h>
 #import <CoreGraphics/CoreGraphics.h>
 
-#define SQUGradeOverviewCellHeight 212.0
-#define SQUGradeOverviewCellCollapsedHeight 70
+#define SQUGradeOverviewCellHeight 216.0
+#define SQUGradeOverviewCellCollapsedHeight 76
 
 @class SQUCourse, SQUCycle;
 @interface SQUGradeOverviewTableViewCell : UITableViewCell {
@@ -31,6 +31,8 @@
 	NSMutableArray *_headers;
 	NSMutableArray *_cells;
 	NSMutableArray *_shades;
+	
+	CAGradientLayer *_topBar;
 	
 	BOOL _isCollapsed;
 }

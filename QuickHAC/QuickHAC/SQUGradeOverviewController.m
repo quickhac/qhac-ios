@@ -162,12 +162,15 @@
     SQUGradeOverviewTableViewCell *cell = (SQUGradeOverviewTableViewCell *)
     [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
 	
-    cell.courseInfo = [[[SQUGradeManager sharedInstance] getCoursesForCurrentStudent] objectAtIndex:indexPath.row];
-	cell.backgroundColor = [UIColor clearColor];
-	cell.clipsToBounds = NO;
-	cell.selectionStyle = UITableViewCellSelectionStyleNone;
-	cell.isCollapsed = _cellsCollapsed;
-    [cell updateUI];
+    SQUCourse *course = [[[SQUGradeManager sharedInstance] getCoursesForCurrentStudent] objectAtIndex:indexPath.row];
+	if(course) {
+		cell.courseInfo = course;
+		cell.backgroundColor = [UIColor clearColor];
+		cell.clipsToBounds = NO;
+		cell.selectionStyle = UITableViewCellSelectionStyleNone;
+		cell.isCollapsed = _cellsCollapsed;
+		[cell updateUI];
+	}
     
     return cell;
 }
@@ -197,7 +200,7 @@
 		[[SQUGradeManager sharedInstance] fetchNewClassGradesFromServerWithDoneCallback:^(NSError *error){
 			[[NSNotificationCenter defaultCenter] postNotificationName:SQUGradesDataUpdatedNotification object:nil userInfo:@{}];
 			
-			if(error) {
+			if(error && error.code != kSQUDistrictManagerErrorInvalidDataReceived) {
 				UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Updating Grades", nil) message:error.localizedDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
 				[alert show];
 			} else {
