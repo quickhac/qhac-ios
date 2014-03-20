@@ -349,8 +349,8 @@ static SQUDistrictManager *_sharedInstance = nil;
  * random \x00's scattered throughout the page.
  *
  * Seriously. If you have \x00 in your damn HTML you should be shot, run
- * over with an SUV, shot again, then drowned in a solution
- * of twelve molar hydrosulphuric acid. And then shot again.
+ * over with an SUV, shot again, then drowned in a solution of twelve molar
+ * hydrosulphuric acid. And then shot again.
  */
 - (NSData *) fixData:(NSData *) in {
 	NSMutableData *data = [in mutableCopy];
@@ -388,7 +388,7 @@ static SQUDistrictManager *_sharedInstance = nil;
 			NSString *studentSchool = [[SQUGradeManager sharedInstance].currentDriver getStudentSchoolForDistrict:_currentDistrict withData:data];
 			
 			// Try to make sure that student data does not get mingled
-			NSString *dbName = [SQUGradeManager sharedInstance].student.name;
+			/*NSString *dbName = [SQUGradeManager sharedInstance].student.name;
 			
 			if(dbName) {
 				// Some districts strip middle names, so we do a substring search
@@ -400,7 +400,7 @@ static SQUDistrictManager *_sharedInstance = nil;
 					callback(nil, nil);
 					return;
 				}
-			}
+			}*/
 			
 			performUpdate: ;
 			[SQUGradeManager sharedInstance].student.name = studentName;

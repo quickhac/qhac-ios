@@ -17,11 +17,11 @@
 	CATextLayer *_courseTitle;
 	CATextLayer *_teacher;
 	
-	SQUCourse *_course;
-	SQUCycle *_cycle;
+	__strong SQUCourse *_course;
+	__strong SQUCycle *_cycle;
 }
 
-@property (nonatomic, readwrite) SQUCycle *cycle;
+@property (nonatomic, readwrite, strong) SQUCycle *cycle;
 @property (nonatomic, readwrite, setter = setCourse:) SQUCourse *course;
 
 @end

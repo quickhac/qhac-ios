@@ -66,6 +66,9 @@
 }
 
 - (void) setCourse:(SQUCourse *) course {
+	// Clear old course
+	_course = nil;
+	
 	if(course) {
 		_course = course;
 		_courseTitle.string = _course.title;

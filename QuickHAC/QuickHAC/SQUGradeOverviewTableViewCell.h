@@ -15,7 +15,7 @@
 @class SQUCourse, SQUCycle;
 @interface SQUGradeOverviewTableViewCell : UITableViewCell {
     // public properties
-    SQUCourse *_courseInfo;
+    __strong SQUCourse *_courseInfo;
     
 @private	
 	CAGradientLayer *_backgroundLayer;
@@ -37,7 +37,7 @@
 	BOOL _isCollapsed;
 }
 
-@property (nonatomic) SQUCourse *courseInfo;
+@property (nonatomic, strong) SQUCourse *courseInfo;
 @property (nonatomic) BOOL isCollapsed;
 
 - (void) updateUI;

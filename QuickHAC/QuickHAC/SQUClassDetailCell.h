@@ -39,7 +39,7 @@
 	NSMutableArray *_rowHeaders;
 	NSMutableArray *_tableLabels;
 	
-	SQUCategory *_category;
+	__strong SQUCategory *_category;
 	NSUInteger _index;
 }
 

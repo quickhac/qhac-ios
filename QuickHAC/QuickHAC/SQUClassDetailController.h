@@ -15,7 +15,7 @@
 @class SQUEmptyView;
 
 @interface SQUClassDetailController : UITableViewController <SQUClassCycleChooserControllerDelegate> {
-	SQUCourse *_course;
+	__strong SQUCourse *_course;
 	
 	NSUInteger _displayCycle;
 	SQUCycle *_currentCycle;
