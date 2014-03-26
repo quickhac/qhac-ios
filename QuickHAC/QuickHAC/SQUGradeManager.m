@@ -109,9 +109,11 @@ static SQUGradeManager *_sharedInstance = nil;
 	// Fetch username/pw from keychain
 	NSString *username, *password, *studentID;
 	
-	username = _student.hacUsername;
+	SQUStudent *studentToUpdate = _student;
+	
+	username = studentToUpdate.hacUsername;
 	password = [Lockbox stringForKey:username];
-	studentID = _student.student_id;
+	studentID = studentToUpdate.student_id;
 	
 	[[SQUDistrictManager sharedInstance] checkIfLoggedIn:^(BOOL loggedIn) {
 		void (^doGradeChecking)(void) = ^{
@@ -122,7 +124,7 @@ static SQUGradeManager *_sharedInstance = nil;
 						if(!error) {
 							// If no return data is specified, this update is ignored
 							if(returnData) {
-								[self updateCurrentStudentWithClassAverages:returnData];
+								[self updateStudent:studentToUpdate withClassAverages:returnData];
 							}
 							
 							if(callback) callback(nil);
@@ -176,9 +178,11 @@ static SQUGradeManager *_sharedInstance = nil;
 	// Fetch username/pw from keychain
 	NSString *username, *password, *studentID;
 	
-	username = _student.hacUsername;
+	SQUStudent *studentToUpdate = _student;
+	
+	username = studentToUpdate.hacUsername;
 	password = [Lockbox stringForKey:username];
-	studentID = _student.student_id;
+	studentID = studentToUpdate.student_id;
 	
 	[[SQUDistrictManager sharedInstance] checkIfLoggedIn:^(BOOL loggedIn) {
 		
@@ -190,7 +194,7 @@ static SQUGradeManager *_sharedInstance = nil;
 						if(!error) {
 							NSDictionary *grades = (NSDictionary *) returnData;
 							
-							[self updateCurrentStudentWithClassGrades:grades forClass:course andCycle:cycle andSemester:semester];
+							[self updateStudent:studentToUpdate withClassGrades:grades forClass:course andCycle:cycle andSemester:semester];
 							[[NSNotificationCenter defaultCenter] postNotificationName:SQUGradesDataUpdatedNotification object:nil];
 							
 							if(callback) callback(nil);
@@ -257,7 +261,7 @@ static SQUGradeManager *_sharedInstance = nil;
  *
  * This checks through both the course code and the course title.
  */
-- (BOOL) classEntryExists:(NSDictionary *) class {
+- (BOOL) classEntryExists:(NSDictionary *) class andStudent:(SQUStudent *) student {
 	NSError *err = nil;
 	
 	NSFetchRequest *request = [[NSFetchRequest alloc] init];
@@ -266,7 +270,7 @@ static SQUGradeManager *_sharedInstance = nil;
 	[request setEntity:entity];
 	
 	// Search by title OR course number, current student, and period
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"((courseCode == %@) OR (title LIKE[c] %@)) AND (student = %@) AND (period = %@)", class[@"courseNum"], class[@"title"], _student, class[@"period"]];
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"((courseCode == %@) OR (title LIKE[c] %@)) AND (student = %@) AND (period = %@)", class[@"courseNum"], class[@"title"], student, class[@"period"]];
 	[request setPredicate:predicate];
 	
 	NSUInteger count = [_coreDataMOContext countForFetchRequest:request error:&err];
@@ -370,10 +374,10 @@ static SQUGradeManager *_sharedInstance = nil;
  * @param classAvgs Array containing info about the class averages, as output
  * by the gradebook drivers.
  */
-- (void) updateCurrentStudentWithClassAverages:(NSArray *) classAvgs {
+- (void) updateStudent:(SQUStudent *) student withClassAverages:(NSArray *) classAvgs {
 	_coreDataMOContext = [[SQUAppDelegate sharedDelegate] managedObjectContext];
 	
-	NSAssert(_student != NULL, @"Student may not be NULL");
+	NSAssert(student != NULL, @"Student may not be NULL");
 	NSAssert(classAvgs != NULL, @"Grades may not be NULL");
 	
 	// Set up variables.
@@ -383,7 +387,7 @@ static SQUGradeManager *_sharedInstance = nil;
 	for(NSDictionary *class in classAvgs) {
 		SQUCourse *course;
 		
-		if([self classEntryExists:class]) {
+		if([self classEntryExists:class andStudent:student]) {
 			course = [self courseEntryForClass:class];
 			NSAssert(course != NULL, @"Course supposedly exists but we can't find it");
 		} else {
@@ -397,7 +401,7 @@ static SQUGradeManager *_sharedInstance = nil;
 			course.teacher_name = class[@"teacherName"];
 			course.teacher_email = class[@"teacherEmail"];
 			course.period = class[@"period"];
-			course.student = _student;
+			course.student = student;
 			
 			/*
 			 * Attempt to detect if a course is honours or not by checking for
@@ -413,14 +417,14 @@ static SQUGradeManager *_sharedInstance = nil;
 				course.isHonours = @(NO);
 			}
 			 
-			[_student addCoursesObject:course];
+			[student addCoursesObject:course];
 
 			// Generate empty cycle objects
 			NSUInteger numCycles = ([class[@"semesters"] count]) * ([class[@"semesters"][0][@"cycles"] count]);
 			NSUInteger cyclesPerSemester = [class[@"semesters"][0][@"cycles"] count];
 			
-			_student.cyclesPerSemester = @(cyclesPerSemester);
-			_student.numSemesters = @([class[@"semesters"] count]);
+			student.cyclesPerSemester = @(cyclesPerSemester);
+			student.numSemesters = @([class[@"semesters"] count]);
 
 			for(NSUInteger i = 0; i < numCycles; i++) {
 				SQUCycle *cycle = [NSEntityDescription insertNewObjectForEntityForName:@"SQUCycle" inManagedObjectContext:_coreDataMOContext];
@@ -497,11 +501,11 @@ static SQUGradeManager *_sharedInstance = nil;
 	
 	// Sort the classes by the period code.
 	NSSortDescriptor *periodSort = [NSSortDescriptor sortDescriptorWithKey:@"period" ascending:YES];
-	[_student.courses sortedArrayUsingDescriptors:@[periodSort]];
-	_student.courses = [NSOrderedSet orderedSetWithArray:[_student.courses sortedArrayUsingDescriptors:@[periodSort]]];
+	[student.courses sortedArrayUsingDescriptors:@[periodSort]];
+	student.courses = [NSOrderedSet orderedSetWithArray:[student.courses sortedArrayUsingDescriptors:@[periodSort]]];
 	
 	// Set "last updated" date
-	_student.lastAveragesUpdate = [NSDate new];
+	student.lastAveragesUpdate = [NSDate new];
 	
 	// Write changes to the database.
 	if(![_coreDataMOContext save:&err]) {
@@ -524,7 +528,7 @@ static SQUGradeManager *_sharedInstance = nil;
  * @param numCycle Cycle in which the grades are.
  * @param numSemester Semester in which the grades are.
  */
-- (void) updateCurrentStudentWithClassGrades:(NSDictionary *) classGrades forClass:(NSString *) class andCycle:(NSUInteger) numCycle andSemester:(NSUInteger) numSemester {
+- (void) updateStudent:(SQUStudent *) student withClassGrades:(NSDictionary *) classGrades forClass:(NSString *) class andCycle:(NSUInteger) numCycle andSemester:(NSUInteger) numSemester {
 	_coreDataMOContext = [[SQUAppDelegate sharedDelegate] managedObjectContext];
 	
 	NSUInteger cycleOffset = numCycle + (numSemester * 3);
@@ -532,7 +536,7 @@ static SQUGradeManager *_sharedInstance = nil;
 	NSError *err = nil;
 	
 	// Locate the course
-	for(SQUCourse *dbCourse in _student.courses) {
+	for(SQUCourse *dbCourse in student.courses) {
 		if([dbCourse.courseCode isEqualToString:class]) {
 			course = dbCourse;
 			break;
@@ -591,7 +595,7 @@ static SQUGradeManager *_sharedInstance = nil;
 	
 	// Write changes to the database.
 	if(![_coreDataMOContext save:&err]) {
-		NSLog(@"Could not save grades for class %@, cycle %u semester %u.", class, numCycle+1, numSemester+1);
+		NSLog(@"Could not save grades for class %@, cycle %ul semester %ul.", class, numCycle+1, numSemester+1);
 		
 		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Database Error", nil) message:err.localizedDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
 		[alert show];

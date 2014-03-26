@@ -361,7 +361,7 @@ static SQUDistrictManager *_sharedInstance = nil;
 	for (NSUInteger i = 0; i < data.length; i++) {
 		if(bytes[i] == 0x00) {
 			[data replaceBytesInRange:NSMakeRange(i, 1) withBytes:&spaces length:1];
-			NSLog(@"Fixing 0x00 in response at 0x%X", i);
+			// NSLog(@"Fixing 0x00 in response at 0x%X", i);
 		}
 	}
 	
@@ -377,6 +377,8 @@ static SQUDistrictManager *_sharedInstance = nil;
 - (void) performAveragesRequestWithCallback:(SQUDistrictCallback) callback {
 	NSDictionary *avgRequest = [_currentDistrict buildAveragesRequestWithUserData:nil];
 	
+	SQUStudent *studentToUpdate = [SQUGradeManager sharedInstance].student;
+	
 	// Called if the request succeeds
 	void (^averagesSuccess)(AFHTTPRequestOperation*operation, id responseObject) = ^(AFHTTPRequestOperation*operation, id responseObject) {
 		NSData *data = [self fixData:responseObject];
@@ -387,24 +389,9 @@ static SQUDistrictManager *_sharedInstance = nil;
 			NSString *studentName = [[SQUGradeManager sharedInstance].currentDriver getStudentNameForDistrict:_currentDistrict withData:data];
 			NSString *studentSchool = [[SQUGradeManager sharedInstance].currentDriver getStudentSchoolForDistrict:_currentDistrict withData:data];
 			
-			// Try to make sure that student data does not get mingled
-			/*NSString *dbName = [SQUGradeManager sharedInstance].student.name;
-			
-			if(dbName) {
-				// Some districts strip middle names, so we do a substring search
-				if([dbName rangeOfString:studentName].location == NSNotFound) {
-					NSLog(@"Got grades for `%@` but current is `%@`: ignoring update",
-						  studentName, dbName);
-					
-					// run callback to update UI
-					callback(nil, nil);
-					return;
-				}
-			}*/
-			
 			performUpdate: ;
-			[SQUGradeManager sharedInstance].student.name = studentName;
-			[SQUGradeManager sharedInstance].student.school = studentSchool;
+			studentToUpdate.name = studentName;
+			studentToUpdate.school = studentSchool;
 				
 			[_currentDistrict updateDistrictStateWithClassGrades:averages];
 			
@@ -415,12 +402,12 @@ static SQUDistrictManager *_sharedInstance = nil;
 				components = [firstName componentsSeparatedByString:@" "];
 				
 				if(components.count == 0) {
-					[SQUGradeManager sharedInstance].student.display_name = firstName;
+					studentToUpdate.display_name = firstName;
 				} else {
-					[SQUGradeManager sharedInstance].student.display_name = components[0];
+					studentToUpdate.display_name = components[0];
 				}
 			} else {
-				[SQUGradeManager sharedInstance].student.display_name = studentName;
+				studentToUpdate.display_name = studentName;
 			}
 			
 			// NSLog(@"Updated grades for %@ (%@)", [SQUGradeManager sharedInstance].student.name, [SQUGradeManager sharedInstance].student.display_name);
