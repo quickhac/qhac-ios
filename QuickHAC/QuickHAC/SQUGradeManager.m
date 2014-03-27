@@ -286,7 +286,7 @@ static SQUGradeManager *_sharedInstance = nil;
  * @param class A dictionary describing the course.
  * @return Pointer to the SQUCourse object, or nil.
  */
-- (SQUCourse *) courseEntryForClass:(NSDictionary *) class {
+- (SQUCourse *) courseEntryForClass:(NSDictionary *) class andStudent:(SQUStudent *) student {
 	NSError *err = nil;
 	
 	NSFetchRequest *request = [[NSFetchRequest alloc] init];
@@ -295,7 +295,7 @@ static SQUGradeManager *_sharedInstance = nil;
 	[request setEntity:entity];
 	
 	// Search by title OR course number, current student, and period
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"((courseCode == %@) OR (title LIKE[c] %@)) AND (student = %@) AND (period = %@)", class[@"courseNum"], class[@"title"], _student, class[@"period"]];
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"((courseCode == %@) OR (title LIKE[c] %@)) AND (student = %@) AND (period = %@)", class[@"courseNum"], class[@"title"], student, class[@"period"]];
 	[request setPredicate:predicate];
 	
 	NSArray *matches = [_coreDataMOContext executeFetchRequest:request error:&err];
@@ -388,7 +388,7 @@ static SQUGradeManager *_sharedInstance = nil;
 		SQUCourse *course;
 		
 		if([self classEntryExists:class andStudent:student]) {
-			course = [self courseEntryForClass:class];
+			course = [self courseEntryForClass:class andStudent:student];
 			NSAssert(course != NULL, @"Course supposedly exists but we can't find it");
 		} else {
 			// We need to create a new course entry.

@@ -10,6 +10,8 @@
 	<integer>2</integer>
 	<key>certPinning</key>
 	<true/>
+	<key>mainExpanded</key>
+	<false/>
 	<key>gradesHue</key>
 	<integer>0</integer>
 </dict>

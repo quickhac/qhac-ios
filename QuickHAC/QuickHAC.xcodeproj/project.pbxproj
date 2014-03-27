@@ -40,9 +40,7 @@
 		DE485DDE1881EACA00B215C6 /* SQUUserSwitcherView.m in Sources */ = {isa = PBXBuildFile; fileRef = DE485DDD1881EACA00B215C6 /* SQUUserSwitcherView.m */; };
 		DE485DE31881FAC700B215C6 /* SQUUserSwitcherCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DE485DE21881FAC700B215C6 /* SQUUserSwitcherCell.m */; };
 		DE4A00D418A2E0E700C05EBC /* SQURelativeRefreshControl.m in Sources */ = {isa = PBXBuildFile; fileRef = DE4A00D318A2E0E700C05EBC /* SQURelativeRefreshControl.m */; };
-		DE4B3CB118D918D800A6B5F9 /* libCrashReporter-iphoneos.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DE4B3C9C18D918BF00A6B5F9 /* libCrashReporter-iphoneos.a */; };
 		DE4B3CB418D9191E00A6B5F9 /* SQUCrashHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = DE4B3CB318D9191E00A6B5F9 /* SQUCrashHandler.m */; };
-		DE4B3CB518D91C5F00A6B5F9 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DEF0F2031871287300116B61 /* MessageUI.framework */; };
 		DE4D5BB21888CA3E00371A75 /* about.rtfd in Resources */ = {isa = PBXBuildFile; fileRef = DE4D5BB11888CA3E00371A75 /* about.rtfd */; };
 		DE6F17FC18B9124700546B0E /* SQUDashboardController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE6F17FB18B9124700546B0E /* SQUDashboardController.m */; };
 		DE6F17FF18B9127B00546B0E /* SQUTabletSidebarCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DE6F17FE18B9127B00546B0E /* SQUTabletSidebarCell.m */; };
@@ -59,6 +57,7 @@
 		DE81CDD9186D517800DC1CAB /* XPathQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = DE81CDD6186D517800DC1CAB /* XPathQuery.m */; };
 		DE81CDDC186D538000DC1CAB /* libxml2.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DE81CDDA186D518C00DC1CAB /* libxml2.2.dylib */; };
 		DE88318B18811F6B002244F5 /* SQUSidebarCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DE88318A18811F6B002244F5 /* SQUSidebarCell.m */; };
+		DE9CD7D018E4EE8600F3BA26 /* libCrashReporter-iphoneos.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DE4B3C9C18D918BF00A6B5F9 /* libCrashReporter-iphoneos.a */; };
 		DEAE4699187807AB008DAE0C /* NSURL+RequestParams.m in Sources */ = {isa = PBXBuildFile; fileRef = DEAE4698187807AB008DAE0C /* NSURL+RequestParams.m */; };
 		DEBA3D0F1878EECC003C209B /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DE2843EC18768D510000756C /* libTestFlight.a */; };
 		DEBA3D121878FA04003C209B /* NSData+SQUAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = DEBA3D111878FA04003C209B /* NSData+SQUAdditions.m */; };
@@ -215,6 +214,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 05CD31510EE936A9000FDE88;
 			remoteInfo = "CrashReporter-iOS-Device";
+		};
+		DE9CD7CB18E4ECBB00F3BA26 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DE4B3C8218D918BF00A6B5F9 /* CrashReporter.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 05CD31620EE93905000FDE88;
+			remoteInfo = "CrashReporter-iOS-Simulator";
 		};
 		DEF0F20C18712DB300116B61 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -462,8 +468,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DE4B3CB518D91C5F00A6B5F9 /* MessageUI.framework in Frameworks */,
-				DE4B3CB118D918D800A6B5F9 /* libCrashReporter-iphoneos.a in Frameworks */,
+				DE9CD7D018E4EE8600F3BA26 /* libCrashReporter-iphoneos.a in Frameworks */,
 				DEF0F2391872901C00116B61 /* libz.dylib in Frameworks */,
 				DEF0F21218712DC700116B61 /* libQuickDialog.a in Frameworks */,
 				DEF0F1C1186EEA6900116B61 /* QuartzCore.framework in Frameworks */,
@@ -1067,6 +1072,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				DE9CD7CC18E4ECBB00F3BA26 /* PBXTargetDependency */,
 				DE4B3CB018D918CF00A6B5F9 /* PBXTargetDependency */,
 				DEF0F21118712DC200116B61 /* PBXTargetDependency */,
 				DEFFDE93186E784800E26423 /* PBXTargetDependency */,
@@ -1386,6 +1392,11 @@
 			name = "CrashReporter-iOS-Device";
 			targetProxy = DE4B3CAF18D918CF00A6B5F9 /* PBXContainerItemProxy */;
 		};
+		DE9CD7CC18E4ECBB00F3BA26 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "CrashReporter-iOS-Simulator";
+			targetProxy = DE9CD7CB18E4ECBB00F3BA26 /* PBXContainerItemProxy */;
+		};
 		DEF0F21118712DC200116B61 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = QuickDialog;
@@ -1524,7 +1535,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "E3EEA7E0-939E-45CA-AD8D-3574C38B6E35";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1558,7 +1569,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "E3EEA7E0-939E-45CA-AD8D-3574C38B6E35";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

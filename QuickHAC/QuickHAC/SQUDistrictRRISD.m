@@ -298,7 +298,7 @@
  */
 - (BOOL) didDisambiguationSucceedWithLoginData:(NSData *) data {
 	TFHpple *parser = [TFHpple hppleWithHTMLData:data];
-	TFHppleElement *content = [parser searchWithXPathQuery:@"//td[@id='ctl00_tdContent']"][0];
+	TFHppleElement *content = [parser peekAtSearchWithXPathQuery:@"//td[@id='ctl00_tdContent']"];
 	
 	NSArray *contentChildren = [content childrenWithTagName:@"p"];
 

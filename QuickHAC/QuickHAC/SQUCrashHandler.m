@@ -105,7 +105,7 @@ static SQUCrashHandler *_sharedInstance = nil;
  */
 - (void) alertView:(UIAlertView *) alertView clickedButtonAtIndex:(NSInteger) buttonIndex {
 	if(buttonIndex == 1) {
-		NSLog("Submit report");
+		// NSLog(@"Submit report");
 	} else {
 		return;
 	}
@@ -119,7 +119,7 @@ static SQUCrashHandler *_sharedInstance = nil;
 	crashData = [crashReporter loadPendingCrashReportDataAndReturnError:&error];
 	
 	if(error) {
-		NSLog("Couldn't get crash report: %@", error);
+		NSLog(@"Couldn't get crash report: %@", error);
 		return;
 	}
 	

@@ -56,7 +56,7 @@
 		_topBar.locations = @[@(0.00), @(1.0)];
 		_topBar.contentsScale = [UIScreen mainScreen].scale;
 		_topBar.masksToBounds = NO;
-		
+
 		
 		// Mask top bar to have 1pt border on top
 		CALayer *layer = [CALayer layer];
@@ -463,9 +463,19 @@
 	
 	// Adjust height for collapsed state
 	if(_isCollapsed) {
+		_topBar.hidden = YES;
 		_backgroundLayer.frame = CGRectMake(10, 10, self.frame.size.width - 20, SQUGradeOverviewCellCollapsedHeight - 10);
+		
+		_courseTitle.frame = CGRectMake(62, 14, _backgroundLayer.frame.size.width - 130, 32);
+		_currentAverageLabel.frame = CGRectMake(_backgroundLayer.frame.size.width - 70, 5, 62, 38);
+		_periodCircle.frame = CGRectMake(8, 5, 44, 44);
 	} else {
+		_topBar.hidden = NO;
 		_backgroundLayer.frame = CGRectMake(10, 10, self.frame.size.width - 20, [SQUGradeOverviewTableViewCell cellHeightForCourse:_courseInfo] - 6);
+		
+		_courseTitle.frame = CGRectMake(62, 18, _backgroundLayer.frame.size.width - 130, 32);
+		_currentAverageLabel.frame = CGRectMake(_backgroundLayer.frame.size.width - 70, 15, 62, 38);
+		_periodCircle.frame = CGRectMake(8, 18, 44, 44);
 	}
 	
 	// Update BG layer and shadow path

@@ -35,7 +35,8 @@
 - (id) initWithStyle:(UITableViewStyle) style {
     self = [super initWithStyle:style];
     if (self) {
-		_cellsCollapsed = NO;
+		_cellsCollapsed = [[NSUserDefaults standardUserDefaults]
+						   boolForKey:@"mainExpanded"];
 		
         [self.tableView registerClass:[SQUGradeOverviewTableViewCell class]
                forCellReuseIdentifier:@"GradeOverviewCell"];
@@ -53,20 +54,26 @@
 										target:self
 										action:@selector(openSidebar:)];
 		self.navigationItem.leftBarButtonItem = showSidebar;
-        
-    /*    UIBarButtonItem *showNotifications = [[UIBarButtonItem alloc]
-											  initWithImage:[UIImage imageNamed:@"notificationsIcon"]
-											  style:UIBarButtonItemStyleBordered
-											  target:self
-											  action:@selector(showNotifications:)];
-		self.navigationItem.rightBarButtonItem = showNotifications;*/
+	
+		// Set up a collapse triangle
+		UIButton *collapseBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+		collapseBtn.frame = CGRectMake(20, 0, 44, 44);
+		[collapseBtn setImage:[UIImage imageNamed:@"TriangleShirtwaistFactory"]
+					 forState:UIControlStateNormal];
+		
+		[collapseBtn addTarget:self action:@selector(toggleCollapse:)
+			  forControlEvents:UIControlEventTouchUpInside];
 		
 		UIBarButtonItem *collapseToggle = [[UIBarButtonItem alloc]
-										   initWithImage: [UIImage imageNamed:@"ViewSettingsIcon"]
-										   style:UIBarButtonItemStylePlain
-										   target:self
-										   action:@selector(toggleCollapse:)];
-		self.navigationItem.rightBarButtonItem = collapseToggle;
+										   initWithCustomView:collapseBtn];
+	
+		// iOS is stupid
+		UIBarButtonItem *negativeSpacer = [[UIBarButtonItem alloc]
+										   initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
+										   target:nil action:nil];
+		negativeSpacer.width = -10;
+		
+		self.navigationItem.rightBarButtonItems = @[negativeSpacer, collapseToggle];
 		
 		// Set up the title view container and title text
 		_navbarTitle = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 200, 44)];
@@ -129,6 +136,7 @@
 	
 	// Reload table data
 	[self.tableView reloadData];
+	[self updateCollapseTriangle:NO];
 }
 
 - (void) viewDidAppear:(BOOL) animated {
@@ -264,11 +272,39 @@
 	_subtitleLayer.string = [NSString stringWithFormat:gpaFormatString, gpaUnweighted.floatValue, gpaWeighted.floatValue];
 }
 
+#pragma mark - Collapsing
 /*
  * Toggles the collapse status of the cards.
  */
-/*- (void) toggleCollapse:(id) sender {
+- (void) toggleCollapse:(id) sender {
+	_cellsCollapsed = !_cellsCollapsed;
+	[self.tableView reloadData];
 	
-}*/
+	// Save in user defaults
+	[[NSUserDefaults standardUserDefaults] setBool:_cellsCollapsed
+											forKey:@"mainExpanded"];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+	
+	// Update icon
+	[self updateCollapseTriangle:YES];
+}
+
+/*
+ * Animates the collapse triangle to the current collapsing state.
+ */
+- (void) updateCollapseTriangle:(BOOL) animated {
+	UIBarButtonItem *item = self.navigationItem.rightBarButtonItems[1];
+	UIView *view = item.customView;
+	
+	CGFloat angle = (_cellsCollapsed) ? -M_PI_2 : 0;
+	
+	if(animated) {
+		[UIView animateWithDuration:0.4 animations:^{
+			view.transform = CGAffineTransformMakeRotation(angle);
+		}];
+	} else {
+		view.transform = CGAffineTransformMakeRotation(angle);
+	}
+}
 
 @end

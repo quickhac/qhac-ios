@@ -10,7 +10,7 @@
 #import <CoreGraphics/CoreGraphics.h>
 
 #define SQUGradeOverviewCellHeight 216.0
-#define SQUGradeOverviewCellCollapsedHeight 76
+#define SQUGradeOverviewCellCollapsedHeight 64
 
 @class SQUCourse, SQUCycle;
 @interface SQUGradeOverviewTableViewCell : UITableViewCell {
