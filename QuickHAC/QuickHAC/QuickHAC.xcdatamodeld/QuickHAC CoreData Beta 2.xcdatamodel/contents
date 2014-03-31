@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3401" systemVersion="13B42" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5063" systemVersion="13B42" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="SQUAssignment" representedClassName="SQUAssignment" syncable="YES">
         <attribute name="date_assigned" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="date_due" optional="YES" attributeType="Date" syncable="YES"/>
@@ -67,11 +67,11 @@
         <relationship name="courses" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="SQUCourse" inverseName="student" inverseEntity="SQUCourse" syncable="YES"/>
     </entity>
     <elements>
-        <element name="SQUAssignment" positionX="286" positionY="-72" width="128" height="180"/>
+        <element name="SQUAssignment" positionX="286" positionY="-117" width="128" height="180"/>
         <element name="SQUCategory" positionX="108" positionY="-72" width="128" height="135"/>
         <element name="SQUCourse" positionX="-279" positionY="-144" width="128" height="208"/>
         <element name="SQUCycle" positionX="-65" positionY="-144" width="128" height="210"/>
-        <element name="SQUSemester" positionX="-65" positionY="90" width="128" height="150"/>
-        <element name="SQUStudent" positionX="-531" positionY="-138" width="128" height="210"/>
+        <element name="SQUSemester" positionX="-74" positionY="90" width="128" height="150"/>
+        <element name="SQUStudent" positionX="-468" positionY="-144" width="128" height="210"/>
     </elements>
 </model>
