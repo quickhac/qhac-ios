@@ -225,6 +225,9 @@ static const CGFloat SQUDashboardCellGradesOffsetY = 50;
 			semesterHeader.string = [NSString stringWithFormat:NSLocalizedString(@"Semester %u", nil), semester+1];
 			[_headers addObject:semesterHeader];
 			
+			CFRelease(italicFont);
+			CFRelease(ref);
+			
 			// Add rounded corners on top of semester header
 			if(row == 0) {
 				// Background

@@ -552,7 +552,8 @@ static SQUGradeManager *_sharedInstance = nil;
 	// Create the necessary SQUCategory instances
 	if(cycle.categories.count == 0) {
 		for(NSUInteger i = 0; i < numCategories; i++) {
-			SQUCategory *category = [NSEntityDescription insertNewObjectForEntityForName:@"SQUCategory" inManagedObjectContext:_coreDataMOContext];
+			SQUCategory *category = [NSEntityDescription insertNewObjectForEntityForName:@"SQUCategory"
+																  inManagedObjectContext:_coreDataMOContext];
 			[cycle addCategoriesObject:category];
 			category.title = classGrades[@"categories"][i][@"name"];
 			category.cycle = cycle;
@@ -568,16 +569,31 @@ static SQUGradeManager *_sharedInstance = nil;
 		[NSEntityDescription entityForName:@"SQUCategory" inManagedObjectContext:_coreDataMOContext];
 		[request setEntity:entity];
 		
-		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(cycle == %@) AND (title LIKE[c] %@)", cycle, category[@"name"]];
+		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(cycle == %@) AND (title LIKE[c] %@)",
+								  cycle, category[@"name"]];
 		[request setPredicate:predicate];
 		
 		NSArray *array = [_coreDataMOContext executeFetchRequest:request error:&err];
-		if(array) {
+
+		if(array && array.count > 0) {
 			// Set up the weight
 			SQUCategory *dbCategory = array[0];
 			dbCategory.weight = category[@"weight"];
 			dbCategory.average = category[@"average"];
 			dbCategory.is100PtsBased = category[@"is100PtsBased"];
+			
+			// Update assignments
+			[self updateCategory:dbCategory withAssignments:category[@"assignments"]];
+		} else if(array && array.count == 0) {
+			// The teacher added a category
+			
+			SQUCategory *dbCategory = [NSEntityDescription insertNewObjectForEntityForName:@"SQUCategory"
+																	inManagedObjectContext:_coreDataMOContext];
+			[cycle addCategoriesObject:dbCategory];
+			dbCategory.title = category[@"name"];
+			dbCategory.cycle = cycle;
+			
+			[cycle addCategoriesObject:dbCategory];
 			
 			// Update assignments
 			[self updateCategory:dbCategory withAssignments:category[@"assignments"]];
@@ -595,7 +611,8 @@ static SQUGradeManager *_sharedInstance = nil;
 	
 	// Write changes to the database.
 	if(![_coreDataMOContext save:&err]) {
-		NSLog(@"Could not save grades for class %@, cycle %ul semester %ul.", class, numCycle+1, numSemester+1);
+		NSLog(@"Could not save grades for class %@, cycle %u semester %ul.",
+			  class, numCycle+1, numSemester+1);
 		
 		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Database Error", nil) message:err.localizedDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
 		[alert show];

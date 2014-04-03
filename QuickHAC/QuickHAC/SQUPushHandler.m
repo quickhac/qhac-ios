@@ -110,7 +110,7 @@ static SQUPushHandler *_sharedInstance = nil;
  */
 - (void) registerWithPushToken:(NSData *) token {
 	NSString *hexString = [token toHexString];
-	hexString = @"302696248015a91d0be31cf1d557d8908b366a0c8eecd7acb7c096d8c46760fb";
+	// hexString = @"302696248015a91d0be31cf1d557d8908b366a0c8eecd7acb7c096d8c46760fb";
 	
 	[_HTTPManager POST:[kSQUPushEndpoint stringByAppendingString:@"register"] parameters:@{@"uuid":_deviceUUID.UUIDString, @"token":hexString} success:^(AFHTTPRequestOperation *operation, id responseObject) {
 		NSDictionary *serverResponse = (NSDictionary *) responseObject;

@@ -197,11 +197,11 @@ static SQUAppDelegate *sharedDelegate = nil;
         SQUStudent *student = students[selectedStudent];
         
         // Fetch username/pw from keychain
-        NSString *username, *password, *studentID;
+        NSString *username, *password/*, *studentID*/;
         
 		username = student.hacUsername;
         password = [Lockbox stringForKey:username];
-		studentID = student.student_id;
+		//studentID = student.student_id;
         
 		// This ensures we can see cached data while the new data is fetched
 		if(![[SQUDistrictManager sharedInstance] selectDistrictWithID:student.district.integerValue]) {

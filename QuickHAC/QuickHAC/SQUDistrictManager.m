@@ -203,8 +203,9 @@ static SQUDistrictManager *_sharedInstance = nil;
  */
 - (void) performActualLoginRequestWithUser:(NSString *) username usingPassword:(NSString *) password andCallback:(SQUDistrictCallback) callback {
 	NSDictionary *loginRequest = [_currentDistrict buildLoginRequestWithUser:username usingPassword:password andUserData:nil];
+
 	if(!loginRequest) {
-		NSError *err = [NSError errorWithDomain:@"SQUDistrictManagerErrorDomain" code:kSQUDistrictManagerErrorLoginFailure userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"There was an error during the pre-login process. Ensure that HAC is not down.", nil)}];
+		NSError *err = [NSError errorWithDomain:@"SQUDistrictManagerErrorDomain" code:kSQUDistrictManagerErrorLoginFailure userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"There was an error during the pre-login process. Ensure that HAC is not down.\n\nIf this problem persists, delete your HAC accounts and re-add them.", nil)}];
 		
 		callback(err, nil);
 		return;

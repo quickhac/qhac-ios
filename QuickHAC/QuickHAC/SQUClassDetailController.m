@@ -69,6 +69,11 @@
 			_displayCycle = [[NSUserDefaults standardUserDefaults] integerForKey:@"selectedCycle"];
 		}
 		
+		// Make sure display cycle is in range
+		if(_course.cycles.count <= _displayCycle) {
+			_displayCycle = _course.cycles.count - 1;
+		}
+		
 		_currentCycle = _course.cycles[_displayCycle];
     }
 	
@@ -154,7 +159,7 @@
 		static NSString *CellIdentifier = @"CourseOverviewCell";
 		SQUClassDetailCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
 		
-		cell.category = _currentCycle.categories[indexPath.row-1];
+		cell.category = _currentCycle.categories[indexPath.row - 1];
 		cell.index = indexPath.row;
 		cell.backgroundColor = [UIColor clearColor];
 		cell.clipsToBounds = NO;
@@ -391,7 +396,7 @@
 
 	SQUClassCycleChooserController *controller = [[SQUClassCycleChooserController alloc] initWithCycles:cycles];
 	controller.delegate = self;
-	controller.preferredContentSize = CGSizeMake(175, 220);
+	controller.preferredContentSize = CGSizeMake(175, 307);
 	controller.selectedCycle = _displayCycle;
 	
 	_popover = [[WYPopoverController alloc] initWithContentViewController:[[UINavigationController alloc] initWithRootViewController:controller]];

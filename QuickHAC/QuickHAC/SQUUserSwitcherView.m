@@ -159,11 +159,11 @@
 			[SVProgressHUD showProgress:-1 status:NSLocalizedString(@"Changing Student", nil) maskType:SVProgressHUDMaskTypeGradient];
 			
 			// We also have to log in again and disambiguate
-			NSString *username, *password, *studentID;
+			NSString *username, *password/*, *studentID*/;
 			
 			username = student.hacUsername;
 			password = [Lockbox stringForKey:username];
-			studentID = student.student_id;
+			// studentID = student.student_id;
 			
 			// Log in
 			[[SQUDistrictManager sharedInstance] performLoginRequestWithUser:username usingPassword:password andCallback:^(NSError *error, id returnData){

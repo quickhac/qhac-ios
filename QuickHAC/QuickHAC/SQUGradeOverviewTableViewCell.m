@@ -257,6 +257,9 @@
 			semesterHeader.string = [NSString stringWithFormat:NSLocalizedString(@"Semester %u", nil), semester+1];
 			[_headers addObject:semesterHeader];
 			
+			CFRelease(italicFont);
+			CFRelease(ref);
+			
 			// Add rounded corners on top of semester header
 			if(row == 0) {
 				// Background
@@ -454,18 +457,14 @@
 						   [UIColor colorWithRed:1 green:0.322 blue:0.322 alpha:1] /*#ff5252*/
 						   ];
 	
-	if(period > sbcolours.count) {
-		_topBar.colors = @[(id) [[UIColor colorWithWhite:0.08 alpha:1.0] lighterColor].CGColor, (id) [UIColor whiteColor].CGColor, (id) [UIColor whiteColor].CGColor];
-	} else {
 		NSUInteger index = [[SQUGradeManager sharedInstance].student.courses indexOfObject:_courseInfo];
 		
 		// prevent crash if too many classes
 		if(index >= sbcolours.count) {
-			index = sbcolours.count - 1;
+			_topBar.colors = @[(id) [[UIColor colorWithWhite:0.08 alpha:1.0] lighterColor].CGColor, (id) [UIColor whiteColor].CGColor, (id) [UIColor whiteColor].CGColor];
+		} else {
+			_topBar.colors = @[(id) [[sbcolours[index] lighterColor] CGColor], (id) [sbcolours[index] CGColor], (id) [UIColor whiteColor].CGColor];
 		}
-		
-		_topBar.colors = @[(id) [[sbcolours[index] lighterColor] CGColor], (id) [sbcolours[index] CGColor], (id) [UIColor whiteColor].CGColor];
-	}
 	
 	// Adjust height for collapsed state
 	if(_isCollapsed) {

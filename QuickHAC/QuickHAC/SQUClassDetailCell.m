@@ -283,6 +283,8 @@ static NSUInteger SQUClassDetailExtraCreditColour = kSQUColourEmerald;
 					heightOfLastRow = SQUClassDetailRowHeight;
 					otherLabelOffsets = 0;
 				}
+				
+				CFRelease(framesetter);
 			}
 			
 			/* 
@@ -389,6 +391,8 @@ static NSUInteger SQUClassDetailExtraCreditColour = kSQUColourEmerald;
 	[string addAttribute:NSFontAttributeName value:font range:NSMakeRange(0, string.length)];
 	CTFramesetterRef framesetter = CTFramesetterCreateWithAttributedString((CFAttributedStringRef) string);
 	CGSize textSize = CTFramesetterSuggestFrameSizeWithConstraints(framesetter, CFRangeMake(0, 0), NULL, CGSizeMake(SQUClassDetailColWidth[0], CGFLOAT_MAX), NULL);
+	
+	CFRelease(framesetter);
 	
 	if(textSize.height > (SQUClassDetailTextSize + (SQUClassDetailTextSize/2))) {
 		return (CGFloat) SQUClassDetailRowHeight + (textSize.height-18);

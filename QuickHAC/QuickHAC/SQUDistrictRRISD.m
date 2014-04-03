@@ -73,6 +73,9 @@
 		return nil;
 	}
 	
+	// Ensure that password and user is valid
+	if(!password || !username) return nil;
+	
 	NSMutableDictionary *dictionary = [NSMutableDictionary new];
 	dictionary[@"request"] = [NSMutableDictionary new];
 	dictionary[@"params"] = [NSMutableDictionary new];
