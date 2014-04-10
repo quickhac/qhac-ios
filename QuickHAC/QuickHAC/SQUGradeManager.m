@@ -611,8 +611,8 @@ static SQUGradeManager *_sharedInstance = nil;
 	
 	// Write changes to the database.
 	if(![_coreDataMOContext save:&err]) {
-		NSLog(@"Could not save grades for class %@, cycle %u semester %ul.",
-			  class, numCycle+1, numSemester+1);
+		NSLog(@"Could not save grades for class %@, cycle %lu semester %lu",
+			  class, (unsigned long) (numCycle + 1), (unsigned long) (numSemester + 1));
 		
 		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Database Error", nil) message:err.localizedDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
 		[alert show];

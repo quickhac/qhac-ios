@@ -58,7 +58,8 @@ static SQUDistrictManager *_sharedInstance = nil;
 			_HTTPManager = [AFHTTPRequestOperationManager manager];
 			_HTTPManager.responseSerializer = [AFHTTPResponseSerializer serializer];
 			
-			[_HTTPManager.requestSerializer setValue:@"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.117 Safari/537.36" forHTTPHeaderField:@"User-Agent"];
+			// why please
+			// [_HTTPManager.requestSerializer setValue:@"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.117 Safari/537.36" forHTTPHeaderField:@"User-Agent"];
         }
 		
         return self;
@@ -205,7 +206,7 @@ static SQUDistrictManager *_sharedInstance = nil;
 	NSDictionary *loginRequest = [_currentDistrict buildLoginRequestWithUser:username usingPassword:password andUserData:nil];
 
 	if(!loginRequest) {
-		NSError *err = [NSError errorWithDomain:@"SQUDistrictManagerErrorDomain" code:kSQUDistrictManagerErrorLoginFailure userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"There was an error during the pre-login process. Ensure that HAC is not down.\n\nIf this problem persists, delete your HAC accounts and re-add them.", nil)}];
+		NSError *err = [NSError errorWithDomain:@"SQUDistrictManagerErrorDomain" code:kSQUDistrictManagerErrorLoginFailure userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"There was an error during the pre-login process. Ensure that HAC is not down.\n\nIf this problem persists, re-install QuickHAC.", nil)}];
 		
 		callback(err, nil);
 		return;

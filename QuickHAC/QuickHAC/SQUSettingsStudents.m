@@ -313,7 +313,9 @@
 				}
 			}];
 			
-			NSLog(@"Changed student to %@ (index %u)", [SQUGradeManager sharedInstance].student.name, selectedStudent);
+			NSLog(@"Changed student to %@ (index %ld)",
+				  [SQUGradeManager sharedInstance].student.name,
+				  (long) selectedStudent);
 		}
 	} else if(indexPath.section == 1) {
 		// Show login controller

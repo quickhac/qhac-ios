@@ -57,7 +57,7 @@
     // Return the number of rows in the section.
 	switch(section) {
 		case 0:
-			return 2; 
+			return 4;
 			break;
 			
 		case 1:
@@ -78,7 +78,7 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCell" forIndexPath:indexPath];
 	
 	if(indexPath.section == 0) {
-		NSArray *titles = @[NSLocalizedString(@"General", @"settings"), NSLocalizedString(@"Students", @"settings"), NSLocalizedString(@"Security", @"settings"), NSLocalizedString(@"Import & Export", @"settings")];
+		NSArray *titles = @[NSLocalizedString(@"General", @"settings"), NSLocalizedString(@"Students", @"settings"), NSLocalizedString(@"Hidden Courses", @"settings"), NSLocalizedString(@"Security", @"settings")];
 		cell.textLabel.text = titles[indexPath.row];
 		
 		NSArray *iconImage = @[@"settings_icon_general", @"settings_icon_students", @"settings_icon_security", @"settings_icon_import"];
@@ -140,7 +140,7 @@
 					UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Warning" message:@"Settings have not yet been implemented." delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
 					[alert show];
 					
-					NSLog(@"Selected unhandled settings: (%u, %u)", indexPath.row, indexPath.section);
+					NSLog(@"Selected unhandled settings: (%lu, %lu)", (long)indexPath.row, (long)indexPath.section);
 					break;
 				}
 			}
@@ -196,7 +196,8 @@
 		}
 			
 		default:
-			NSLog(@"Selected unhandled settings: (%u, %u)", indexPath.row, indexPath.section);
+			NSLog(@"Selected unhandled settings: (%ld, %ld)", (long)indexPath.row,
+				  (long)indexPath.section);
 			break;
 	}
 }
@@ -228,7 +229,7 @@
 			
 		} else {
 			// Enable passcode
-			NSLog(@"Button: %u", buttonIndex);
+			NSLog(@"Button: %ld", (long)buttonIndex);
 			
 			if(buttonIndex == 1) {
 				[[LTHPasscodeViewController sharedUser] setDelegate:self];

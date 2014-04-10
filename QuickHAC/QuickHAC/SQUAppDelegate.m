@@ -220,6 +220,14 @@ static SQUAppDelegate *sharedDelegate = nil;
 			[[NSNotificationCenter defaultCenter] postNotificationName:SQUGradesDataUpdatedNotification object:nil];
 		}
 		
+		// Ensure current user isn't corrupted
+		if(!username || !password) {
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Invalid Data", nil) message:NSLocalizedString(@"The current user contains invalid data, and therefore cached data is being shown. Please re-install QuickHAC.", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
+			[alert show];
+			
+			pendingCrashReport = YES;
+		}
+		
 		// Update data if there's no pending crash report
 		if(!pendingCrashReport) {
 			// Ask the current district instance to do a log in to validate our session is still valid
@@ -348,7 +356,6 @@ static SQUAppDelegate *sharedDelegate = nil;
          * The persistent store is not accessible;
          * The schema for the persistent store is incompatible with current managed object model.
          Check the error message to determine what the actual problem was.
-         
          
          If the persistent store is not accessible, there is typically something wrong with the file path. Often, a file URL is pointing into the application's resources directory instead of a writeable directory.
          

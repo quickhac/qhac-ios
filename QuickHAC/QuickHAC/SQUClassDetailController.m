@@ -221,7 +221,8 @@
 	
 	// Make sure that this cycle has data in the gradebook
 	if(!_currentCycle.dataAvailableInGradebook.boolValue) {
-		NSLog(@"wut dis cycle no have data yo what up bro: %u", _currentCycle.cycleIndex.unsignedIntegerValue);
+		NSLog(@"wut dis cycle no have data yo what up bro: %lu",
+			  (unsigned long)_currentCycle.cycleIndex.unsignedIntegerValue);
 		SQUCycle *newCyclen;
 		BOOL needsUpdaten = NO;
 		

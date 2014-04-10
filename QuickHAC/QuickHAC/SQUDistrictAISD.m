@@ -69,6 +69,8 @@
  * possibly using the user data, depending on district.
  */
 - (NSDictionary *) buildLoginRequestWithUser:(NSString *) username usingPassword:(NSString *) password andUserData:(id) userData {
+	if(!username || !password) return nil;
+	
 	NSMutableDictionary *dictionary = [NSMutableDictionary new];
 	dictionary[@"request"] = [NSMutableDictionary new];
 	dictionary[@"params"] = [NSMutableDictionary new];
@@ -164,18 +166,18 @@
 	}
 	
 	if(semester > semesterArray.count) {
-		NSLog(@"Semester %u is out of range (got %u semesters)", semester, semesterArray.count);
+		NSLog(@"Semester %lu is out of range (got %lu semesters)", (unsigned long)semester, (unsigned long)semesterArray.count);
 		return nil;
 	}
 	
 	NSArray *cycleArray = semesterArray[semester];
 	if(cycle > cycleArray.count) {
-		NSLog(@"Cycle %u is out of range (got %u cycles)", cycle, cycleArray.count);
+		NSLog(@"Cycle %lu is out of range (got %lu cycles)", (unsigned long)cycle, (unsigned long)cycleArray.count);
 		return nil;
 	}
 	
 	if([cycleArray[cycle] length] == 0) {
-		NSLog(@"There is no grade data available for cycle %u in semester %u for course %@",cycle,semester,course);
+		NSLog(@"There is no grade data available for cycle %lu in semester %lu for course %@",(unsigned long)cycle,(unsigned long)semester,course);
 		return nil;
 	}
 	

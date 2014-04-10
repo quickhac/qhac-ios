@@ -465,8 +465,8 @@
 		
 		// If this isn't true, we've got issues
 		NSAssert(tables.count == categoryTitles.count,
-				 @"Found %u tables, but only %u categories", tables.count,
-				 categoryTitles.count);
+				 @"Found %lu tables, but only %lu categories", (unsigned long) tables.count,
+				 (unsigned long) categoryTitles.count);
 		
 		// Extract current average
 		TFHppleElement *currentAverage = [parser searchWithXPathQuery:@"//p[@class='CurrentAverage']"][0];
