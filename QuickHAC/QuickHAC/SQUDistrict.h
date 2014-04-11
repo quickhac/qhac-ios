@@ -8,7 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
-typedef void (^ SQULoggedInCallback)(BOOL isLoggedIn);
+typedef void (^SQULoggedInCallback)(BOOL isLoggedIn);
+typedef void (^SQUPostLoginCallback)(NSError *error);
 
 typedef struct {
 	NSUInteger semesters;
@@ -46,6 +47,7 @@ typedef struct {
 
 // Network requests/etc
 - (void) isLoggedInWithCallback:(SQULoggedInCallback) callback;
+- (void) doPostLoginRequestWithCallback:(SQUPostLoginCallback) callback;
 
 // Cycle validation
 - (NSArray *) cyclesWithDataForCourse:(NSString *) courseCode;
@@ -55,6 +57,7 @@ typedef struct {
 
 // Capability determination
 - (BOOL) districtSupportsAttendance;
+- (BOOL) hasPostLoginRequest;
 
 // GPA caclulaation
 - (NSNumber *) unweightedGPAWithCourses:(NSArray *) courses;

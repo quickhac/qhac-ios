@@ -109,6 +109,13 @@
 }
 
 /**
+ * Called after the login request happens.
+ */
+- (void) doPostLoginRequestWithCallback:(SQUPostLoginCallback) callback {
+	NSLog(@"%s(%i) %s: SQUDistrict method not overridden or no subclass used", __FILE__, __LINE__, __func__);
+}
+
+/**
  * Returns an array of cycles that have data available for a specific course.
  */
 - (NSArray *) cyclesWithDataForCourse:(NSString *) courseCode {
@@ -186,6 +193,16 @@
  * @return Boolean indicating the above.
  */
 - (BOOL) districtSupportsAttendance {
+	NSLog(@"%s(%i) %s: SQUDistrict method not overridden or no subclass used", __FILE__, __LINE__, __func__);
+	return NO;
+}
+
+/*
+ * Indicates whether the district requires a post-login request or not.
+ *
+ * @return Boolean indicating the above.
+ */
+- (BOOL) hasPostLoginRequest {
 	NSLog(@"%s(%i) %s: SQUDistrict method not overridden or no subclass used", __FILE__, __LINE__, __func__);
 	return NO;
 }

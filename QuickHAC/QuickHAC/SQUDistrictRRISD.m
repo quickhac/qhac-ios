@@ -54,14 +54,7 @@
  * successfully. (Yes, ASP.NET, we're looking at you…)
  */
 - (NSDictionary *) buildPreLoginRequestWithUserData:(id) userData {
-	NSMutableDictionary *dictionary = [NSMutableDictionary new];
-	dictionary[@"request"] = [NSMutableDictionary new];
-	
-	// Request information (URL, method, etc)
-	dictionary[@"request"][@"URL"] = [NSURL URLWithString:@"https://accesscenter.roundrockisd.org/homeaccess/default.aspx"];
-	dictionary[@"request"][@"method"] = @"GET";
-	
-	return dictionary;
+	return nil;
 }
 
 /*
@@ -83,20 +76,13 @@
 	dictionary[@"params"] = [NSMutableDictionary new];
 	
 	// Request information (URL, method, etc)
-	dictionary[@"request"][@"URL"] = [NSURL URLWithString:@"https://accesscenter.roundrockisd.org/homeaccess/default.aspx"];
+	dictionary[@"request"][@"URL"] = [NSURL URLWithString:@"https://accesscenter.roundrockisd.org/HomeAccess/Account/LogOn?ReturnUrl=%2fHomeAccess%2f"];
 	dictionary[@"request"][@"method"] = @"POST";
 	
 	// Form fields
-	dictionary[@"params"][@"ctl00$plnMain$txtLogin"] = username;
-	dictionary[@"params"][@"ctl00$plnMain$txtPassword"] = password;
-	dictionary[@"params"][@"ctl00$plnMain$Submit1"] = @"Log In";
-	dictionary[@"params"][@"ctl00$strHiddenPageTitle"] = @"";
-	
-	// ASP.NET fields
-	dictionary[@"params"][@"__VIEWSTATE"] = _loginASPNetInfo[@"__VIEWSTATE"];
-	dictionary[@"params"][@"__EVENTVALIDATION"] = _loginASPNetInfo[@"__EVENTVALIDATION"];
-	dictionary[@"params"][@"__EVENTTARGET"] = @"";
-	dictionary[@"params"][@"__EVENTARGUMENT"] = @"";
+	dictionary[@"params"][@"LogOnDetails.UserName"] = username;
+	dictionary[@"params"][@"LogOnDetails.Password"] = password;
+	dictionary[@"params"][@"Database"] = @"10";
 	
 	return dictionary;
 }
@@ -110,11 +96,11 @@
 	dictionary[@"params"] = [NSMutableDictionary new];
 	
 	// Request information (URL, method, etc)
-	dictionary[@"request"][@"URL"] = [NSURL URLWithString:@"https://accesscenter.roundrockisd.org/homeaccess/Student/DailySummary.aspx"];
+	dictionary[@"request"][@"URL"] = [NSURL URLWithString:@"https://accesscenter.roundrockisd.org/HomeAccess/Frame/StudentPicker"];
 	dictionary[@"request"][@"method"] = @"GET";
 	
 	// Set up GET parameters
-	dictionary[@"params"][@"student_id"] = sid;
+	dictionary[@"params"][@"studentId"] = sid;
 	
 	return dictionary;
 }
@@ -215,29 +201,22 @@
  * data returned by the request.
  */
 - (void) updateDistrictStateWithPreLoginData:(NSData *) data {
-	if(!_loginASPNetInfo) {
-		_loginASPNetInfo = [NSMutableDictionary new];
-	} else {
-		[_loginASPNetInfo removeAllObjects];
-	}
 	
-	// Set up a parser
-	TFHpple *parser = [TFHpple hppleWithHTMLData:data];
-	
-	// Find required elements
-	TFHppleElement *viewState = [parser peekAtSearchWithXPathQuery:@"//*[@id=\"__VIEWSTATE\"]"];
-	TFHppleElement *eventValidation = [parser peekAtSearchWithXPathQuery:@"//*[@id=\"__EVENTVALIDATION\"]"];
-	
-	// Get their value
-	_loginASPNetInfo[@"__VIEWSTATE"] = viewState[@"value"];
-	_loginASPNetInfo[@"__EVENTVALIDATION"] = eventValidation[@"value"];
 }
 
 /*
  * Called after the completion of the actual login request with the data that
  * the web server returned.
+ *
+ * What this does is send a request to the student picker URL at
+ * "https://accesscenter.roundrockisd.org/HomeAccess/Frame/StudentPicker" and
+ * parses its HTML to determine whether there is multiple students, their names,
+ * and so forth.
  */
 - (void) updateDistrictStateWithPostLoginData:(NSData *) data {
+	// XXX: GIGANTIC HACK ALERT
+	
+	
 	// NSLog(@"Login data: %@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
 	TFHpple *parser = [TFHpple hppleWithHTMLData:data];
 	NSArray *links = [parser searchWithXPathQuery:@"//*[@id='ctl00_plnMain_dgStudents']/tr/td/a"];
@@ -270,47 +249,25 @@
  */
 - (BOOL) didLoginSucceedWithLoginData:(NSData *) data {
 	TFHpple *parser = [TFHpple hppleWithHTMLData:data];
-	TFHppleElement *form = [parser searchWithXPathQuery:@"//form[@name='aspnetForm']"][0];
+	TFHppleElement *e = [parser peekAtSearchWithXPathQuery:
+						 @"//*[@id='SignInSectionContainer']/div[2]/div[6]/div"];
 	
 	/* 
-	 * If the ASP form has a target of "default.aspx", we can assume the login
-	 * failed. We can further check if this is the case by testing if the div
-	 * with id "ctl00_plnMain_ValidationSummary1" contains any text.
+	 * If the "validation-summary-errors" div exists in the page, the login
+	 * failed.
 	 */
-	if([form[@"action"] isEqualToString:@"default.aspx"]) {
-		NSArray *errorContainers = [parser searchWithXPathQuery:@"//div[@id='ctl00_plnMain_ValidationSummary1']"];
-		
-		if(errorContainers.count > 0) {
-			TFHppleElement *validationErrorContainer = errorContainers[0];
-			
-			NSArray *children = [validationErrorContainer childrenWithTagName:@"font"];
-			
-			if(children.count > 0) {
-				// NSLog(@"//div[@id='ctl00_plnMain_ValidationSummary1']: %@", children);
-			}
-			
-			return NO;
-		} else {
-			NSLog(@"Got strange HTML: %@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
-		}
-	}
-	
-	return YES;
+	return (e != nil) ? YES : NO;
 }
 
 /*
  * Called with the data returned by the disambiguation request to evaluate if
  * the correct student was disambiguated.
+ *
+ * Since we have no way of knowing whether this succeeded or not, we just
+ * assume it did, since it would imply that the login was successful.
  */
 - (BOOL) didDisambiguationSucceedWithLoginData:(NSData *) data {
-	TFHpple *parser = [TFHpple hppleWithHTMLData:data];
-	TFHppleElement *content = [parser peekAtSearchWithXPathQuery:@"//td[@id='ctl00_tdContent']"];
-	
-	NSArray *contentChildren = [content childrenWithTagName:@"p"];
-
-	if(contentChildren.count == 0) return YES;
-	
-	return NO;
+	return YES;
 }
 
 

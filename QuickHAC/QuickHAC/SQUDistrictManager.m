@@ -229,7 +229,18 @@ static SQUDistrictManager *_sharedInstance = nil;
 			
 			_lastRequest = [NSDate date];
 			
-			callback(nil, response);
+			// Does the district have a post-login request to do?
+			if([_currentDistrict hasPostLoginRequest]) {
+				[_currentDistrict doPostLoginRequestWithCallback:^(NSError *err) {
+					// Error with the request?
+					if(err) {
+						callback(err, nil);
+						_lastRequest = nil;
+					} else {
+						callback(nil, response);
+					}
+				}];
+			}
 		} else {
 			callback(nil, nil);
 		}
