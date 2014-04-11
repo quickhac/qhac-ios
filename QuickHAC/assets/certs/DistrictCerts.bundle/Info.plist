@@ -7,8 +7,8 @@
 	<key>included_certificates</key>
 	<array>
 		<dict>
-			<key>accept_any</key>
-			<true/>
+			<key>do_pinning</key>
+			<false/>
 			<key>district_id</key>
 			<integer>1</integer>
 			<key>certs</key>

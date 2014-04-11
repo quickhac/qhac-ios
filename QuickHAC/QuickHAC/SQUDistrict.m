@@ -124,6 +124,13 @@
 }
 
 /**
+ * Resets the internal district state.
+ */
+- (void) reset {
+	NSLog(@"%s(%i) %s: SQUDistrict method not overridden or no subclass used", __FILE__, __LINE__, __func__);
+}
+
+/**
  * Allows the code toonly accept requests that come from the server.
  * @return The contents of a .cer file.
  */
@@ -145,6 +152,7 @@
 	// If no data was found, exit.
 	if(!certInfo) return nil;
 	if([certInfo[@"accept_any"] boolValue]) return nil;
+	if([certInfo[@"do_pinning"] boolValue]) return nil;
 	
 	NSMutableArray *certs = [NSMutableArray new];
 	

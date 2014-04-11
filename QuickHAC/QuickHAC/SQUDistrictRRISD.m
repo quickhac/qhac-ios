@@ -62,12 +62,6 @@
  * possibly using the user data, depending on district.
  */
 - (NSDictionary *) buildLoginRequestWithUser:(NSString *) username usingPassword:(NSString *) password andUserData:(id) userData {
-	if(!username || !password) return nil;
-	
-	if(!_loginASPNetInfo[@"__VIEWSTATE"]) {
-		return nil;
-	}
-	
 	// Ensure that password and user is valid
 	if(!password || !username) return nil;
 	
@@ -82,6 +76,8 @@
 	// Form fields
 	dictionary[@"params"][@"LogOnDetails.UserName"] = username;
 	dictionary[@"params"][@"LogOnDetails.Password"] = password;
+	
+	// This field seems to be some kind of district indicator
 	dictionary[@"params"][@"Database"] = @"10";
 	
 	return dictionary;
@@ -97,10 +93,11 @@
 	
 	// Request information (URL, method, etc)
 	dictionary[@"request"][@"URL"] = [NSURL URLWithString:@"https://accesscenter.roundrockisd.org/HomeAccess/Frame/StudentPicker"];
-	dictionary[@"request"][@"method"] = @"GET";
+	dictionary[@"request"][@"method"] = @"POST";
 	
-	// Set up GET parameters
+	// Set up POST parameters
 	dictionary[@"params"][@"studentId"] = sid;
+	dictionary[@"params"][@"url"] = @"/HomeAccess/Home/SchoolLinks";
 	
 	return dictionary;
 }
@@ -114,7 +111,7 @@
 	dictionary[@"request"] = [NSMutableDictionary new];
 	
 	// Request information (URL, method, etc)
-	dictionary[@"request"][@"URL"] = [NSURL URLWithString:@"https://accesscenter.roundrockisd.org/homeaccess/Student/Gradespeed.aspx?target=https://gradebook.roundrockisd.org/pc/displaygrades.aspx"];
+	dictionary[@"request"][@"URL"] = [NSURL URLWithString:@"https://accesscenter.roundrockisd.org/HomeAccess/content/student/gradespeed.aspx?target=https://gradebook.roundrockisd.org/pc/displaygrades.aspx"];
 	dictionary[@"request"][@"method"] = @"GET";
 	
 	return dictionary;
@@ -204,6 +201,88 @@
 	
 }
 
+/**
+ * We need a request after login.
+ */
+- (BOOL) hasPostLoginRequest {
+	return YES;
+}
+
+/**
+ * Perform the post-login request.
+ */
+- (void) doPostLoginRequestWithCallback:(SQUPostLoginCallback) callback {
+	// Called on success of the operation (200 OK)
+	void (^success)(AFHTTPRequestOperation*operation, id responseObject) =
+	^(AFHTTPRequestOperation*operation, id responseObject) {
+		TFHpple *parser = [TFHpple hppleWithHTMLData:responseObject];
+		
+		// Set up array
+		if(_studentsOnAccount) {
+			[_studentsOnAccount removeAllObjects];
+		} else {
+			_studentsOnAccount = [NSMutableArray new];
+		}
+		
+		// Find the rows
+		NSArray *rows = [parser searchWithXPathQuery:@"//*[@id='StudentPicker']/label"];
+		
+		for (TFHppleElement *row in rows) {
+			@try {
+				// Find the radio
+				TFHppleElement *radio = [row searchWithXPathQuery:@"//*[@id='studentId']"][0];
+				NSString *studentID = radio[@"value"];
+				
+				// Extract the span holding the name
+				TFHppleElement *nameField = [row searchWithXPathQuery:@"//*/div/span[1]"][0];
+				NSString *name = nameField.text;
+				
+				// Insert into array
+				[_studentsOnAccount addObject:@{@"id"	: studentID,
+												@"name"	: name}];
+			}
+			
+			// Handle cases in which the HTML is malformed
+			@catch (NSException *exception) {
+				NSLog(@"whoops %@", exception);
+				callback([NSError errorWithDomain:SQUDistrictRRISDErrorDomain
+											 code:kSQUDistrictRRISDErrorInvalidDisambiguateHTML
+										 userInfo:nil]);
+				return;
+			}
+		}
+		
+		_hasMultipleStudents = (_studentsOnAccount.count > 1);
+		
+		// Request succeeded
+		callback(nil);
+	};
+	
+	// Called if the request fails for some reason (500, network error, etc)
+	void (^fail)(AFHTTPRequestOperation*operation, NSError *error) =
+	^(AFHTTPRequestOperation*operation, NSError *error) {
+		if(operation.response.statusCode != 500) {
+			NSLog(@"Single student account pls");
+			
+			_hasMultipleStudents = NO;
+			
+			// Set up the students array anyways
+			if(_studentsOnAccount) {
+				[_studentsOnAccount removeAllObjects];
+			} else {
+				_studentsOnAccount = [NSMutableArray new];
+			}
+			
+			callback(error);
+		}
+	};
+	
+	// do request pls
+	AFHTTPRequestOperationManager *man = [SQUDistrictManager sharedInstance].HTTPManager;
+	[man GET:@"https://accesscenter.roundrockisd.org/HomeAccess/Frame/StudentPicker"
+  parameters:nil success:success failure:fail];
+}
+
 /*
  * Called after the completion of the actual login request with the data that
  * the web server returned.
@@ -214,33 +293,7 @@
  * and so forth.
  */
 - (void) updateDistrictStateWithPostLoginData:(NSData *) data {
-	// XXX: GIGANTIC HACK ALERT
 	
-	
-	// NSLog(@"Login data: %@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
-	TFHpple *parser = [TFHpple hppleWithHTMLData:data];
-	NSArray *links = [parser searchWithXPathQuery:@"//*[@id='ctl00_plnMain_dgStudents']/tr/td/a"];
-	
-	// Create dictionary
-	if(_studentsOnAccount) {
-		[_studentsOnAccount removeAllObjects];
-	} else {
-		_studentsOnAccount = [NSMutableArray new];
-	}
-	
-	// Parse the students in the table.
-	if(links.count != 0) {
-		for(TFHppleElement *link in links) {
-			NSString *studentID = [link[@"href"] componentsSeparatedByString:@"="][1];
-			NSString *studentName = link.text;
-			
-			[_studentsOnAccount addObject:@{@"id":studentID, @"name":studentName}];
-		}
-	} else {;
-		[_studentsOnAccount removeAllObjects];
-	}
-	
-	_hasMultipleStudents = (links.count != 0);
 }
 
 /*
@@ -250,13 +303,13 @@
 - (BOOL) didLoginSucceedWithLoginData:(NSData *) data {
 	TFHpple *parser = [TFHpple hppleWithHTMLData:data];
 	TFHppleElement *e = [parser peekAtSearchWithXPathQuery:
-						 @"//*[@id='SignInSectionContainer']/div[2]/div[6]/div"];
+						 @"//*[@class='validation-summary-errors']"];
 	
 	/* 
 	 * If the "validation-summary-errors" div exists in the page, the login
 	 * failed.
 	 */
-	return (e != nil) ? YES : NO;
+	return (e != nil) ? NO : YES;
 }
 
 /*
@@ -277,12 +330,6 @@
 - (void) isLoggedInWithCallback:(SQULoggedInCallback) callback {
 	AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
 	manager.responseSerializer = [AFHTTPResponseSerializer serializer];
-	
-	// Select which SSL certificates we allow
-	/*NSArray *certs = [self districtSSLCertData];
-	manager.securityPolicy.allowInvalidCertificates = NO;
-	manager.securityPolicy.SSLPinningMode = AFSSLPinningModeCertificate;
-	[manager.securityPolicy setPinnedCertificates:certs];*/
 	
 	[manager HEAD:@"https://accesscenter.roundrockisd.org/homeaccess/Student/Gradespeed.aspx?target=https://gradebook.roundrockisd.org/pc/displaygrades.aspx" parameters:nil success:^(AFHTTPRequestOperation *operation) {
 		callback(YES);

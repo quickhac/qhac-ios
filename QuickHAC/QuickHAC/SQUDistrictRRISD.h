@@ -8,6 +8,9 @@
 
 #import "SQUDistrict.h"
 
+#define SQUDistrictRRISDErrorDomain @"SQUDistrictRRISDErrorDomain"
+#define kSQUDistrictRRISDErrorInvalidDisambiguateHTML 0xDEAD
+
 /**
  * District interface for Round Rock Independent School District.
  */
@@ -15,7 +18,6 @@
 @public
 	
 @private
-	NSMutableDictionary *_loginASPNetInfo;
 	NSMutableDictionary *_classToHashMap;
 }
 

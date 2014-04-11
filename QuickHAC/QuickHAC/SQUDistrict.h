@@ -63,6 +63,9 @@ typedef struct {
 - (NSNumber *) unweightedGPAWithCourses:(NSArray *) courses;
 - (NSNumber *) weightedGPAWithCourses:(NSArray *) courses;
 
+/// Reset internal state
+- (void) reset;
+
 @optional
 - (void) districtWasSelected:(SQUDistrict *) district;
 

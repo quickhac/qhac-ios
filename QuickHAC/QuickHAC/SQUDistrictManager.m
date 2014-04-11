@@ -21,6 +21,7 @@ static SQUDistrictManager *_sharedInstance = nil;
 
 @implementation SQUDistrictManager
 @synthesize currentDistrict = _currentDistrict, reachabilityManager = _reachabilityManager;
+@synthesize HTTPManager = _HTTPManager;
 
 #pragma mark - Singleton
 
@@ -104,6 +105,17 @@ static SQUDistrictManager *_sharedInstance = nil;
  * @return YES on success, NO if not found.
  */
 - (BOOL) selectDistrictWithID:(NSInteger) districtID {
+	// Changing districts
+	NSArray *munchies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
+	
+	for (NSHTTPCookie *cookie in munchies) {
+		[[NSHTTPCookieStorage sharedHTTPCookieStorage] deleteCookie:cookie];
+	}
+	
+	// This forces a login to happen again
+	_lastRequest = nil;
+	
+	// Select the district
 	for(SQUDistrict *district in _initialisedDistricts) {
 		if(district.district_id == districtID) {
 			// we found the district, activate it
@@ -144,7 +156,7 @@ static SQUDistrictManager *_sharedInstance = nil;
 		}
 	} else {
 		_HTTPManager.securityPolicy.allowInvalidCertificates = YES;
-		NSLog(@"WARNING: Accepting any certificate!");
+		// NSLog(@"WARNING: Accepting any certificate!");
 	}
 	
 /*	// Clear munchies so we're logged out (prevents course mingling)
@@ -206,7 +218,7 @@ static SQUDistrictManager *_sharedInstance = nil;
 	NSDictionary *loginRequest = [_currentDistrict buildLoginRequestWithUser:username usingPassword:password andUserData:nil];
 
 	if(!loginRequest) {
-		NSError *err = [NSError errorWithDomain:@"SQUDistrictManagerErrorDomain" code:kSQUDistrictManagerErrorLoginFailure userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"There was an error during the pre-login process. Ensure that HAC is not down.\n\nIf this problem persists, re-install QuickHAC.", nil)}];
+		NSError *err = [NSError errorWithDomain:@"SQUDistrictManagerErrorDomain" code:kSQUDistrictManagerErrorLoginFailure userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"There was an error (-1305) initialising the login process. Ensure that HAC is not down.\n\nIf this problem persists, re-install QuickHAC.", nil)}];
 		
 		callback(err, nil);
 		return;
@@ -337,6 +349,8 @@ static SQUDistrictManager *_sharedInstance = nil;
 	void (^disambiguateFailure)(AFHTTPRequestOperation*operation, NSError *error) = ^(AFHTTPRequestOperation*operation, NSError *error) {
 		callback(error, nil);
 		NSLog(@"Disambiguation error: %@", error);
+		
+		NSLog(@"Response: %@", operation.responseString);
 	};
 	
 	// Set up the request
@@ -431,6 +445,7 @@ static SQUDistrictManager *_sharedInstance = nil;
 			_lastRequest = [NSDate date];
 		} else {
 			callback([NSError errorWithDomain:@"SQUDistrictManagerErrorDomain" code:kSQUDistrictManagerErrorInvalidDataReceived userInfo:@{@"localizedDescription" : NSLocalizedString(@"The gradebook returned invalid data.", nil)}], nil);
+			_lastRequest = nil;
 			// NSLog(@"Got screwy response from gradebook: %@", [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding]);
 		}
 	};
