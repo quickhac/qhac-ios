@@ -105,12 +105,12 @@ static SQUDistrictManager *_sharedInstance = nil;
  * @return YES on success, NO if not found.
  */
 - (BOOL) selectDistrictWithID:(NSInteger) districtID {
-	// Changing districts
+	/*// Changing districts
 	NSArray *munchies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
 	
 	for (NSHTTPCookie *cookie in munchies) {
 		[[NSHTTPCookieStorage sharedHTTPCookieStorage] deleteCookie:cookie];
-	}
+	}*/
 	
 	// This forces a login to happen again
 	_lastRequest = nil;
@@ -119,7 +119,7 @@ static SQUDistrictManager *_sharedInstance = nil;
 	for(SQUDistrict *district in _initialisedDistricts) {
 		if(district.district_id == districtID) {
 			// we found the district, activate it
-			self.currentDistrict = district;
+			[self setCurrentDistrict:district];
 			
 			return YES;
 		}
@@ -249,12 +249,12 @@ static SQUDistrictManager *_sharedInstance = nil;
 						callback(err, nil);
 						_lastRequest = nil;
 					} else {
-						callback(nil, response);
+						callback(nil, responseObject);
 					}
 				}];
 			}
 		} else {
-			callback(nil, nil);
+			callback(nil, responseObject);
 		}
 	};
 	

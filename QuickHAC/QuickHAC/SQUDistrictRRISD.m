@@ -261,9 +261,7 @@
 	// Called if the request fails for some reason (500, network error, etc)
 	void (^fail)(AFHTTPRequestOperation*operation, NSError *error) =
 	^(AFHTTPRequestOperation*operation, NSError *error) {
-		if(operation.response.statusCode != 500) {
-			NSLog(@"Single student account pls");
-			
+		if(operation.response.statusCode == 500) {			
 			_hasMultipleStudents = NO;
 			
 			// Set up the students array anyways
@@ -273,14 +271,17 @@
 				_studentsOnAccount = [NSMutableArray new];
 			}
 			
+			callback(nil);
+		} else {
 			callback(error);
 		}
 	};
 	
 	// do request pls
 	AFHTTPRequestOperationManager *man = [SQUDistrictManager sharedInstance].HTTPManager;
+	
 	[man GET:@"https://accesscenter.roundrockisd.org/HomeAccess/Frame/StudentPicker"
-  parameters:nil success:success failure:fail];
+  parameters:@{} success:success failure:fail];
 }
 
 /*
