@@ -62,15 +62,12 @@
  * possibly using the user data, depending on district.
  */
 - (NSDictionary *) buildLoginRequestWithUser:(NSString *) username usingPassword:(NSString *) password andUserData:(id) userData {
-	// Ensure that password and user is valid
-	if(!password || !username) return nil;
-	
 	NSMutableDictionary *dictionary = [NSMutableDictionary new];
 	dictionary[@"request"] = [NSMutableDictionary new];
 	dictionary[@"params"] = [NSMutableDictionary new];
 	
 	// Request information (URL, method, etc)
-	dictionary[@"request"][@"URL"] = [NSURL URLWithString:@"https://accesscenter.roundrockisd.org/HomeAccess/Account/LogOn?ReturnUrl=%2fHomeAccess%2f"];
+	dictionary[@"request"][@"URL"] = [NSURL URLWithString:@"https://accesscenter.roundrockisd.org/HomeAccess/Account/LogOn?ReturnUrl=/HomeAccess/"];
 	dictionary[@"request"][@"method"] = @"POST";
 	
 	// Form fields

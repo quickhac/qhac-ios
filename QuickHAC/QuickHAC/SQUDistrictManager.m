@@ -56,11 +56,17 @@ static SQUDistrictManager *_sharedInstance = nil;
 			_loadedDistricts = [NSMutableArray new];
 			_initialisedDistricts = [NSMutableArray new];
 			
+			// Set up HTTP manager and response serialiser
 			_HTTPManager = [AFHTTPRequestOperationManager manager];
 			_HTTPManager.responseSerializer = [AFHTTPResponseSerializer serializer];
 			
+			// Set string encoding
+			NSStringEncoding enc = NSUTF8StringEncoding;
+			_HTTPManager.responseSerializer.stringEncoding = enc;
+			_HTTPManager.requestSerializer.stringEncoding = enc;
+			
 			// why please
-			// [_HTTPManager.requestSerializer setValue:@"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.117 Safari/537.36" forHTTPHeaderField:@"User-Agent"];
+			[_HTTPManager.requestSerializer setValue:@"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.117 Safari/537.36" forHTTPHeaderField:@"User-Agent"];
         }
 		
         return self;
@@ -134,8 +140,10 @@ static SQUDistrictManager *_sharedInstance = nil;
 - (void) setCurrentDistrict:(SQUDistrict *) currentDistrict {
 	_currentDistrict = currentDistrict;
 	
+	_HTTPManager.securityPolicy.allowInvalidCertificates = YES;
+	
 	// Check if the user disabled certificate validation
-	if([[NSUserDefaults standardUserDefaults] boolForKey:@"certPinning"]) {
+	/*if([[NSUserDefaults standardUserDefaults] boolForKey:@"certPinning"]) {
 		// Load the district's SSL certs, if they are specified.
 		NSArray *certs = [currentDistrict districtSSLCertData];
 		
@@ -157,7 +165,7 @@ static SQUDistrictManager *_sharedInstance = nil;
 	} else {
 		_HTTPManager.securityPolicy.allowInvalidCertificates = YES;
 		// NSLog(@"WARNING: Accepting any certificate!");
-	}
+	}*/
 	
 	// Update the reachability manager
 //	if(currentDistrict.districtDomain) {
@@ -198,7 +206,10 @@ static SQUDistrictManager *_sharedInstance = nil;
  * failure callback blocks.
  */
 - (void) sendGETRequestToURL:(NSURL *) url withParameters:(NSDictionary *) params andSuccessBlock:(void (^)(AFHTTPRequestOperation *operation, id responseObject)) success andFailureBlock:(void (^)(AFHTTPRequestOperation *operation, NSError *error)) failure {
-	[_HTTPManager GET:[url absoluteString] parameters:params success:success failure:failure];
+	[_HTTPManager GET:[url absoluteString]
+		   parameters:params
+			  success:success
+			  failure:failure];
 }
 
 /**
@@ -206,7 +217,10 @@ static SQUDistrictManager *_sharedInstance = nil;
  * failure callback blocks.
  */
 - (void) sendPOSTRequestToURL:(NSURL *) url withParameters:(NSDictionary *) params andSuccessBlock:(void (^)(AFHTTPRequestOperation *operation, id responseObject)) success andFailureBlock:(void (^)(AFHTTPRequestOperation *operation, NSError *error)) failure {
-	[_HTTPManager POST:[url absoluteString] parameters:params success:success failure:failure];
+	[_HTTPManager POST:[url absoluteString]
+			parameters:params
+			   success:success
+			   failure:failure];
 }
 
 #pragma mark - District interfacing
@@ -214,7 +228,7 @@ static SQUDistrictManager *_sharedInstance = nil;
  * Sends the actual login request.
  */
 - (void) performActualLoginRequestWithUser:(NSString *) username usingPassword:(NSString *) password andCallback:(SQUDistrictCallback) callback {
-	NSDictionary *loginRequest = [_currentDistrict buildLoginRequestWithUser:username usingPassword:password andUserData:nil];
+	__strong __block NSDictionary *loginRequest = [_currentDistrict buildLoginRequestWithUser:username usingPassword:password andUserData:nil];
 
 	if(!loginRequest) {
 		NSError *err = [NSError errorWithDomain:@"SQUDistrictManagerErrorDomain" code:kSQUDistrictManagerErrorLoginFailure userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"There was an error (-1305) initialising the login process. Ensure that HAC is not down.\n\nIf this problem persists, re-install QuickHAC.", nil)}];
