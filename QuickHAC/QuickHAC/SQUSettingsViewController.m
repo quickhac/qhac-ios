@@ -57,7 +57,7 @@
     // Return the number of rows in the section.
 	switch(section) {
 		case 0:
-			return 4;
+			return 2;
 			break;
 			
 		case 1:
@@ -81,7 +81,7 @@
 		NSArray *titles = @[NSLocalizedString(@"General", @"settings"), NSLocalizedString(@"Students", @"settings"), NSLocalizedString(@"Hidden Courses", @"settings"), NSLocalizedString(@"Security", @"settings")];
 		cell.textLabel.text = titles[indexPath.row];
 		
-		NSArray *iconImage = @[@"settings_icon_general", @"settings_icon_students", @"settings_icon_security", @"settings_icon_import"];
+		NSArray *iconImage = @[@"settings_icon_general", @"settings_icon_students", @"settings_icon_import", @"settings_icon_security"];
 		
 		cell.imageView.image = [UIImage imageNamed:iconImage[indexPath.row]];
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;

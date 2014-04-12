@@ -159,14 +159,6 @@ static SQUDistrictManager *_sharedInstance = nil;
 		// NSLog(@"WARNING: Accepting any certificate!");
 	}
 	
-/*	// Clear munchies so we're logged out (prevents course mingling)
-	// TODO: Fix this to clear only munchies for the district's domain!
-	NSArray *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
-	
-	for (NSHTTPCookie *cookie in cookies) {
-		[[NSHTTPCookieStorage sharedHTTPCookieStorage] deleteCookie:cookie];
-	}*/
-	
 	// Update the reachability manager
 //	if(currentDistrict.districtDomain) {
 //		_reachabilityManager = [AFNetworkReachabilityManager managerForDomain:currentDistrict.districtDomain];
@@ -191,6 +183,13 @@ static SQUDistrictManager *_sharedInstance = nil;
 	}
 	
 	return nil;
+}
+
+/**
+ * Causes the next request to perform a login request.
+ */
+- (void) setNeedsRelogon {
+	_lastRequest = nil;
 }
 
 #pragma mark - Request helper methods
@@ -252,6 +251,8 @@ static SQUDistrictManager *_sharedInstance = nil;
 						callback(nil, responseObject);
 					}
 				}];
+			} else {
+				callback(nil, responseObject);				
 			}
 		} else {
 			callback(nil, responseObject);
@@ -527,7 +528,11 @@ static SQUDistrictManager *_sharedInstance = nil;
 - (void) checkIfLoggedIn:(SQULoggedInCallback) callback {
 	NSTimeInterval diff = [[NSDate date] timeIntervalSinceDate:_lastRequest];
 	
-	if((diff > SQUDistrictManagerMaxRequestDelay) || !_lastRequest) {
+	// If there's no last request time, force a login
+	if(!_lastRequest) {
+		// NSLog(@"No last request date available");
+		callback(NO);
+	} else if((diff > SQUDistrictManagerMaxRequestDelay)) {
 		[_currentDistrict isLoggedInWithCallback:callback];
 	} else {
 		// NSLog(@"Delay not elapsed: assuming logged in (%f)", diff);

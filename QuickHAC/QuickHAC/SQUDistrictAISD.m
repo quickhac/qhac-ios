@@ -170,6 +170,9 @@
 		return nil;
 	}
 	
+	// Check if the returned objectoid is an array
+	id value = semesterArray[semester];
+	
 	NSArray *cycleArray = semesterArray[semester];
 	if(cycle > cycleArray.count) {
 		NSLog(@"Cycle %lu is out of range (got %lu cycles)", (unsigned long)cycle, (unsigned long)cycleArray.count);

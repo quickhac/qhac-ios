@@ -669,4 +669,24 @@ static SQUGradeManager *_sharedInstance = nil;
 	return (SQUStudent *) [[SQUAppDelegate sharedDelegate].managedObjectContext objectWithID:id];
 }
 
+/**
+ * Sets the current student.
+ */
+- (void) setStudent:(SQUStudent *) student {
+	// Different HAC usernames?
+	if(![student.hacUsername isEqualToString:_student.hacUsername]) {
+		// Clear munchies.
+		NSArray *munchies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
+		for (NSHTTPCookie *cookie in munchies) {
+			[[NSHTTPCookieStorage sharedHTTPCookieStorage] deleteCookie:cookie];
+		}
+		
+		// Require login
+		[[SQUDistrictManager sharedInstance] setNeedsRelogon];
+	}
+	
+	// Set student
+	_student = student;
+}
+
 @end

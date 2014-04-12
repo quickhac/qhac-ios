@@ -47,6 +47,8 @@ typedef void (^ SQUDistrictCallback)(NSError *error, id returnData);
 - (BOOL) selectDistrictWithID:(NSInteger) districtID;
 - (SQUDistrict *) districtWithID:(NSInteger) districtID;
 
+- (void) setNeedsRelogon;
+
 // The methods below operate on the _currentDistrict.
 - (void) performLoginRequestWithUser:(NSString *) username usingPassword:(NSString *) password andCallback:(SQUDistrictCallback) callback;
 - (void) performDisambiguationRequestWithStudentID:(NSString *) sid andCallback:(SQUDistrictCallback) callback;

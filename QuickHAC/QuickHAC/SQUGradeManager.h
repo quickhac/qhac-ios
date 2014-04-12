@@ -23,7 +23,7 @@
 	NSManagedObjectContext *_coreDataMOContext;
 }
 
-@property (nonatomic, readwrite, strong) SQUStudent *student;
+@property (nonatomic, readwrite, strong, setter = setStudent:) SQUStudent *student;
 @property (nonatomic, readonly) SQUGradebookDriver *currentDriver;
 @property (nonatomic, readonly, getter = getCoursesForCurrentStudent) NSOrderedSet *courses;
 

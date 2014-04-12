@@ -74,7 +74,13 @@
 		_courseTitle.string = _course.title;
 		_teacher.string = [_course.teacher_name uppercaseStringWithLocale:
 						   [NSLocale currentLocale]];
-		_average.string = [_cycle.average stringValue];
+		
+		// If the cycle has a letter grade, use that instead
+		if(_cycle.letterGrade.length != 0) {
+			_average.string = _cycle.letterGrade;
+		} else {
+			_average.string = [_cycle.average stringValue];
+		}
 		
 		_average.foregroundColor = [SQUGradeOverviewTableViewCell gradeChangeColour:_cycle].CGColor;
 		

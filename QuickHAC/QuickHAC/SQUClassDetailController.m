@@ -159,13 +159,17 @@
 		static NSString *CellIdentifier = @"CourseOverviewCell";
 		SQUClassDetailCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
 		
-		cell.category = _currentCycle.categories[indexPath.row - 1];
-		cell.index = indexPath.row;
-		cell.backgroundColor = [UIColor clearColor];
-		cell.clipsToBounds = NO;
-		cell.selectionStyle = UITableViewCellSelectionStyleNone;
+		// prevent a crash if this thing is a pile of shit
+		if(_currentCycle.categories.count != 0) {
+			cell.category = _currentCycle.categories[indexPath.row - 1];
+			cell.index = indexPath.row;
+			cell.backgroundColor = [UIColor clearColor];
+			cell.clipsToBounds = NO;
+			cell.selectionStyle = UITableViewCellSelectionStyleNone;
+			
+			[cell updateUI];
+		}
 		
-		[cell updateUI];
 		return cell;
 	} else {
 		static NSString *CellIdentifier = @"CourseOverviewHeaderCell";
@@ -298,8 +302,20 @@
 		// Hide "no data available" view if it's shown
 		[self changeNoDataDisplay];
 		
+		// figure out whether this is an elementary student
+		NSUInteger cycDivisor = 3;
+		NSUInteger numSemesters = [SQUGradeManager sharedInstance].student.numSemesters.unsignedIntegerValue;
+		
+		// Elementary students have a single semester only with four "cycles"
+		if(numSemesters == 1) {
+			cycDivisor = 4;
+		}
+		
 		// Update course grades
-		[[SQUGradeManager sharedInstance] fetchNewCycleGradesFromServerForCourse:_course.courseCode withCycle:_displayCycle % 3 andSemester:_displayCycle / 3 andDoneCallback:^(NSError * error) {
+		[[SQUGradeManager sharedInstance] fetchNewCycleGradesFromServerForCourse:_course.courseCode
+																	   withCycle:_displayCycle % cycDivisor
+																	 andSemester:_displayCycle / cycDivisor
+																 andDoneCallback:^(NSError * error) {
 			if(!error) {
 				[self changeNoDataDisplay];
 				
