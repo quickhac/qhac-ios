@@ -107,6 +107,11 @@ static SQUCrashHandler *_sharedInstance = nil;
 	if(buttonIndex == 1) {
 		// NSLog(@"Submit report");
 	} else {
+		// user tapped "cancel," so don't ask them again
+		
+		PLCrashReporter *crashReporter = [PLCrashReporter sharedReporter];
+		[crashReporter purgePendingCrashReport];
+		
 		return;
 	}
 	

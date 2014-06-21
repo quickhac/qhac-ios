@@ -28,7 +28,7 @@
         _titleLayer.contentsScale = [UIScreen mainScreen].scale;
         _titleLayer.foregroundColor = UIColorFromRGB(0xd6d6d6).CGColor;
         _titleLayer.font = (__bridge CFTypeRef) [UIFont fontWithName:@"HelveticaNeue-Medium" size:17.0];
-        _titleLayer.fontSize = self.textLabel.font.pointSize;
+        _titleLayer.fontSize = 17.0;
 		_titleLayer.zPosition = 10;
 		_titleLayer.frame = frame;
 		_titleLayer.alignmentMode = kCAAlignmentLeft;

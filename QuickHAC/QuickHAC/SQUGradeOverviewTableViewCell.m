@@ -457,11 +457,11 @@
 						   [UIColor colorWithRed:1 green:0.322 blue:0.322 alpha:1] /*#ff5252*/
 						   ];
 	
-		NSUInteger index = [[SQUGradeManager sharedInstance].student.courses indexOfObject:_courseInfo];
+	NSUInteger index = [[SQUGradeManager sharedInstance].student.courses indexOfObject:_courseInfo];
 		
 		// prevent crash if too many classes
-		if(index >= sbcolours.count) {
-			_topBar.colors = @[(id) [[UIColor colorWithWhite:0.08 alpha:1.0] lighterColor].CGColor, (id) [UIColor whiteColor].CGColor, (id) [UIColor whiteColor].CGColor];
+	if(index >= (sbcolours.count - 1)) {
+		_topBar.colors = @[(id) [[sbcolours[sbcolours.count-1] lighterColor] CGColor], (id) [sbcolours[sbcolours.count-1] CGColor], (id) [UIColor whiteColor].CGColor];
 		} else {
 			_topBar.colors = @[(id) [[sbcolours[index] lighterColor] CGColor], (id) [sbcolours[index] CGColor], (id) [UIColor whiteColor].CGColor];
 		}

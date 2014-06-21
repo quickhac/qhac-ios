@@ -200,27 +200,21 @@
     [self moveTableUp];
 }
 
+/**
+ * Called when the return key is pressed on the software keyboard.
+ */
 - (BOOL) textFieldShouldReturn:(UITextField *) textField {
-    NSIndexPath *path;
-    
-    if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
-        path = [_authFieldTable indexPathForCell:(UITableViewCell*)textField.superview.superview.superview];
-    } else {
-        path = [_authFieldTable indexPathForCell:(UITableViewCell*)textField.superview.superview];
-    }
-    
-    if(path.row == 0) {
+    if(textField == _usernameField) {
         [_passField becomeFirstResponder];
-        return YES;
-    } else if(path.row == 1) {
+    } else if(textField == _passField) { // perform login
         [textField resignFirstResponder];
+		
         [self moveTableDown];
         [self performAuthentication:textField];
         _selectedTableTextField = nil;
-        return YES;
-    } else {
-        return YES;
     }
+	
+	return YES;
 }
 
 - (void) moveTableUp {
