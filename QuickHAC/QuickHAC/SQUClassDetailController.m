@@ -6,7 +6,7 @@
 //  See README.MD for licensing and copyright information.
 //
 
-#import "SQUAppDelegate.h"
+#import "SQUPersistence.h"
 #import "SQURelativeRefreshControl.h"
 #import "SQUClassDetailController.h"
 #import "SQUCoreData.h"
@@ -393,7 +393,7 @@
 			
 			// save database
 			NSError *err = nil;
-			if(![[SQUAppDelegate sharedDelegate].managedObjectContext save:&err]) {
+			if(![[SQUPersistence sharedInstance].managedObjectContext save:&err]) {
 				UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Database Error", nil) message:err.localizedDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
 				[alert show];
 			}
@@ -478,7 +478,7 @@
 		_course.last_viewed_cycle = @(_displayCycle);
 		
 		NSError *err = nil;
-		if(![[SQUAppDelegate sharedDelegate].managedObjectContext save:&err]) {
+		if(![[SQUPersistence sharedInstance].managedObjectContext save:&err]) {
 			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Database Error", nil) message:err.localizedDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
 			[alert show];
 		}

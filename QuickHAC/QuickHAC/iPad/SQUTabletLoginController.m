@@ -6,6 +6,7 @@
 //  See README.MD for licensing and copyright information.
 //
 
+#import "SQUPersistence.h"
 #import "SQUDistrictManager.h"
 #import "SQUCoreData.h"
 #import "SQUAppDelegate.h"
@@ -259,7 +260,7 @@
 			NSString *studentName = student[@"name"];
 			
 			if(![self studentExistsWithID:studentID]) {
-				NSManagedObjectContext *context = [[SQUAppDelegate sharedDelegate] managedObjectContext];
+				NSManagedObjectContext *context = [[SQUPersistence sharedInstance] managedObjectContext];
 				SQUStudent *studentInfo = [NSEntityDescription insertNewObjectForEntityForName:@"SQUStudent" inManagedObjectContext:context];
 				
 				// Set up student ID and district to database
@@ -275,7 +276,7 @@
 		} else {
 			// Single student account
 			if(![self studentExistsWithUser:_userField.text]) {
-				NSManagedObjectContext *context = [[SQUAppDelegate sharedDelegate] managedObjectContext];
+				NSManagedObjectContext *context = [[SQUPersistence sharedInstance] managedObjectContext];
 				SQUStudent *studentInfo = [NSEntityDescription insertNewObjectForEntityForName:@"SQUStudent" inManagedObjectContext:context];
 				
 				// Set up student ID and district to database
@@ -332,7 +333,7 @@
 				}
 				
 				// Save the database.
-				[[SQUAppDelegate sharedDelegate] saveContext];
+				[[SQUPersistence sharedInstance] saveContext];
 				
 				_studentLoginFunction = ^{
 					// Update grades
@@ -357,10 +358,10 @@
 						} else {
 							// Delete students added to the DB
 							for(SQUStudent *studentToDelete in self_unsafe.students) {
-								[[SQUAppDelegate sharedDelegate].managedObjectContext deleteObject:studentToDelete];
+								[[SQUPersistence sharedInstance].managedObjectContext deleteObject:studentToDelete];
 							}
 							
-							[[SQUAppDelegate sharedDelegate] saveContext];
+							[[SQUPersistence sharedInstance] saveContext];
 							
 							[SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Error", nil)];
 							
@@ -402,9 +403,9 @@
 - (void) studentPickerCancelled:(SQULoginStudentPicker *) picker {
 	// Delete students added to the DB
 	for(SQUStudent *studentToDelete in _students) {
-		[[SQUAppDelegate sharedDelegate].managedObjectContext deleteObject:studentToDelete];
+		[[SQUPersistence sharedInstance].managedObjectContext deleteObject:studentToDelete];
 	}
-	[[SQUAppDelegate sharedDelegate] saveContext];
+	[[SQUPersistence sharedInstance] saveContext];
 	
 	[self.navigationController dismissViewControllerAnimated:YES completion:NULL];
 }
@@ -417,10 +418,10 @@
 	
 	NSError *error = nil;
 	NSFetchRequest *request = [[NSFetchRequest alloc] init];
-	NSEntityDescription *entity = [NSEntityDescription entityForName:@"SQUStudent" inManagedObjectContext:[SQUAppDelegate sharedDelegate].managedObjectContext];
+	NSEntityDescription *entity = [NSEntityDescription entityForName:@"SQUStudent" inManagedObjectContext:[SQUPersistence sharedInstance].managedObjectContext];
 	[request setEntity:entity];
 	
-	NSArray *students = [[SQUAppDelegate sharedDelegate].managedObjectContext executeFetchRequest:request error:&error];
+	NSArray *students = [[SQUPersistence sharedInstance].managedObjectContext executeFetchRequest:request error:&error];
 	if(error) {
 		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Database Error", nil) message:error.localizedDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
 		[alert show];
@@ -450,25 +451,25 @@
 - (BOOL) studentExistsWithID:(NSString *) dasID {
 	NSError *error = nil;
 	NSFetchRequest *request = [[NSFetchRequest alloc] init];
-	NSEntityDescription *entity = [NSEntityDescription entityForName:@"SQUStudent" inManagedObjectContext:[SQUAppDelegate sharedDelegate].managedObjectContext];
+	NSEntityDescription *entity = [NSEntityDescription entityForName:@"SQUStudent" inManagedObjectContext:[SQUPersistence sharedInstance].managedObjectContext];
 	[request setEntity:entity];
 	
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(student_id == %@)", dasID];
 	[request setPredicate:predicate];
 	
-	return ([[SQUAppDelegate sharedDelegate].managedObjectContext countForFetchRequest:request error:&error] != 0);
+	return ([[SQUPersistence sharedInstance].managedObjectContext countForFetchRequest:request error:&error] != 0);
 }
 
 - (BOOL) studentExistsWithUser:(NSString *) user {
 	NSError *error = nil;
 	NSFetchRequest *request = [[NSFetchRequest alloc] init];
-	NSEntityDescription *entity = [NSEntityDescription entityForName:@"SQUStudent" inManagedObjectContext:[SQUAppDelegate sharedDelegate].managedObjectContext];
+	NSEntityDescription *entity = [NSEntityDescription entityForName:@"SQUStudent" inManagedObjectContext:[SQUPersistence sharedInstance].managedObjectContext];
 	[request setEntity:entity];
 	
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(hacUsername == %@)", user];
 	[request setPredicate:predicate];
 	
-	return ([[SQUAppDelegate sharedDelegate].managedObjectContext countForFetchRequest:request error:&error] != 0);
+	return ([[SQUPersistence sharedInstance].managedObjectContext countForFetchRequest:request error:&error] != 0);
 }
 
 #pragma mark - District selection

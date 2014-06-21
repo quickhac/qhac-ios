@@ -6,9 +6,10 @@
 //  See README.MD for licensing and copyright information.
 //
 
+#import <UIKit/UIKit.h>
 #import <math.h>
 
-#import "SQUAppDelegate.h"
+#import "SQUPersistence.h"
 #import "SQUDistrictManager.h"
 #import "SQUCoreData.h"
 #import "SQUGradeManager.h"
@@ -49,7 +50,7 @@ static SQUGradeManager *_sharedInstance = nil;
 - (id) init {
     @synchronized(self) {
         if(self = [super init]) {
-			_coreDataMOContext = [[SQUAppDelegate sharedDelegate] managedObjectContext];
+			_coreDataMOContext = [[SQUPersistence sharedInstance] managedObjectContext];
 			_gradebookDrivers = [NSMutableArray new];
         }
 		
@@ -151,8 +152,7 @@ static SQUGradeManager *_sharedInstance = nil;
 				if(!error) {
 					if(!returnData) {
 						// Tell the user what happened
-						UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Authenticating", nil) message:NSLocalizedString(@"Your username or password were rejected by HAC. Please update your password, if it was changed, and try again.", nil) delegate:[SQUAppDelegate sharedDelegate] cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:NSLocalizedString(@"Settings", nil), nil];
-						alert.tag = kSQUAlertChangePassword;
+						UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Authenticating", nil) message:NSLocalizedString(@"Your username or password were rejected by HAC. Please update your password, if it was changed, and try again.", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
 						[alert show];
 						callback([NSError errorWithDomain:@"SQUInvalidHACUsername" code:kSQUDistrictManagerErrorInvalidDisambiguation userInfo:@{@"localizedDescription" : NSLocalizedString(@"The login was rejected.", nil)}]);
 					} else {
@@ -219,8 +219,7 @@ static SQUGradeManager *_sharedInstance = nil;
 				if(!error) {
 					if(!returnData) {
 						// Tell the user what happened
-						UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Authenticating", nil) message:NSLocalizedString(@"Your username or password were rejected by HAC. Please update your password, if it was changed, and try again.", nil) delegate:[SQUAppDelegate sharedDelegate] cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:NSLocalizedString(@"Settings", nil), nil];
-						alert.tag = kSQUAlertChangePassword;
+						UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Authenticating", nil) message:NSLocalizedString(@"Your username or password were rejected by HAC. Please update your password, if it was changed, and try again.", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
 						[alert show];
 						callback([NSError errorWithDomain:@"SQUInvalidHACUsername" code:kSQUDistrictManagerErrorInvalidDisambiguation userInfo:@{@"localizedDescription" : NSLocalizedString(@"The login was rejected.", nil)}]);
 					} else {
@@ -375,7 +374,7 @@ static SQUGradeManager *_sharedInstance = nil;
  * by the gradebook drivers.
  */
 - (void) updateStudent:(SQUStudent *) student withClassAverages:(NSArray *) classAvgs {
-	_coreDataMOContext = [[SQUAppDelegate sharedDelegate] managedObjectContext];
+	_coreDataMOContext = [[SQUPersistence sharedInstance] managedObjectContext];
 	
 	NSAssert(student != NULL, @"Student may not be NULL");
 	NSAssert(classAvgs != NULL, @"Grades may not be NULL");
@@ -529,7 +528,7 @@ static SQUGradeManager *_sharedInstance = nil;
  * @param numSemester Semester in which the grades are.
  */
 - (void) updateStudent:(SQUStudent *) student withClassGrades:(NSDictionary *) classGrades forClass:(NSString *) class andCycle:(NSUInteger) numCycle andSemester:(NSUInteger) numSemester {
-	_coreDataMOContext = [[SQUAppDelegate sharedDelegate] managedObjectContext];
+	_coreDataMOContext = [[SQUPersistence sharedInstance] managedObjectContext];
 	
 	NSUInteger cycleOffset = numCycle + (numSemester * 3);
 	SQUCourse *course = nil;
@@ -665,8 +664,8 @@ static SQUGradeManager *_sharedInstance = nil;
 	//NSLog(@"Selected student: %@", objectID);
 	if(!objectID) return nil;
 	
-	NSManagedObjectID *id = [[SQUAppDelegate sharedDelegate].persistentStoreCoordinator managedObjectIDForURIRepresentation:[NSURL URLWithString:objectID]];
-	return (SQUStudent *) [[SQUAppDelegate sharedDelegate].managedObjectContext objectWithID:id];
+	NSManagedObjectID *id = [[SQUPersistence sharedInstance].persistentStoreCoordinator managedObjectIDForURIRepresentation:[NSURL URLWithString:objectID]];
+	return (SQUStudent *) [[SQUPersistence sharedInstance].managedObjectContext objectWithID:id];
 }
 
 /**

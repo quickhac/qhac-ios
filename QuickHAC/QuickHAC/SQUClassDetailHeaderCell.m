@@ -8,7 +8,7 @@
 
 #import "SQUColourScheme.h"
 #import "SQUCoreData.h"
-#import "SQUAppDelegate.h"
+#import "SQUPersistence.h"
 #import "SQUGradeOverviewTableViewCell.h"
 #import "SQUClassDetailHeaderCell.h"
 
@@ -89,7 +89,7 @@
 			_cycle.changedSinceLastFetch = @(NO);
 			// Save to DB
 			NSError *err = nil;
-			if(![[SQUAppDelegate sharedDelegate].managedObjectContext save:&err]) {
+			if(![[SQUPersistence sharedInstance].managedObjectContext save:&err]) {
 				UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Database Error", nil) message:err.localizedDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
 				[alert show];
 			}

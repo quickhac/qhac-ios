@@ -6,7 +6,7 @@
 //  See README.MD for licensing and copyright information.
 //
 
-#import "SQUAppDelegate.h"
+#import "SQUPersistence.h"
 #import "SQUGradeManager.h"
 #import "SQUDistrict.h"
 #import "SQUDistrictManager.h"
@@ -14,6 +14,7 @@
 #import "SQULoginSchoolSelector.h"
 #import "SQUSettingsStudents.h"
 
+#import "PKRevealController.h"
 #import "SVProgressHUD.h"
 #import "Lockbox.h"
 
@@ -29,7 +30,7 @@
         [self.tableView registerClass:NSClassFromString(@"UITableViewCell") forCellReuseIdentifier:@"SettingsButtonCell"];
 		
 		// Fetch students objects from DB
-		NSManagedObjectContext *context = [[SQUAppDelegate sharedDelegate] managedObjectContext];
+		NSManagedObjectContext *context = [[SQUPersistence sharedInstance] managedObjectContext];
 		NSError *db_err = nil;
 		
 		NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
@@ -154,7 +155,7 @@
 		NSInteger selectedStudent = [_students indexOfObject:[[SQUGradeManager sharedInstance] getSelectedStudent]];
 		
 		// Delete object from DB
-		[[SQUAppDelegate sharedDelegate].managedObjectContext deleteObject:_students[indexPath.row]];
+		[[SQUPersistence sharedInstance].managedObjectContext deleteObject:_students[indexPath.row]];
 		[_students removeObject:_students[indexPath.row]];
 		
 		// Do animate-y thing
@@ -184,7 +185,7 @@
 		
 		// Save to DB
 		NSError *err = nil;
-		if(![[SQUAppDelegate sharedDelegate].managedObjectContext save:&err]) {
+		if(![[SQUPersistence sharedInstance].managedObjectContext save:&err]) {
 			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Database Error", nil) message:err.localizedDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
 			[alert show];
 		}
@@ -200,7 +201,7 @@
 			} else if(buttonIndex == 0) {
 				// Delete object from DB
 				[self.tableView beginUpdates];
-				[[SQUAppDelegate sharedDelegate].managedObjectContext deleteObject:_students[0]];
+				[[SQUPersistence sharedInstance].managedObjectContext deleteObject:_students[0]];
 				[_students removeObject:_students[0]];
 				
 				// Do animate-y thing
@@ -220,7 +221,7 @@
 				
 				// Save to DB
 				NSError *err = nil;
-				if(![[SQUAppDelegate sharedDelegate].managedObjectContext save:&err]) {
+				if(![[SQUPersistence sharedInstance].managedObjectContext save:&err]) {
 					UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Database Error", nil) message:err.localizedDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
 					[alert show];
 					return;
@@ -288,8 +289,7 @@
 						[SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Wrong Credentials", nil)];
 						
 						// Tell the user what happened
-						UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Authenticating", nil) message:NSLocalizedString(@"Your username or password were rejected by HAC. Please update your password, if it was changed, and try again.", nil) delegate:self cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:NSLocalizedString(@"Settings", nil), nil];
-						alert.tag = kSQUAlertChangePassword;
+						UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Authenticating", nil) message:NSLocalizedString(@"Your username or password were rejected by HAC. Please update your password, if it was changed, and try again.", nil) delegate:self cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
 						[alert show];
 					} else {
 						// Login succeeded, so we can do a fetch of grades.
@@ -335,7 +335,7 @@
  * This notification is fired when the students in the database are updated.
  */
 - (void) studentsUpdated:(NSNotification *) notif {
-	NSManagedObjectContext *context = [[SQUAppDelegate sharedDelegate] managedObjectContext];
+	NSManagedObjectContext *context = [[SQUPersistence sharedInstance] managedObjectContext];
 	NSError *db_err = nil;
 	
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];

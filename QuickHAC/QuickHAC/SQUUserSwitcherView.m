@@ -9,6 +9,7 @@
 #import "UIColor+SQUColourUtilities.h"
 #import "SQUCoreData.h"
 #import "SQUAppDelegate.h"
+#import "SQUPersistence.h"
 #import "SQUUserSwitcherCell.h"
 #import "SQUGradeManager.h"
 #import "SQUDistrictManager.h"
@@ -73,7 +74,7 @@
 	// Update students data only if "ignored" is nil
 	if(!ignored) {
 		// Fetch students objects from DB
-		NSManagedObjectContext *context = [[SQUAppDelegate sharedDelegate] managedObjectContext];
+		NSManagedObjectContext *context = [[SQUPersistence sharedInstance] managedObjectContext];
 		NSError *db_err = nil;
 		
 		NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
@@ -98,6 +99,7 @@
 - (void) showStudentAdder {
 	SQULoginSchoolSelector *loginController = [[SQULoginSchoolSelector alloc] initWithStyle:UITableViewStyleGrouped];
 	loginController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(dismissModal:)];
+	
 	[[SQUAppDelegate sharedDelegate].window.rootViewController presentViewController:[[UINavigationController alloc] initWithRootViewController:loginController] animated:YES completion:NULL];
 }
 
@@ -200,7 +202,7 @@
 								[[NSNotificationCenter defaultCenter] postNotificationName:SQUGradesDataUpdatedNotification object:nil userInfo:@{}];
 								
 								// Update student array
-								NSManagedObjectContext *context = [[SQUAppDelegate sharedDelegate] managedObjectContext];
+								NSManagedObjectContext *context = [[SQUPersistence sharedInstance] managedObjectContext];
 								NSError *db_err = nil;
 								
 								NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];

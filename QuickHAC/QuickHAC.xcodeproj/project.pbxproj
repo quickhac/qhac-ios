@@ -68,6 +68,40 @@
 		DEAE4699187807AB008DAE0C /* NSURL+RequestParams.m in Sources */ = {isa = PBXBuildFile; fileRef = DEAE4698187807AB008DAE0C /* NSURL+RequestParams.m */; };
 		DEB09F74195602E4003F5657 /* SQUSettingsSecurity.m in Sources */ = {isa = PBXBuildFile; fileRef = DEB09F73195602E4003F5657 /* SQUSettingsSecurity.m */; };
 		DEB09F7819560338003F5657 /* SQUSecurityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DEB09F7719560338003F5657 /* SQUSecurityManager.m */; };
+		DEB09F7B195615EA003F5657 /* SQUGradebookDriver.m in Sources */ = {isa = PBXBuildFile; fileRef = DE2843DD18760E3D0000756C /* SQUGradebookDriver.m */; };
+		DEB09F7C195615ED003F5657 /* SQUGradeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DEFFDE96186E85E300E26423 /* SQUGradeManager.m */; };
+		DEB09F7D195615EF003F5657 /* SQUGradespeedDriver.m in Sources */ = {isa = PBXBuildFile; fileRef = DE2843E018760FD80000756C /* SQUGradespeedDriver.m */; };
+		DEB09F7E195615F2003F5657 /* SQUDistrict.m in Sources */ = {isa = PBXBuildFile; fileRef = DEFFDE23186D881E00E26423 /* SQUDistrict.m */; };
+		DEB09F7F195615F6003F5657 /* SQUDistrictManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DEFFDE26186D8C5F00E26423 /* SQUDistrictManager.m */; };
+		DEB09F80195615FB003F5657 /* SQUDistrictRRISD.m in Sources */ = {isa = PBXBuildFile; fileRef = DEFFDE2A186D8EEF00E26423 /* SQUDistrictRRISD.m */; };
+		DEB09F81195615FB003F5657 /* SQUDistrictAISD.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F2241871EEAD00116B61 /* SQUDistrictAISD.m */; };
+		DEB09F8219561603003F5657 /* NSDate+RelativeDate.m in Sources */ = {isa = PBXBuildFile; fileRef = DE3AC656187B5A37007540A9 /* NSDate+RelativeDate.m */; };
+		DEB09F8419561640003F5657 /* NSData+SQUAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = DEBA3D111878FA04003C209B /* NSData+SQUAdditions.m */; };
+		DEB09F851956164D003F5657 /* NSURL+RequestParams.m in Sources */ = {isa = PBXBuildFile; fileRef = DEAE4698187807AB008DAE0C /* NSURL+RequestParams.m */; };
+		DEB09F8619561657003F5657 /* NSMutableURLRequest+POSTGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = DECEA57E1877FF8900C3D2FC /* NSMutableURLRequest+POSTGenerator.m */; };
+		DEB09F8719561665003F5657 /* TFHpple.m in Sources */ = {isa = PBXBuildFile; fileRef = DE81CDD2186D517800DC1CAB /* TFHpple.m */; };
+		DEB09F8819561668003F5657 /* TFHppleElement.m in Sources */ = {isa = PBXBuildFile; fileRef = DE81CDD4186D517800DC1CAB /* TFHppleElement.m */; };
+		DEB09F891956166B003F5657 /* XPathQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = DE81CDD6186D517800DC1CAB /* XPathQuery.m */; };
+		DEB09F8A1956166F003F5657 /* Lockbox.m in Sources */ = {isa = PBXBuildFile; fileRef = DE35E9A8180614DF00F15F20 /* Lockbox.m */; };
+		DEB09F8B1956167B003F5657 /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = DEFFDE2D186E26FC00E26423 /* AFHTTPRequestOperation.m */; };
+		DEB09F8C1956167B003F5657 /* AFHTTPRequestOperationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DEFFDE2F186E26FC00E26423 /* AFHTTPRequestOperationManager.m */; };
+		DEB09F8D1956167B003F5657 /* AFHTTPSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DEFFDE31186E26FC00E26423 /* AFHTTPSessionManager.m */; };
+		DEB09F8E1956167B003F5657 /* AFNetworkReachabilityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DEFFDE34186E26FC00E26423 /* AFNetworkReachabilityManager.m */; };
+		DEB09F8F1956167B003F5657 /* AFSecurityPolicy.m in Sources */ = {isa = PBXBuildFile; fileRef = DEFFDE36186E26FC00E26423 /* AFSecurityPolicy.m */; };
+		DEB09F901956167B003F5657 /* AFURLConnectionOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = DEFFDE38186E26FC00E26423 /* AFURLConnectionOperation.m */; };
+		DEB09F911956167B003F5657 /* AFURLRequestSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = DEFFDE3A186E26FC00E26423 /* AFURLRequestSerialization.m */; };
+		DEB09F921956167B003F5657 /* AFURLResponseSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = DEFFDE3C186E26FC00E26423 /* AFURLResponseSerialization.m */; };
+		DEB09F931956167B003F5657 /* AFURLSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DEFFDE3E186E26FC00E26423 /* AFURLSessionManager.m */; };
+		DEB09F9519561683003F5657 /* UIActivityIndicatorView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = DEFFDE4C186E270900E26423 /* UIActivityIndicatorView+AFNetworking.m */; };
+		DEB09F9919561683003F5657 /* UIProgressView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = DEFFDE55186E270900E26423 /* UIProgressView+AFNetworking.m */; };
+		DEB09F9B195616DF003F5657 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE35E9AA18061F8100F15F20 /* Security.framework */; };
+		DEB09F9C195616E4003F5657 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE06158017874D0C004B2877 /* CoreData.framework */; };
+		DEB09F9D195616EC003F5657 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE06157A17874D0C004B2877 /* Foundation.framework */; };
+		DEB09F9E19561720003F5657 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE0615D21787AD3D004B2877 /* SystemConfiguration.framework */; };
+		DEB09F9F19561729003F5657 /* libxml2.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DE81CDDA186D518C00DC1CAB /* libxml2.2.dylib */; };
+		DEB09FA2195617B6003F5657 /* SQUPersistence.m in Sources */ = {isa = PBXBuildFile; fileRef = DEB09FA1195617B6003F5657 /* SQUPersistence.m */; };
+		DEB09FA3195617B6003F5657 /* SQUPersistence.m in Sources */ = {isa = PBXBuildFile; fileRef = DEB09FA1195617B6003F5657 /* SQUPersistence.m */; };
+		DEB09FA4195618FA003F5657 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE06157E17874D0C004B2877 /* UIKit.framework */; };
 		DEBA3D0F1878EECC003C209B /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DE2843EC18768D510000756C /* libTestFlight.a */; };
 		DEBA3D121878FA04003C209B /* NSData+SQUAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = DEBA3D111878FA04003C209B /* NSData+SQUAdditions.m */; };
 		DEC5954818783D69004F4BA4 /* SQUPushHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = DEC5954718783D69004F4BA4 /* SQUPushHandler.m */; };
@@ -405,6 +439,9 @@
 		DEB09F73195602E4003F5657 /* SQUSettingsSecurity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUSettingsSecurity.m; sourceTree = "<group>"; };
 		DEB09F7619560338003F5657 /* SQUSecurityManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUSecurityManager.h; sourceTree = "<group>"; };
 		DEB09F7719560338003F5657 /* SQUSecurityManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUSecurityManager.m; sourceTree = "<group>"; };
+		DEB09F7A19561597003F5657 /* co.squee.quickhac.NotificationWidget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = co.squee.quickhac.NotificationWidget.entitlements; sourceTree = "<group>"; };
+		DEB09FA0195617B6003F5657 /* SQUPersistence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUPersistence.h; sourceTree = "<group>"; };
+		DEB09FA1195617B6003F5657 /* SQUPersistence.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUPersistence.m; sourceTree = "<group>"; };
 		DEBA3D101878FA04003C209B /* NSData+SQUAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+SQUAdditions.h"; sourceTree = "<group>"; };
 		DEBA3D111878FA04003C209B /* NSData+SQUAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+SQUAdditions.m"; sourceTree = "<group>"; };
 		DEC5954618783D69004F4BA4 /* SQUPushHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUPushHandler.h; sourceTree = "<group>"; };
@@ -531,6 +568,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DEB09FA4195618FA003F5657 /* UIKit.framework in Frameworks */,
+				DEB09F9F19561729003F5657 /* libxml2.2.dylib in Frameworks */,
+				DEB09F9E19561720003F5657 /* SystemConfiguration.framework in Frameworks */,
+				DEB09F9D195616EC003F5657 /* Foundation.framework in Frameworks */,
+				DEB09F9C195616E4003F5657 /* CoreData.framework in Frameworks */,
+				DEB09F9B195616DF003F5657 /* Security.framework in Frameworks */,
 				DE0FE1DE195536DD003346D8 /* NotificationCenter.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -596,6 +639,8 @@
 				DEF0F1BA186EE4E100116B61 /* Miscellaneous UI */,
 				DECA57C817DFD96300156AFC /* CoreData */,
 				DE0615E717891E23004B2877 /* 3rd Party */,
+				DEB09FA0195617B6003F5657 /* SQUPersistence.h */,
+				DEB09FA1195617B6003F5657 /* SQUPersistence.m */,
 				DE06158B17874D0D004B2877 /* SQUAppDelegate.h */,
 				DE06158C17874D0D004B2877 /* SQUAppDelegate.m */,
 				DE06159117874D0D004B2877 /* Images.xcassets */,
@@ -700,6 +745,7 @@
 		DE0FE1DF195536DD003346D8 /* Notifications Widget */ = {
 			isa = PBXGroup;
 			children = (
+				DEB09F7A19561597003F5657 /* co.squee.quickhac.NotificationWidget.entitlements */,
 				DE0FE1E2195536DD003346D8 /* SQUNotifWidgetController.h */,
 				DE0FE1E3195536DD003346D8 /* SQUNotifWidgetController.m */,
 				DE0FE1E5195536DD003346D8 /* MainInterface.storyboard */,
@@ -1172,6 +1218,7 @@
 			buildConfigurationList = DE0FE1FE195536DD003346D8 /* Build configuration list for PBXNativeTarget "NotificationWidget" */;
 			buildPhases = (
 				DE0FE1D8195536DD003346D8 /* Sources */,
+				DEB09F7919561558003F5657 /* Increase Build Number */,
 				DE0FE1D9195536DD003346D8 /* Frameworks */,
 				DE0FE1DA195536DD003346D8 /* Resources */,
 			);
@@ -1211,6 +1258,11 @@
 					DE0FE1DB195536DD003346D8 = {
 						CreatedOnToolsVersion = 6.0;
 						DevelopmentTeam = 62JL7NTBQJ;
+						SystemCapabilities = {
+							com.apple.Keychain = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -1409,6 +1461,20 @@
 			shellPath = /bin/sh;
 			shellScript = "#!/bin/bash\nbN=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"$INFOPLIST_FILE\")\nbN=$(($bN))\nbN=$(($bN + 1))\nbN=$(printf \"%i\" $bN)\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $bN\" \"$INFOPLIST_FILE\"";
 		};
+		DEB09F7919561558003F5657 /* Increase Build Number */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Increase Build Number";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#!/bin/bash\nbN=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"$INFOPLIST_FILE\")\nbN=$(($bN))\nbN=$(($bN + 1))\nbN=$(printf \"%i\" $bN)\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $bN\" \"$INFOPLIST_FILE\"";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -1417,6 +1483,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DE6F180218B9128100546B0E /* SQUTabletSidebarController.m in Sources */,
+				DEB09FA2195617B6003F5657 /* SQUPersistence.m in Sources */,
 				DEFFDE5A186E270900E26423 /* UIAlertView+AFNetworking.m in Sources */,
 				DEF0F1CE186F7D9E00116B61 /* SQUClassDetailCell.m in Sources */,
 				DEF0F1E41870E60B00116B61 /* WYStoryboardPopoverSegue.m in Sources */,
@@ -1504,7 +1571,34 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DEB09F931956167B003F5657 /* AFURLSessionManager.m in Sources */,
+				DEB09F901956167B003F5657 /* AFURLConnectionOperation.m in Sources */,
+				DEB09F7C195615ED003F5657 /* SQUGradeManager.m in Sources */,
+				DEB09F8D1956167B003F5657 /* AFHTTPSessionManager.m in Sources */,
+				DEB09F8E1956167B003F5657 /* AFNetworkReachabilityManager.m in Sources */,
+				DEB09F80195615FB003F5657 /* SQUDistrictRRISD.m in Sources */,
+				DEB09F8419561640003F5657 /* NSData+SQUAdditions.m in Sources */,
+				DEB09F7D195615EF003F5657 /* SQUGradespeedDriver.m in Sources */,
+				DEB09F7E195615F2003F5657 /* SQUDistrict.m in Sources */,
+				DEB09F8F1956167B003F5657 /* AFSecurityPolicy.m in Sources */,
+				DEB09F9919561683003F5657 /* UIProgressView+AFNetworking.m in Sources */,
+				DEB09F8219561603003F5657 /* NSDate+RelativeDate.m in Sources */,
+				DEB09F8A1956166F003F5657 /* Lockbox.m in Sources */,
+				DEB09F81195615FB003F5657 /* SQUDistrictAISD.m in Sources */,
+				DEB09F8C1956167B003F5657 /* AFHTTPRequestOperationManager.m in Sources */,
+				DEB09F891956166B003F5657 /* XPathQuery.m in Sources */,
+				DEB09F7B195615EA003F5657 /* SQUGradebookDriver.m in Sources */,
+				DEB09F8819561668003F5657 /* TFHppleElement.m in Sources */,
 				DE0FE1E4195536DD003346D8 /* SQUNotifWidgetController.m in Sources */,
+				DEB09F8619561657003F5657 /* NSMutableURLRequest+POSTGenerator.m in Sources */,
+				DEB09F851956164D003F5657 /* NSURL+RequestParams.m in Sources */,
+				DEB09F7F195615F6003F5657 /* SQUDistrictManager.m in Sources */,
+				DEB09F911956167B003F5657 /* AFURLRequestSerialization.m in Sources */,
+				DEB09F8B1956167B003F5657 /* AFHTTPRequestOperation.m in Sources */,
+				DEB09F9519561683003F5657 /* UIActivityIndicatorView+AFNetworking.m in Sources */,
+				DEB09F921956167B003F5657 /* AFURLResponseSerialization.m in Sources */,
+				DEB09F8719561665003F5657 /* TFHpple.m in Sources */,
+				DEB09FA3195617B6003F5657 /* SQUPersistence.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1703,6 +1797,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CODE_SIGN_ENTITLEMENTS = NotificationWidget/co.squee.quickhac.NotificationWidget.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -1712,11 +1807,17 @@
 				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Applications/Xcode6-Beta.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include",
+					"$(SDKROOT)/usr/include/libxml2/**",
+				);
 				INFOPLIST_FILE = NotificationWidget/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				METAL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_NAME = "co.squee.quickhac.$(TARGET_NAME:rfc1034identifier)";
+				PROVISIONING_PROFILE = "";
 				SKIP_INSTALL = YES;
 			};
 			name = Debug;
@@ -1725,16 +1826,23 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CODE_SIGN_ENTITLEMENTS = NotificationWidget/co.squee.quickhac.NotificationWidget.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Applications/Xcode6-Beta.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include",
+					"$(SDKROOT)/usr/include/libxml2/**",
+				);
 				INFOPLIST_FILE = NotificationWidget/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				METAL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "co.squee.quickhac.$(TARGET_NAME:rfc1034identifier)";
+				PROVISIONING_PROFILE = "";
 				SKIP_INSTALL = YES;
 			};
 			name = Release;

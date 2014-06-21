@@ -6,9 +6,9 @@
 //  See README.MD for licensing and copyright information.
 //
 
+#import "SQUPersistence.h"
 #import "SQUCoreData.h"
 #import "SQUGradeManager.h"
-#import "SQUAppDelegate.h"
 #import "SQUSettingsGPAOptionsController.h"
 
 #import <QuickDialog.h>
@@ -41,7 +41,7 @@
 		toggle.onValueChanged = ^(QRootElement *root) {
 			tempCourse.isHonours = @(tempToggle.boolValue);
 			_shouldSaveDB = YES;
-			// [[SQUAppDelegate sharedDelegate] saveContext];
+			// [[SQUPersistence sharedInstance] saveContext];
 		};
 		
 		[section addElement:toggle];
@@ -61,7 +61,7 @@
 		toggle.onValueChanged = ^(QRootElement *root) {
 			tempCourse.isExcludedFromGPA = @(tempToggle.boolValue);
 			_shouldSaveDB = YES;
-			// [[SQUAppDelegate sharedDelegate] saveContext];
+			// [[SQUPersistence sharedInstance] saveContext];
 		};
 		
 		[section addElement:toggle];
@@ -84,7 +84,7 @@
 	
 	// Save to DB
 	NSError *err = nil;
-	if(![[SQUAppDelegate sharedDelegate].managedObjectContext save:&err]) {
+	if(![[SQUPersistence sharedInstance].managedObjectContext save:&err]) {
 		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Database Error", nil) message:err.localizedDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
 		[alert show];
 	} else {

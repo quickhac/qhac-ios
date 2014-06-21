@@ -8,6 +8,7 @@
 
 #import "SQUGradebookDriver.h"
 
+#import <CoreData/CoreData.h>
 #import <Foundation/Foundation.h>
 
 #define SQUGradesDataUpdatedNotification @"SQUGradesDataUpdatedNotification"
