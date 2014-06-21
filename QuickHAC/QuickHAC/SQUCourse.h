@@ -2,7 +2,7 @@
 //  SQUCourse.h
 //  QuickHAC
 //
-//  Created by Tristan Seifert on 1/13/14.
+//  Created by Tristan Seifert on 6/20/14.
 //  See README.MD for licensing and copyright information.
 //
 
@@ -13,6 +13,7 @@
 
 @interface SQUCourse : NSManagedObject
 
+@property (nonatomic, retain) NSNumber * last_viewed_cycle;
 @property (nonatomic, retain) NSString * courseCode;
 @property (nonatomic, retain) NSNumber * isExcludedFromGPA;
 @property (nonatomic, retain) NSNumber * isHonours;

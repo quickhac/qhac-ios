@@ -77,6 +77,8 @@ static SQUCrashHandler *_sharedInstance = nil;
  * crash report.
  */
 - (BOOL) installCrashHandlerWithRootView:(UIViewController *) rootView {
+	return NO;
+	
 	_rootView = rootView;
 	
 	PLCrashReporter *crashReporter = [PLCrashReporter sharedReporter];

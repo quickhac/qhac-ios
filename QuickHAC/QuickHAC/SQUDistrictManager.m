@@ -510,6 +510,10 @@ static SQUDistrictManager *_sharedInstance = nil;
 			
 			_lastRequest = [NSDate date];
 		} else {
+			/*
+			 * Usually, the error here is "could not decode student id," which
+			 * means we just have to log in again and hope everything works.
+			 */
 			callback([NSError errorWithDomain:@"SQUDistrictManagerErrorDomain" code:kSQUDistrictManagerErrorInvalidDataReceived userInfo:@{@"localizedDescription" : NSLocalizedString(@"The gradebook returned invalid data.", nil)}], nil);
 		}
 	};

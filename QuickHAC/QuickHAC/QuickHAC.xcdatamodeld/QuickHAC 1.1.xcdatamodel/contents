@@ -23,6 +23,7 @@
         <attribute name="courseCode" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="isExcludedFromGPA" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="isHonours" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="last_viewed_cycle" optional="YES" attributeType="Integer 16" defaultValueString="-1" syncable="YES"/>
         <attribute name="period" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="teacher_email" attributeType="String" indexed="YES" syncable="YES"/>
         <attribute name="teacher_name" attributeType="String" indexed="YES" spotlightIndexingEnabled="YES" syncable="YES"/>
@@ -69,7 +70,7 @@
     <elements>
         <element name="SQUAssignment" positionX="286" positionY="-117" width="128" height="180"/>
         <element name="SQUCategory" positionX="108" positionY="-72" width="128" height="135"/>
-        <element name="SQUCourse" positionX="-279" positionY="-144" width="128" height="208"/>
+        <element name="SQUCourse" positionX="-279" positionY="-144" width="128" height="210"/>
         <element name="SQUCycle" positionX="-65" positionY="-144" width="128" height="210"/>
         <element name="SQUSemester" positionX="-74" positionY="90" width="128" height="150"/>
         <element name="SQUStudent" positionX="-468" positionY="-144" width="128" height="210"/>

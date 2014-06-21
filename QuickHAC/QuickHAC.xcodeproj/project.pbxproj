@@ -24,6 +24,10 @@
 		DE0615E617891E0C004B2877 /* SVProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0615E417891E0C004B2877 /* SVProgressHUD.m */; };
 		DE08210618ABCC5F00A76A21 /* SQUClassDetailHeaderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DE08210518ABCC5F00A76A21 /* SQUClassDetailHeaderCell.m */; };
 		DE0A58AB188CEEC8001A5D17 /* blurry_bg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DE0A58AA188CEEC8001A5D17 /* blurry_bg.jpg */; };
+		DE0FE1DE195536DD003346D8 /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE0FE1DD195536DD003346D8 /* NotificationCenter.framework */; };
+		DE0FE1E4195536DD003346D8 /* SQUNotifWidgetController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0FE1E3195536DD003346D8 /* SQUNotifWidgetController.m */; };
+		DE0FE1E6195536DD003346D8 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE0FE1E5195536DD003346D8 /* MainInterface.storyboard */; };
+		DE0FE1EA195536DD003346D8 /* co.squee.quickhac.NotificationWidget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = DE0FE1DC195536DD003346D8 /* co.squee.quickhac.NotificationWidget.appex */; };
 		DE2843DE18760E3D0000756C /* SQUGradebookDriver.m in Sources */ = {isa = PBXBuildFile; fileRef = DE2843DD18760E3D0000756C /* SQUGradebookDriver.m */; };
 		DE2843E118760FD80000756C /* SQUGradespeedDriver.m in Sources */ = {isa = PBXBuildFile; fileRef = DE2843E018760FD80000756C /* SQUGradespeedDriver.m */; };
 		DE2843E618764FD10000756C /* SQUStudent.m in Sources */ = {isa = PBXBuildFile; fileRef = DE2843E518764FD10000756C /* SQUStudent.m */; };
@@ -117,6 +121,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		DE0FE1E7195536DD003346D8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DE06156F17874D0C004B2877 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DE0FE1DB195536DD003346D8;
+			remoteInfo = NotificationWidget;
+		};
+		DE0FE1EB195536DD003346D8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DE06156F17874D0C004B2877 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DE0FE1DB195536DD003346D8;
+			remoteInfo = NotificationWidget;
+		};
 		DE4B3C9518D918BF00A6B5F9 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = DE4B3C8218D918BF00A6B5F9 /* CrashReporter.xcodeproj */;
@@ -259,6 +277,20 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		DE0FE1E9195536DD003346D8 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				DE0FE1EA195536DD003346D8 /* co.squee.quickhac.NotificationWidget.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		DE05E5A718846139008F89F5 /* SQUCourse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUCourse.h; sourceTree = "<group>"; };
 		DE05E5A818846139008F89F5 /* SQUCourse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUCourse.m; sourceTree = "<group>"; };
@@ -288,6 +320,13 @@
 		DE08210518ABCC5F00A76A21 /* SQUClassDetailHeaderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUClassDetailHeaderCell.m; sourceTree = "<group>"; };
 		DE0A58A8188CE02E001A5D17 /* SQUColourScheme.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SQUColourScheme.h; sourceTree = "<group>"; };
 		DE0A58AA188CEEC8001A5D17 /* blurry_bg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = blurry_bg.jpg; path = assets/miscellaneous/blurry_bg.jpg; sourceTree = SOURCE_ROOT; };
+		DE0FE1DC195536DD003346D8 /* co.squee.quickhac.NotificationWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = co.squee.quickhac.NotificationWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		DE0FE1DD195536DD003346D8 /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
+		DE0FE1E1195536DD003346D8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DE0FE1E2195536DD003346D8 /* SQUNotifWidgetController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SQUNotifWidgetController.h; sourceTree = "<group>"; };
+		DE0FE1E3195536DD003346D8 /* SQUNotifWidgetController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SQUNotifWidgetController.m; sourceTree = "<group>"; };
+		DE0FE1E5195536DD003346D8 /* MainInterface.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = MainInterface.storyboard; sourceTree = "<group>"; };
+		DE0FE1FF19553775003346D8 /* QuickHAC 1.1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "QuickHAC 1.1.xcdatamodel"; sourceTree = "<group>"; };
 		DE2843DC18760E3D0000756C /* SQUGradebookDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUGradebookDriver.h; sourceTree = "<group>"; };
 		DE2843DD18760E3D0000756C /* SQUGradebookDriver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUGradebookDriver.m; sourceTree = "<group>"; };
 		DE2843DF18760FD80000756C /* SQUGradespeedDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUGradespeedDriver.h; sourceTree = "<group>"; };
@@ -486,6 +525,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		DE0FE1D9195536DD003346D8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DE0FE1DE195536DD003346D8 /* NotificationCenter.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -495,6 +542,7 @@
 				DEF0F20718712DB100116B61 /* QuickDialog.xcodeproj */,
 				DEFFDE8C186E782D00E26423 /* PKRevealController.xcodeproj */,
 				DE06158217874D0C004B2877 /* QuickHAC */,
+				DE0FE1DF195536DD003346D8 /* Notifications Widget */,
 				DE06157917874D0C004B2877 /* Frameworks */,
 				DE06157817874D0C004B2877 /* Products */,
 			);
@@ -504,6 +552,7 @@
 			isa = PBXGroup;
 			children = (
 				DE06157717874D0C004B2877 /* QuickHAC.app */,
+				DE0FE1DC195536DD003346D8 /* co.squee.quickhac.NotificationWidget.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -525,6 +574,7 @@
 				DE06157E17874D0C004B2877 /* UIKit.framework */,
 				DE06158017874D0C004B2877 /* CoreData.framework */,
 				DE06159817874D0F004B2877 /* XCTest.framework */,
+				DE0FE1DD195536DD003346D8 /* NotificationCenter.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -641,6 +691,26 @@
 				DE0615E117891E0B004B2877 /* SVProgressHUD */,
 			);
 			name = "3rd Party";
+			sourceTree = "<group>";
+		};
+		DE0FE1DF195536DD003346D8 /* Notifications Widget */ = {
+			isa = PBXGroup;
+			children = (
+				DE0FE1E2195536DD003346D8 /* SQUNotifWidgetController.h */,
+				DE0FE1E3195536DD003346D8 /* SQUNotifWidgetController.m */,
+				DE0FE1E5195536DD003346D8 /* MainInterface.storyboard */,
+				DE0FE1E0195536DD003346D8 /* Supporting Files */,
+			);
+			name = "Notifications Widget";
+			path = NotificationWidget;
+			sourceTree = "<group>";
+		};
+		DE0FE1E0195536DD003346D8 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				DE0FE1E1195536DD003346D8 /* Info.plist */,
+			);
+			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		DE2843DA18760E070000756C /* Gradebook Drivers */ = {
@@ -1068,6 +1138,7 @@
 				DE06157417874D0C004B2877 /* Frameworks */,
 				DE0615B217874E15004B2877 /* Increase build number */,
 				DE06157517874D0C004B2877 /* Resources */,
+				DE0FE1E9195536DD003346D8 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
@@ -1076,11 +1147,30 @@
 				DE4B3CB018D918CF00A6B5F9 /* PBXTargetDependency */,
 				DEF0F21118712DC200116B61 /* PBXTargetDependency */,
 				DEFFDE93186E784800E26423 /* PBXTargetDependency */,
+				DE0FE1E8195536DD003346D8 /* PBXTargetDependency */,
+				DE0FE1EC195536DD003346D8 /* PBXTargetDependency */,
 			);
 			name = QuickHAC;
 			productName = QuickHAC;
 			productReference = DE06157717874D0C004B2877 /* QuickHAC.app */;
 			productType = "com.apple.product-type.application";
+		};
+		DE0FE1DB195536DD003346D8 /* NotificationWidget */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DE0FE1FE195536DD003346D8 /* Build configuration list for PBXNativeTarget "NotificationWidget" */;
+			buildPhases = (
+				DE0FE1D8195536DD003346D8 /* Sources */,
+				DE0FE1D9195536DD003346D8 /* Frameworks */,
+				DE0FE1DA195536DD003346D8 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = NotificationWidget;
+			productName = NotificationWidget;
+			productReference = DE0FE1DC195536DD003346D8 /* co.squee.quickhac.NotificationWidget.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -1105,6 +1195,10 @@
 								enabled = 1;
 							};
 						};
+					};
+					DE0FE1DB195536DD003346D8 = {
+						CreatedOnToolsVersion = 6.0;
+						DevelopmentTeam = 62JL7NTBQJ;
 					};
 				};
 			};
@@ -1138,6 +1232,7 @@
 			projectRoot = "";
 			targets = (
 				DE06157617874D0C004B2877 /* QuickHAC */,
+				DE0FE1DB195536DD003346D8 /* NotificationWidget */,
 			);
 		};
 /* End PBXProject section */
@@ -1277,6 +1372,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		DE0FE1DA195536DD003346D8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DE0FE1E6195536DD003346D8 /* MainInterface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
@@ -1384,9 +1487,27 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		DE0FE1D8195536DD003346D8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DE0FE1E4195536DD003346D8 /* SQUNotifWidgetController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		DE0FE1E8195536DD003346D8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DE0FE1DB195536DD003346D8 /* NotificationWidget */;
+			targetProxy = DE0FE1E7195536DD003346D8 /* PBXContainerItemProxy */;
+		};
+		DE0FE1EC195536DD003346D8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DE0FE1DB195536DD003346D8 /* NotificationWidget */;
+			targetProxy = DE0FE1EB195536DD003346D8 /* PBXContainerItemProxy */;
+		};
 		DE4B3CB018D918CF00A6B5F9 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "CrashReporter-iOS-Device";
@@ -1574,6 +1695,46 @@
 			};
 			name = Release;
 		};
+		DE0FE1ED195536DD003346D8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = NotificationWidget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				METAL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = "co.squee.quickhac.$(TARGET_NAME:rfc1034identifier)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		DE0FE1EE195536DD003346D8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = NotificationWidget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				METAL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "co.squee.quickhac.$(TARGET_NAME:rfc1034identifier)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1595,16 +1756,25 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		DE0FE1FE195536DD003346D8 /* Build configuration list for PBXNativeTarget "NotificationWidget" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DE0FE1ED195536DD003346D8 /* Debug */,
+				DE0FE1EE195536DD003346D8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
 		DE06158E17874D0D004B2877 /* QuickHAC.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				DE0FE1FF19553775003346D8 /* QuickHAC 1.1.xcdatamodel */,
 				DECFF3C6187B42D5007AFE6D /* QuickHAC CoreData Beta 2.xcdatamodel */,
 				DE06158F17874D0D004B2877 /* QuickHAC.xcdatamodel */,
 			);
-			currentVersion = DECFF3C6187B42D5007AFE6D /* QuickHAC CoreData Beta 2.xcdatamodel */;
+			currentVersion = DE0FE1FF19553775003346D8 /* QuickHAC 1.1.xcdatamodel */;
 			path = QuickHAC.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

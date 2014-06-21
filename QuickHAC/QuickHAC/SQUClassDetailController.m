@@ -6,6 +6,7 @@
 //  See README.MD for licensing and copyright information.
 //
 
+#import "SQUAppDelegate.h"
 #import "SQURelativeRefreshControl.h"
 #import "SQUClassDetailController.h"
 #import "SQUCoreData.h"
@@ -62,18 +63,37 @@
 											  action:@selector(openCyclesSwitcher:)];
 		[self.navigationItem setRightBarButtonItem:showCycleSwitcher];
 		
-		if([[NSUserDefaults standardUserDefaults] objectForKey:@"selectedCycle"] == nil) {
-			_displayCycle = 0;
-		} else {
-			// Ensure this course has data for this cycle
-			_displayCycle = [[NSUserDefaults standardUserDefaults] integerForKey:@"selectedCycle"];
+		// if -1, display latest
+		if(_course.last_viewed_cycle.integerValue == -1) {
+			_course.last_viewed_cycle = @(_course.cycles.count - 1);
 		}
 		
 		// Make sure display cycle is in range
+		_displayCycle = _course.last_viewed_cycle.unsignedIntegerValue;
+		
 		if(_course.cycles.count <= _displayCycle) {
 			_displayCycle = _course.cycles.count - 1;
 		}
 		
+		/*
+		 * Check if a given cycle makes sense for this course. For example, if
+		 * we didn't have this course during cycle 1, we wouldn't show data for
+		 * that cycle.
+		 */
+		SQUCycle *curCyc = _course.cycles[_displayCycle];
+		
+		// invalid cycle
+		if(curCyc.average.integerValue == 0) {
+			for (SQUCycle *cycle in _course.cycles) {
+				if(cycle.average.integerValue) {
+					_displayCycle = cycle.cycleIndex.unsignedIntegerValue;
+					_course.last_viewed_cycle = @(_displayCycle);
+					break;
+				}
+			}
+		}
+		
+		// get the actual cycle
 		_currentCycle = _course.cycles[_displayCycle];
     }
 	
@@ -147,7 +167,10 @@
 - (CGFloat) tableView:(UITableView *) tableView heightForRowAtIndexPath:(NSIndexPath *) indexPath {
 	if(indexPath.row == 0) {
 		return SQUClassDetailHeaderCellHeight;
-	} else if((indexPath.row + 1) != _currentCycle.categories.count) {
+	} else if(_currentCycle.categories.count == 0) {
+		NSLog(@"height for non-header category cell without categories: %@", indexPath);
+		return 0;
+	}else if((indexPath.row + 1) != _currentCycle.categories.count) {
 		return [SQUClassDetailCell cellHeightForCategory:_currentCycle.categories[indexPath.row-1]] + 16;
 	} else {
 		return [SQUClassDetailCell cellHeightForCategory:_currentCycle.categories[indexPath.row-1]] + 32;
@@ -346,6 +369,12 @@
 						[self.tableView reloadData];
 						[self changeNoDataDisplay];
 					}
+				} else if(error.code == kSQUDistrictManagerErrorInvalidDataReceived) {
+					NSLog(@"got invalid data!");
+					
+					// require a login again
+					[[SQUDistrictManager sharedInstance] setNeedsRelogon];
+					[self reloadData:sender];
 				} else {
 					UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Updating Grades", nil) message:error.localizedDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
 					[alert show];
@@ -360,7 +389,14 @@
 			
 			((SQURelativeRefreshControl *) self.refreshControl).date = _currentCycle.last_updated;
 			
-			[[NSUserDefaults standardUserDefaults] setInteger:_displayCycle forKey:@"selectedCycle"];
+			_course.last_viewed_cycle = @(_displayCycle);
+			
+			// save database
+			NSError *err = nil;
+			if(![[SQUAppDelegate sharedDelegate].managedObjectContext save:&err]) {
+				UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Database Error", nil) message:err.localizedDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
+				[alert show];
+			}
 		}];
 	}
 }
@@ -380,13 +416,15 @@
 		_emptyView = [[SQUEmptyView alloc] initWithFrame:self.tableView.frame];
 	}
 	
-	_emptyView.frame = self.tableView.frame;
+	_emptyView.frame = CGRectMake(0, 0, self.tableView.frame.size.width,
+								  self.tableView.frame.size.height);
 	
 	[self.refreshControl endRefreshing];
 	if(_currentCycle.categories.count != 0) {
 		[self.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:YES];
 	}
 	
+	[self.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
 	[self.view addSubview:_emptyView];
 	
 	// Disable scrolling
@@ -437,7 +475,13 @@
 
 		[self reloadData:chooser];
 		
-		[[NSUserDefaults standardUserDefaults] setInteger:_displayCycle forKey:@"selectedCycle"];
+		_course.last_viewed_cycle = @(_displayCycle);
+		
+		NSError *err = nil;
+		if(![[SQUAppDelegate sharedDelegate].managedObjectContext save:&err]) {
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Database Error", nil) message:err.localizedDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
+			[alert show];
+		}
 	}
 	
 	[_popover dismissPopoverAnimated:YES];

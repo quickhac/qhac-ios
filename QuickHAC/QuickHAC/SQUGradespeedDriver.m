@@ -74,6 +74,7 @@
 		returnValue[@"urlHash"] = @"";
 	}
 	
+	// handle letter grades
 	if(average == 0 && returnValue[@"urlHash"]) {
 		returnValue[@"letterGrade"] = [cell.children[0] text];
 	}
