@@ -6,6 +6,7 @@
 //  See README.MD for licensing and copyright information.
 //
 
+#import "LTHPasscodeViewController.h"
 #import "SQUSidebarController.h"
 #import "SQULoginSchoolSelector.h"
 #import "SQUGradeOverviewController.h"
@@ -33,6 +34,12 @@
 #ifdef DEBUG
 #import "TestFlight.h"
 #endif
+
+@interface SQUAppDelegate ()
+
+- (void) setUpUI;
+
+@end
 
 @implementation SQUAppDelegate
 
@@ -71,6 +78,9 @@ static SQUAppDelegate *sharedDelegate = nil;
 		
 		[[NSUserDefaults standardUserDefaults] setObject:appVersion forKey:@"lastAppVersion"];
 		[[NSUserDefaults standardUserDefaults] synchronize];
+		
+		// clear passcode when re-installing the app
+		[LTHPasscodeViewController deletePasscode];
 	}
 	
     // Used for the entire singleton thing
@@ -78,74 +88,23 @@ static SQUAppDelegate *sharedDelegate = nil;
     
     _window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
    
-	if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
-		// Set up grade overview
-		_rootViewController = [[SQUGradeOverviewController alloc] initWithStyle:UITableViewStylePlain];
-		_navController = [[UINavigationController alloc] initWithRootViewController:_rootViewController];
-		
-		// Set up sidebar menu
-		_sidebarController = [[SQUSidebarController alloc] init];
-		_sidebarNavController = [[UINavigationController alloc] initWithRootViewController:_sidebarController];
-		
-		_sidebarController.overviewController = _rootViewController;
-		
-		// Set up drawer
-		_drawerController = [PKRevealController revealControllerWithFrontViewController:_navController
-																	 leftViewController:_sidebarNavController
-																	rightViewController:nil];
-		_drawerController.animationDuration = 0.25;
-		
-		// Set up UIWindow
-		_window.rootViewController = _drawerController;
-		
-		// UI control theming
-		[[UINavigationBar appearance] setTintColor:UIColorFromRGB(kSQUColourTitle)];
-		[[UINavigationBar appearance] setBarTintColor:UIColorFromRGB(kSQUColourNavbarBG)];
-		[[UINavigationBar appearance] setBackgroundColor:UIColorFromRGB(kSQUColourNavbarBG)];
-		[[UINavigationBar appearance] setTitleTextAttributes:@{
-															   NSForegroundColorAttributeName: UIColorFromRGB(kSQUColourTitle),
-															   NSFontAttributeName: [UIFont fontWithName:@"HelveticaNeue-Medium" size:0.0],
-															   }];
-		[[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"navbar_bg"] forBarMetrics:UIBarMetricsDefault];
-		
-		// Light status bar
-		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-		
-		// Popover
-		
-		WYPopoverBackgroundView* popoverAppearance = [WYPopoverBackgroundView appearance];
-		[popoverAppearance setFillTopColor:UIColorFromRGB(kSQUColourNavbarBG)];
-		[popoverAppearance setFillBottomColor:UIColorFromRGB(kSQUColourNavbarBG)];
-	} else {
-		// Set up iPad UI
-		_ipadSidebar = [[SQUTabletSidebarController alloc] initWithStyle:UITableViewStyleGrouped];
-		_ipadSidebarWrapper = [[UINavigationController alloc] initWithRootViewController:_ipadSidebar];
-		
-		// Initialise split view
-		_ipadSplitController = [[SQUSplitViewController alloc] init];
-		_ipadSplitController.delegate = self;
-		_ipadSplitController.presentsWithGesture = YES;
-		_ipadSplitController.viewControllers = @[_ipadSidebarWrapper, [[UINavigationController alloc] init]];
-		
-		_window.rootViewController = _ipadSplitController;
-		
-		// Set up iPad appearances
-		[[UINavigationBar appearance] setTintColor:UIColorFromRGB(kSQUColourTitle)];
-		[[UINavigationBar appearance] setBarTintColor:UIColorFromRGB(kSQUColourNavbarBG)];
-		[[UINavigationBar appearance] setBackgroundColor:UIColorFromRGB(kSQUColourNavbarBG)];
-		[[UINavigationBar appearance] setTitleTextAttributes:@{
-															   NSForegroundColorAttributeName: UIColorFromRGB(kSQUColourTitle),
-															   NSFontAttributeName: [UIFont fontWithName:@"HelveticaNeue-Medium" size:0.0],
-															   }];
-		[[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"navbar_bg"] forBarMetrics:UIBarMetricsDefault];
-	}
+	[self setUpUI];
 	
     _window.backgroundColor = UIColorFromRGB(0xECF0F1);
 	[_window makeKeyAndVisible];
 	
+	[LTHPasscodeViewController sharedUser].maxNumberOfAllowedFailedAttempts = 10;
+	
+	// passcode lock
+	if([LTHPasscodeViewController doesPasscodeExist]) {
+		[[LTHPasscodeViewController sharedUser] showLockScreenWithAnimation:NO
+																 withLogout:NO
+															 andLogoutTitle:nil];
+	}
+	
 	// Install crash handler
-	BOOL pendingCrashReport = [[SQUCrashHandler sharedInstance]
-							   installCrashHandlerWithRootView:_rootViewController];
+	__block BOOL pendingCrashReport = [[SQUCrashHandler sharedInstance]
+									   installCrashHandlerWithRootView:_rootViewController];
 	
 	// TODO: Check if user enabled push
 	if(false) {
@@ -158,107 +117,109 @@ static SQUAppDelegate *sharedDelegate = nil;
 	// Set up automagical network indicator management
 	[[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
 	
-	// Check for students in the database
-    NSManagedObjectContext *context = [self managedObjectContext];
-    NSError *db_err = nil;
-    
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"SQUStudent" inManagedObjectContext:context];
-    [fetchRequest setEntity:entity];
-    NSArray *students = [context executeFetchRequest:fetchRequest error:&db_err];
-    
-    // If there is at least one student object, we're logged in.
-    if(students.count == 0) {
-		if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
-			SQULoginSchoolSelector *loginController = [[SQULoginSchoolSelector alloc] initWithStyle:UITableViewStyleGrouped];
-			[_navController presentViewController:[[UINavigationController alloc] initWithRootViewController:loginController] animated:NO completion:NULL];
+	dispatch_async(dispatch_get_main_queue(), ^{
+		// Check for students in the database
+		NSManagedObjectContext *context = [self managedObjectContext];
+		NSError *db_err = nil;
+		
+		NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+		NSEntityDescription *entity = [NSEntityDescription entityForName:@"SQUStudent" inManagedObjectContext:context];
+		[fetchRequest setEntity:entity];
+		NSArray *students = [context executeFetchRequest:fetchRequest error:&db_err];
+		
+		// If there is at least one student object, we're logged in.
+		if(students.count == 0) {
+			if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+				SQULoginSchoolSelector *loginController = [[SQULoginSchoolSelector alloc] initWithStyle:UITableViewStyleGrouped];
+				[_navController presentViewController:[[UINavigationController alloc] initWithRootViewController:loginController] animated:NO completion:NULL];
+			} else {
+				// iPad login UI
+				SQUTabletLoginController *loginController = [[SQUTabletLoginController alloc] init];
+				[_ipadSplitController presentViewController:[[UINavigationController alloc] initWithRootViewController:loginController] animated:NO completion:NULL];
+			}
 		} else {
-			// iPad login UI
-			SQUTabletLoginController *loginController = [[SQUTabletLoginController alloc] init];
-			[_ipadSplitController presentViewController:[[UINavigationController alloc] initWithRootViewController:loginController] animated:NO completion:NULL];
-		}
-    } else {
-		// Show the passcode lock, if passcode is enabled
-/*		if([[NSUserDefaults standardUserDefaults] boolForKey:@"passcodeEnabled"]) {
-			[[LTHPasscodeViewController sharedUser] setDelegate:self];
-			[[LTHPasscodeViewController sharedUser] showLockScreenWithAnimation:YES];
-		}*/
-		
-		NSUInteger selectedStudent = [students indexOfObject:[[SQUGradeManager sharedInstance] getSelectedStudent]];
-		
-		// Ensure that the index is in bounds
-		if(selectedStudent > students.count) {
-			selectedStudent = 0;
-			[[SQUGradeManager sharedInstance] changeSelectedStudent:students[selectedStudent]];
-		} else {
-			[[SQUGradeManager sharedInstance] changeSelectedStudent:students[selectedStudent]];
-		}
-		
-        SQUStudent *student = students[selectedStudent];
-        
-        // Fetch username/pw from keychain
-        NSString *username, *password/*, *studentID*/;
-        
-		username = student.hacUsername;
-        password = [Lockbox stringForKey:username];
-		//studentID = student.student_id;
-        
-		// This ensures we can see cached data while the new data is fetched
-		if(![[SQUDistrictManager sharedInstance] selectDistrictWithID:student.district.integerValue]) {
-			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Invalid District", nil) message:NSLocalizedString(@"The student record selected is not using a district supported by qHAC.", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
-			[alert show];
+			// Show the passcode lock, if passcode is enabled
+			/*		if([[NSUserDefaults standardUserDefaults] boolForKey:@"passcodeEnabled"]) {
+			 [[LTHPasscodeViewController sharedUser] setDelegate:self];
+			 [[LTHPasscodeViewController sharedUser] showLockScreenWithAnimation:YES];
+			 }*/
 			
-			// Delete from the database
-			[context deleteObject:student];
+			NSUInteger selectedStudent = [students indexOfObject:[[SQUGradeManager sharedInstance] getSelectedStudent]];
 			
-			// Pop up the login controller.
-			SQULoginSchoolSelector *loginController = [[SQULoginSchoolSelector alloc] initWithStyle:UITableViewStyleGrouped];
-			[_navController presentViewController:[[UINavigationController alloc] initWithRootViewController:loginController] animated:NO completion:NULL];
-		} else {
-			[[SQUGradeManager sharedInstance] setStudent:student];
-			[[SQUDistrictManager sharedInstance] selectDistrictWithID:student.district.integerValue];
-			[[NSNotificationCenter defaultCenter] postNotificationName:SQUGradesDataUpdatedNotification object:nil];
-		}
-		
-		// Ensure current user isn't corrupted
-		if(!username || !password) {
-			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Invalid Data", nil) message:NSLocalizedString(@"The current user contains invalid data, and therefore cached data is being shown. Please re-install QuickHAC.", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
-			[alert show];
+			// Ensure that the index is in bounds
+			if(selectedStudent > students.count) {
+				selectedStudent = 0;
+				[[SQUGradeManager sharedInstance] changeSelectedStudent:students[selectedStudent]];
+			} else {
+				[[SQUGradeManager sharedInstance] changeSelectedStudent:students[selectedStudent]];
+			}
 			
-			pendingCrashReport = YES;
-		}
-		
-		// Update data if there's no pending crash report
-		if(!pendingCrashReport) {
-			// Ask the current district instance to do a log in to validate our session is still valid
-			[[SQUDistrictManager sharedInstance] performLoginRequestWithUser:username usingPassword:password andCallback:^(NSError *error, id returnData) {
-				if(!error) {
-					if(!returnData) {
-						[SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Wrong Credentials", nil)];
-						
-						// Tell the user what happened
-						UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Authenticating", nil) message:NSLocalizedString(@"Your username or password were rejected by HAC. Please update your password, if it was changed, and try again.", nil) delegate:self cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:/*NSLocalizedString(@"Settings", nil),*/ nil];
-						alert.tag = kSQUAlertChangePassword;
-						[alert show];
+			SQUStudent *student = students[selectedStudent];
+			
+			// Fetch username/pw from keychain
+			NSString *username, *password/*, *studentID*/;
+			
+			username = student.hacUsername;
+			password = [Lockbox stringForKey:username];
+			//studentID = student.student_id;
+			
+			// This ensures we can see cached data while the new data is fetched
+			if(![[SQUDistrictManager sharedInstance] selectDistrictWithID:student.district.integerValue]) {
+				UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Invalid District", nil) message:NSLocalizedString(@"The student record selected is not using a district supported by qHAC.", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
+				[alert show];
+				
+				// Delete from the database
+				[context deleteObject:student];
+				
+				// Pop up the login controller.
+				SQULoginSchoolSelector *loginController = [[SQULoginSchoolSelector alloc] initWithStyle:UITableViewStyleGrouped];
+				[_navController presentViewController:[[UINavigationController alloc] initWithRootViewController:loginController] animated:NO completion:NULL];
+			} else {
+				[[SQUGradeManager sharedInstance] setStudent:student];
+				[[SQUDistrictManager sharedInstance] selectDistrictWithID:student.district.integerValue];
+				[[NSNotificationCenter defaultCenter] postNotificationName:SQUGradesDataUpdatedNotification object:nil];
+			}
+			
+			// Ensure current user isn't corrupted
+			if(!username || !password) {
+				UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Invalid Data", nil) message:NSLocalizedString(@"The current user contains invalid data, and therefore cached data is being shown. Please re-install QuickHAC.", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
+				[alert show];
+				
+				pendingCrashReport = YES;
+			}
+			
+			// Update data if there's no pending crash report
+			if(!pendingCrashReport) {
+				// Ask the current district instance to do a log in to validate our session is still valid
+				[[SQUDistrictManager sharedInstance] performLoginRequestWithUser:username usingPassword:password andCallback:^(NSError *error, id returnData) {
+					if(!error) {
+						if(!returnData) {
+							[SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Wrong Credentials", nil)];
+							
+							// Tell the user what happened
+							UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Authenticating", nil) message:NSLocalizedString(@"Your username or password were rejected by HAC. Please update your password, if it was changed, and try again.", nil) delegate:self cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:/*NSLocalizedString(@"Settings", nil),*/ nil];
+							alert.tag = kSQUAlertChangePassword;
+							[alert show];
+						} else {
+							// Login succeeded, so we can do a fetch of grades.
+							[[SQUGradeManager sharedInstance] fetchNewClassGradesFromServerWithDoneCallback:^(NSError *err) {
+								[[NSNotificationCenter defaultCenter] postNotificationName:SQUGradesDataUpdatedNotification object:nil];
+							}];
+						}
 					} else {
-						// Login succeeded, so we can do a fetch of grades.
-						[[SQUGradeManager sharedInstance] fetchNewClassGradesFromServerWithDoneCallback:^(NSError *err) {
-							[[NSNotificationCenter defaultCenter] postNotificationName:SQUGradesDataUpdatedNotification object:nil];
-						}];
+						[SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Error", nil)];
+						
+						UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Authenticating", nil) message:error.localizedDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
+						[alert show];
 					}
-				} else {
-					[SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Error", nil)];
-					
-					UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Authenticating", nil) message:error.localizedDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
-					[alert show];
-				}
-			}];
-		} else {
-			// Just show cached data.
-			NSLog(@"Have crash report, showing cached data");
-			[[NSNotificationCenter defaultCenter] postNotificationName:SQUGradesDataUpdatedNotification object:nil];
+				}];
+			} else {
+				// Just show cached data.
+				NSLog(@"Have crash report, showing cached data");
+				[[NSNotificationCenter defaultCenter] postNotificationName:SQUGradesDataUpdatedNotification object:nil];
+			}
 		}
-    }
+	});
 	
     return YES;
 }
@@ -422,6 +383,74 @@ static SQUAppDelegate *sharedDelegate = nil;
 - (void) splitViewController:(UISplitViewController *) svc willShowViewController:(UIViewController *) aViewController invalidatingBarButtonItem:(UIBarButtonItem *) barButtonItem {
 	UINavigationController *nav = svc.viewControllers[1];
 	nav.topViewController.navigationItem.leftBarButtonItem = nil;
+}
+
+#pragma mark - UI
+/**
+ * Creates the controllers for the user interface.
+ */
+- (void) setUpUI {
+	if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+		// Set up grade overview
+		_rootViewController = [[SQUGradeOverviewController alloc] initWithStyle:UITableViewStylePlain];
+		_navController = [[UINavigationController alloc] initWithRootViewController:_rootViewController];
+		
+		// Set up sidebar menu
+		_sidebarController = [[SQUSidebarController alloc] init];
+		_sidebarNavController = [[UINavigationController alloc] initWithRootViewController:_sidebarController];
+		
+		_sidebarController.overviewController = _rootViewController;
+		
+		// Set up drawer
+		_drawerController = [PKRevealController revealControllerWithFrontViewController:_navController
+																	 leftViewController:_sidebarNavController
+																	rightViewController:nil];
+		_drawerController.animationDuration = 0.25;
+		
+		// Set up UIWindow
+		_window.rootViewController = _drawerController;
+		
+		// UI control theming
+		[[UINavigationBar appearance] setTintColor:UIColorFromRGB(kSQUColourTitle)];
+		[[UINavigationBar appearance] setBarTintColor:UIColorFromRGB(kSQUColourNavbarBG)];
+		[[UINavigationBar appearance] setBackgroundColor:UIColorFromRGB(kSQUColourNavbarBG)];
+		[[UINavigationBar appearance] setTitleTextAttributes:@{
+															   NSForegroundColorAttributeName: UIColorFromRGB(kSQUColourTitle),
+															   NSFontAttributeName: [UIFont fontWithName:@"HelveticaNeue-Medium" size:0.0],
+															   }];
+		[[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"navbar_bg"] forBarMetrics:UIBarMetricsDefault];
+		
+		// Light status bar
+		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+		
+		// Popover
+		
+		WYPopoverBackgroundView* popoverAppearance = [WYPopoverBackgroundView appearance];
+		[popoverAppearance setFillTopColor:UIColorFromRGB(kSQUColourNavbarBG)];
+		[popoverAppearance setFillBottomColor:UIColorFromRGB(kSQUColourNavbarBG)];
+	} else {
+		// Set up iPad UI
+		_ipadSidebar = [[SQUTabletSidebarController alloc] initWithStyle:UITableViewStyleGrouped];
+		_ipadSidebarWrapper = [[UINavigationController alloc] initWithRootViewController:_ipadSidebar];
+		
+		// Initialise split view
+		_ipadSplitController = [[SQUSplitViewController alloc] init];
+		_ipadSplitController.delegate = self;
+		_ipadSplitController.presentsWithGesture = YES;
+		_ipadSplitController.viewControllers = @[_ipadSidebarWrapper, [[UINavigationController alloc] init]];
+		
+		_window.rootViewController = _ipadSplitController;
+		
+		// Set up iPad appearances
+		[[UINavigationBar appearance] setTintColor:UIColorFromRGB(kSQUColourTitle)];
+		[[UINavigationBar appearance] setBarTintColor:UIColorFromRGB(kSQUColourNavbarBG)];
+		[[UINavigationBar appearance] setBackgroundColor:UIColorFromRGB(kSQUColourNavbarBG)];
+		[[UINavigationBar appearance] setTitleTextAttributes:@{
+															   NSForegroundColorAttributeName: UIColorFromRGB(kSQUColourTitle),
+															   NSFontAttributeName: [UIFont fontWithName:@"HelveticaNeue-Medium" size:0.0],
+															   }];
+		[[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"navbar_bg"] forBarMetrics:UIBarMetricsDefault];
+	}
 }
 
 @end

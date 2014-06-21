@@ -450,4 +450,10 @@
 	return @(gpa);
 }
 
+#pragma mark - Stubs
+
+- (BOOL) hasPostLoginRequest {
+	return NO;
+}
+
 @end

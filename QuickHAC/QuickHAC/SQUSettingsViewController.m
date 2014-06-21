@@ -6,6 +6,7 @@
 //  See README.MD for licensing and copyright information.
 //
 
+#import "SQUSettingsSecurity.h"
 #import "SQUSettingsStudents.h"
 #import "LTHPasscodeViewController.h"
 #import "Testflight.h"
@@ -57,7 +58,7 @@
     // Return the number of rows in the section.
 	switch(section) {
 		case 0:
-			return 2;
+			return 3;
 			break;
 			
 		case 1:
@@ -78,10 +79,10 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCell" forIndexPath:indexPath];
 	
 	if(indexPath.section == 0) {
-		NSArray *titles = @[NSLocalizedString(@"General", @"settings"), NSLocalizedString(@"Students", @"settings"), NSLocalizedString(@"Hidden Courses", @"settings"), NSLocalizedString(@"Security", @"settings")];
+		NSArray *titles = @[NSLocalizedString(@"General", @"settings"), NSLocalizedString(@"Students", @"settings"), NSLocalizedString(@"Security", @"settings")];
 		cell.textLabel.text = titles[indexPath.row];
 		
-		NSArray *iconImage = @[@"settings_icon_general", @"settings_icon_students", @"settings_icon_import", @"settings_icon_security"];
+		NSArray *iconImage = @[@"settings_icon_general", @"settings_icon_students", @"settings_icon_security"];
 		
 		cell.imageView.image = [UIImage imageNamed:iconImage[indexPath.row]];
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -118,6 +119,15 @@
 					if(setting) {
 						[self.navigationController pushViewController:setting animated:YES];
 					}
+					break;
+				}
+					
+				case 2: {
+					SQUSettingsSecurity *setting = [[SQUSettingsSecurity alloc] init];
+					if(setting) {
+						[self.navigationController pushViewController:setting animated:YES];
+					}
+
 					break;
 				}
 					
@@ -220,31 +230,6 @@
 #pragma mark - UI callbacks
 - (void) closeModal:(id) sender {
 	[self dismissViewControllerAnimated:YES completion:NULL];
-}
-
-#pragma mark - Passcode alert
-- (void)alertView:(UIAlertView *) alertView clickedButtonAtIndex:(NSInteger) buttonIndex {
-	if(alertView.tag == kSQUSettingsPasscode) {
-		if([[NSUserDefaults standardUserDefaults] boolForKey:@"passcodeEnabled"]) {
-			
-		} else {
-			// Enable passcode
-			NSLog(@"Button: %ld", (long)buttonIndex);
-			
-			if(buttonIndex == 1) {
-				[[LTHPasscodeViewController sharedUser] setDelegate:self];
-				[[LTHPasscodeViewController sharedUser] showForEnablingPasscodeInViewController:self];
-			}
-		}
-	}
-}
-
-- (void) passcodeViewControllerWasDismissed {
-	NSLog(@"Dismissed passcode view");
-}
-
-- (void)passcodeWasEnteredSuccessfully {
-	NSLog(@"Passcode entered successful !!!");
 }
 
 #ifdef DEBUG

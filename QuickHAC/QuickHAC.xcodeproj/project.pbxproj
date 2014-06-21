@@ -28,6 +28,9 @@
 		DE0FE1E4195536DD003346D8 /* SQUNotifWidgetController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0FE1E3195536DD003346D8 /* SQUNotifWidgetController.m */; };
 		DE0FE1E6195536DD003346D8 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE0FE1E5195536DD003346D8 /* MainInterface.storyboard */; };
 		DE0FE1EA195536DD003346D8 /* co.squee.quickhac.NotificationWidget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = DE0FE1DC195536DD003346D8 /* co.squee.quickhac.NotificationWidget.appex */; };
+		DE0FE2041955413E003346D8 /* districtNotListed.rtf in Resources */ = {isa = PBXBuildFile; fileRef = DE0FE2031955413E003346D8 /* districtNotListed.rtf */; };
+		DE0FE20A1955445D003346D8 /* LTHKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0FE2071955445D003346D8 /* LTHKeychainUtils.m */; };
+		DE0FE20B1955445D003346D8 /* LTHPasscodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0FE2091955445D003346D8 /* LTHPasscodeViewController.m */; };
 		DE2843DE18760E3D0000756C /* SQUGradebookDriver.m in Sources */ = {isa = PBXBuildFile; fileRef = DE2843DD18760E3D0000756C /* SQUGradebookDriver.m */; };
 		DE2843E118760FD80000756C /* SQUGradespeedDriver.m in Sources */ = {isa = PBXBuildFile; fileRef = DE2843E018760FD80000756C /* SQUGradespeedDriver.m */; };
 		DE2843E618764FD10000756C /* SQUStudent.m in Sources */ = {isa = PBXBuildFile; fileRef = DE2843E518764FD10000756C /* SQUStudent.m */; };
@@ -63,6 +66,8 @@
 		DE88318B18811F6B002244F5 /* SQUSidebarCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DE88318A18811F6B002244F5 /* SQUSidebarCell.m */; };
 		DE9CD7D018E4EE8600F3BA26 /* libCrashReporter-iphoneos.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DE4B3C9C18D918BF00A6B5F9 /* libCrashReporter-iphoneos.a */; };
 		DEAE4699187807AB008DAE0C /* NSURL+RequestParams.m in Sources */ = {isa = PBXBuildFile; fileRef = DEAE4698187807AB008DAE0C /* NSURL+RequestParams.m */; };
+		DEB09F74195602E4003F5657 /* SQUSettingsSecurity.m in Sources */ = {isa = PBXBuildFile; fileRef = DEB09F73195602E4003F5657 /* SQUSettingsSecurity.m */; };
+		DEB09F7819560338003F5657 /* SQUSecurityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DEB09F7719560338003F5657 /* SQUSecurityManager.m */; };
 		DEBA3D0F1878EECC003C209B /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DE2843EC18768D510000756C /* libTestFlight.a */; };
 		DEBA3D121878FA04003C209B /* NSData+SQUAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = DEBA3D111878FA04003C209B /* NSData+SQUAdditions.m */; };
 		DEC5954818783D69004F4BA4 /* SQUPushHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = DEC5954718783D69004F4BA4 /* SQUPushHandler.m */; };
@@ -85,10 +90,6 @@
 		DEF0F21C187156D000116B61 /* acknowledgements.rtf in Resources */ = {isa = PBXBuildFile; fileRef = DEF0F21B187156D000116B61 /* acknowledgements.rtf */; };
 		DEF0F2221871DB9800116B61 /* SQUSettingsStudents.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F2211871DB9800116B61 /* SQUSettingsStudents.m */; };
 		DEF0F2251871EEAD00116B61 /* SQUDistrictAISD.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F2241871EEAD00116B61 /* SQUDistrictAISD.m */; };
-		DEF0F23218727EA700116B61 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = DEF0F22718727EA700116B61 /* Localizable.strings */; };
-		DEF0F23318727EA700116B61 /* LTHNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F22C18727EA700116B61 /* LTHNavigationViewController.m */; };
-		DEF0F23418727EA700116B61 /* LTHPasscodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F22E18727EA700116B61 /* LTHPasscodeViewController.m */; };
-		DEF0F23518727EA700116B61 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0F23118727EA700116B61 /* SFHFKeychainUtils.m */; };
 		DEF0F2391872901C00116B61 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DEF0F2381872901C00116B61 /* libz.dylib */; };
 		DEF0F23B1872C3AC00116B61 /* settings_defaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = DEF0F23A1872C3AC00116B61 /* settings_defaults.plist */; };
 		DEF0F23E1873797400116B61 /* DistrictCerts.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DEF0F23D1873797400116B61 /* DistrictCerts.bundle */; };
@@ -327,6 +328,11 @@
 		DE0FE1E3195536DD003346D8 /* SQUNotifWidgetController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SQUNotifWidgetController.m; sourceTree = "<group>"; };
 		DE0FE1E5195536DD003346D8 /* MainInterface.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = MainInterface.storyboard; sourceTree = "<group>"; };
 		DE0FE1FF19553775003346D8 /* QuickHAC 1.1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "QuickHAC 1.1.xcdatamodel"; sourceTree = "<group>"; };
+		DE0FE2031955413E003346D8 /* districtNotListed.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = districtNotListed.rtf; sourceTree = "<group>"; };
+		DE0FE2061955445D003346D8 /* LTHKeychainUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTHKeychainUtils.h; sourceTree = "<group>"; };
+		DE0FE2071955445D003346D8 /* LTHKeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTHKeychainUtils.m; sourceTree = "<group>"; };
+		DE0FE2081955445D003346D8 /* LTHPasscodeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTHPasscodeViewController.h; sourceTree = "<group>"; };
+		DE0FE2091955445D003346D8 /* LTHPasscodeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTHPasscodeViewController.m; sourceTree = "<group>"; };
 		DE2843DC18760E3D0000756C /* SQUGradebookDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUGradebookDriver.h; sourceTree = "<group>"; };
 		DE2843DD18760E3D0000756C /* SQUGradebookDriver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUGradebookDriver.m; sourceTree = "<group>"; };
 		DE2843DF18760FD80000756C /* SQUGradespeedDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUGradespeedDriver.h; sourceTree = "<group>"; };
@@ -395,6 +401,10 @@
 		DE88318A18811F6B002244F5 /* SQUSidebarCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUSidebarCell.m; sourceTree = "<group>"; };
 		DEAE4697187807AB008DAE0C /* NSURL+RequestParams.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+RequestParams.h"; sourceTree = "<group>"; };
 		DEAE4698187807AB008DAE0C /* NSURL+RequestParams.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+RequestParams.m"; sourceTree = "<group>"; };
+		DEB09F72195602E4003F5657 /* SQUSettingsSecurity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUSettingsSecurity.h; sourceTree = "<group>"; };
+		DEB09F73195602E4003F5657 /* SQUSettingsSecurity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUSettingsSecurity.m; sourceTree = "<group>"; };
+		DEB09F7619560338003F5657 /* SQUSecurityManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUSecurityManager.h; sourceTree = "<group>"; };
+		DEB09F7719560338003F5657 /* SQUSecurityManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUSecurityManager.m; sourceTree = "<group>"; };
 		DEBA3D101878FA04003C209B /* NSData+SQUAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+SQUAdditions.h"; sourceTree = "<group>"; };
 		DEBA3D111878FA04003C209B /* NSData+SQUAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+SQUAdditions.m"; sourceTree = "<group>"; };
 		DEC5954618783D69004F4BA4 /* SQUPushHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUPushHandler.h; sourceTree = "<group>"; };
@@ -436,14 +446,6 @@
 		DEF0F2211871DB9800116B61 /* SQUSettingsStudents.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUSettingsStudents.m; sourceTree = "<group>"; };
 		DEF0F2231871EEAD00116B61 /* SQUDistrictAISD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUDistrictAISD.h; sourceTree = "<group>"; };
 		DEF0F2241871EEAD00116B61 /* SQUDistrictAISD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUDistrictAISD.m; sourceTree = "<group>"; };
-		DEF0F22818727EA700116B61 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
-		DEF0F22918727EA700116B61 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
-		DEF0F22B18727EA700116B61 /* LTHNavigationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTHNavigationViewController.h; sourceTree = "<group>"; };
-		DEF0F22C18727EA700116B61 /* LTHNavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTHNavigationViewController.m; sourceTree = "<group>"; };
-		DEF0F22D18727EA700116B61 /* LTHPasscodeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTHPasscodeViewController.h; sourceTree = "<group>"; };
-		DEF0F22E18727EA700116B61 /* LTHPasscodeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTHPasscodeViewController.m; sourceTree = "<group>"; };
-		DEF0F23018727EA700116B61 /* SFHFKeychainUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFHFKeychainUtils.h; sourceTree = "<group>"; };
-		DEF0F23118727EA700116B61 /* SFHFKeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFHFKeychainUtils.m; sourceTree = "<group>"; };
 		DEF0F2381872901C00116B61 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		DEF0F23A1872C3AC00116B61 /* settings_defaults.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = settings_defaults.plist; sourceTree = "<group>"; };
 		DEF0F23D1873797400116B61 /* DistrictCerts.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = DistrictCerts.bundle; path = assets/certs/DistrictCerts.bundle; sourceTree = SOURCE_ROOT; };
@@ -585,6 +587,7 @@
 				DE0615D017874F73004B2877 /* QuickHAC.entitlements */,
 				DE4B3C8018D9184F00A6B5F9 /* Crash Reporting */,
 				DECEA57B1877FF6C00C3D2FC /* Miscellaneous Categories */,
+				DEB09F751956032A003F5657 /* Security */,
 				DE2844041877E7010000756C /* Push Notifications */,
 				DE0615D917890813004B2877 /* HAC Interface */,
 				DE2843E718766E330000756C /* Universal UI */,
@@ -611,6 +614,7 @@
 				DE4D5BB11888CA3E00371A75 /* about.rtfd */,
 				DEF0F23D1873797400116B61 /* DistrictCerts.bundle */,
 				DEF0F21B187156D000116B61 /* acknowledgements.rtf */,
+				DE0FE2031955413E003346D8 /* districtNotListed.rtf */,
 				DE06158417874D0D004B2877 /* QuickHAC-Info.plist */,
 				DE06158517874D0D004B2877 /* InfoPlist.strings */,
 				DE3AC65A187B63D3007540A9 /* Localizable.strings */,
@@ -681,8 +685,8 @@
 		DE0615E717891E23004B2877 /* 3rd Party */ = {
 			isa = PBXGroup;
 			children = (
+				DE0FE2051955445D003346D8 /* LTHPasscodeViewController */,
 				DE2843EB18768D510000756C /* TestFlight SDK */,
-				DEF0F22618727EA700116B61 /* LTHPasscodeViewController */,
 				DEF0F1DE1870E60B00116B61 /* WYPopoverController */,
 				DE7B4E82186EB0CB008079CC /* KCOrderedAccessorFix */,
 				DE81CDD0186D50E800DC1CAB /* TFHpple (HTML Parsing) */,
@@ -711,6 +715,18 @@
 				DE0FE1E1195536DD003346D8 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		DE0FE2051955445D003346D8 /* LTHPasscodeViewController */ = {
+			isa = PBXGroup;
+			children = (
+				DE0FE2061955445D003346D8 /* LTHKeychainUtils.h */,
+				DE0FE2071955445D003346D8 /* LTHKeychainUtils.m */,
+				DE0FE2081955445D003346D8 /* LTHPasscodeViewController.h */,
+				DE0FE2091955445D003346D8 /* LTHPasscodeViewController.m */,
+			);
+			name = LTHPasscodeViewController;
+			path = ../../LTHPasscodeViewController/LTHPasscodeViewController;
 			sourceTree = "<group>";
 		};
 		DE2843DA18760E070000756C /* Gradebook Drivers */ = {
@@ -883,6 +899,15 @@
 			name = "TFHpple (HTML Parsing)";
 			sourceTree = "<group>";
 		};
+		DEB09F751956032A003F5657 /* Security */ = {
+			isa = PBXGroup;
+			children = (
+				DEB09F7619560338003F5657 /* SQUSecurityManager.h */,
+				DEB09F7719560338003F5657 /* SQUSecurityManager.m */,
+			);
+			name = Security;
+			sourceTree = "<group>";
+		};
 		DECA57C817DFD96300156AFC /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
@@ -962,21 +987,6 @@
 				DEF0F20F18712DB300116B61 /* libQuickDialog.a */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		DEF0F22618727EA700116B61 /* LTHPasscodeViewController */ = {
-			isa = PBXGroup;
-			children = (
-				DEF0F22718727EA700116B61 /* Localizable.strings */,
-				DEF0F22B18727EA700116B61 /* LTHNavigationViewController.h */,
-				DEF0F22C18727EA700116B61 /* LTHNavigationViewController.m */,
-				DEF0F22D18727EA700116B61 /* LTHPasscodeViewController.h */,
-				DEF0F22E18727EA700116B61 /* LTHPasscodeViewController.m */,
-				DEF0F23018727EA700116B61 /* SFHFKeychainUtils.h */,
-				DEF0F23118727EA700116B61 /* SFHFKeychainUtils.m */,
-			);
-			name = LTHPasscodeViewController;
-			path = ../../LTHPasscodeViewController/LTHPasscodeViewController;
 			sourceTree = "<group>";
 		};
 		DEF0F2491873FB6700116B61 /* Images */ = {
@@ -1069,6 +1079,8 @@
 				DEF0F2421873DC0600116B61 /* SQUSettingsGeneralController.m */,
 				DEF0F2441873E09400116B61 /* SQUSettingsGPAOptionsController.h */,
 				DEF0F2451873E09400116B61 /* SQUSettingsGPAOptionsController.m */,
+				DEB09F72195602E4003F5657 /* SQUSettingsSecurity.h */,
+				DEB09F73195602E4003F5657 /* SQUSettingsSecurity.m */,
 				DEECE021188C6405000EFAB8 /* Settings UI */,
 			);
 			name = Settings;
@@ -1357,7 +1369,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DEF0F23218727EA700116B61 /* Localizable.strings in Resources */,
 				DEF0F23B1872C3AC00116B61 /* settings_defaults.plist in Resources */,
 				DE3AC65C187B63D3007540A9 /* Localizable.strings in Resources */,
 				DE06158717874D0D004B2877 /* InfoPlist.strings in Resources */,
@@ -1365,6 +1376,7 @@
 				DEF0F21C187156D000116B61 /* acknowledgements.rtf in Resources */,
 				DE0A58AB188CEEC8001A5D17 /* blurry_bg.jpg in Resources */,
 				DE0615E517891E0C004B2877 /* SVProgressHUD.bundle in Resources */,
+				DE0FE2041955413E003346D8 /* districtNotListed.rtf in Resources */,
 				DE2843F318768D530000756C /* README.md in Resources */,
 				DE06159217874D0D004B2877 /* Images.xcassets in Resources */,
 				DEF0F23E1873797400116B61 /* DistrictCerts.bundle in Resources */,
@@ -1409,6 +1421,7 @@
 				DEF0F1CE186F7D9E00116B61 /* SQUClassDetailCell.m in Sources */,
 				DEF0F1E41870E60B00116B61 /* WYStoryboardPopoverSegue.m in Sources */,
 				DEFFDE5C186E270900E26423 /* UIImageView+AFNetworking.m in Sources */,
+				DE0FE20A1955445D003346D8 /* LTHKeychainUtils.m in Sources */,
 				DE3AC657187B5A37007540A9 /* NSDate+RelativeDate.m in Sources */,
 				DEFFDE45186E26FC00E26423 /* AFURLRequestSerialization.m in Sources */,
 				DE88318B18811F6B002244F5 /* SQUSidebarCell.m in Sources */,
@@ -1419,13 +1432,14 @@
 				DE2843E618764FD10000756C /* SQUStudent.m in Sources */,
 				DEFFDE59186E270900E26423 /* UIActivityIndicatorView+AFNetworking.m in Sources */,
 				DE72EBB9187A102B006F6F1A /* SQUEmptyView.m in Sources */,
-				DEF0F23318727EA700116B61 /* LTHNavigationViewController.m in Sources */,
 				DEF0F1ED187101A900116B61 /* SQUCategory.m in Sources */,
 				DE06158D17874D0D004B2877 /* SQUAppDelegate.m in Sources */,
+				DEB09F74195602E4003F5657 /* SQUSettingsSecurity.m in Sources */,
 				DEFFDE5B186E270900E26423 /* UIButton+AFNetworking.m in Sources */,
 				DE7F51D6178C8B5E00A677CE /* SQULoginSchoolSelector.m in Sources */,
 				DEF0F1E31870E60B00116B61 /* WYPopoverController.m in Sources */,
 				DEFFDE47186E26FC00E26423 /* AFURLSessionManager.m in Sources */,
+				DE0FE20B1955445D003346D8 /* LTHPasscodeViewController.m in Sources */,
 				DE06158917874D0D004B2877 /* main.m in Sources */,
 				DECEA57F1877FF8900C3D2FC /* NSMutableURLRequest+POSTGenerator.m in Sources */,
 				DEFFDE24186D881E00E26423 /* SQUDistrict.m in Sources */,
@@ -1436,7 +1450,6 @@
 				DE6F180918B91ADB00546B0E /* SQUSplitViewController.m in Sources */,
 				DE81CDD7186D517800DC1CAB /* TFHpple.m in Sources */,
 				DEF0F1BD186EE52B00116B61 /* UIColor+SQUColourUtilities.m in Sources */,
-				DEF0F23418727EA700116B61 /* LTHPasscodeViewController.m in Sources */,
 				DE81CDD9186D517800DC1CAB /* XPathQuery.m in Sources */,
 				DEECE01F188C63F8000EFAB8 /* SQUSettingsHueElement.m in Sources */,
 				DEFFDE27186D8C5F00E26423 /* SQUDistrictManager.m in Sources */,
@@ -1450,7 +1463,6 @@
 				DE2843DE18760E3D0000756C /* SQUGradebookDriver.m in Sources */,
 				DE485DD81881CEE800B215C6 /* SQUSidebarSwitcherButton.m in Sources */,
 				DE2843EA18766E840000756C /* SQULoginStudentPicker.m in Sources */,
-				DEF0F23518727EA700116B61 /* SFHFKeychainUtils.m in Sources */,
 				DEF0F1D7186FC7FA00116B61 /* SQUAssignment.m in Sources */,
 				DEF0F2461873E09400116B61 /* SQUSettingsGPAOptionsController.m in Sources */,
 				DEECE024188C6468000EFAB8 /* SQUHueSlider.m in Sources */,
@@ -1475,6 +1487,7 @@
 				DE4B3CB418D9191E00A6B5F9 /* SQUCrashHandler.m in Sources */,
 				DEF0F2431873DC0600116B61 /* SQUSettingsGeneralController.m in Sources */,
 				DEBA3D121878FA04003C209B /* NSData+SQUAdditions.m in Sources */,
+				DEB09F7819560338003F5657 /* SQUSecurityManager.m in Sources */,
 				DE6F17FF18B9127B00546B0E /* SQUTabletSidebarCell.m in Sources */,
 				DEFFDE42186E26FC00E26423 /* AFNetworkReachabilityManager.m in Sources */,
 				DEF0F2221871DB9800116B61 /* SQUSettingsStudents.m in Sources */,
@@ -1543,15 +1556,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				DE3AC65B187B63D3007540A9 /* en */,
-			);
-			name = Localizable.strings;
-			sourceTree = "<group>";
-		};
-		DEF0F22718727EA700116B61 /* Localizable.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				DEF0F22818727EA700116B61 /* de */,
-				DEF0F22918727EA700116B61 /* en */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -1763,6 +1767,7 @@
 				DE0FE1EE195536DD003346D8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
