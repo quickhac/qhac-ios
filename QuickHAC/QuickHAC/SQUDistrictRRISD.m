@@ -33,7 +33,7 @@
 - (id) init {
 	if(self = [super init]) {
 		_name = @"Round Rock ISD";
-		_driver = @"gradespeed";
+		_driver = @"plus360";
 		_examWeight = 15.0f;
 		
 		_tableOffsets.title = 0;
@@ -111,7 +111,7 @@
 	dictionary[@"request"] = [NSMutableDictionary new];
 	
 	// Request information (URL, method, etc)
-	dictionary[@"request"][@"URL"] = [NSURL URLWithString:@"https://accesscenter.roundrockisd.org/HomeAccess/content/student/gradespeed.aspx?target=https://gradebook.roundrockisd.org/pc/displaygrades.aspx"];
+	dictionary[@"request"][@"URL"] = [NSURL URLWithString:@"https://accesscenter.roundrockisd.org/HomeAccess/Content/Student/Assignments.aspx"];
 	dictionary[@"request"][@"method"] = @"GET";
 	
 	return dictionary;
@@ -127,7 +127,7 @@
 	dictionary[@"params"] = [NSMutableDictionary new];
 	
 	// Request information (URL, method, etc)
-	dictionary[@"request"][@"URL"] = [NSURL URLWithString:@"https://gradebook.roundrockisd.org/pc/displaygrades.aspx"];
+	dictionary[@"request"][@"URL"] = [NSURL URLWithString:@"https://accesscenter.roundrockisd.org/HomeAccess/Content/Student/Assignments.aspx"];
 	dictionary[@"request"][@"method"] = @"GET";
 	
 	NSArray *semesterArray = _classToHashMap[course];
@@ -332,7 +332,7 @@
 	AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
 	manager.responseSerializer = [AFHTTPResponseSerializer serializer];
 	
-	[manager HEAD:@"https://accesscenter.roundrockisd.org/homeaccess/Student/Gradespeed.aspx?target=https://gradebook.roundrockisd.org/pc/displaygrades.aspx" parameters:nil success:^(AFHTTPRequestOperation *operation) {
+	[manager HEAD:@"https://accesscenter.roundrockisd.org/HomeAccess/Content/Student/Assignments.aspx" parameters:nil success:^(AFHTTPRequestOperation *operation) {
 		callback(YES);
 	} failure:^(AFHTTPRequestOperation *operation, NSError *err) {
 		if(operation.response.statusCode != 500) {

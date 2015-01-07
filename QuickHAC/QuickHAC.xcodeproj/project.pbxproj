@@ -10,6 +10,7 @@
 		6A4B3D2E1A5CC2C3001657A0 /* TFHpple.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A4B3D291A5CC2C3001657A0 /* TFHpple.m */; };
 		6A4B3D2F1A5CC2C3001657A0 /* TFHppleElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A4B3D2B1A5CC2C3001657A0 /* TFHppleElement.m */; };
 		6A4B3D301A5CC2C3001657A0 /* XPathQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A4B3D2D1A5CC2C3001657A0 /* XPathQuery.m */; };
+		6A4B3D351A5CC898001657A0 /* SQUPlus360Driver.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A4B3D341A5CC898001657A0 /* SQUPlus360Driver.m */; };
 		D72EFD8B2C8E9D19CE82A485 /* libPods-QuickHAC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19A4F82CA93EC5C438AE07C0 /* libPods-QuickHAC.a */; };
 		DE05E5A918846139008F89F5 /* SQUCourse.m in Sources */ = {isa = PBXBuildFile; fileRef = DE05E5A818846139008F89F5 /* SQUCourse.m */; };
 		DE06157B17874D0C004B2877 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE06157A17874D0C004B2877 /* Foundation.framework */; };
@@ -222,6 +223,8 @@
 		6A4B3D2B1A5CC2C3001657A0 /* TFHppleElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFHppleElement.m; sourceTree = "<group>"; };
 		6A4B3D2C1A5CC2C3001657A0 /* XPathQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XPathQuery.h; sourceTree = "<group>"; };
 		6A4B3D2D1A5CC2C3001657A0 /* XPathQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XPathQuery.m; sourceTree = "<group>"; };
+		6A4B3D331A5CC898001657A0 /* SQUPlus360Driver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUPlus360Driver.h; sourceTree = "<group>"; };
+		6A4B3D341A5CC898001657A0 /* SQUPlus360Driver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUPlus360Driver.m; sourceTree = "<group>"; };
 		DE05E5A718846139008F89F5 /* SQUCourse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUCourse.h; sourceTree = "<group>"; };
 		DE05E5A818846139008F89F5 /* SQUCourse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUCourse.m; sourceTree = "<group>"; };
 		DE06157717874D0C004B2877 /* QuickHAC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QuickHAC.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -565,6 +568,8 @@
 			children = (
 				DE2843DF18760FD80000756C /* SQUGradespeedDriver.h */,
 				DE2843E018760FD80000756C /* SQUGradespeedDriver.m */,
+				6A4B3D331A5CC898001657A0 /* SQUPlus360Driver.h */,
+				6A4B3D341A5CC898001657A0 /* SQUPlus360Driver.m */,
 			);
 			name = "Gradebook Drivers";
 			sourceTree = "<group>";
@@ -1190,6 +1195,7 @@
 				DE6F180C18B91DAE00546B0E /* SQUDashboardCell.m in Sources */,
 				DE05E5A918846139008F89F5 /* SQUCourse.m in Sources */,
 				DE4A00D418A2E0E700C05EBC /* SQURelativeRefreshControl.m in Sources */,
+				6A4B3D351A5CC898001657A0 /* SQUPlus360Driver.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
