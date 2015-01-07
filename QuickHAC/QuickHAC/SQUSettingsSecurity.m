@@ -21,6 +21,7 @@ static __strong UINavigationController *rootNav = nil;
 
 - (id) init {
 	self = [super initWithRoot:nil];
+	__weak SQUSettingsSecurity *self_weak = self;
 	
 	// Create general settings
 	QRootElement *root = [[QRootElement alloc] init];
@@ -51,7 +52,7 @@ static __strong UINavigationController *rootNav = nil;
 	[_changeButton setEnabled:[LTHPasscodeViewController doesPasscodeExist]];
 	_changeButton.onSelected = ^{
 		if([LTHPasscodeViewController doesPasscodeExist]) {
-			[[LTHPasscodeViewController sharedUser] showForChangingPasscodeInViewController:self
+			[[LTHPasscodeViewController sharedUser] showForChangingPasscodeInViewController:self_weak
 																					asModal:YES];
 		}
 	};

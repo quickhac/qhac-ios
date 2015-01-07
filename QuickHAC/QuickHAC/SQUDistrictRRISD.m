@@ -6,8 +6,11 @@
 //  See README.MD for licensing and copyright information.
 //
 
+#import <AFNetworking/AFHTTPRequestOperation.h>
+#import <AFNetworking/AFHTTPRequestOperationManager.h>
+
 #import "TFHpple.h"
-#import "AFNetworking.h"
+#import "TFHppleElement.h"
 
 #import "SQUCoreData.h"
 #import "SQUDistrictRRISD.h"

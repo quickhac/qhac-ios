@@ -9,9 +9,9 @@
 #import "SQUAppDelegate.h"
 #import "SQUCrashHandler.h"
 
-#import "PLCrashReporter.h"
-#import "PLCrashReport.h"
-#import "PLCrashReportTextFormatter.h"
+#import <PLCrashReporter.h>
+#import <PLCrashReport.h>
+#import <PLCrashReportTextFormatter.h>
 
 #import "AFNetworking.h"
 

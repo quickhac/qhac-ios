@@ -15,7 +15,7 @@
 #import "SQUSettingsStudents.h"
 
 #import "PKRevealController.h"
-#import "SVProgressHUD.h"
+#import <KVNProgress.h>
 #import "Lockbox.h"
 
 @interface SQUSettingsStudents ()
@@ -263,7 +263,7 @@
 			
 			selectedStudent = indexPath.row;
 			
-			[SVProgressHUD showProgress:-1 status:NSLocalizedString(@"Changing Student…", nil) maskType:SVProgressHUDMaskTypeGradient];
+			[KVNProgress showWithStatus:NSLocalizedString(@"Changing Student…", nil)];
 			
 			// Update internal state to reflect new student
 			SQUStudent *student = _students[selectedStudent];
@@ -286,16 +286,16 @@
 			[[SQUDistrictManager sharedInstance] performLoginRequestWithUser:username usingPassword:password andCallback:^(NSError *error, id returnData){
 				if(!error) {
 					if(!returnData) {
-						[SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Wrong Credentials", nil)];
+						[KVNProgress showErrorWithStatus:NSLocalizedString(@"Wrong Credentials", nil)];
 						
 						// Tell the user what happened
 						UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Authenticating", nil) message:NSLocalizedString(@"Your username or password were rejected by HAC. Please update your password, if it was changed, and try again.", nil) delegate:self cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
 						[alert show];
 					} else {
 						// Login succeeded, so we can do a fetch of grades.
-						[SVProgressHUD showProgress:-1 status:NSLocalizedString(@"Updating Grades…", nil) maskType:SVProgressHUDMaskTypeGradient];
+						[KVNProgress showWithStatus:NSLocalizedString(@"Updating Grades…", nil)];
 						[[SQUGradeManager sharedInstance] fetchNewClassGradesFromServerWithDoneCallback:^(NSError *err) {
-							[SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"Done", nil)];
+							[KVNProgress showSuccessWithStatus:NSLocalizedString(@"Done", nil)];
 							[[NSNotificationCenter defaultCenter] postNotificationName:SQUGradesDataUpdatedNotification object:nil];
 							
 							// Display error
@@ -306,7 +306,7 @@
 						}];
 					}
 				} else {
-					[SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Error", nil)];
+					[KVNProgress showErrorWithStatus:NSLocalizedString(@"Error", nil)];
 					
 					UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Authenticating", nil) message:error.localizedDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
 					[alert show];

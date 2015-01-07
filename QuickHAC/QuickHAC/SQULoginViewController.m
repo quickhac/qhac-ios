@@ -8,7 +8,7 @@
 
 #import "SQUPersistence.h"
 #import "SQULoginViewController.h"
-#import "SVProgressHUD.h"
+#import <KVNProgress.h>
 #import "SQUAppDelegate.h"
 #import "SQUDistrict.h"
 #import "SQUGradeManager.h"
@@ -262,7 +262,7 @@
 	[SQUDistrictManager sharedInstance].currentDistrict = _district;
 	
 	// Set up some things
-    [SVProgressHUD showProgress:-1 status:NSLocalizedString(@"Logging In…", nil) maskType:SVProgressHUDMaskTypeGradient];
+	[KVNProgress showWithStatus:NSLocalizedString(@"Logging In…", nil)];
 	_students = [NSMutableArray new];
 	
 	// This block is called for every student that we must add.
@@ -334,7 +334,7 @@
 	[[SQUDistrictManager sharedInstance] performLoginRequestWithUser:_usernameField.text usingPassword:_passField.text andCallback:^(NSError *error, id returnData){
 		if(!error) {
 			if(!returnData) {
-				[SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Wrong Credentials", nil)];
+				[KVNProgress showErrorWithStatus:NSLocalizedString(@"Wrong Credentials", nil)];
 
 				// Restore old student state
 				if(oldStudent) {
@@ -342,7 +342,7 @@
 					[[SQUGradeManager sharedInstance] setStudent:oldStudent];
 				}
 			} else {
-				[SVProgressHUD showProgress:-1 status:NSLocalizedString(@"Adding students", nil) maskType:SVProgressHUDMaskTypeGradient];
+				[KVNProgress showWithStatus:NSLocalizedString(@"Adding students…", nil)];
 				// Store the username's password in the keychain
 				[Lockbox setString:_passField.text forKey:_usernameField.text];
 
@@ -352,14 +352,14 @@
 				// Set up login function
 				_studentLoginFunction = ^{
 					// Update grades
-					[SVProgressHUD showProgress:-1 status:NSLocalizedString(@"Updating Grades", nil) maskType:SVProgressHUDMaskTypeGradient];
+					[KVNProgress showWithStatus:NSLocalizedString(@"Updating Grades…", nil)];
 					
 					NSLog(@"fetching grades for: %@", [SQUGradeManager sharedInstance].student.name);
 					
 					// Fetch grades
 					[[SQUGradeManager sharedInstance] fetchNewClassGradesFromServerWithDoneCallback:^(NSError *error) {
 						if(!error) {
-							[SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"Done", nil)];
+							[KVNProgress showSuccessWithStatus:NSLocalizedString(@"Done", nil)];
 							
 							// Restore old student state
 							if(oldStudent) {
@@ -373,7 +373,7 @@
 							// Dismiss login view
 							[self_unsafe dismissViewControllerAnimated:YES completion:NO];
 						} else {
-							[SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Error", nil)];
+							[KVNProgress showErrorWithStatus:NSLocalizedString(@"Error", nil)];
 							
 							// Delete students added to the DB
 							for(SQUStudent *studentToDelete in self_unsafe.students) {
@@ -399,7 +399,7 @@
 				if(_students.count == 0) {
 					UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"No Students", nil) message:[NSString stringWithFormat:NSLocalizedString(@"All students on the account '%@' have already been added to QuickHAC.\nUse the sidebar to switch between them.", nil), _usernameField.text] delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
 					[alert show];
-					[SVProgressHUD dismiss];
+					[KVNProgress dismiss];
 					
 					// Restore old student state
 					if(oldStudent) {
@@ -416,7 +416,7 @@
 				
 				// Bring up a student selector if multistudent account and no students yet
 				if([SQUDistrictManager sharedInstance].currentDistrict.hasMultipleStudents && !oldStudent) {
-					[SVProgressHUD dismiss];
+					[KVNProgress dismiss];
 					
 					SQULoginStudentPicker *picker = [[SQULoginStudentPicker alloc] initWithStyle:UITableViewStyleGrouped];
 					picker.students = _students;
@@ -439,12 +439,12 @@
 						theStudent.display_name = nil;
 						[[SQUGradeManager sharedInstance] setStudent:theStudent];
 						
-						[SVProgressHUD showProgress:-1 status:NSLocalizedString(@"Updating Grades", nil) maskType:SVProgressHUDMaskTypeGradient];
+						[KVNProgress showWithStatus:NSLocalizedString(@"Updating Grades…", nil)];
 						
 						// Fetch grades
 						[[SQUGradeManager sharedInstance] fetchNewClassGradesFromServerWithDoneCallback:^(NSError *error) {
 							if(!error) {
-								[SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"Done", nil)];
+								[KVNProgress showSuccessWithStatus:NSLocalizedString(@"Done", nil)];
 								
 								// Restore old student state
 								if(oldStudent) {
@@ -465,7 +465,7 @@
 								
 								[[SQUPersistence sharedInstance] saveContext];
 								
-								[SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Error", nil)];
+								[KVNProgress showErrorWithStatus:NSLocalizedString(@"Error", nil)];
 								
 								UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Fetching Grades", nil) message:error.localizedDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
 								[alert show];
@@ -477,7 +477,7 @@
 						[[SQUDistrictManager sharedInstance] selectDistrictWithID:oldStudent.district.unsignedIntegerValue];
 						
 						// Dismiss the login controller
-						[SVProgressHUD dismiss];
+						[KVNProgress dismiss];
 						[self dismissViewControllerAnimated:YES completion:NULL];
 					}
 					
@@ -485,7 +485,7 @@
 				}
 			}
 		} else {
-            [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Error", nil)];
+            [KVNProgress showErrorWithStatus:NSLocalizedString(@"Error", nil)];
             
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Authenticating", nil) message:error.localizedDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
             [alert show];

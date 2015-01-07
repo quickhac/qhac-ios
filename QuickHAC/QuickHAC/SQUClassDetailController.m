@@ -20,7 +20,7 @@
 #import "PKRevealController.h"
 #import "AFNetworking.h"
 #import "WYPopoverController.h"
-#import "SVProgressHUD.h"
+#import <KVNProgress.h>
 
 @interface SQUClassDetailController ()
 
@@ -290,7 +290,7 @@
 	if(_currentCycle.categories.count != 0) {
 		// Hide the HUD if the last request showed it
 		if(_iCanHazCompleteReload) {
-			[SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"Grades Updated", @"class grades")];
+			[KVNProgress showSuccessWithStatus:NSLocalizedString(@"Grades Updated", @"class grades")];
 		}
 		
 		[self.tableView reloadData];
@@ -298,7 +298,7 @@
 	} else {
 		// Only pop up the HUD if the network is up
 		if([SQUDistrictManager sharedInstance].reachabilityManager.isReachable) {
-			[SVProgressHUD showProgress:-1.0 status:NSLocalizedString(@"Updating Grades…", @"class detail HUD when loading grades for first time") maskType:SVProgressHUDMaskTypeGradient];
+			[KVNProgress showProgress:-1.0 status:NSLocalizedString(@"Updating Grades…", @"class detail HUD when loading grades for first time")];
 			_iCanHazCompleteReload = YES;
 		} else {
 			NSLog(@"No connection and no data available");
@@ -346,7 +346,7 @@
 				[self.tableView reloadData];
 				
 				if(_iCanHazCompleteReload) {
-					[SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"Grades Updated", @"class grades")];
+					[KVNProgress showSuccessWithStatus:NSLocalizedString(@"Grades Updated", @"class grades")];
 				}
 			} else {
 				NSLog(@"Error updating course grades: %@", error);
@@ -363,7 +363,7 @@
 					} else {
 						// Admit defeat, we got to cycle 1 and there's no data.
 						if(_iCanHazCompleteReload) {
-							[SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"Grades Updated", @"class grades")];
+							[KVNProgress showSuccessWithStatus:NSLocalizedString(@"Grades Updated", @"class grades")];
 						}
 						
 						[self.tableView reloadData];
@@ -380,7 +380,7 @@
 					[alert show];
 					
 					if(_iCanHazCompleteReload) {
-						[SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Error", @"class grades")];
+						[KVNProgress showErrorWithStatus:NSLocalizedString(@"Error", @"class grades")];
 					}
 				}
 			}

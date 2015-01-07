@@ -11,6 +11,7 @@
 #import "SQUGradespeedDriver.h"
 
 #import "TFHpple.h"
+#import "TFHppleElement.h"
 
 #pragma mark HTML parser additions
 // Category on TFHppleElement for table
@@ -149,7 +150,8 @@
 		// If there's a link, get the part after "data"
 		if(links.count > 0) {
 			TFHppleElement *link = links[0];
-			NSString *data = [link[@"href"] componentsSeparatedByString:@"data="][1];
+			
+			NSString *data = [[link objectForKey:@"href"] componentsSeparatedByString:@"data="][1];
 			NSString *urlDecoded = (NSString *) CFBridgingRelease(CFURLCreateStringByReplacingPercentEscapes(NULL, (CFStringRef) data, CFSTR("")));
 			NSString *base64Decoded = [[NSString alloc] initWithData:[[NSData alloc] initWithBase64EncodedString:urlDecoded options:0] encoding:NSUTF8StringEncoding];
 			NSArray *components = [base64Decoded componentsSeparatedByString:@"|"];
@@ -210,7 +212,7 @@
 	dict[@"title"] = [cells[district.tableOffsets.title] text];
 	dict[@"period"] = [NSNumber numberWithInteger:[[cells[district.tableOffsets.period] text] integerValue]];
 	dict[@"teacherName"] = [teacherLink text];
-	dict[@"teacherEmail"] = [teacherLink[@"href"] substringFromIndex:7];
+	dict[@"teacherEmail"] = [[teacherLink objectForKey:@"href"] substringFromIndex:7];
 	dict[@"semesters"] = semesters;
 	
 	// Put an empty string in the dictionary if there's no course code
@@ -285,7 +287,9 @@
 		// Iterate the rows
 		for (TFHppleElement *row in rows) {
 			// Ignore all rows that do not contain data
-			if([row[@"class"] isEqualToString:@"DataRow"] || [row[@"class"] isEqualToString:@"DataRowAlt"]) {
+			NSString *class = [row objectForKey:@"class"];
+			
+			if([class isEqualToString:@"DataRow"] || [class isEqualToString:@"DataRowAlt"]) {
 				@try {
 					NSDictionary *classInfo = [self parseCourseWithDistrict:district andTableRow:row andSemesterParams:semesterParams];
 					

@@ -24,7 +24,7 @@
 #import "LTHPasscodeViewController.h"
 #import "PKRevealController.h"
 #import "AFNetworkActivityIndicatorManager.h"
-#import "SVProgressHUD.h"
+#import <KVNProgress.h>
 #import "Lockbox.h"
 #import "SQUSplitViewController.h"
 #import "WYPopoverController.h"
@@ -81,7 +81,7 @@ static SQUAppDelegate *sharedDelegate = nil;
 	
     // Used for the entire singleton thing
     sharedDelegate = self;
-    
+
     _window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
    
 	[self setUpUI];
@@ -190,7 +190,7 @@ static SQUAppDelegate *sharedDelegate = nil;
 				[[SQUDistrictManager sharedInstance] performLoginRequestWithUser:username usingPassword:password andCallback:^(NSError *error, id returnData) {
 					if(!error) {
 						if(!returnData) {
-							[SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Wrong Credentials", nil)];
+							[KVNProgress showErrorWithStatus:NSLocalizedString(@"Wrong Credentials", nil)];
 							
 							// Tell the user what happened
 							UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Authenticating", nil) message:NSLocalizedString(@"Your username or password were rejected by HAC. Please update your password, if it was changed, and try again.", nil) delegate:self cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:/*NSLocalizedString(@"Settings", nil),*/ nil];
@@ -203,7 +203,7 @@ static SQUAppDelegate *sharedDelegate = nil;
 							}];
 						}
 					} else {
-						[SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Error", nil)];
+						[KVNProgress showErrorWithStatus:NSLocalizedString(@"Error", nil)];
 						
 						UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Authenticating", nil) message:error.localizedDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil];
 						[alert show];
@@ -344,6 +344,15 @@ static SQUAppDelegate *sharedDelegate = nil;
 															   }];
 		[[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"navbar_bg"] forBarMetrics:UIBarMetricsDefault];
 	}
+	
+	// configure the KVNProgress appearance
+	KVNProgressConfiguration *configuration = [[KVNProgressConfiguration alloc] init];
+	
+	configuration.successColor = UIColorFromRGB(kSQUColourEmerald);
+	configuration.errorColor = UIColorFromRGB(kSQUColourAlizarin);
+	configuration.fullScreen = YES;
+	
+	[KVNProgress setConfiguration:configuration];
 }
 
 @end

@@ -28,12 +28,12 @@ PODS:
     - CocoaLumberjack/Core
   - CocoaLumberjack/Extensions (2.0.0-rc):
     - CocoaLumberjack/Default
-  - hpple (0.2.0)
   - KCOrderedAccessorFix (0.0.1)
   - KVNProgress (2.1.5)
   - Lockbox (2.1.0)
   - LTHPasscodeViewController (3.6.2)
   - PKRevealController (2.0.6)
+  - PLCrashReporter (1.2-rc5)
   - QuickDialog (1.0):
     - QuickDialog/Core (= 1.0)
   - QuickDialog/Core (1.0)
@@ -42,24 +42,24 @@ PODS:
 DEPENDENCIES:
   - AFNetworking (~> 2.5)
   - CocoaLumberjack (= 2.0.0-rc)
-  - hpple (~> 0.2)
   - KCOrderedAccessorFix (~> 0.0)
   - KVNProgress (~> 2.1)
   - Lockbox (~> 2.1)
   - LTHPasscodeViewController (~> 3.6)
   - PKRevealController (~> 2.0)
+  - PLCrashReporter (= 1.2-rc5)
   - QuickDialog (~> 1.0)
   - WYPopoverController (~> 0.3)
 
 SPEC CHECKSUMS:
   AFNetworking: 0f54cb5d16ce38c1b76948faffb8d5fb705021c7
   CocoaLumberjack: 6186e27827fc574b50b16c10102fcc591437f06c
-  hpple: f4eb7c21a8db83ec264e5d614ec7509e10e5adec
   KCOrderedAccessorFix: d177d657cbe2b3b070540d6b1652e8534c8bceae
   KVNProgress: 7b92508a8e3e9ee6c41962f70d20f6f7403ee27d
   Lockbox: 3168f08cb26680b05a0702b8c0cc6da32788059d
   LTHPasscodeViewController: beaaaf1761ab380960fb8659671de9e45a4ee620
   PKRevealController: 4f175a432ad868c806dce1ebb3fd8a35d228bdb5
+  PLCrashReporter: 979cd3c5bda33655f4df58fa6219d067183d7a7e
   QuickDialog: 1f1df7b87d608bcbb3919f4ec809bd7d7ae50101
   WYPopoverController: d5350da9e8aa98d607bbc9a2e299b5982938e77b
 
